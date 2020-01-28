@@ -1,0 +1,26 @@
+{
+    "name": "wikitext",
+    "displayName": "Wikitext",
+    "description": "Wikitext is a document written in a wiki markup language. It is a mixture of content, markup, and metadata.",
+    "publisher": "RoweWilsonFrederiskHolme",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.41.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "wikitext",
+            "aliases": ["Wikitext", "wikitext"],
+            "extensions": [".wikitext",".wt"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "wikitext",
+            "scopeName": "source.wikitext",
+            "path": "./syntaxes/wikitext.tmLanguage.json"
+        }]
+    }
+}
