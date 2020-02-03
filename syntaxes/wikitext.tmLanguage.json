@@ -193,7 +193,7 @@
                             "match": "^([#*;:]+)",
                             "captures": {
                                 "1": {
-                                    "name": "markup.bold"
+                                    "name": "markup.bold.style.wikitext"
                                 }
                             }
                         }
@@ -419,7 +419,6 @@
         "xml": {
             "patterns": [
                 {
-                    "": "<?  123a",
                     "begin": "(<\\?)\\s*([-_a-zA-Z0-9]+)",
                     "captures": {
                         "1": {
@@ -429,7 +428,6 @@
                             "name": "entity.name.tag.wikitext"
                         }
                     },
-                    "": "?>",
                     "end": "(\\?>)",
                     "name": "meta.tag.preprocessor.wikitext",
                     "patterns": [
@@ -446,7 +444,6 @@
                     ]
                 },
                 {
-                    "": "<!DOCTYPE :ads",
                     "begin": "(<!)(DOCTYPE)\\s+([:a-zA-Z_][:a-zA-Z0-9_.-]*)",
                     "captures": {
                         "1": {
@@ -459,7 +456,6 @@
                             "name": "variable.language.documentroot.wikitext"
                         }
                     },
-                    "": " >",
                     "end": "\\s*(>)",
                     "name": "meta.tag.sgml.doctype.wikitext",
                     "patterns": [
@@ -469,7 +465,6 @@
                     ]
                 },
                 {
-                    "": "<dasdas:dasda ></sada:sda>",
                     "begin": "(<)((?:([-_a-zA-Z0-9]+)(:))?([-_a-zA-Z0-9:]+))(?=(\\s[^>]*)?></\\2>)",
                     "beginCaptures": {
                         "1": {
@@ -488,7 +483,6 @@
                             "name": "entity.name.tag.localname.wikitext"
                         }
                     },
-                    "": "></ sa:asd:>",
                     "end": "(>)(</)((?:([-_a-zA-Z0-9]+)(:))?([-_a-zA-Z0-9:]+))(>)",
                     "endCaptures": {
                         "1": {
@@ -521,7 +515,6 @@
                     ]
                 },
                 {
-                    "": "<[/] XMLTAG:",
                     "begin": "(</?)(?:([-\\w\\.]+)((:)))?([-\\w\\.:]+)",
                     "captures": {
                         "1": {
@@ -540,7 +533,6 @@
                             "name": "entity.name.tag.localname.xml"
                         }
                     },
-                    "": "[/]>",
                     "end": "(/?>)",
                     "name": "meta.tag.wikitext",
                     "patterns": [
@@ -550,7 +542,6 @@
                     ]
                 },
                 {
-                    "": "<%@",
                     "begin": "<%@",
                     "beginCaptures": {
                         "0": {
@@ -572,14 +563,12 @@
                     ]
                 },
                 {
-                    "": "<%!/=not(--)",
                     "begin": "<%[!=]?(?!--)",
                     "beginCaptures": {
                         "0": {
                             "name": "punctuation.section.embedded.begin.wikitext"
                         }
                     },
-                    "": "not(--)%>",
                     "end": "(?!--)%>",
                     "endCaptures": {
                         "0": {
@@ -594,7 +583,6 @@
                     ]
                 },
                 {
-                    "": "<![CDATA[",
                     "begin": "<!\\[CDATA\\[",
                     "beginCaptures": {
                         "0": {
@@ -647,14 +635,12 @@
                     "name": "invalid.illegal.bad-ampersand.wikitext"
                 },
                 "internalSubset": {
-                    "": "[",
                     "begin": "(\\[)",
                     "captures": {
                         "1": {
                             "name": "punctuation.definition.constant.wikitext"
                         }
                     },
-                    "": "]",
                     "end": "(\\])",
                     "name": "meta.internalsubset.wikitext",
                     "patterns": [

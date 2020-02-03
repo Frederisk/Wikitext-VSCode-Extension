@@ -7,17 +7,29 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 
 ## [Unreleased]
 - Initial Release.
+
+## [0.6.1]* - 2020-02-02
+### Fixed
+- Fixed some mistakes about license.
+
+## [0.6.0]RC - 2020-02-02
 - Candidate Release.
-- Beta Release.
+
+### Added
+- Added some useful auto-closing content.
+
+### Changed
+- Open source under the MIT license.
 
 ## [0.5.0]&alpha; - 2020-02-02
+- Alpha Release.
+
 ### Added
 - Special support for chinese charcters.
-- Alpha Release.
 
 ## [0.4.0]\* - 2020-02-02
 ### Added
-- Write the __README__ File.
+- Wrote the __README__ File.
 - Added Table support.
 - Color rendering support for template content.
 
