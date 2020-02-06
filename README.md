@@ -1,5 +1,7 @@
 # Wikitext Markup Language Support for Visual Studio Code
 
+[![](https://img.shields.io/badge/license-MIT-blue)](https://raw.githubusercontent.com/Frederisk/Wikitext-VSCode-Extension/master/LICENSE.txt)[![](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
+
 This Visual Studio Code Extension provides support of Wikitext Markup language. With this extension, you can more easily discover your grammatical problems through the marked and styled text. The plugin is based on MediaWiki's Wikitext standard, but the rules are somewhat stricter, which helps users write text that is easier to read and maintain.
 
 Of course, the development of this extension is short, and there may be some errors in operation and labeling. If you find a problem, please report it to me immediately for resolution.
@@ -32,4 +34,4 @@ This extension contributes the following settings:
 Calling out known issues can help limit users opening duplicate issues against your extension. -->
 
 ## Release Notes
-First public release - ALPHA release.
+First Stable version.

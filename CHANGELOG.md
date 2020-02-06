@@ -6,7 +6,12 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
 ## [Unreleased]
+
+## [1.0.0] - 2020-02-06
+### Added
 - Initial Release.
+- Published to GitHub.
+- Added new extended name support.
 
 ## [0.6.1]* - 2020-02-02
 ### Fixed
