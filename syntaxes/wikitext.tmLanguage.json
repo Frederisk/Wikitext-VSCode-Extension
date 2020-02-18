@@ -85,19 +85,25 @@
                     "name": "markup.changed.wikitext"
                 },
                 "template": {
-                    "begin": "({{\\s*)(?:(#[\\s\\-\\w]+)((:)))?([\\s\\-\\w]*)",
+                    "begin": "({{\\s*)([\\w\\-\\s\\(\\)\\.]*(:)\\s*)?(?:(#[\\w\\-\\s\\(\\)\\.]+)((:)))?([\\w\\-\\s\\(\\)\\.]*)",
                     "end": "(}})",
                     "captures": {
                         "1": {
                             "name": "punctuation.definition.tag.template.wikitext"
                         },
-                        "2": {
-                            "name": "entity.name.function.wikitext"
+                        "2":{
+                            "name":"entity.name.tag.localname.wikitext"
+                        },
+                        "3":{
+                            "name":"punctuation.separator.namespace.wikitext"
                         },
                         "4": {
+                            "name": "entity.name.function.wikitext"
+                        },
+                        "6": {
                             "name": "punctuation.separator.namespace.wikitext"
                         },
-                        "5": {
+                        "7": {
                             "name": "entity.name.tag.localname.wikitext"
                         }
                     },
@@ -203,13 +209,13 @@
                     "name": "markup.heading",
                     "begin": "{{{",
                     "end": "}}}",
-                    "": "{{{[\\s\\-\\w]+}}}",
+                    "": "{{{[\\w\\-\\s\\(\\)\\.]+}}}",
                     "patterns": [
                         {
                             "include": "comments"
                         },
                         {
-                            "match": "([\\s\\-\\w]*)(\\|)?",
+                            "match": "([\\w\\-\\s\\(\\)\\.]*)(\\|)?",
                             "captures": {
                                 "1": {
                                     "name": "variable.other.wikitext"
@@ -271,7 +277,7 @@
                 },
                 "internalLink": {
                     "name": "string.quoted.wikitext",
-                    "begin": "(\\[\\[)(([\\w\\-\\s]*:)*)?([\\w\\-\\s]*(\\|))?",
+                    "begin": "(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*:)*)?([#\\w\\-\\s\\(\\)\\.]*(\\|))?",
                     "end": "(\\]\\])",
                     "captures": {
                         "1": {
