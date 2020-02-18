@@ -85,7 +85,7 @@
                     "name": "markup.changed.wikitext"
                 },
                 "template": {
-                    "begin": "({{\\s*)([\\w\\-\\s\\(\\)\\.]*(:)\\s*)?(?:(#[\\w\\-\\s\\(\\)\\.]+)((:)))?([\\w\\-\\s\\(\\)\\.]*)",
+                    "begin": "({{\\s*)([\\w\\-\\s\\(\\)\\.]*(:)\\s*)?(?:(#[\\w\\-\\s\\(\\)\\.]+)((:)))?",
                     "end": "(}})",
                     "captures": {
                         "1": {
@@ -103,7 +103,8 @@
                         "6": {
                             "name": "punctuation.separator.namespace.wikitext"
                         },
-                        "7": {
+                        "": {
+                            "":"([\\w\\-\\s\\(\\)\\.]*)",
                             "name": "entity.name.tag.localname.wikitext"
                         }
                     },

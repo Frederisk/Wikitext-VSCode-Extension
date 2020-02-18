@@ -6,6 +6,15 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
 ## [Unreleased]
+- A preview of Wikitext will be added in the furture.
+
+## [1.1.0] - 2020-02-18
+### Added
+- Added the extension icon.
+- Added more description of this extension.
+
+### Fixed
+- Addressed some issue with template and internal link rendering.
 
 ## [1.0.0] - 2020-02-06
 ### Added

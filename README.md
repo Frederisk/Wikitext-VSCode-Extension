@@ -8,29 +8,30 @@ This Visual Studio Code Extension provides support of Wikitext Markup language. 
 Of course, the development of this extension is short, and there may be some errors in operation and labeling. If you find a problem, please report it to me immediately for resolution.
 
 ## Features
-- Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats.
+- Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats. <br/>
+<img src="./.asset/Code-mainPage.png" width="500"/>
 
-- Automatic matching and closing of simple parentheses reduces unnecessary double typing.
+- Automatic matching and closing of simple parentheses reduces unnecessary double typing. <br/>
+<img src="./.asset/Code-video.gif" width="500"/>
+
+- The special comment syntax\(`<!--#region-->`&`<!--#endregion-->`\) can folds the code for easy reading. <br/>
+<img src="./.asset/Code-region.gif" width="500"/>
 
 ## Requirements
 Please ensure that your VSCode version is higher than 1.41.0, this version requirements may change in the future.
 
 Generally speaking, make sure that your VSCode is always the latest version.
 
+## Release Notes
+- Added the extension icon.
+- Added more description of this extension.
+- Addressed some issue with template and internal link rendering.
+
 <!-- ## Extension Settings
-
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
 For example:
-
 This extension contributes the following settings:
-
 * `myExtension.enable`: enable/disable this extension
 * `myExtension.thing`: set to `blah` to do something -->
-
 <!-- ## Known Issues
-
 Calling out known issues can help limit users opening duplicate issues against your extension. -->
-
-## Release Notes
-First Stable version.
