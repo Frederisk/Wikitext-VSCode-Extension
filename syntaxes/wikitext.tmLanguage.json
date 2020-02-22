@@ -22,6 +22,9 @@
                     "include": "#entity"
                 },
                 {
+                    "include": "#signature"
+                },
+                {
                     "include": "#keywords"
                 },
                 {
@@ -85,17 +88,17 @@
                     "name": "markup.changed.wikitext"
                 },
                 "template": {
-                    "begin": "({{\\s*)([\\w\\-\\s\\(\\)\\.]*(:)\\s*)?(?:(#[\\w\\-\\s\\(\\)\\.]+)((:)))?",
+                    "begin": "({{\\s*)([\\w\\-\\s\\(\\)\\.]*(:)\\s*)?(?:(#[\\w\\-\\s\\(\\)\\.]+)((:)))?([\\w\\-\\s\\(\\)\\.]*)",
                     "end": "(}})",
                     "captures": {
                         "1": {
                             "name": "punctuation.definition.tag.template.wikitext"
                         },
-                        "2":{
-                            "name":"entity.name.tag.localname.wikitext"
+                        "2": {
+                            "name": "entity.name.tag.localname.wikitext"
                         },
-                        "3":{
-                            "name":"punctuation.separator.namespace.wikitext"
+                        "3": {
+                            "name": "punctuation.separator.namespace.wikitext"
                         },
                         "4": {
                             "name": "entity.name.function.wikitext"
@@ -103,8 +106,8 @@
                         "6": {
                             "name": "punctuation.separator.namespace.wikitext"
                         },
-                        "": {
-                            "":"([\\w\\-\\s\\(\\)\\.]*)",
+                        "7": {
+                            "": "([\\w\\-\\s\\(\\)\\.]*)",
                             "name": "entity.name.tag.localname.wikitext"
                         }
                     },
@@ -189,7 +192,15 @@
                     "patterns": [
                         {
                             "name": "keyword.control.wikitext",
-                            "match": "(?i)\\b(__NOTOC__|__FORCETOC__|__TOC__|__NOEDITSECTION__|__NEWSECTIONLINK__|__NONEWSECTIONLINK__|__NOGALLERY__|__HIDDENCAT__|__NOCONTENTCONVERT__|__NOCC__|__NOTITLECONVERT__|__NOTC__|__START__|__INDEX__|__NOINDEX__|__STATICREDIRECT__|__DISAMBIG__)\\b"
+                            "match": "(?i)(__NOTOC__|__FORCETOC__|__TOC__|__NOEDITSECTION__|__NEWSECTIONLINK__|__NONEWSECTIONLINK__|__NOGALLERY__|__HIDDENCAT__|__NOCONTENTCONVERT__|__NOCC__|__NOTITLECONVERT__|__NOTC__|__START__|__INDEX__|__NOINDEX__|__STATICREDIRECT__|__DISAMBIG__)"
+                        }
+                    ]
+                },
+                "signature": {
+                    "patterns":[
+                        {
+                            "name":"keyword.other.signature.wikitext",
+                            "match":"~{3,5}"
                         }
                     ]
                 },

@@ -23,9 +23,9 @@ Please ensure that your VSCode version is higher than 1.41.0, this version requi
 Generally speaking, make sure that your VSCode is always the latest version.
 
 ## Release Notes
-- Added the extension icon.
-- Added more description of this extension.
-- Addressed some issue with template and internal link rendering.
+- Added support for Signature.
+- Fixed an issue where the template name rendering function was removed.
+- Space characters are no longer needed between Magic Words.
 
 <!-- ## Extension Settings
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.

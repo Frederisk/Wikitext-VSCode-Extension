@@ -8,6 +8,14 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 ## [Unreleased]
 - A preview of Wikitext will be added in the furture.
 
+## [1.1.1] - 2020-02-22
+### Added
+- Added support for Signature.
+
+### Fixed
+- Fixed an issue where the Template name rendering function was removed.
+- Space characters are no longer needed between Magic Words.
+
 ## [1.1.0] - 2020-02-18
 ### Added
 - Added the extension icon.
