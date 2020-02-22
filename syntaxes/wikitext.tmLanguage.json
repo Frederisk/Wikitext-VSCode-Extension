@@ -107,7 +107,6 @@
                             "name": "punctuation.separator.namespace.wikitext"
                         },
                         "7": {
-                            "": "([\\w\\-\\s\\(\\)\\.]*)",
                             "name": "entity.name.tag.localname.wikitext"
                         }
                     },
@@ -221,7 +220,6 @@
                     "name": "markup.heading",
                     "begin": "{{{",
                     "end": "}}}",
-                    "": "{{{[\\w\\-\\s\\(\\)\\.]+}}}",
                     "patterns": [
                         {
                             "include": "comments"
@@ -273,7 +271,6 @@
                         },
                         "italic": {
                             "begin": "''",
-                            "": "((?=[^'])|(?=''))''((?=[^'])|(?=''))",
                             "end": "((?=[^'])|(?=''))''((?=[^'])|(?=''))",
                             "name": "markup.italic.wikitext",
                             "patterns": [
@@ -637,7 +634,6 @@
                             "name": "keyword.other.entitytype.wikitext"
                         }
                     },
-                    "": ">",
                     "end": "(>)",
                     "patterns": [
                         {
