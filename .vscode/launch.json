@@ -38,9 +38,9 @@ SOFTWARE.
                 "--extensionDevelopmentPath=${workspaceFolder}"
             ],
             "outFiles": [
-                "${workspaceFolder}/out/**/*.js"
+                "${workspaceFolder}/dist/**/*.js"
             ],
-            "preLaunchTask": "${defaultBuildTask}"
+            "preLaunchTask": "npm: webpack-dev"
         },
         {
             "name": "Entension Tests",
@@ -54,7 +54,7 @@ SOFTWARE.
             "outFiles": [
                 "${workspaceFolder}/out/test/**/*.js"
             ],
-            "preLaunchTask": "${defaultBuildTask}"
+            "preLaunchTask": "npm: test-compile"
         }
     ]
 }
