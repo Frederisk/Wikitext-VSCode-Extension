@@ -48,6 +48,12 @@
                 "scopeName": "source.wikitext",
                 "path": "./syntaxes/wikitext.tmLanguage.json"
             }
+        ],
+        "snippets": [
+            {
+                "language": "wikitext",
+                "path": "./snippets/snippets.json"
+            }
         ]
     },
     "scripts": {
