@@ -8,6 +8,14 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 ## [Unreleased]
 - A preview of Wikitext will be added in the furture.
 
+## [1.1.2]\* - 2020-02-23
+### Added
+- Node.js & WebPack environments.
+- `Hello World` test command.
+
+### Fixed
+- Some mistakes of Template arguments rendering.
+
 ## [1.1.1] - 2020-02-22
 ### Added
 - Added support for Signature.

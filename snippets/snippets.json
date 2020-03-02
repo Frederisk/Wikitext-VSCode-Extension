@@ -1,0 +1,8 @@
+{
+    "region":{
+        "prefix": "#region",
+        "body":"<!--#region ${1:chapter}-->\n\n<!--#endregion--> ",
+        "description":"Region",
+        "scope":"markup.list.unnumbered.wikitext"
+    }
+}

@@ -119,7 +119,7 @@
                             "match": "\\|"
                         },
                         {
-                            "match": "(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)(.*?)(?=(\\|)|(\\}\\})|$|(<!--))",
+                            "match": "(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
                             "captures": {
                                 "1": {
                                     "name": "entity.other.attribute-name.namespace.wikitext"
@@ -136,7 +136,7 @@
                                 "5": {
                                     "name": "keyword.operator.equal.wikitext"
                                 },
-                                "6": {
+                                "": {
                                     "name": "keyword.operator.argunment.wikitext"
                                 }
                             }

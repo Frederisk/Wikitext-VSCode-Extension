@@ -3,7 +3,7 @@
     "displayName": "Wikitext",
     "description": "Wikitext is a document written in a wiki markup language. It is a mixture of content, markup, and metadata. The extension mainly supports the Wiki markup text language based on MediaWiki.",
     "publisher": "RoweWilsonFrederiskHolme",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "icon": ".asset/Wikitext-icon.png",
     "engines": {
         "vscode": "^1.41.0"
@@ -48,6 +48,12 @@
                 "scopeName": "source.wikitext",
                 "path": "./syntaxes/wikitext.tmLanguage.json"
             }
+        ],
+        "snippets": [
+            {
+                "language": "wikitext",
+                "path": "./snippets/snippets.json"
+            }
         ]
     },
     "scripts": {
@@ -55,10 +61,11 @@
         "watch": "tsc -watch -p ./",
         "test": "node ./out/test/runTest.js",
         "pretest": "webpack --mode production",
-        "vscode:prepublish": "webpack --mode production",
-        "webpack": "webpack --mode development",
-        "webpack-dev": "webpack --mode development --watch",
-        "test-compile": "tsc -p ./"
+		"vscode:prepublish": "webpack --mode production",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch",
+		"test-compile": "tsc -p ./",
+		"lint": "tslint -p ./"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
