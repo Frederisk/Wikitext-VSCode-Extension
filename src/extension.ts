@@ -23,55 +23,100 @@ SOFTWARE.
 */
 
 import * as vscode from 'vscode';
-import { strict } from 'assert';
+import * as querystring from 'querystring';
+import { request } from 'https';
+import { ClientRequest, RequestOptions } from 'http';
+import { resolve } from 'dns';
+import { homedir } from 'os';
+import { URL } from 'url';
+import { reporters } from 'mocha';
+import { rejects, strict } from 'assert';
 
+// 預覽WebViewPanel
 let currentPlanel: vscode.WebviewPanel | undefined = undefined;
 
-function creatPlanel(): boolean {
-    currentPlanel =  vscode.window.createWebviewPanel(
-        'previewer',
-        'WikitextPreviewer',
-        vscode.ViewColumn.Beside,
-        {}
-    );
-    currentPlanel.onDidDispose(
-        () => {
-            currentPlanel = undefined;
-        },
-        null,
-        
-    );
-    return true;
-}
-
 export function activate(context: vscode.ExtensionContext) {
-
-    console.log('Extension is active!');
-
-    let helloDisposable = vscode.commands.registerCommand('wikitext.helloWorld', () => {
-
-        interface Parameters {
-            [index: string]: string;
-        }
-
-        let result: string = "";
-
-        const textEditor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
-
+    console.log("Extension is active.");
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.helloWorld", () => {
+        const textEditor = vscode.window.activeTextEditor;
+        // 是否有開啟的文檔
         if (!textEditor) {
             vscode.window.showInformationMessage("No Active Wikitext Editor.");
+            // 未有則取消渲染
             return undefined;
         }
+        // 是否有開啟的WebViewPanel
         if (!currentPlanel) {
-            if (!creatPlanel()) { return undefined; }
+            // 未有則嘗試創建
+            currentPlanel = vscode.window.createWebviewPanel(
+                "previewer", "WikitextPreviewer", vscode.ViewColumn.Beside, {
+                enableScripts: true
+            });
+            // 註冊釋放資源事件
+            currentPlanel.onDidDispose(() => {
+                currentPlanel = undefined;
+            }, null, context.subscriptions);
         }
+        // 擷取文本內容
+        const sourceText: string = textEditor.document.getText();
+        let result: string = "";
+        // let args: string = querystring.stringify({
+        //     "action": 'flow-parsoid-utils',
+        //     "format": 'json',
 
+        //     "from": 'wikitext',
+        //     "to": 'html',
+        //     "title": 'Main_Page',
+        //     "content": sourceText
+        //     // "pageid": '0000'
+        // });
+        let args: string = querystring.stringify({
+            action:"parse",
+            format:"json",
 
-    });
+            text:sourceText,
+            contentmodel:"wikitext",
 
+        });
 
+        let opt: RequestOptions = {
+            hostname: "zh.wikipedia.org",
+            path: "/w/api.php",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Length': args.length
+            }
+        };
+        const req: ClientRequest = request(
+            opt, response => {
+                const chunks: any = [];
+                console.log(response.statusCode);
+                response.on('data', chunk => { chunks.push(chunk); });
+                response.on('end', () => {
+                    const jsontext = Buffer.concat(chunks).toString();
+                    console.log(jsontext);
 
-    context.subscriptions.push(helloDisposable);
+                    // result = JSON.parse(jsontext)["flow-parsoid-utils"]["content"];
+                    result = JSON.parse(jsontext)["parse"]["text"]["*"];
+
+                    console.log(result);
+                    if (!currentPlanel) {
+                        vscode.window.showInformationMessage("Preview Planel Not be Opened.");
+                        return undefined;
+                    }
+                    const html = unescape(result);
+                    currentPlanel.webview.html = html;
+                });
+                response.on('error', error => {
+                    vscode.window.showWarningMessage("Fresh Error:" + error.name);
+                });
+            });
+        req.write(args);
+        req.end();
+    }));
 }
 
-export function deactivate() { }
+export function deactivate() {
+    console.log("Extension is deactivate.");
+}

@@ -8,6 +8,10 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 ## [Unreleased]
 - A preview of Wikitext will be added in the furture.
 
+## [1.1.3]\* - 2020-03-14
+### Added
+- Chinese Wikipedia Wikitext preview via flow-parsoid-utils feature has been added.
+
 ## [1.1.2]\* - 2020-02-23
 ### Added
 - Node.js & WebPack environments.
