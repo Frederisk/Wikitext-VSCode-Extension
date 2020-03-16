@@ -1,8 +1,20 @@
 {
     "region":{
-        "prefix": "#region",
+        "prefix": "@region",
         "body":"<!--#region ${1:chapter}-->\n\n<!--#endregion--> ",
         "description":"Region",
         "scope":"markup.list.unnumbered.wikitext"
+    },
+    "table":{
+        "prefix":"@table",
+        "body":"{| ${1:class=\"wikitable\"}\n|+ ${2:Tittle\n!\n!\n!\n!\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|}",
+        "description":"Table",
+        "scope":""
+    },
+    "codeBlock":{
+        "prefix":"@codeblock",
+        "body":"<syntaxhighlight lang=\"${1:c#}\" line=\"${2:1}\" start=\"${3:1}\">\n\n</syntaxhighlight>",
+        "description":"CodeBlock",
+        "scope":""
     }
 }
