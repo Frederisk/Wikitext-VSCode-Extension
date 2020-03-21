@@ -14,14 +14,14 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:wikitext.helloWorld"
+        "onCommand:wikitext.getPreview"
     ],
     "main": "./dist/extension",
     "contributes": {
         "commands": [
             {
-                "command": "wikitext.helloWorld",
-                "title": "Hello World"
+                "command": "wikitext.getPreview",
+                "title": "Wikitext: Get Preview"
             }
         ],
         "languages": [

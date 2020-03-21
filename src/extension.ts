@@ -37,7 +37,7 @@ let currentPlanel: vscode.WebviewPanel | undefined = undefined;
 
 export function activate(context: vscode.ExtensionContext) {
     console.log("Extension is active.");
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.helloWorld", () => {
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.getPreview", () => {
         const textEditor = vscode.window.activeTextEditor;
         // 是否有開啟的文檔
         if (!textEditor) {
@@ -59,26 +59,14 @@ export function activate(context: vscode.ExtensionContext) {
         }
         // 擷取文本內容
         const sourceText: string = textEditor.document.getText();
-        let result: string = "";
-        // let args: string = querystring.stringify({
-        //     "action": 'flow-parsoid-utils',
-        //     "format": 'json',
-
-        //     "from": 'wikitext',
-        //     "to": 'html',
-        //     "title": 'Main_Page',
-        //     "content": sourceText
-        //     // "pageid": '0000'
-        // });
+        // 引數
         let args: string = querystring.stringify({
-            action:"parse",
-            format:"json",
-
-            text:sourceText,
-            contentmodel:"wikitext",
-
+            action: "parse",
+            format: "json",
+            text: sourceText,
+            contentmodel: "wikitext",
         });
-
+        // 目標頁面
         let opt: RequestOptions = {
             hostname: "zh.wikipedia.org",
             path: "/w/api.php",
@@ -92,27 +80,33 @@ export function activate(context: vscode.ExtensionContext) {
             opt, response => {
                 const chunks: any = [];
                 console.log(response.statusCode);
-                response.on('data', chunk => { chunks.push(chunk); });
+                // 擷取位元資料
+                response.on('data', data => { chunks.push(data); });
+                // 結束事件
                 response.on('end', () => {
+                    //console.log(jsontext);
+                    // 解析結果。
                     const jsontext = Buffer.concat(chunks).toString();
-                    console.log(jsontext);
-
+                    let result: string = JSON.parse(jsontext)["parse"]["text"]["*"];
                     // result = JSON.parse(jsontext)["flow-parsoid-utils"]["content"];
-                    result = JSON.parse(jsontext)["parse"]["text"]["*"];
-
-                    console.log(result);
+                    // console.log(result);
+                    // 確認面板存在狀態
                     if (!currentPlanel) {
                         vscode.window.showInformationMessage("Preview Planel Not be Opened.");
                         return undefined;
                     }
+                    // 解碼內容並顯示
                     const html = unescape(result);
                     currentPlanel.webview.html = html;
                 });
+                // 異常狀態
                 response.on('error', error => {
                     vscode.window.showWarningMessage("Fresh Error:" + error.name);
                 });
             });
+        // 寫入參數
         req.write(args);
+        // 尋求請求結束
         req.end();
     }));
 }
