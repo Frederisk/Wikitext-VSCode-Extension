@@ -6,7 +6,7 @@
     "version": "2.0.0",
     "icon": ".asset/Wikitext-icon.png",
     "engines": {
-        "vscode": "^1.41.0"
+        "vscode": "^1.43.0"
     },
     "categories": [
         "Programming Languages",
