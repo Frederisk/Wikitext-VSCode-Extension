@@ -1,13 +1,13 @@
 {
     "region":{
         "prefix": "@region",
-        "body":"<!--#region ${1:chapter}-->\n\n<!--#endregion--> ",
+        "body":"<!--#region ${1:chapter}-->\n${2:}\n<!--#endregion--> ",
         "description":"Region",
         "scope":"markup.list.unnumbered.wikitext"
     },
     "table":{
         "prefix":"@table",
-        "body":"{| ${1:class=\"wikitable\"}\n|+ ${2:Tittle\n!\n!\n!\n!\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|}",
+        "body":"{| ${1:class=\"wikitable\"}\n|+Tittle\n!\n!\n!\n!\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|}",
         "description":"Table",
         "scope":""
     },
@@ -15,6 +15,18 @@
         "prefix":"@codeblock",
         "body":"<syntaxhighlight lang=\"${1:c#}\" line=\"${2:1}\" start=\"${3:1}\">\n\n</syntaxhighlight>",
         "description":"CodeBlock",
+        "scope":""
+    },
+    "title":{
+        "prefix":"@title",
+        "body":"== ${1:tittle} ==",
+        "description":"Title",
+        "scope":""
+    },    
+    "pageTitle":{
+        "prefix":"@pagetitle",
+        "body":"= ${1:tittle} =",
+        "description":"PageTitle",
         "scope":""
     }
 }

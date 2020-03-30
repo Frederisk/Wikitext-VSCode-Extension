@@ -1,20 +1,31 @@
 # Wikitext Markup Language Support for Visual Studio Code
 
-[![](https://img.shields.io/badge/license-MIT-blue)](https://raw.githubusercontent.com/Frederisk/Wikitext-VSCode-Extension/master/LICENSE.txt)[![](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
+[![](https://img.shields.io/badge/license-MIT-blue)](https://raw.githubusercontent.com/Frederisk/Wikitext-VSCode-Extension/master/LICENSE.txt)
+[![](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
+[![](https://img.shields.io/badge/wikitext-Visual%20Studio%20Market-blueviolet)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
+[![](https://img.shields.io/badge/wikitext-Github-green)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 
 This Visual Studio Code Extension provides support of Wikitext Markup language. With this extension, you can more easily discover your grammatical problems through the marked and styled text. The plugin is based on MediaWiki's Wikitext standard, but the rules are somewhat stricter, which helps users write text that is easier to read and maintain.
 
 Of course, the development of this extension is short, and there may be some errors in operation and labeling. If you find a problem, please report it to me immediately for resolution.
 
+## Newest
+
+- Press `Ctrl + Shift + P` and choose to execute the `Wikitext: Get Preview` command to get a parsed preview of Wikitext in the currently active text editor.<br />
+<img src="./.asset/Code-previewer.gif" width="500">
+
+- Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`...<br />
+<img src="./.asset/Code-snippets.gif" width="500">
+
 ## Features
 
-- Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats. <br/>
+- Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats. <br />
 <img src="./.asset/Code-mainPage.png" width="500"/>
 
-- Automatic matching and closing of simple parentheses reduces unnecessary double typing. <br/>
+- Automatic matching and closing of simple parentheses reduces unnecessary double typing. <br />
 <img src="./.asset/Code-video.gif" width="500"/>
 
-- The special comment syntax\(`<!--#region-->`&`<!--#endregion-->`\) can folds the code for easy reading. <br/>
+- The special comment syntax\(`<!--#region-->`&`<!--#endregion-->`\) can folds the code for easy reading. <br />
 <img src="./.asset/Code-region.gif" width="500"/>
 
 ## Requirements
@@ -24,10 +35,12 @@ Please ensure that your VSCode version is higher than 1.41.0, this version requi
 Generally speaking, make sure that your VSCode is always the latest version.
 
 ## Release Notes
-
-- Added support for Signature.
-- Fixed an issue where the template name rendering function was removed.
-- Space characters are no longer needed between Magic Words.
+- Wikitext preview available now.
+- Added support for some code snippets.
+- Updated minimist to prevent a known security vulnerability.
+- Added several parenthesis auto-closing rules.
+- Fixed some issues with brackets closing automatically.
+- Fixed some rendering issues in table syntax. 
 
 <!-- ## Extension Settings
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.

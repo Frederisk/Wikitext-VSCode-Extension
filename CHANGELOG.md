@@ -6,7 +6,25 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
 ## [Unreleased]
-- A preview of Wikitext will be added in the furture.
+- Improve the advanced features of Wikitext preview.
+- Adjust the UI to make it easier for users to use Wikitext preview.
+- Find and fix more syntax highlighting issues.
+
+## [2.0.0] - 2020-03-30
+### Added
+- Wikitext preview now supports host changes.
+- Added support for some code snippets.
+- Added several parenthesis auto-closing rules.
+
+### Changed
+- Changed preview API from flow-parsoid-utils to parse.
+
+### Security
+- Updated minimist to prevent a known security vulnerability.
+
+### Fixed
+- Fixed some issues with brackets closing automatically.
+- Fixed some rendering issues in table syntax.
 
 ## [1.1.3]\* - 2020-03-14
 ### Added
@@ -42,7 +60,7 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 - Published to GitHub.
 - Added new extended name support.
 
-## [0.6.1]* - 2020-02-02
+## [0.6.1]\* - 2020-02-02
 ### Fixed
 - Fixed some mistakes about license.
 
@@ -113,10 +131,10 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 - Establish basic language support.
 
 <!--
-Added新功能。
-Changed現有功能的更改。
-Deprecated用於即將刪除的功能。
-Removed現在刪除了功能。
-Fixed任何錯誤修復。
-Security以防出現漏洞。
+Added 新功能。
+Changed 現有功能的更改。
+Deprecated 用於即將刪除的功能。
+Removed 現在刪除了功能。
+Fixed 任何錯誤修復。
+Security 以防出現漏洞。
 -->

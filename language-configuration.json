@@ -42,9 +42,9 @@ SOFTWARE.
         ["[", "]"],
         ["-{", "}-"],
         ["<!--","-->"],
-        ["<hr/",">"],
-        ["<br/",">"],
-        ["<mapframe/",">"],
+        ["<hr /",">"],
+        ["<br /",">"],
+        ["<mapframe /",">"],
         ["<code>","</code>"],
         ["<nowiki>","</nowiki>"],
         ["<ref>","</ref>"],
@@ -68,8 +68,7 @@ SOFTWARE.
         ["<!--","-->"],
         ["<",">"]
     ],
-    "autoCloseBefore": ";:.,=}])> \n\t"
-    ,
+    "autoCloseBefore": ";:.,=}])> \n\t",
     "folding":{
         "markers": {
             "start": "^<!--#region[\\w\\s]*-->",
