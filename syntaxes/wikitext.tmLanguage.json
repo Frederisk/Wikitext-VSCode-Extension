@@ -115,25 +115,24 @@
                             "include": "$self"
                         },
                         {
-                            "name": "keyword.operator.wikitext",
-                            "match": "\\|"
-                        },
-                        {
-                            "match": "(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
+                            "match": "(\\|)|(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
                             "captures": {
                                 "1": {
-                                    "name": "entity.other.attribute-name.namespace.wikitext"
+                                    "name": "keyword.operator.wikitext"
                                 },
                                 "2": {
-                                    "name": "entity.other.attribute-name.wikitext"
+                                    "name": "entity.other.attribute-name.namespace.wikitext"
                                 },
                                 "3": {
-                                    "name": "punctuation.separator.namespace.wikitext"
+                                    "name": "entity.other.attribute-name.wikitext"
                                 },
                                 "4": {
-                                    "name": "entity.other.attribute-name.localname.wikitext"
+                                    "name": "punctuation.separator.namespace.wikitext"
                                 },
                                 "5": {
+                                    "name": "entity.other.attribute-name.localname.wikitext"
+                                },
+                                "6": {
                                     "name": "keyword.operator.equal.wikitext"
                                 },
                                 "": {
@@ -305,6 +304,17 @@
                     "patterns": [
                         {
                             "include": "$self"
+                        },
+                        {
+                            "match": "(\\|)|(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
+                            "captures": {
+                                "1": {
+                                    "name": "keyword.operator.wikitext"
+                                },
+                                "5": {
+                                    "name": "entity.other.attribute-name.localname.wikitext"
+                                }
+                            }
                         }
                     ]
                 },
