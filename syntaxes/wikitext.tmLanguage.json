@@ -115,7 +115,7 @@
                             "include": "$self"
                         },
                         {
-                            "match": "(\\|)|(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
+                            "match": "(\\|)(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
                             "captures": {
                                 "1": {
                                     "name": "keyword.operator.wikitext"
@@ -285,7 +285,7 @@
                 },
                 "internalLink": {
                     "name": "string.quoted.wikitext",
-                    "begin": "(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*:)*)?([#\\w\\-\\s\\(\\)\\.]*(\\|))?",
+                    "begin": "(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*:)*)?([#\\w\\-\\s\\(\\)\\.]*)?",
                     "end": "(\\]\\])",
                     "captures": {
                         "1": {
@@ -296,9 +296,6 @@
                         },
                         "4": {
                             "name": "entity.other.attribute-name.wikitext"
-                        },
-                        "5": {
-                            "name": "keyword.operator.wikitext"
                         }
                     },
                     "patterns": [
