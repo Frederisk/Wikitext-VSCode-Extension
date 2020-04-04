@@ -778,12 +778,12 @@
             "patterns": [
                 {
                     "begin": "<%--",
+                    "end": "--%>",
+                    "name": "comment.block.xml",
                     "captures": {
                         "0": {
                             "name": "punctuation.definition.comment.xml"
-                        },
-                        "end": "--%>",
-                        "name": "comment.block.xml"
+                        }
                     }
                 },
                 {
