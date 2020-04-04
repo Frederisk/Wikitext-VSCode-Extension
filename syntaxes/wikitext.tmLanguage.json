@@ -16,7 +16,7 @@
         "wikitext": {
             "patterns": [
                 {
-                    "include": "#argmuent"
+                    "include": "#argument"
                 },
                 {
                     "include": "#entity"
@@ -137,7 +137,7 @@
                                     "name": "keyword.operator.equal.wikitext"
                                 },
                                 "": {
-                                    "name": "keyword.operator.argunment.wikitext"
+                                    "name": "keyword.operator.argument.wikitext"
                                 }
                             }
                         }
@@ -159,7 +159,7 @@
                             },
                             "patterns": [
                                 {
-                                    "include": "#argmuent"
+                                    "include": "#argument"
                                 },
                                 {
                                     "include": "#comments"
@@ -216,7 +216,7 @@
                         }
                     ]
                 },
-                "argmuent": {
+                "argument": {
                     "name": "markup.heading",
                     "begin": "{{{",
                     "end": "}}}",
