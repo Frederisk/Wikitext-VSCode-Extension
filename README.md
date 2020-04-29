@@ -30,7 +30,7 @@ Of course, the development of this extension is short, and there may be some err
 
 ## Requirements
 
-Please ensure that your VSCode version is higher than 1.41.0, this version requirements may change in the future.
+Please ensure that your VSCode version is higher than 1.43.0, this version requirements may change in the future.
 
 Generally speaking, make sure that your VSCode is always the latest version.
 
@@ -40,7 +40,8 @@ Generally speaking, make sure that your VSCode is always the latest version.
 - Updated minimist to prevent a known security vulnerability.
 - Added several parenthesis auto-closing rules.
 - Fixed some issues with brackets closing automatically.
-- Fixed some rendering issues in table syntax. 
+- Fixed some rendering issues in table syntax.
+- Some mistakes of Template and Internal Link rendering.
 
 <!-- ## Extension Settings
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.

@@ -19,13 +19,37 @@
     },
     "title":{
         "prefix":"@title",
-        "body":"== ${1:tittle} ==",
+        "body":"== ${1:title} ==",
         "description":"Title",
         "scope":""
-    },    
+    },
+    "subtitle1":{
+        "prefix":"@subt1",
+        "body": "=== ${1:title} ===",
+        "description":"Subtitle1",
+        "scope":""
+    },
+    "subtitle2":{
+        "prefix":"@subt2",
+        "body": "==== ${1:title} ====",
+        "description":"Subtitle2",
+        "scope":""
+    },
+    "subtitle3":{
+        "prefix":"@subt3",
+        "body": "===== ${1:title} =====",
+        "description":"Subtitle3",
+        "scope":""
+    },
+    "subtitle4":{
+        "prefix":"@subt4",
+        "body": "====== ${1:title} ======",
+        "description":"Subtitle4",
+        "scope":""
+    },
     "pageTitle":{
         "prefix":"@pagetitle",
-        "body":"= ${1:tittle} =",
+        "body":"= ${1:title} =",
         "description":"PageTitle",
         "scope":""
     }

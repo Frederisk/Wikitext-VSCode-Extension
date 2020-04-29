@@ -10,6 +10,10 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 - Adjust the UI to make it easier for users to use Wikitext preview.
 - Find and fix more syntax highlighting issues.
 
+## [2.0.1] - 2020-04-04
+### Fixed
+- Some mistakes of Template and Internal Link rendering.
+
 ## [2.0.0] - 2020-03-30
 ### Added
 - Wikitext preview now supports host changes.

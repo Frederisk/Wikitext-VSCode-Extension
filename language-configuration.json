@@ -47,6 +47,7 @@ SOFTWARE.
         ["<mapframe /",">"],
         ["<code>","</code>"],
         ["<nowiki>","</nowiki>"],
+        ["<blockquote>","</blockquote>"],
         ["<ref>","</ref>"],
         ["<math>","</math>"],
         ["<chem>","</chem>"],

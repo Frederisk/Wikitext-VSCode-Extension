@@ -28,6 +28,9 @@
                     "include": "#keywords"
                 },
                 {
+                    "include": "#convert"
+                },
+                {
                     "include": "#list"
                 },
                 {
@@ -53,9 +56,6 @@
                 },
                 {
                     "include": "#break"
-                },
-                {
-                    "include": "#convert"
                 }
             ],
             "repository": {
@@ -88,8 +88,8 @@
                     "name": "markup.changed.wikitext"
                 },
                 "template": {
-                    "begin": "({{\\s*)([\\w\\-\\s\\(\\)\\.]*(:)\\s*)?(?:(#[\\w\\-\\s\\(\\)\\.]+)((:)))?([\\w\\-\\s\\(\\)\\.]*)",
-                    "end": "(}})",
+                    "begin": "(\\{\\{)(?:([\\w\\-\\s\\(\\)\\.]*:\\s*)*)(?:(#[\\w\\-\\s\\(\\)\\.]+)(:))?([\\w\\-\\s\\(\\)\\.]*)",
+                    "end": "(\\}\\})",
                     "captures": {
                         "1": {
                             "name": "punctuation.definition.tag.template.wikitext"
@@ -97,16 +97,16 @@
                         "2": {
                             "name": "entity.name.tag.localname.wikitext"
                         },
-                        "3": {
+                        "": {
                             "name": "punctuation.separator.namespace.wikitext"
                         },
                         "4": {
                             "name": "entity.name.function.wikitext"
                         },
-                        "6": {
+                        "5": {
                             "name": "punctuation.separator.namespace.wikitext"
                         },
-                        "7": {
+                        "6": {
                             "name": "entity.name.tag.localname.wikitext"
                         }
                     },
@@ -239,7 +239,7 @@
                 },
                 "heading": {
                     "name": "markup.heading.wikitext",
-                    "match": "^={2,6}.+?={2,6}$",
+                    "match": "^={1,6}.+?={1,6}$",
                     "patterns": [
                         {
                             "include": "$self"
@@ -286,7 +286,7 @@
                 },
                 "internalLink": {
                     "name": "string.quoted.wikitext",
-                    "begin": "(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*:)*)?([#\\w\\-\\s\\(\\)\\.]*(\\|))?",
+                    "begin": "(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*:)*)?([^\\|\\[\\]]*(\\|))?",
                     "end": "(\\]\\])",
                     "captures": {
                         "1": {
