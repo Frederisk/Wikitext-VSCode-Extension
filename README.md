@@ -9,14 +9,6 @@ This Visual Studio Code Extension provides support of Wikitext Markup language. 
 
 Of course, the development of this extension is short, and there may be some errors in operation and labeling. If you find a problem, please report it to me immediately for resolution.
 
-## Newest
-
-- Press `Ctrl + Shift + P` and choose to execute the `Wikitext: Get Preview` command to get a parsed preview of Wikitext in the currently active text editor.<br />
-<img src="./.asset/Code-previewer.gif" width="500">
-
-- Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`...<br />
-<img src="./.asset/Code-snippets.gif" width="500">
-
 ## Features
 
 - Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats. <br />
@@ -34,14 +26,23 @@ Please ensure that your VSCode version is higher than 1.43.0, this version requi
 
 Generally speaking, make sure that your VSCode is always the latest version.
 
+- Press `Ctrl + Shift + P` and choose to execute the `Wikitext: Get Preview` command to get a parsed preview of Wikitext in the currently active text editor.<br />
+<img src="./.asset/Code-previewer.gif" width="500">
+
+- Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`...<br />
+<img src="./.asset/Code-snippets.gif" width="500">
+
 ## Release Notes
-- Wikitext preview available now.
-- Added support for some code snippets.
-- Updated minimist to prevent a known security vulnerability.
-- Added several parenthesis auto-closing rules.
-- Fixed some issues with brackets closing automatically.
-- Fixed some rendering issues in table syntax.
+- Added more snippets and bracket support.
+- Added rule to capture keyword.operator
+- Changed the minimum version requirements.
 - Some mistakes of Template and Internal Link rendering.
+- Improve syntax for internal link and template.
+- Fixed Some typos.
+
+## Special Thanks
+### The help of
+[caltaojihun](https://github.com/caltaojihun)
 
 <!-- ## Extension Settings
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.

@@ -88,7 +88,8 @@
                     "name": "markup.changed.wikitext"
                 },
                 "template": {
-                    "begin": "(\\{\\{)(?:([\\w\\-\\s\\(\\)\\.]*:\\s*)*)(?:(#[\\w\\-\\s\\(\\)\\.]+)(:))?([\\w\\-\\s\\(\\)\\.]*)",
+                    "begin": "(\\{\\{)(([\\w\\-\\s\\(\\)\\.]*(:)\\s*)*)(?:(#[\\w\\-\\s\\(\\)\\.]+)(:))?([\\w\\-\\s\\(\\)\\.]*)",
+                    "     ": "1(\\{\\{)2(3([\\w\\-\\s\\(\\)\\.]*4(:)\\s*)*)5(?:(#[\\w\\-\\s\\(\\)\\.]+)6(:))?7([\\w\\-\\s\\(\\)\\.]*)",
                     "end": "(\\}\\})",
                     "captures": {
                         "1": {
@@ -97,16 +98,16 @@
                         "2": {
                             "name": "entity.name.tag.localname.wikitext"
                         },
-                        "": {
-                            "name": "punctuation.separator.namespace.wikitext"
-                        },
                         "4": {
-                            "name": "entity.name.function.wikitext"
+                            "name": "punctuation.separator.namespace.wikitext"
                         },
                         "5": {
-                            "name": "punctuation.separator.namespace.wikitext"
+                            "name": "entity.name.function.wikitext"
                         },
                         "6": {
+                            "name": "punctuation.separator.namespace.wikitext"
+                        },
+                        "7": {
                             "name": "entity.name.tag.localname.wikitext"
                         }
                     },
