@@ -16,7 +16,7 @@
         "wikitext": {
             "patterns": [
                 {
-                    "include": "#argmuent"
+                    "include": "#argument"
                 },
                 {
                     "include": "#entity"
@@ -115,29 +115,28 @@
                             "include": "$self"
                         },
                         {
-                            "name": "keyword.operator.wikitext",
-                            "match": "\\|"
-                        },
-                        {
-                            "match": "(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
+                            "match": "(\\|)(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
                             "captures": {
                                 "1": {
-                                    "name": "entity.other.attribute-name.namespace.wikitext"
+                                    "name": "keyword.operator.wikitext"
                                 },
                                 "2": {
-                                    "name": "entity.other.attribute-name.wikitext"
+                                    "name": "entity.other.attribute-name.namespace.wikitext"
                                 },
                                 "3": {
-                                    "name": "punctuation.separator.namespace.wikitext"
+                                    "name": "entity.other.attribute-name.wikitext"
                                 },
                                 "4": {
-                                    "name": "entity.other.attribute-name.localname.wikitext"
+                                    "name": "punctuation.separator.namespace.wikitext"
                                 },
                                 "5": {
+                                    "name": "entity.other.attribute-name.localname.wikitext"
+                                },
+                                "6": {
                                     "name": "keyword.operator.equal.wikitext"
                                 },
                                 "": {
-                                    "name": "keyword.operator.argunment.wikitext"
+                                    "name": "keyword.operator.argument.wikitext"
                                 }
                             }
                         }
@@ -159,7 +158,7 @@
                             },
                             "patterns": [
                                 {
-                                    "include": "#argmuent"
+                                    "include": "#argument"
                                 },
                                 {
                                     "include": "#comments"
@@ -216,7 +215,7 @@
                         }
                     ]
                 },
-                "argmuent": {
+                "argument": {
                     "name": "markup.heading",
                     "begin": "{{{",
                     "end": "}}}",
@@ -286,7 +285,7 @@
                 },
                 "internalLink": {
                     "name": "string.quoted.wikitext",
-                    "begin": "(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*:)*)?([^\\|\\[\\]]*(\\|))?",
+                    "begin": "(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*:)*)?([^\\|\\[\\]]*)?",
                     "end": "(\\]\\])",
                     "captures": {
                         "1": {
@@ -297,14 +296,22 @@
                         },
                         "4": {
                             "name": "entity.other.attribute-name.wikitext"
-                        },
-                        "5": {
-                            "name": "keyword.operator.wikitext"
                         }
                     },
                     "patterns": [
                         {
                             "include": "$self"
+                        },
+                        {
+                            "match": "(\\|)|(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
+                            "captures": {
+                                "1": {
+                                    "name": "keyword.operator.wikitext"
+                                },
+                                "5": {
+                                    "name": "entity.other.attribute-name.localname.wikitext"
+                                }
+                            }
                         }
                     ]
                 },
@@ -778,12 +785,12 @@
             "patterns": [
                 {
                     "begin": "<%--",
+                    "end": "--%>",
+                    "name": "comment.block.xml",
                     "captures": {
                         "0": {
                             "name": "punctuation.definition.comment.xml"
-                        },
-                        "end": "--%>",
-                        "name": "comment.block.xml"
+                        }
                     }
                 },
                 {
