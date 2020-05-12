@@ -56,6 +56,9 @@
                 },
                 {
                     "include": "#break"
+                },
+                {
+                    "include": "#wikixml"
                 }
             ],
             "repository": {
@@ -222,7 +225,7 @@
                     "end": "}}}",
                     "patterns": [
                         {
-                            "include": "comments"
+                            "include": "$self"
                         },
                         {
                             "match": "([\\w\\-\\s\\(\\)\\.]*)(\\|)?",
@@ -436,6 +439,31 @@
                             ]
                         }
                     ]
+                },
+                "wikixml": {
+                    "patterns":[
+                        {
+                            "include":"#nowiki"
+                        }
+                    ],
+                    "repository":{
+                        "nowiki":{
+                            "begin": "(<)(nowiki\\s*)(>)",
+                            "end": "(</)(nowiki\\s*)(>)",
+                            "captures": {
+                                "1": {
+                                    "name": "punctuation.definition.tag.wikixml"
+                                },
+                                "2":{
+                                    "name":"entity.name.tag.localname.wikixml"
+                                },
+                                "3": {
+                                    "name": "punctuation.definition.tag.wikixml"
+                                }
+                            },
+                            "name" : "string.quoted.nowiki"
+                        }
+                    }
                 }
             }
         },
@@ -622,7 +650,7 @@
                 }
             ],
             "repository": {
-                "EntityDecl": {
+                "entityDecl": {
                     "": "<!ENTITY (% example )SYSTEM( test)>",
                     "begin": "(<!)(ENTITY)\\s+(%\\s+)?([:a-zA-Z_][:a-zA-Z0-9_.-]*)(\\s+(?:SYSTEM|PUBLIC)\\s+)?",
                     "captures": {
@@ -667,7 +695,7 @@
                     "name": "meta.internalsubset.wikitext",
                     "patterns": [
                         {
-                            "include": "#EntityDecl"
+                            "include": "#entityDecl"
                         },
                         {
                             "include": "#parameterEntity"
