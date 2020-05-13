@@ -10,16 +10,23 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 - Adjust the UI to make it easier for users to use Wikitext preview.
 - Find and fix more syntax highlighting issues.
 
+## [2.1.1] - 2000-05-13
+### Added
+- Nowiki tags support.
+
+### Fixed
+- Some rendering issues.
+
 ## [2.1.0] - 2020-04-29
-## Added
+### Added
 - Added more snippets and bracket support.
 
-## Changed 
+### Changed 
 - Changed the minimum version requirements.
 - Added rule to capture keyword.operator.
 - Improve syntax for internal link and template.
 
-## Fixed
+### Fixed
 - Fixed Some typos.
 - Fixed pattern for tag issues.
 - Fixed Some mistakes of Template.

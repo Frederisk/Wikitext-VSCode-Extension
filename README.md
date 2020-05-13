@@ -33,12 +33,8 @@ Generally speaking, make sure that your VSCode is always the latest version.
 <img src="./.asset/Code-snippets.gif" width="500">
 
 ## Release Notes
-- Added more snippets and bracket support.
-- Added rule to capture keyword.operator
-- Changed the minimum version requirements.
-- Some mistakes of Template and Internal Link rendering.
-- Improve syntax for internal link and template.
-- Fixed Some typos.
+- Added nowiki tags support.
+- Fixed some rendering issues.
 
 ## Special Thanks
 ### The help of

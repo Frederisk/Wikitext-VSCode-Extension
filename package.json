@@ -3,8 +3,8 @@
     "displayName": "Wikitext",
     "description": "Wikitext is a document written in a wiki markup language. It is a mixture of content, markup, and metadata. The extension mainly supports the Wiki markup text language based on MediaWiki.",
     "publisher": "RoweWilsonFrederiskHolme",
-    "version": "2.1.0",
-    "icon": ".asset/Wikitext-icon.png",
+    "version": "2.1.1",
+    "icon": "./media/wikitext-icon.png",
     "engines": {
         "vscode": "^1.43.0"
     },
@@ -23,11 +23,38 @@
         "commands": [
             {
                 "command": "wikitext.getPreview",
-                "title": "Wikitext: Get Preview"
+                "title": "Wikitext: Get Preview",
+                "category": "Wikitext",
+                "icon": {
+                    "light": "./media/preview-light.svg",
+                    "dark": "./media/preview-dark.svg"
+                }
             },
             {
                 "command": "wikitext.setHost",
-                "title": "Wikitext: Set Previewer Host"
+                "title": "Wikitext: Set Previewer Host",
+                "category": "Wikitext"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "wikitext.getPreview",
+                    "": "editorLangId == wikitext",
+                    "group": "navigation"
+                },
+                {
+                    "command": "wikitext.setHost",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "keybindings":[
+            {
+                "command": "wikitext.getPreview",
+                "key": "shift+ctrl+v",
+                "mac": "shift+cmd+v",
+                "when": "editorLangId == wikitext"
             }
         ],
         "languages": [
@@ -35,7 +62,6 @@
                 "id": "wikitext",
                 "aliases": [
                     "Wikitext",
-                    "wikitext",
                     "WikiText"
                 ],
                 "extensions": [
