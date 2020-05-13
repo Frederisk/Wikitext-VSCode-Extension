@@ -20,17 +20,17 @@ Of course, the development of this extension is short, and there may be some err
 - The special comment syntax\(`<!--#region-->`&`<!--#endregion-->`\) can folds the code for easy reading. <br />
 <img src="./.asset/Code-region.gif" width="500"/>
 
-## Requirements
-
-Please ensure that your VSCode version is higher than 1.43.0, this version requirements may change in the future.
-
-Generally speaking, make sure that your VSCode is always the latest version.
-
 - Press `Ctrl + Shift + P` and choose to execute the `Wikitext: Get Preview` command to get a parsed preview of Wikitext in the currently active text editor.<br />
 <img src="./.asset/Code-previewer.gif" width="500">
 
 - Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`...<br />
 <img src="./.asset/Code-snippets.gif" width="500">
+
+## Requirements
+
+Please ensure that your VSCode version is higher than 1.43.0, this version requirements may change in the future.
+
+Generally speaking, make sure that your VSCode is always the latest version.
 
 ## Release Notes
 - Added nowiki tags support.
