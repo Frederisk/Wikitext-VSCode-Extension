@@ -25,6 +25,7 @@
                 "command": "wikitext.getPreview",
                 "title": "Wikitext: Get Preview",
                 "category": "Wikitext",
+                "":"It didn't work for unknown reasons.",
                 "icon": {
                     "light": "./media/preview-light.svg",
                     "dark": "./media/preview-dark.svg"
@@ -40,7 +41,8 @@
             "commandPalette": [
                 {
                     "command": "wikitext.getPreview",
-                    "": "editorLangId == wikitext",
+                    "when": "editorLangId == wikitext",
+                    "alt": "wikitext.setHost",
                     "group": "navigation"
                 },
                 {

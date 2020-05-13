@@ -446,22 +446,56 @@
                             "include":"#nowiki"
                         }
                     ],
-                    "repository":{
-                        "nowiki":{
-                            "begin": "(<)(nowiki\\s*)(>)",
-                            "end": "(</)(nowiki\\s*)(>)",
-                            "captures": {
-                                "1": {
-                                    "name": "punctuation.definition.tag.wikixml"
-                                },
-                                "2":{
-                                    "name":"entity.name.tag.localname.wikixml"
+                    "repository": {
+                        "nowiki": {
+                            "begin" : "(?i)(<)(nowiki\\s*)(^>)*(>)",
+                            "beginCaptures": {
+								"0": {
+									"name": "meta.tag.metadata.nowiki.start.html"
+								},
+								"1": {
+									"name": "punctuation.definition.tag.begin.html"
+								},
+								"2": {
+									"name": "entity.name.tag.html"
                                 },
                                 "3": {
-                                    "name": "punctuation.definition.tag.wikixml"
-                                }
+                                    "patterns" :[
+                                        {
+                                            "match": " ([a-zA-Z-]+)",
+                                            "name": "entity.other.attribute-name.wikitext"
+                                        },
+                                        {
+                                            "include": "#doublequotedString"
+                                        },
+                                        {
+                                            "include": "#singlequotedString"
+                                        }
+                                    ]
+                                },
+                                "4": {
+									"name": "punctuation.definition.tag.end.html"
+								}
+							},
+							"end": "(?i)((<)/)(nowiki)\\s*(>)",
+							"endCaptures": {
+								"0": {
+									"name": "meta.tag.metadata.nowiki.end.html"
+								},
+								"1": {
+									"name": "punctuation.definition.tag.begin.html"
+								},
+								"2": {
+									"name": "source.css-ignored-vscode"
+								},
+								"3": {
+									"name": "entity.name.tag.html"
+								},
+								"4": {
+									"name": "punctuation.definition.tag.end.html"
+								}
                             },
-                            "name" : "string.quoted.nowiki"
+                            "name": "meta.embedded.block.html"
                         }
                     }
                 }
