@@ -10,7 +10,22 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 - Adjust the UI to make it easier for users to use Wikitext preview.
 - Find and fix more syntax highlighting issues.
 
-## [2.1.1] - 2000-05-13
+## [2.2.0] - 2020-05-19
+### Added
+- Added the support of JSON for Graph and Templatedata tags.
+- Support preparation for CSS.
+
+### Changed
+- Changed the rendering of word conversion.
+
+### Fixed
+- Bold and italic closing conditions.
+
+## [2.1.2]\* - 2020-05-13
+### Fixed
+- Some typos.
+
+## [2.1.1] - 2020-05-13
 ### Added
 - Nowiki tags support.
 

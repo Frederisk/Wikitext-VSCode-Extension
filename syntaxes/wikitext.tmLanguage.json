@@ -1,6 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
     "name": "Wikitext",
+    "scopeName": "source.wikitext",
     "patterns": [
         {
             "include": "#comments"
@@ -70,7 +71,7 @@
                             "name": "punctuation.definition.tag.template.wikitext"
                         },
                         "2": {
-                            "name": "entity.name.function.wikitext"
+                            "name": "entity.name.function.type.wikitext"
                         },
                         "3": {
                             "name": "keyword.operator.wikitext"
@@ -82,7 +83,7 @@
                         },
                         {
                             "match": "([\\w\\-]*)(:)(.*?)(;?)",
-                            "name": "comment.block"
+                            "name": "entity.name.function.language.wikitext"
                         }
                     ]
                 },
@@ -139,7 +140,7 @@
                                 "6": {
                                     "name": "keyword.operator.equal.wikitext"
                                 },
-                                "": {
+                                "comment": {
                                     "name": "keyword.operator.argument.wikitext"
                                 }
                             }
@@ -261,7 +262,7 @@
                     "repository": {
                         "bold": {
                             "begin": "'''",
-                            "end": "'''",
+                            "end": "(''')|$",
                             "name": "markup.bold.wikitext",
                             "patterns": [
                                 {
@@ -274,7 +275,7 @@
                         },
                         "italic": {
                             "begin": "''",
-                            "end": "((?=[^'])|(?=''))''((?=[^'])|(?=''))",
+                            "end": "((?=[^'])|(?=''))''((?=[^'])|(?=''))|$",
                             "name": "markup.italic.wikitext",
                             "patterns": [
                                 {
@@ -444,20 +445,26 @@
                     "patterns":[
                         {
                             "include":"#nowiki"
+                        },
+                        {
+                            "include": "#graph"
+                        },
+                        {
+                            "include": "#templatedata"
                         }
                     ],
                     "repository": {
                         "nowiki": {
                             "begin" : "(?i)(<)(nowiki\\s*)(^>)*(>)",
                             "beginCaptures": {
-								"0": {
-									"name": "meta.tag.metadata.nowiki.start.html"
-								},
-								"1": {
-									"name": "punctuation.definition.tag.begin.html"
-								},
-								"2": {
-									"name": "entity.name.tag.html"
+                                "0": {
+                                    "name": "meta.tag.metadata.nowiki.start.wikitext"
+                                },
+                                "1": {
+                                    "name": "punctuation.definition.tag.begin.wikitext"
+                                },
+                                "2": {
+                                    "name": "entity.name.tag.wikitext"
                                 },
                                 "3": {
                                     "patterns" :[
@@ -474,28 +481,334 @@
                                     ]
                                 },
                                 "4": {
-									"name": "punctuation.definition.tag.end.html"
-								}
-							},
-							"end": "(?i)((<)/)(nowiki)\\s*(>)",
-							"endCaptures": {
-								"0": {
-									"name": "meta.tag.metadata.nowiki.end.html"
-								},
-								"1": {
-									"name": "punctuation.definition.tag.begin.html"
-								},
-								"2": {
-									"name": "source.css-ignored-vscode"
-								},
-								"3": {
-									"name": "entity.name.tag.html"
-								},
-								"4": {
-									"name": "punctuation.definition.tag.end.html"
-								}
+                                    "name": "punctuation.definition.tag.end.wikitext"
+                                }
                             },
-                            "name": "meta.embedded.block.html"
+                            "end": "(?i)(</)(nowiki)\\s*(>)",
+                            "endCaptures": {
+                                "0": {
+                                    "name": "meta.tag.metadata.nowiki.end.wikitext"
+                                },
+                                "1": {
+                                    "name": "punctuation.definition.tag.begin.wikitext"
+                                },
+                                "2": {
+                                    "name": "entity.name.tag.wikitext"
+                                },
+                                "3": {
+                                    "name": "punctuation.definition.tag.end.wikitext"
+                                }
+                            },
+                            "name": "meta.embedded.block.wikitext"
+                        },
+                        "graph": {
+                            "begin" : "(?i)(<)(graph\\s*)(^>)*(>)",
+                            "beginCaptures": {
+                                "0": {
+                                    "name": "meta.tag.metadata.graph.start.wikitext"
+                                },
+                                "1": {
+                                    "name": "punctuation.definition.tag.begin.wikitext"
+                                },
+                                "2": {
+                                    "name": "entity.name.tag.wikitext"
+                                },
+                                "3": {
+                                    "patterns" :[
+                                        {
+                                            "match": " ([a-zA-Z-]+)",
+                                            "name": "entity.other.attribute-name.wikitext"
+                                        },
+                                        {
+                                            "include": "#doublequotedString"
+                                        },
+                                        {
+                                            "include": "#singlequotedString"
+                                        }
+                                    ]
+                                },
+                                "4": {
+                                    "name": "punctuation.definition.tag.end.wikitext"
+                                }
+                            },
+                            "end": "(?i)(</)(graph)\\s*(>)",
+                            "endCaptures": {
+                                "0": {
+                                    "name": "meta.tag.metadata.graph.end.wikitext"
+                                },
+                                "1": {
+                                    "name": "punctuation.definition.tag.begin.wikitext"
+                                },
+                                "2": {
+                                    "name": "entity.name.tag.wikitext"
+                                },
+                                "3": {
+                                    "name": "punctuation.definition.tag.end.wikitext"
+                                }
+                            },
+                            "contentName":"source.json",
+                            "patterns" : [
+                                {
+                                    "include": "#wikijson"
+                                }
+                            ]
+                        },
+                        "templatedata": {
+                            "begin" : "(?i)(<)(templatedata\\s*)(^>)*(>)",
+                            "beginCaptures": {
+                                "0": {
+                                    "name": "meta.tag.metadata.templatedata.start.wikitext"
+                                },
+                                "1": {
+                                    "name": "punctuation.definition.tag.begin.wikitext"
+                                },
+                                "2": {
+                                    "name": "entity.name.tag.wikitext"
+                                },
+                                "3": {
+                                    "patterns" :[
+                                        {
+                                            "match": " ([a-zA-Z-]+)",
+                                            "name": "entity.other.attribute-name.wikitext"
+                                        },
+                                        {
+                                            "include": "#doublequotedString"
+                                        },
+                                        {
+                                            "include": "#singlequotedString"
+                                        }
+                                    ]
+                                },
+                                "4": {
+                                    "name": "punctuation.definition.tag.end.wikitext"
+                                }
+                            },
+                            "end": "(?i)(</)(templatedata)\\s*(>)",
+                            "endCaptures": {
+                                "0": {
+                                    "name": "meta.tag.metadata.templatedata.end.wikitext"
+                                },
+                                "1": {
+                                    "name": "punctuation.definition.tag.begin.wikitext"
+                                },
+                                "2": {
+                                    "name": "entity.name.tag.wikitext"
+                                },
+                                "3": {
+                                    "name": "punctuation.definition.tag.end.wikitext"
+                                }
+                            },
+                            "contentName":"source.json",
+                            "patterns" : [
+                                {
+                                    "include": "#wikijson"
+                                }
+                            ]
+                        },
+                        "wikijson":{
+                            "patterns": [
+                                {
+                                    "include" : "#jsonValue"
+                                }
+                            ],
+                            "repository": {
+                                "jsonArray": {
+                                    "begin": "\\[",
+                                    "beginCaptures": {
+                                        "0": {
+                                            "name": "punctuation.definition.array.begin.json"
+                                        }
+                                    },
+                                    "end": "\\]",
+                                    "endCaptures": {
+                                        "0": {
+                                            "name": "punctuation.definition.array.end.json"
+                                        }
+                                    },
+                                    "name": "meta.structure.array.json",
+                                    "patterns": [
+                                        {
+                                            "include": "#jsonValue"
+                                        },
+                                        {
+                                            "match": ",",
+                                            "name": "punctuation.separator.array.json"
+                                        },
+                                        {
+                                            "match": "[^\\s\\]]",
+                                            "name": "invalid.illegal.expected-array-separator.json"
+                                        }
+                                    ]
+                                },
+                                "jsonComments":{
+                                    "patterns": [
+                                        {
+                                            "begin": "/\\*\\*(?!/)",
+                                            "captures": {
+                                                "0": {
+                                                    "name": "punctuation.definition.comment.json"
+                                                }
+                                            },
+                                            "end": "\\*/",
+                                            "name": "comment.block.documentation.json"
+                                        },
+                                        {
+                                            "begin": "/\\*",
+                                            "captures": {
+                                                "0": {
+                                                    "name": "punctuation.definition.comment.json"
+                                                }
+                                            },
+                                            "end": "\\*/",
+                                            "name": "comment.block.json"
+                                        },
+                                        {
+                                            "captures": {
+                                                "1": {
+                                                    "name": "punctuation.definition.comment.json"
+                                                }
+                                            },
+                                            "match": "(//).*$\\n?",
+                                            "name": "comment.line.double-slash.js"
+                                        }
+                                    ]
+                                },
+                                "jsonConstant": {
+                                    "match": "\\b(?:true|false|null)\\b",
+                                    "name": "constant.language.json"
+                                },
+                                "jsonNumber": {
+                                    "match": "(?x)        # turn on extended mode\n  -?        # an optional minus\n  (?:\n    0       # a zero\n    |       # ...or...\n    [1-9]   # a 1-9 character\n    \\d*     # followed by zero or more digits\n  )\n  (?:\n    (?:\n      \\.    # a period\n      \\d+   # followed by one or more digits\n    )?\n    (?:\n      [eE]  # an e character\n      [+-]? # followed by an option +/-\n      \\d+   # followed by one or more digits\n    )?      # make exponent optional\n  )?        # make decimal portion optional",
+                                    "name": "constant.numeric.json"
+                                },
+                                "jsonObject": {
+                                    "begin": "\\{",
+                                    "beginCaptures": {
+                                        "0": {
+                                            "name": "punctuation.definition.dictionary.begin.json"
+                                        }
+                                    },
+                                    "end": "\\}",
+                                    "endCaptures": {
+                                        "0": {
+                                            "name": "punctuation.definition.dictionary.end.json"
+                                        }
+                                    },
+                                    "name": "meta.structure.dictionary.json",
+                                    "patterns": [
+                                        {
+                                            "comment": "the JSON object key",
+                                            "include": "#jsonObjectkey"
+                                        },
+                                        {
+                                            "include": "#jsoncomments"
+                                        },
+                                        {
+                                            "begin": ":",
+                                            "beginCaptures": {
+                                                "0": {
+                                                    "name": "punctuation.separator.dictionary.key-value.json"
+                                                }
+                                            },
+                                            "end": "(,)|(?=\\})",
+                                            "endCaptures": {
+                                                "1": {
+                                                    "name": "punctuation.separator.dictionary.pair.json"
+                                                }
+                                            },
+                                            "name": "meta.structure.dictionary.value.json",
+                                            "patterns": [
+                                                {
+                                                    "comment": "the JSON object value",
+                                                    "include": "#jsonValue"
+                                                },
+                                                {
+                                                    "match": "[^\\s,]",
+                                                    "name": "invalid.illegal.expected-dictionary-separator.json"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "match": "[^\\s\\}]",
+                                            "name": "invalid.illegal.expected-dictionary-separator.json"
+                                        }
+                                    ]
+                                },
+                                "jsonString": {
+                                    "begin": "\"",
+                                    "beginCaptures": {
+                                        "0": {
+                                            "name": "punctuation.definition.string.begin.json"
+                                        }
+                                    },
+                                    "end": "\"",
+                                    "endCaptures": {
+                                        "0": {
+                                            "name": "punctuation.definition.string.end.json"
+                                        }
+                                    },
+                                    "name": "string.quoted.double.json",
+                                    "patterns": [
+                                        {
+                                            "include": "#jsonStringcontent"
+                                        }
+                                    ]                        
+                                },
+                                "jsonObjectkey": {
+                                    "begin": "\"",
+                                    "beginCaptures": {
+                                        "0": {
+                                            "name": "punctuation.support.type.property-name.begin.json"
+                                        }
+                                    },
+                                    "end": "\"",
+                                    "endCaptures": {
+                                        "0": {
+                                            "name": "punctuation.support.type.property-name.end.json"
+                                        }
+                                    },
+                                    "name": "string.json support.type.property-name.json",
+                                    "patterns": [
+                                        {
+                                            "include": "#jsonStringcontent"
+                                        }
+                                    ]
+                                },
+                                "jsonStringcontent": {
+                                    "patterns": [
+                                        {
+                                            "match": "(?x)                # turn on extended mode\n  \\\\                # a literal backslash\n  (?:               # ...followed by...\n    [\"\\\\/bfnrt]     # one of these characters\n    |               # ...or...\n    u               # a u\n    [0-9a-fA-F]{4}) # and four hex digits",
+                                            "name": "constant.character.escape.json"
+                                        },
+                                        {
+                                            "match": "\\\\.",
+                                            "name": "invalid.illegal.unrecognized-string-escape.json"
+                                        }
+                                    ]                        
+                                },
+                                "jsonValue": {
+                                    "patterns": [
+                                        {
+                                            "include": "#jsonConstant"
+                                        },
+                                        {
+                                            "include": "#jsonNumber"
+                                        },
+                                        {
+                                            "include": "#jsonString"
+                                        },
+                                        {
+                                            "include": "#jsonArray"
+                                        },
+                                        {
+                                            "include": "#jsonObject"
+                                        },
+                                        {
+                                            "include": "#jsonComments"
+                                        }
+                                    ]
+                                }
+                            }
                         }
                     }
                 }
@@ -685,7 +998,7 @@
             ],
             "repository": {
                 "entityDecl": {
-                    "": "<!ENTITY (% example )SYSTEM( test)>",
+                    "comment": "<!ENTITY (% example )SYSTEM( test)>",
                     "begin": "(<!)(ENTITY)\\s+(%\\s+)?([:a-zA-Z_][:a-zA-Z0-9_.-]*)(\\s+(?:SYSTEM|PUBLIC)\\s+)?",
                     "captures": {
                         "1": {
@@ -748,7 +1061,7 @@
                             "name": "punctuation.definition.constant.wikitext"
                         }
                     },
-                    "": "%adasd;",
+                    "comment": "%adasd;",
                     "match": "(%)([:a-zA-Z_][:a-zA-Z0-9_.-]*)(;)",
                     "name": "constant.character.parameter-entity.wikitext"
                 }
@@ -797,7 +1110,7 @@
                             "name": "keyword.operator.equal.wikitext"
                         }
                     },
-                    "": "  asd:dasd=",
+                    "comment": "  asd:dasd=",
                     "match": "(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)"
                 },
                 {
@@ -840,7 +1153,7 @@
                     "name": "punctuation.definition.constant.wikitext"
                 }
             },
-            "": "&(#)c123;",
+            "comment": "&(#)c123;",
             "match": "(&)([:a-zA-Z_][:a-zA-Z0-9_.-]*|#[0-9]+|#x[0-9a-fA-F]+)(;)",
             "name": "constant.character.entity.wikitext"
         },
@@ -868,6 +1181,5 @@
                 }
             ]
         }
-    },
-    "scopeName": "source.wikitext"
+    }
 }

@@ -33,8 +33,11 @@ Please ensure that your VSCode version is higher than 1.43.0, this version requi
 Generally speaking, make sure that your VSCode is always the latest version.
 
 ## Release Notes
-- Added nowiki tags support.
-- Fixed some rendering issues.
+- Added the support of JSON for Graph and Templatedata tags.
+- Added the support preparation for CSS.
+- Changed the rendering of word conversion.
+- Fixed some issues of bold and italic closing conditions.
+- Fixed some typos.
 
 ## Special Thanks
 ### The help of
