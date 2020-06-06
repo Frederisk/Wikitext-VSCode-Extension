@@ -144,7 +144,7 @@ function getPreview(): void {
     // 擷取文本內容
     const sourceText: string = textEditor.document.getText();
     // 引數
-    let args: string = querystring.stringify({
+    const args: string = querystring.stringify({
         action: "parse",
         format: "json",
         text: sourceText,
@@ -159,7 +159,7 @@ function getPreview(): void {
     });
     console.log(extensionContext.globalState.get("host"));
     // 目標頁面
-    let opts: RequestOptions = {
+    const opt: RequestOptions = {
         hostname: host,
         // hostname: "zh.wikipedia.org",
         path: "/w/api.php",
@@ -205,8 +205,8 @@ function requestCallback(response: IncomingMessage): void {
             currentPlanel.webview.html = result;
         }
         // 未有取得內容，通知錯誤。
-        else {
-            currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL")
+        else{
+            currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
             vscode.window.showWarningMessage("Fresh Error.");
         }
     });

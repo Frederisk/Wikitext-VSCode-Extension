@@ -39,7 +39,7 @@
         "commands": [
             {
                 "command": "wikitext.getPreview",
-                "title": "Wikitext: Get Preview",
+                "title": "Get Preview",
                 "category": "Wikitext",
                 "":"It didn't work for unknown reasons.",
                 "icon": {
@@ -49,7 +49,7 @@
             },
             {
                 "command": "wikitext.setHost",
-                "title": "Wikitext: Set Previewer Host",
+                "title": "Set Previewer Host",
                 "category": "Wikitext"
             }
         ],
