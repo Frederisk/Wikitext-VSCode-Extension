@@ -57,7 +57,7 @@ function testFunction():void{
         }
     }
     `;
-    const js = JSON.parse(st)["Error"]["hello"];
+    const js: string = JSON.parse(st)["Error"]["hello"];
     vscode.window.showInformationMessage(js);
     const jc: string | undefined = JSON.parse(st)["Error"]["null"];
     // vscode.window.showInformationMessage(jc);
@@ -87,7 +87,7 @@ function getPreview(): void{
         return undefined;
     }
     // 取得host
-    let host: string | undefined = extensionContext.globalState.get("host");
+    const host: string | undefined = extensionContext.globalState.get("host");
     if (!host) {
         //取得失敗，顯示警告
         vscode.window.showWarningMessage("No Host Be Defined!\nYou haven't defined the host of previewer yet, please input host value in the dialog box to start working.", "Edit", "Cancel").then(result => {
@@ -121,7 +121,7 @@ function getPreview(): void{
     // 擷取文本內容
     const sourceText: string = textEditor.document.getText();
     // 引數
-    let args: string = querystring.stringify({
+    const args: string = querystring.stringify({
         action: "parse",
         format: "json",
         text: sourceText,
@@ -136,7 +136,7 @@ function getPreview(): void{
     });
     console.log(extensionContext.globalState.get("host"));
     // 目標頁面
-    let opt: RequestOptions = {
+    const opt: RequestOptions = {
         hostname: host,
         // hostname: "zh.wikipedia.org",
         path: "/w/api.php",
@@ -183,7 +183,7 @@ function requestCallback(response : IncomingMessage) : void{
         }
         // 未有取得內容，通知錯誤。
         else{
-            currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL")
+            currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
             vscode.window.showWarningMessage("Fresh Error.");
         }
     });

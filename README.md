@@ -1,9 +1,9 @@
 # Wikitext Markup Language Support for Visual Studio Code
 
-[![](https://img.shields.io/badge/license-MIT-blue)](https://raw.githubusercontent.com/Frederisk/Wikitext-VSCode-Extension/master/LICENSE.txt)
-[![](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
-[![](https://img.shields.io/badge/wikitext-Visual%20Studio%20Market-blueviolet)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
-[![](https://img.shields.io/badge/wikitext-Github-green)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://raw.githubusercontent.com/Frederisk/Wikitext-VSCode-Extension/master/LICENSE.txt)
+[![Twitter: @rwfholme](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
+[![VSMarket: wikitext](https://img.shields.io/badge/Visual%20Studio%20Market-wikitext-blueviolet)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
+[![Github: wikitext](https://img.shields.io/badge/Github-wikitext-green)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 
 This Visual Studio Code Extension provides support of Wikitext Markup language. With this extension, you can more easily discover your grammatical problems through the marked and styled text. The plugin is based on MediaWiki's Wikitext standard, but the rules are somewhat stricter, which helps users write text that is easier to read and maintain.
 
@@ -33,6 +33,7 @@ Please ensure that your VSCode version is higher than 1.43.0, this version requi
 Generally speaking, make sure that your VSCode is always the latest version.
 
 ## Release Notes
+
 - Added the support of JSON for Graph and Templatedata tags.
 - Added the support preparation for CSS.
 - Changed the rendering of word conversion.
@@ -40,7 +41,9 @@ Generally speaking, make sure that your VSCode is always the latest version.
 - Fixed some typos.
 
 ## Special Thanks
+
 ### The help of
+
 [caltaojihun](https://github.com/caltaojihun)
 
 <!-- ## Extension Settings
