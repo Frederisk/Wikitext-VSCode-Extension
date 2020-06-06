@@ -35,40 +35,49 @@ import { isNull } from 'util';
 
 // 預覽WebViewPanel
 let currentPlanel: vscode.WebviewPanel | undefined = undefined;
-let extensionContext : vscode.ExtensionContext;
+let extensionContext: vscode.ExtensionContext;
 
 export function activate(context: vscode.ExtensionContext): void {
     extensionContext = context;
     console.log("Extension is active.");
     // context.subscriptions.push(vscode.commands.registerCommand("wikitext.test", testFunction));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.setHost", setHost));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.getPreview",getPreview));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.getPreview", getPreview));
+    //context.subscriptions.push(vscode.commands.registerCommand("", testFunction));
+    getHost();
 }
 
 export function deactivate(): void {
     console.log("Extension is deactivate.");
 }
 
-function testFunction():void{
-    const st = `
-    {
-        "Error":{
-            "hello" :"info"
-        }
-    }
-    `;
-    const js = JSON.parse(st)["Error"]["hello"];
-    vscode.window.showInformationMessage(js);
-    const jc: string | undefined = JSON.parse(st)["Error"]["null"];
-    // vscode.window.showInformationMessage(jc);
-    console.log(jc);
-    if(!jc){
-        console.log("un");
-    }
-    console.log("end");
+function testFunction(): void {
+    extensionContext.globalState.update("host", undefined);
+    const args: string = querystring.stringify({
+        action: "query",
+        format: "json",
+        meta: "tokens",
+        type: "login"
+    });
+
+    const host = getHost();
+
+    // let opts: RequestOptions = {
+    //     hostname: host,
+    //     path: "/w/api.php",
+    //     method: "POST",
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded',
+    //         'Content-Length': Buffer.byteLength(args)
+    //     }
+    // };
+    // const req: ClientRequest = request(opts, requestCallback);
+    // req.write(args);
+    // req.end();
 }
 
-function setHost():void{
+
+function setHost(): void {
     vscode.window.showInputBox({
         prompt: "Please input the host of previewer.",
         value: extensionContext.globalState.get("host") ?? "en.wikipedia.org",
@@ -78,32 +87,46 @@ function setHost():void{
     });
 }
 
-function getPreview(): void{
+function getHost(): string | undefined {
+    const host: string | undefined = extensionContext.globalState.get("host");
+    if (!host) {
+        vscode.window.showWarningMessage("No Host Be Defined!\nYou haven't defined the host of previewer yet, please input host value in the dialog box and try again.", "Edit", "Cancel").then(result => {
+            if (result?.localeCompare("Edit")) {setHost();}
+        });
+        return undefined;
+    }
+    else {
+        return host;
+    }
+}
+
+function getPreview(): void {
     const textEditor = vscode.window.activeTextEditor;
-    // 是否有開啟的文檔
+    // 是否有開啟的文檔;;
     if (!textEditor) {
         vscode.window.showInformationMessage("No Active Wikitext Editor.");
         // 未有則取消渲染
         return undefined;
     }
     // 取得host
-    let host: string | undefined = extensionContext.globalState.get("host");
-    if (!host) {
-        //取得失敗，顯示警告
-        vscode.window.showWarningMessage("No Host Be Defined!\nYou haven't defined the host of previewer yet, please input host value in the dialog box to start working.", "Edit", "Cancel").then(result => {
-            if (result === "Edit") {
-                // 要求輸入host
-                vscode.window.showInputBox({
-                    prompt: "Please input the host of previewer.",
-                    value: "en.wikipedia.org"
-                }).then(resule => {
-                    extensionContext.globalState.update("host", resule);
-                    getPreview();
-                });
-            }
-        });
-        return undefined;
-    }
+    let host: string | undefined = getHost(); //extensionContext.globalState.get("host");
+    if(!host) { return undefined; }
+    // if (!host) {
+    //     //取得失敗，顯示警告
+    //     vscode.window.showWarningMessage("No Host Be Defined!\nYou haven't defined the host of previewer yet, please input host value in the dialog box to start working.", "Edit", "Cancel").then(result => {
+    //         if (result === "Edit") {
+    //             // 要求輸入host
+    //             vscode.window.showInputBox({
+    //                 prompt: "Please input the host of previewer.",
+    //                 value: "en.wikipedia.org"
+    //             }).then(resule => {
+    //                 extensionContext.globalState.update("host", resule);
+    //                 getPreview();
+    //             });
+    //         }
+    //     });
+    //     return undefined;
+    // }
     // 是否有開啟的WebViewPanel
     if (!currentPlanel) {
         // 未有則嘗試創建
@@ -136,24 +159,24 @@ function getPreview(): void{
     });
     console.log(extensionContext.globalState.get("host"));
     // 目標頁面
-    let opt: RequestOptions = {
+    let opts: RequestOptions = {
         hostname: host,
         // hostname: "zh.wikipedia.org",
         path: "/w/api.php",
         method: "POST",
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': args.length
+            'Content-Length': Buffer.byteLength(args)
         }
     };
-    const req: ClientRequest = request(opt, requestCallback);
+    const req: ClientRequest = request(opts, requestCallback);
     // 寫入參數
     req.write(args);
     // 尋求請求結束
     req.end();
 }
 
-function requestCallback(response : IncomingMessage) : void{
+function requestCallback(response: IncomingMessage): void {
     const chunks: Uint8Array[] = [];
     // 擷取位元資料
     response.on('data', data => {
@@ -169,7 +192,7 @@ function requestCallback(response : IncomingMessage) : void{
         const json: any = JSON.parse(jsontext);
         // const warnInfo: string| undefined = json["warnings"]["parse"]["*"];
         // const errorInfo: string| undefined = json;
-        const result: string |undefined = unescape(json["parse"]["text"]["*"]);
+        const result: string | undefined = unescape(json["parse"]["text"]["*"]);
         // let result: string = JSON.parse(jsontext)["flow-parsoid-utils"]["content"];
         // console.log(result);
         // 確認面板存在狀態
@@ -178,11 +201,11 @@ function requestCallback(response : IncomingMessage) : void{
             return undefined;
         }
         // 解碼內容並顯示
-        if(result){
+        if (result) {
             currentPlanel.webview.html = result;
         }
         // 未有取得內容，通知錯誤。
-        else{
+        else {
             currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL")
             vscode.window.showWarningMessage("Fresh Error.");
         }
@@ -196,8 +219,8 @@ function requestCallback(response : IncomingMessage) : void{
     });
 }
 
-function showHtmlInfo(info : string):string{
-    return`
+function showHtmlInfo(info: string): string {
+    return `
         <body>
             <section>
                 <h2>

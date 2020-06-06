@@ -1,56 +1,56 @@
 {
-    "region":{
+    "region": {
         "prefix": "@region",
-        "body":"<!--#region ${1:chapter}-->\n${2:}\n<!--#endregion--> ",
-        "description":"Region",
-        "scope":"markup.list.unnumbered.wikitext"
+        "body": "<!--#region ${1:chapter}-->\n${2:}\n<!--#endregion--> ",
+        "description": "Region",
+        "scope": "markup.list.unnumbered.wikitext"
     },
-    "table":{
-        "prefix":"@table",
-        "body":"{| ${1:class=\"wikitable\"}\n|+Tittle\n!\n!\n!\n!\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|}",
-        "description":"Table",
-        "scope":""
+    "table": {
+        "prefix": "@table",
+        "body": "{| ${1:class=\"wikitable\"}\n|+Tittle\n!\n!\n!\n!\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|}",
+        "description": "Table",
+        "scope": ""
     },
-    "codeBlock":{
-        "prefix":"@codeblock",
-        "body":"<syntaxhighlight lang=\"${1:c#}\" line=\"${2:1}\" start=\"${3:1}\">\n\n</syntaxhighlight>",
-        "description":"CodeBlock",
-        "scope":""
+    "codeBlock": {
+        "prefix": "@codeblock",
+        "body": "<syntaxhighlight lang=\"${1:c#}\" line=\"${2:1}\" start=\"${3:1}\">\n\n</syntaxhighlight>",
+        "description": "CodeBlock",
+        "scope": ""
     },
-    "title":{
-        "prefix":"@title",
-        "body":"== ${1:title} ==",
-        "description":"Title",
-        "scope":""
+    "title": {
+        "prefix": "@title",
+        "body": "== ${1:title} ==",
+        "description": "Title",
+        "scope": ""
     },
-    "subtitle1":{
-        "prefix":"@subt1",
+    "subtitle1": {
+        "prefix": "@subt1",
         "body": "=== ${1:title} ===",
-        "description":"Subtitle1",
-        "scope":""
+        "description": "Subtitle1",
+        "scope": ""
     },
-    "subtitle2":{
-        "prefix":"@subt2",
+    "subtitle2": {
+        "prefix": "@subt2",
         "body": "==== ${1:title} ====",
-        "description":"Subtitle2",
-        "scope":""
+        "description": "Subtitle2",
+        "scope": ""
     },
-    "subtitle3":{
-        "prefix":"@subt3",
+    "subtitle3": {
+        "prefix": "@subt3",
         "body": "===== ${1:title} =====",
-        "description":"Subtitle3",
-        "scope":""
+        "description": "Subtitle3",
+        "scope": ""
     },
-    "subtitle4":{
-        "prefix":"@subt4",
+    "subtitle4": {
+        "prefix": "@subt4",
         "body": "====== ${1:title} ======",
-        "description":"Subtitle4",
-        "scope":""
+        "description": "Subtitle4",
+        "scope": ""
     },
-    "pageTitle":{
-        "prefix":"@pagetitle",
-        "body":"= ${1:title} =",
-        "description":"PageTitle",
-        "scope":""
+    "pageTitle": {
+        "prefix": "@pagetitle",
+        "body": "= ${1:title} =",
+        "description": "PageTitle",
+        "scope": ""
     }
 }

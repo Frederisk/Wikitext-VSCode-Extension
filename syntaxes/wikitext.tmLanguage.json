@@ -200,10 +200,10 @@
                     ]
                 },
                 "signature": {
-                    "patterns":[
+                    "patterns": [
                         {
-                            "name":"keyword.other.signature.wikitext",
-                            "match":"~{3,5}"
+                            "name": "keyword.other.signature.wikitext",
+                            "match": "~{3,5}"
                         }
                     ]
                 },
@@ -442,9 +442,9 @@
                     ]
                 },
                 "wikixml": {
-                    "patterns":[
+                    "patterns": [
                         {
-                            "include":"#nowiki"
+                            "include": "#nowiki"
                         },
                         {
                             "include": "#graph"
@@ -455,7 +455,7 @@
                     ],
                     "repository": {
                         "nowiki": {
-                            "begin" : "(?i)(<)(nowiki\\s*)(^>)*(>)",
+                            "begin": "(?i)(<)(nowiki\\s*)(^>)*(>)",
                             "beginCaptures": {
                                 "0": {
                                     "name": "meta.tag.metadata.nowiki.start.wikitext"
@@ -467,7 +467,7 @@
                                     "name": "entity.name.tag.wikitext"
                                 },
                                 "3": {
-                                    "patterns" :[
+                                    "patterns": [
                                         {
                                             "match": " ([a-zA-Z-]+)",
                                             "name": "entity.other.attribute-name.wikitext"
@@ -502,7 +502,7 @@
                             "name": "meta.embedded.block.wikitext"
                         },
                         "graph": {
-                            "begin" : "(?i)(<)(graph\\s*)(^>)*(>)",
+                            "begin": "(?i)(<)(graph\\s*)(^>)*(>)",
                             "beginCaptures": {
                                 "0": {
                                     "name": "meta.tag.metadata.graph.start.wikitext"
@@ -514,7 +514,7 @@
                                     "name": "entity.name.tag.wikitext"
                                 },
                                 "3": {
-                                    "patterns" :[
+                                    "patterns": [
                                         {
                                             "match": " ([a-zA-Z-]+)",
                                             "name": "entity.other.attribute-name.wikitext"
@@ -546,15 +546,15 @@
                                     "name": "punctuation.definition.tag.end.wikitext"
                                 }
                             },
-                            "contentName":"source.json",
-                            "patterns" : [
+                            "contentName": "source.json",
+                            "patterns": [
                                 {
                                     "include": "#wikijson"
                                 }
                             ]
                         },
                         "templatedata": {
-                            "begin" : "(?i)(<)(templatedata\\s*)(^>)*(>)",
+                            "begin": "(?i)(<)(templatedata\\s*)(^>)*(>)",
                             "beginCaptures": {
                                 "0": {
                                     "name": "meta.tag.metadata.templatedata.start.wikitext"
@@ -566,7 +566,7 @@
                                     "name": "entity.name.tag.wikitext"
                                 },
                                 "3": {
-                                    "patterns" :[
+                                    "patterns": [
                                         {
                                             "match": " ([a-zA-Z-]+)",
                                             "name": "entity.other.attribute-name.wikitext"
@@ -598,17 +598,17 @@
                                     "name": "punctuation.definition.tag.end.wikitext"
                                 }
                             },
-                            "contentName":"source.json",
-                            "patterns" : [
+                            "contentName": "source.json",
+                            "patterns": [
                                 {
                                     "include": "#wikijson"
                                 }
                             ]
                         },
-                        "wikijson":{
+                        "wikijson": {
                             "patterns": [
                                 {
-                                    "include" : "#jsonValue"
+                                    "include": "#jsonValue"
                                 }
                             ],
                             "repository": {
@@ -640,7 +640,7 @@
                                         }
                                     ]
                                 },
-                                "jsonComments":{
+                                "jsonComments": {
                                     "patterns": [
                                         {
                                             "begin": "/\\*\\*(?!/)",
@@ -752,7 +752,7 @@
                                         {
                                             "include": "#jsonStringcontent"
                                         }
-                                    ]                        
+                                    ]
                                 },
                                 "jsonObjectkey": {
                                     "begin": "\"",
@@ -784,7 +784,7 @@
                                             "match": "\\\\.",
                                             "name": "invalid.illegal.unrecognized-string-escape.json"
                                         }
-                                    ]                        
+                                    ]
                                 },
                                 "jsonValue": {
                                     "patterns": [
