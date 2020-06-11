@@ -43,7 +43,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // context.subscriptions.push(vscode.commands.registerCommand("wikitext.test", testFunction));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.setHost", setHost));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.getPreview", getPreview));
-    //context.subscriptions.push(vscode.commands.registerCommand("", testFunction));
+    // context.subscriptions.push(vscode.commands.registerCommand("", testFunction));
     getHost();
 }
 
@@ -52,28 +52,23 @@ export function deactivate(): void {
 }
 
 function testFunction(): void {
-    extensionContext.globalState.update("host", undefined);
+    let host: string | undefined = getHost();
+    if (!host) { return undefined; }
+
     const args: string = querystring.stringify({
-        action: "query",
-        format: "json",
-        meta: "tokens",
-        type: "login"
+        action: ""
     });
 
-    const host = getHost();
-
-    // let opts: RequestOptions = {
-    //     hostname: host,
-    //     path: "/w/api.php",
-    //     method: "POST",
-    //     headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded',
-    //         'Content-Length': Buffer.byteLength(args)
-    //     }
-    // };
-    // const req: ClientRequest = request(opts, requestCallback);
-    // req.write(args);
-    // req.end();
+    const opts: RequestOptions = {
+        hostname: host,
+        // hostname: "zh.wikipedia.org",
+        path: "/w/api.php",
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': Buffer.byteLength(args)
+        }
+    };
 }
 
 
@@ -90,8 +85,12 @@ function setHost(): void {
 function getHost(): string | undefined {
     const host: string | undefined = extensionContext.globalState.get("host");
     if (!host) {
+        // 取得失敗，顯示警告
         vscode.window.showWarningMessage("No Host Be Defined!\nYou haven't defined the host of previewer yet, please input host value in the dialog box and try again.", "Edit", "Cancel").then(result => {
-            if (result?.localeCompare("Edit")) {setHost();}
+            if (result?.localeCompare("Edit")) {
+                // 要求輸入host
+                setHost();
+            }
         });
         return undefined;
     }
@@ -109,24 +108,9 @@ function getPreview(): void {
         return undefined;
     }
     // 取得host
-    let host: string | undefined = getHost(); //extensionContext.globalState.get("host");
-    if(!host) { return undefined; }
-    // if (!host) {
-    //     //取得失敗，顯示警告
-    //     vscode.window.showWarningMessage("No Host Be Defined!\nYou haven't defined the host of previewer yet, please input host value in the dialog box to start working.", "Edit", "Cancel").then(result => {
-    //         if (result === "Edit") {
-    //             // 要求輸入host
-    //             vscode.window.showInputBox({
-    //                 prompt: "Please input the host of previewer.",
-    //                 value: "en.wikipedia.org"
-    //             }).then(resule => {
-    //                 extensionContext.globalState.update("host", resule);
-    //                 getPreview();
-    //             });
-    //         }
-    //     });
-    //     return undefined;
-    // }
+    let host: string | undefined = getHost();
+    // 打開失敗，終止作業
+    if (!host) { return undefined; }
     // 是否有開啟的WebViewPanel
     if (!currentPlanel) {
         // 未有則嘗試創建
@@ -149,7 +133,6 @@ function getPreview(): void {
         format: "json",
         text: sourceText,
         contentmodel: "wikitext"
-
         // action: "flow-parsoid-utils",
         // format: "json",
         // from: "wikitext",
@@ -157,9 +140,9 @@ function getPreview(): void {
         // title: "Main_Page",
         // content: sourceText
     });
-    console.log(extensionContext.globalState.get("host"));
+    // console.log(extensionContext.globalState.get("host"));
     // 目標頁面
-    const opt: RequestOptions = {
+    const opts: RequestOptions = {
         hostname: host,
         // hostname: "zh.wikipedia.org",
         path: "/w/api.php",
@@ -205,7 +188,7 @@ function requestCallback(response: IncomingMessage): void {
             currentPlanel.webview.html = result;
         }
         // 未有取得內容，通知錯誤。
-        else{
+        else {
             currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
             vscode.window.showWarningMessage("Fresh Error.");
         }
