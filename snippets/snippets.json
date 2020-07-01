@@ -7,7 +7,7 @@
     },
     "table": {
         "prefix": "@table",
-        "body": "{| ${1:class=\"wikitable\"}\n|+Tittle\n!\n!\n!\n!\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|}",
+        "body": "{| ${1:class=\"wikitable\"}\n|+Title\n!\n!\n!\n!\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|}",
         "description": "Table",
         "scope": ""
     },
