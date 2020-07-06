@@ -120,24 +120,25 @@
                             "include": "$self"
                         },
                         {
-                            "match": "(\\|)(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
+                            "match": "(\\|)",
+                            "name": "keyword.operator.wikitext"
+                        },
+                        {
+                            "match": "(?<=\\|)(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
                             "captures": {
                                 "1": {
-                                    "name": "keyword.operator.wikitext"
-                                },
-                                "2": {
                                     "name": "entity.other.attribute-name.namespace.wikitext"
                                 },
-                                "3": {
+                                "2": {
                                     "name": "entity.other.attribute-name.wikitext"
                                 },
-                                "4": {
+                                "3": {
                                     "name": "punctuation.separator.namespace.wikitext"
                                 },
-                                "5": {
+                                "4": {
                                     "name": "entity.other.attribute-name.localname.wikitext"
                                 },
-                                "6": {
+                                "5": {
                                     "name": "keyword.operator.equal.wikitext"
                                 },
                                 "comment": {
