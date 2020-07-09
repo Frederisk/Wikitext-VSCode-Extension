@@ -43,8 +43,8 @@
                 "category": "Wikitext",
                 "":"It didn't work for unknown reasons.",
                 "icon": {
-                    "light": "./media/preview-light.svg",
-                    "dark": "./media/preview-dark.svg"
+                    "light": "media/preview-light.svg",
+                    "dark": "media/preview-dark.svg"
                 }
             },
             {
@@ -111,7 +111,25 @@
                 "language": "wikitext",
                 "path": "./snippets/snippets.json"
             }
-        ]
+        ],
+        "configuration":{
+            "type":"object",
+            "title": "Wikitext",
+            "properties": {
+                "wikitext.host":{
+                    "type":"string",
+                    "description": "The host that provides the API, such as 'en.wikipedia.org'."
+                },
+                "wikitext.userName":{
+                    "type":"string",
+                    "description": "The user name of wikimedia site."
+                },
+                "wikitext.password":{
+                    "type":"string",
+                    "description": "The password of user. It will be fixed in the software settings, please do not fill in the device in public places."
+                }
+            }
+        }
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",

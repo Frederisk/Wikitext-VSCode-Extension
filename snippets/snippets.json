@@ -1,7 +1,7 @@
 {
     "region": {
         "prefix": "@region",
-        "body": "<!--#region ${1:chapter}-->\n${2:}\n<!--#endregion--> ",
+        "body": "<!--#region ${1:chapter}-->\n${2:}\n<!--#endregion-->",
         "description": "Region",
         "scope": "markup.list.unnumbered.wikitext"
     },
@@ -14,43 +14,55 @@
     "codeBlock": {
         "prefix": "@codeblock",
         "body": "<syntaxhighlight lang=\"${1:c#}\" line=\"${2:1}\" start=\"${3:1}\">\n\n</syntaxhighlight>",
-        "description": "CodeBlock",
+        "description": "Code Block",
+        "scope": ""
+    },
+    "comments": {
+        "prefix": "@comments",
+        "body": "<!--${1:comments}-->",
+        "description": "Comments",
+        "scope": ""
+    },
+    "todo": {
+        "prefix": "@todo",
+        "body": "<!--TODO:${1:Task}-->",
+        "description": "Todo Task",
         "scope": ""
     },
     "title": {
         "prefix": "@title",
         "body": "== ${1:title} ==",
-        "description": "Title",
+        "description": "Title<2>",
         "scope": ""
     },
     "subtitle1": {
         "prefix": "@subt1",
         "body": "=== ${1:title} ===",
-        "description": "Subtitle1",
+        "description": "Subtitle1<3>",
         "scope": ""
     },
     "subtitle2": {
         "prefix": "@subt2",
         "body": "==== ${1:title} ====",
-        "description": "Subtitle2",
+        "description": "Subtitle2<4>",
         "scope": ""
     },
     "subtitle3": {
         "prefix": "@subt3",
         "body": "===== ${1:title} =====",
-        "description": "Subtitle3",
+        "description": "Subtitle3<5>",
         "scope": ""
     },
     "subtitle4": {
         "prefix": "@subt4",
         "body": "====== ${1:title} ======",
-        "description": "Subtitle4",
+        "description": "Subtitle4<6>",
         "scope": ""
     },
     "pageTitle": {
         "prefix": "@pagetitle",
         "body": "= ${1:title} =",
-        "description": "PageTitle",
+        "description": "PageTitle<1>",
         "scope": ""
     }
 }
