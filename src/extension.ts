@@ -26,12 +26,13 @@ import * as vscode from 'vscode';
 import * as querystring from 'querystring';
 import { request } from 'https';
 import { ClientRequest, RequestOptions, IncomingMessage } from 'http';
-import { resolve } from 'dns';
-import { homedir } from 'os';
-import { URL } from 'url';
-import { reporters } from 'mocha';
-import { rejects, strict } from 'assert';
-import { isNull } from 'util';
+// import * as mwbot from 'mwbot';
+// import { resolve } from 'dns';
+// import { homedir } from 'os';
+// import { URL } from 'url';
+// import { reporters } from 'mocha';
+// import { rejects, strict } from 'assert';
+// import { isNull } from 'util';
 
 // 預覽WebViewPanel
 let currentPlanel: vscode.WebviewPanel | undefined = undefined;
@@ -51,43 +52,27 @@ export function deactivate(): void {
     console.log("Extension is deactivate.");
 }
 
-function testFunction(): void {
-    let host: string | undefined = getHost();
-    if (!host) { return undefined; }
-
-    const args: string = querystring.stringify({
-        action: ""
-    });
-
-    const opts: RequestOptions = {
-        hostname: host,
-        // hostname: "zh.wikipedia.org",
-        path: "/w/api.php",
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(args)
-        }
-    };
-}
-
 
 function setHost(): void {
     vscode.window.showInputBox({
         prompt: "Please input the host of previewer.",
-        value: extensionContext.globalState.get("host") ?? "en.wikipedia.org",
+        //value: extensionContext.globalState.get("host") ?? "en.wikipedia.org",
+        value: vscode.workspace.getConfiguration("wikitext").get("host") ?? "en.wikipedia.org",
         ignoreFocusOut: false
     }).then(resule => {
-        extensionContext.globalState.update("host", resule);
+        // extensionContext.globalState.update("host", resule);
+        vscode.workspace.getConfiguration("wikitext").update("host",resule as string, true);
     });
 }
 
 function getHost(): string | undefined {
-    const host: string | undefined = extensionContext.globalState.get("host");
+    // const host: string | undefined = extensionContext.globalState.get("host");
+    const host: string | undefined = vscode.workspace.getConfiguration("wikitext").get("host");
+    // Login and Session Management
     if (!host) {
         // 取得失敗，顯示警告
         vscode.window.showWarningMessage("No Host Be Defined!\nYou haven't defined the host of previewer yet, please input host value in the dialog box and try again.", "Edit", "Cancel").then(result => {
-            if (result?.localeCompare("Edit")) {
+            if (result === "Edit") {
                 // 要求輸入host
                 setHost();
             }
@@ -140,7 +125,6 @@ function getPreview(): void {
         // title: "Main_Page",
         // content: sourceText
     });
-    // console.log(extensionContext.globalState.get("host"));
     // 目標頁面
     const opts: RequestOptions = {
         hostname: host,

@@ -11,6 +11,21 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 - Adjust the UI to make it easier for users to use Wikitext preview.
 - Find and fix more syntax highlighting issues.
 
+## [2.2.1] - 2020-07-10
+
+### Added
+
+- Added more snippets.
+
+### Changed
+
+- Now, the setting of host have been migrated to the Settings page.
+
+### Fixed
+
+- Fixed some typo and other details.
+- Fixed an issue where the dialog for changing host would not appear.
+
 ## [2.2.0] - 2020-05-19
 
 ### Added
@@ -48,7 +63,7 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 
 - Added more snippets and bracket support.
 
-### Changed 
+### Changed
 
 - Changed the minimum version requirements.
 - Added rule to capture keyword.operator.

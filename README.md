@@ -35,11 +35,10 @@ Generally speaking, make sure that your VSCode is always the latest version.
 
 ## Release Notes
 
-- Added the support of JSON for Graph and Templatedata tags.
-- Added the support preparation for CSS.
-- Changed the rendering of word conversion.
-- Fixed some issues of bold and italic closing conditions.
-- Fixed some typos.
+- Added more snippets.
+- Now, the settings about host have been migrated to the Settings page.
+- Fixed some typo and other details.
+- Fixed an issue where the dialog for changing host would not appear.
 
 ## Special Thanks
 
