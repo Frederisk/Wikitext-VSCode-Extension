@@ -3,9 +3,14 @@ image: Ubuntu2004
 install:
 - sh: >-
     sudo apt update
+
     sudo apt upgrade
+
     sudo apt install nodejs
+
+    sudo apt update
 build_script:
 - sh: >-
     npm install
+    
     npm run webpack
