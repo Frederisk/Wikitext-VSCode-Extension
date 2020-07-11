@@ -133,7 +133,7 @@
                 }
             }
         }
-    },    
+    },
     "scripts": {
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
@@ -149,7 +149,7 @@
         "@types/bluebird": "^3.5.32",
         "@types/glob": "^7.1.3",
         "@types/mocha": "^5.2.7",
-        "@types/node": "^12.12.48",
+        "@types/node": "^12.12.50",
         "@types/vscode": "^1.43.0",
         "glob": "^7.1.5",
         "mocha": "^6.2.3",
