@@ -26,7 +26,10 @@
                     "include": "#signature"
                 },
                 {
-                    "include": "#keywords"
+                    "include": "#redirect"
+                },
+                {
+                    "include": "#magicWords"
                 },
                 {
                     "include": "#convert"
@@ -140,9 +143,6 @@
                                 },
                                 "5": {
                                     "name": "keyword.operator.equal.wikitext"
-                                },
-                                "comment": {
-                                    "name": "keyword.operator.argument.wikitext"
                                 }
                             }
                         }
@@ -192,13 +192,85 @@
                         }
                     ]
                 },
-                "keywords": {
+                "redirect": {
                     "patterns": [
                         {
-                            "name": "keyword.control.wikitext",
-                            "match": "(?i)(__NOTOC__|__FORCETOC__|__TOC__|__NOEDITSECTION__|__NEWSECTIONLINK__|__NONEWSECTIONLINK__|__NOGALLERY__|__HIDDENCAT__|__NOCONTENTCONVERT__|__NOCC__|__NOTITLECONVERT__|__NOTC__|__START__|__INDEX__|__NOINDEX__|__STATICREDIRECT__|__DISAMBIG__)"
+                            "match": "(?i)(^\\s*?#REDIRECT)\\s*?(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*?:)*)?([^\\|\\[\\]]*)?(|[^\\[\\]]*?)?(\\]\\])",
+                            "captures": {
+                                "1": {
+                                    "name": "keyword.control.redirect.wikitext"
+                                },
+                                "2": {
+                                    "name": "punctuation.definition.tag.internalLink.begin.wikitext"
+                                },
+                                "3": {
+                                    "name": "entity.name.tag.namespace.wikitext"
+                                },
+                                "4": {},
+                                "5": {
+                                    "name": "entity.other.attribute-name.wikitext"
+                                },
+                                "6": {
+                                    "name": "invalid.deprecated.ineffective.wikitext"
+                                },
+                                "7": {
+                                    "name": "punctuation.definition.tag.internalLink.end.wikitext"
+                                }
+                            }
                         }
                     ]
+                },
+                "magicWords": {
+                    "patterns": [
+                        {
+                            "include": "#behaviorSwitches"
+                        },
+                        {
+                            "include": "#outdatedBehaviorSwitches"
+                        }
+                    ],
+                    "repository": {
+                        "behaviorSwitches": {
+                            "name": "constant.language.behaviorSwitches.wikitext",
+                            "match": "(?i)(__)(NOTOC|FORCETOC|TOC|NOEDITSECTION|NEWSECTIONLINK|NOGALLERY|HIDDENCAT|EXPECTUNUSEDCATEGORY|NOCONTENTCONVERT|NOCC|NOTITLECONVERT|NOTC|INDEX|NOINDEX|STATICREDIRECT|NOGLOBAL|DISAMBIG)(__)"
+                        },
+                        "outdatedBehaviorSwitches": {
+                            "name": "invalid.deprecated.behaviorSwitches.wikitext",
+                            "match": "(?i)(__)(START|END)(__)"
+                        },
+                        "variables": {
+                            "patterns": [
+                                {
+                                    "name": "constant.language.variables.time.wikitext",
+                                    "match": "(?i)(\\{\\{)(CURRENTYEAR|CURRENTMONTH|CURRENTMONTH1|CURRENTMONTHNAME|CURRENTMONTHNAMEGEN|CURRENTMONTHABBREV|CURRENTDAY|CURRENTDAY2|CURRENTDOW|CURRENTDAYNAME|CURRENTTIME|CURRENTHOUR|CURRENTWEEK|CURRENTTIMESTAMP|LOCALYEAR|LOCALMONTH|LOCALMONTH1|LOCALMONTHNAME|LOCALMONTHNAMEGEN|LOCALMONTHABBREV|LOCALDAY|LOCALDAY2|LOCALDOW|LOCALDAYNAME|LOCALTIME|LOCALHOUR|LOCALWEEK|LOCALTIMESTAMP)(\\}\\})"
+                                },
+                                {
+                                    "name": "constant.language.variables.metadata.wikitext",
+                                    "match": "(?i)(\\{\\{)(SITENAME|SERVER|SERVERNAME|DIRMARK|DIRECTIONMARK|SCRIPTPATH|STYLEPATH|CURRENTVERSION|CONTENTLANGUAGE|CONTENTLANG|PAGEID|PAGELANGUAGE|CASCADINGSOURCES|REVISIONID|REVISIONDAY|REVISIONDAY2|REVISIONMONTH|REVISIONMONTH1|REVISIONYEAR|REVISIONTIMESTAMP|REVISIONUSER|REVISIONSIZE)(\\}\\})"
+                                },
+                                {
+                                    "name": "constant.language.variables.metadata.wikitext",
+                                    "match": "(?i)(\\{\\{)(PROTECTIONLEVEL|PROTECTIONEXPIRY|DISPLAYTITLE|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
+                                },
+                                {
+                                    "name": "constant.language.variables.statistical.wikitext",
+                                    "match": "(?i)(\\{\\{)(NUMBEROFPAGES|NUMBEROFARTICLES|NUMBEROFFILES|NUMBEROFEDITS|NUMBEROFUSERS|NUMBEROFADMINS|NUMBEROFACTIVEUSERS(?:(:R)?))(\\}\\})"
+                                },
+                                {
+                                    "name": "constant.language.variables.statistical.wikitext",
+                                    "match": "(?i)(\\{\\{)(PAGESINCATEGORY|PAGESINCAT|PAGESINCATEGORY|NUMBERINGROUP|NUMINGROUP|PAGESINNS|PAGESINNAMESPACE)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
+                                },
+                                {
+                                    "name":"invalid.deprecated.variables.statistical.wikitext",
+                                    "match":"(\\{\\{)(NUMBEROFVIEWS)(\\}\\})"
+                                },
+                                {
+                                    "name": "",
+                                    "": "(?i)(\\{\\{)(FULLPAGENAME|PAGENAME|BASEPAGENAME|ROOTPAGENAME|SUBPAGENAME|SUBJECTPAGENAME|ARTICLEPAGENAME|TALKPAGENAME)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
+                                }
+                            ]
+                        }
+                    }
                 },
                 "signature": {
                     "patterns": [
@@ -290,8 +362,9 @@
                     }
                 },
                 "internalLink": {
+                    "TODO": "SINGLE LINE",
                     "name": "string.quoted.wikitext",
-                    "begin": "(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*:)*)?([^\\|\\[\\]]*)?",
+                    "begin": "(\\[\\[)(([\\w\\-\\s\\(\\)\\.]*:)*?)?([^\\|\\[\\]]*)?",
                     "end": "(\\]\\])",
                     "captures": {
                         "1": {
@@ -300,6 +373,7 @@
                         "2": {
                             "name": "entity.name.tag.namespace.wikitext"
                         },
+                        "3": {},
                         "4": {
                             "name": "entity.other.attribute-name.wikitext"
                         }
