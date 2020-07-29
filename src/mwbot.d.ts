@@ -17,11 +17,11 @@ declare class MWBot {
      * Constructs a new MWBot instance
      * It is advised to create one bot instance for every API to use
      * A bot instance has its own state (e.g. tokens) that is 
-    necessary for some operations
-    *
-    * @param {{}} [customOptions]        Custom options
-    * @param {{}} [customRequestOptions] Custom request options
-    */
+       necessary for some operations
+     *
+     * @param {{}} [customOptions]        Custom options
+     * @param {{}} [customRequestOptions] Custom request options
+     */
     constructor(customOptions?: {}, customRequestOptions?: {})
 
     //////////////////////////////////////////

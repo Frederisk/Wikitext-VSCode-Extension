@@ -42,6 +42,15 @@
                 "category": "Wikitext"
             },
             {
+                "command": "wikitext.login",
+                "title": "Login with your account",
+                "category": "Wikitext"
+            },
+            {
+                "command": "wikitext.logout",
+                "title": "Logout, if you are already loged in"
+            },
+            {
                 "command": "wikitext.test",
                 "title": "TEST",
                 "category": "Wikitext"
@@ -57,6 +66,14 @@
                 },
                 {
                     "command": "wikitext.setHost",
+                    "group": "navigation"
+                },
+                {
+                    "command": "wikitext.login",
+                    "group": "navigation"
+                },
+                {
+                    "command": "wikitext.logout",
                     "group": "navigation"
                 },
                 {
@@ -130,6 +147,11 @@
                     "type": "boolean",
                     "description": "When the input page is a redirect page, jump automatically.",
                     "default": "true"
+                },
+                "wikitext.apiPath": {
+                    "type":"string",
+                    "description": "Set the basic path to obtain the API. If you are not sure, please keep the default value.",
+                    "default": "/w/api.php"
                 }
             }
         }

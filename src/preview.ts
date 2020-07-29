@@ -6,34 +6,37 @@ import { getHost } from './host';
 import { extensionContext } from './extension';
 import { action } from './mediawiki';
 
-// 預覽WebViewPanel
+
+/**
+ * WebviewPanel
+ */
 let currentPlanel: vscode.WebviewPanel | undefined = undefined;
 
 export function getPreview(): void {
     const textEditor = vscode.window.activeTextEditor;
-    // 是否有開啟的文檔;;
+    // check is there an opened document.
     if (!textEditor) {
         vscode.window.showInformationMessage("No Active Wikitext Editor.");
-        // 未有則取消渲染
+        // if have not, cancle.
         return undefined;
     }
-    // 取得host
+    // get host
     let host: string | undefined = getHost();
-    // 打開失敗，終止作業
+    // falied, stop task.
     if (!host) { return undefined; }
-    // 是否有開啟的WebViewPanel
+    // check if have an opened WebViewPanel.
     if (!currentPlanel) {
-        // 未有則嘗試創建
+        // if have not, try to creat new one.
         currentPlanel = vscode.window.createWebviewPanel(
             "previewer", "WikitextPreviewer", vscode.ViewColumn.Beside, {
             enableScripts: true
         });
-        // 註冊釋放資源事件
+        // register for events that release resources.
         currentPlanel.onDidDispose(() => {
             currentPlanel = undefined;
         }, null, extensionContext.subscriptions);
     }
-    // 裝載狀態。
+    // show loading statu
     currentPlanel.webview.html = showHtmlInfo("Loading...");
     // 擷取文本內容
     const sourceText: string = textEditor.document.getText();
@@ -54,7 +57,7 @@ export function getPreview(): void {
     const opts: RequestOptions = {
         hostname: host,
         // hostname: "zh.wikipedia.org",
-        path: "/w/api.php",
+        path: vscode.workspace.getConfiguration("wikitext").get("apiPath"),
         method: "POST",
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

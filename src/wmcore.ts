@@ -19,7 +19,7 @@ export async function login(): Promise<void> {
     }
 
     bot = new MWBot({
-        apiUrl: "https://" + host + "/w/api.php"
+        apiUrl: "https://" + host + config.get("apiPath")
     });
 
     await bot?.login({
@@ -32,9 +32,16 @@ export function logout(): void{
     bot = null;
 }
 
+/**
+ * Get Page without login
+ */
+export function pullPage(): void{
 
+}
 
+export function pushPage(): void{
 
+}
 
 
 
