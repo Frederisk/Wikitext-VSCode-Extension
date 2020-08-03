@@ -1,14 +1,19 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 export enum action {
-    abuseFilterCheckMatch = "abusefiltercheckmatch",
-    abuseFilterCheckSyntax = "abusefilterchecksyntax",
-    abuseFilterEvalExpression = "abusefilterevalexpression",
-    abuseFilterUnblockAutoPromote = "abusefilterunblockautopromote",
-    abuseLogPrivateDetails = "abuselogprivatedetails",
-    antiSpoof = "antispoof",
-    block = "block",
-    centralAuthToken = "centralauthtoken",
-    centralNoticeCdnCacheUpdateBanner = "centralnoticecdncacheupdatebanner",
-    centralNoticeChoiceData = "centralnoticechoicedata",
+    // abuseFilterCheckMatch = "abusefiltercheckmatch",
+    // abuseFilterCheckSyntax = "abusefilterchecksyntax",
+    // abuseFilterEvalExpression = "abusefilterevalexpression",
+    // abuseFilterUnblockAutoPromote = "abusefilterunblockautopromote",
+    // abuseLogPrivateDetails = "abuselogprivatedetails",
+    // antiSpoof = "antispoof",
+    // block = "block",
+    // centralAuthToken = "centralauthtoken",
+    // centralNoticeCdnCacheUpdateBanner = "centralnoticecdncacheupdatebanner",
+    // centralNoticeChoiceData = "centralnoticechoicedata",
     // ...
     parse = "parse",
     // ...

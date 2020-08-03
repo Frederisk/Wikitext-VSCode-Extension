@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 import * as vscode from 'vscode';
 import * as querystring from 'querystring';
 import { request } from 'https';
@@ -8,7 +13,7 @@ import { action } from './mediawiki';
 
 
 /**
- * WebviewPanel
+ * webview panel
  */
 let currentPlanel: vscode.WebviewPanel | undefined = undefined;
 
@@ -38,9 +43,13 @@ export function getPreview(): void {
     }
     // show loading statu
     currentPlanel.webview.html = showHtmlInfo("Loading...");
-    // 擷取文本內容
+    /**
+     * document text
+     */
     const sourceText: string = textEditor.document.getText();
-    // 引數
+    /**
+     * arguments
+     */
     const args: string = querystring.stringify({
         action: action.parse,
         format: "json",
@@ -53,7 +62,9 @@ export function getPreview(): void {
         // title: "Main_Page",
         // content: sourceText
     });
-    // 目標頁面
+    /**
+     * target content
+     */
     const opts: RequestOptions = {
         hostname: host,
         // hostname: "zh.wikipedia.org",
@@ -65,24 +76,24 @@ export function getPreview(): void {
         }
     };
     const req: ClientRequest = request(opts, requestCallback);
-    // 寫入參數
+    // write arguments.
     req.write(args);
-    // 尋求請求結束
+    // call end methord.
     req.end();
 }
 
 function requestCallback(response: IncomingMessage): void {
     const chunks: Uint8Array[] = [];
-    // 擷取位元資料
+    // get data.
     response.on('data', data => {
         console.log(response.statusCode);
         chunks.push(data);
     });
-    // 結束事件
+    // end event.
     response.on('end', () => {
         console.log(response.statusCode);
-        //console.log(jsontext);
-        // 解析結果。
+        // console.log(jsontext);
+        // result.
         const jsontext: string = Buffer.concat(chunks).toString();
         const json: any = JSON.parse(jsontext);
         // const warnInfo: string| undefined = json["warnings"]["parse"]["*"];
@@ -90,22 +101,22 @@ function requestCallback(response: IncomingMessage): void {
         const result: string | undefined = unescape(json["parse"]["text"]["*"]);
         // let result: string = JSON.parse(jsontext)["flow-parsoid-utils"]["content"];
         // console.log(result);
-        // 確認面板存在狀態
+        // confirm the presence of the panel.
         if (!currentPlanel) {
             vscode.window.showInformationMessage("Preview Planel Not be Opened.");
             return undefined;
         }
-        // 解碼內容並顯示
+        // show result.
         if (result) {
             currentPlanel.webview.html = result;
         }
-        // 未有取得內容，通知錯誤。
+        // no content, notification error.
         else {
             currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
             vscode.window.showWarningMessage("Fresh Error.");
         }
     });
-    // 異常狀態
+    // exception status.
     response.on('error', error => {
         if (currentPlanel) {
             currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
@@ -116,12 +127,11 @@ function requestCallback(response: IncomingMessage): void {
 
 function showHtmlInfo(info: string): string {
     return `
-        <body>
-            <section>
-                <h2>
-                    ${info}
-                </h2>
-            </section>
-        </body>
-    `;
+<body>
+    <section>
+        <h2>
+            ${info}
+        </h2>
+    </section>
+</body>`;
 }

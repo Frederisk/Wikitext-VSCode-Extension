@@ -48,7 +48,8 @@
             },
             {
                 "command": "wikitext.logout",
-                "title": "Logout, if you are already loged in"
+                "title": "Logout, if you are already loged in",
+                "category": "Wikitext"
             },
             {
                 "command": "wikitext.test",

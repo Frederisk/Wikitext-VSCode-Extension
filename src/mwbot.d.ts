@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 declare module 'mwbot';
 
 type bluebird<R> = import("bluebird") <R>;
@@ -22,7 +27,7 @@ declare class MWBot {
      * @param {{}} [customOptions]        Custom options
      * @param {{}} [customRequestOptions] Custom request options
      */
-    constructor(customOptions?: {}, customRequestOptions?: {})
+    constructor(customOptions?: {}, customRequestOptions?: {});
 
     //////////////////////////////////////////
     // GETTER & SETTER                      //
@@ -32,7 +37,7 @@ declare class MWBot {
      * Get mwbot version number
      * Uses ES5 getter
      */
-    get version(): any
+    get version(): any;
 
 
     /**
@@ -40,7 +45,7 @@ declare class MWBot {
      *
      * @param {Object} customOptions
      */
-    public setOptions(customOptions: object): void
+    public setOptions(customOptions: Object): void;
 
     /**
      * Sets and overwrites the raw request options, used by the "request" library
@@ -48,7 +53,7 @@ declare class MWBot {
      *
      * @param {{}} customRequestOptions
      */
-    setGlobalRequestOptions(customRequestOptions: {}): void
+    setGlobalRequestOptions(customRequestOptions: {}): void;
 
     /**
      * Sets the API URL for MediaWiki requests
@@ -56,7 +61,7 @@ declare class MWBot {
      *
      * @param {String}  apiUrl  API Url to MediaWiki, e.g. 'https://www.semantic-mediawiki.org/w/api.php'
      */
-    setApiUrl(apiUrl: string): void
+    setApiUrl(apiUrl: string): void;
 
     //////////////////////////////////////////
     // CORE REQUESTS                        //
@@ -70,7 +75,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    rawRequest(requestOptions: object): bluebird<any>
+    rawRequest(requestOptions: object): bluebird<any>;
 
     /**
      *Executes a request with the ability to use custom parameters and custom request options
@@ -80,7 +85,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    request(params: object, customRequestOptions: object): bluebird<any>
+    request(params: object, customRequestOptions: object): bluebird<any>;
 
     //////////////////////////////////////////
     // CORE FUNCTIONS                       //
@@ -95,7 +100,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    login(loginOptions?: object): bluebird<any>
+    login(loginOptions?: object): bluebird<any>;
 
     /**
      * Gets an edit token
@@ -103,7 +108,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    getEditToken(): bluebird<any>
+    getEditToken(): bluebird<any>;
 
     /**
      * Gets an edit token
@@ -111,7 +116,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    getCreateaccountToken(): bluebird<any>
+    getCreateaccountToken(): bluebird<any>;
 
     /**
      * Combines Login  with GetEditToken
@@ -120,7 +125,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    loginGetEditToken(loginOptions: object): bluebird<any>
+    loginGetEditToken(loginOptions: object): bluebird<any>;
 
     /**
      * Combines Login  with GetCreateaccountToken
@@ -129,7 +134,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    loginGetCreateaccountToken(loginOptions: object): bluebird<any>
+    loginGetCreateaccountToken(loginOptions: object): bluebird<any>;
 
     //////////////////////////////////////////
     // CRUD OPERATIONS                      //
@@ -145,7 +150,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    create(title: string, content: string, summary?: string, customRequestOptions?: object): bluebird<any>
+    create(title: string, content: string, summary?: string, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Reads the content / and meta-data of one (or many) wikipages
@@ -158,7 +163,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    read(title: string, redirect: boolean, customRequestOptions?: object): bluebird<any>
+    read(title: string, redirect: boolean, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Reads the content / and meta-data of one (or many) wikipages
@@ -171,7 +176,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    readFromID(pageid: number, redirect: boolean, customRequestOptions?: object): bluebird<any>
+    readFromID(pageid: number, redirect: boolean, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Reads the content / and meta-data of one (or many) wikipages based on specific parameters
@@ -183,7 +188,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    readWithProps(title: string, props: string, redirect: boolean, customRequestOptions?: object): bluebird<any>
+    readWithProps(title: string, props: string, redirect: boolean, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Reads the content / and meta-data of one (or many) wikipages based on specific parameters
@@ -195,7 +200,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    readWithPropsFromID(pageid: number, props: string, redirect: boolean, customRequestOptions?: object): bluebird<any>
+    readWithPropsFromID(pageid: number, props: string, redirect: boolean, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Edits a new wiki pages. Creates a new page if it does not exist yet.
@@ -207,7 +212,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    edit(title: string, content: string, summary?: string, customRequestOptions?: object): bluebird<any>
+    edit(title: string, content: string, summary?: string, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Updates existing wiki pages. Does not create new ones.
@@ -219,7 +224,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    update(title: string, content: string, summary?: string, customRequestOptions?: object): bluebird<any>
+    update(title: string, content: string, summary?: string, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Updates existing wiki pages. Does not create new ones.
@@ -231,7 +236,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    updateFromID(pageid: number, content: string, summary?: string, customRequestOptions?: object): bluebird<any>
+    updateFromID(pageid: number, content: string, summary?: string, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Deletes a new wiki page
@@ -242,7 +247,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    delete(title: string, reason?: string, customRequestOptions?: object): bluebird<any>
+    delete(title: string, reason?: string, customRequestOptions?: object): bluebird<any>;
 
     /**
     * Moves a wiki page
@@ -254,7 +259,7 @@ declare class MWBot {
     *
     * @returns {bluebird}
     */
-    move(oldTitle: string, newTitle: string, reason?: string, customRequestOptions?: object): bluebird<any>
+    move(oldTitle: string, newTitle: string, reason?: string, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Uploads a file
@@ -267,7 +272,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    upload(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): bluebird<any>
+    upload(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Uploads a file and overwrites existing ones
@@ -280,7 +285,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    uploadOverwrite(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): bluebird<any>
+    uploadOverwrite(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): bluebird<any>;
 
 
     //////////////////////////////////////////
@@ -302,7 +307,7 @@ declare class MWBot {
      * 
      * @returns {bluebird}
      */
-    batch(jobs: object | any[], summary?: string, concurrency?: number, customRequestOptions?: object): bluebird<any>
+    batch(jobs: object | any[], summary?: string, concurrency?: number, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Execute an ASK Query
@@ -313,7 +318,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    askQuery(query: string, apiUrl?: string, customRequestOptions?: object): bluebird<any>
+    askQuery(query: string, apiUrl?: string, customRequestOptions?: object): bluebird<any>;
 
     /**
      * Executes a SPARQL Query
@@ -325,7 +330,7 @@ declare class MWBot {
      *
      * @returns {bluebird}
      */
-    sparqlQuery(query: string, endpointUrl?: string, customRequestOptions?: object): bluebird<any>
+    sparqlQuery(query: string, endpointUrl?: string, customRequestOptions?: object): bluebird<any>;
 
     //////////////////////////////////////////
     // HELPER FUNCTIONS                     //
@@ -340,7 +345,7 @@ declare class MWBot {
      *
      * @returns {object}        Merged Object
      */
-    static merge(parent: object, child: object): object
+    static merge(parent: object, child: object): object;
 
     /**
      * Prints status information about a completed request
@@ -352,6 +357,6 @@ declare class MWBot {
      * @param pageName
      * @param reason
      */
-    static logStatus(status: any, currentCounter: any, totalCounter: any, operation: any, pageName: any, reason: any): void
+    static logStatus(status: any, currentCounter: any, totalCounter: any, operation: any, pageName: any, reason: any): void;
 }
 
