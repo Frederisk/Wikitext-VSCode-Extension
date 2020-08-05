@@ -144,13 +144,13 @@
                     "type": "string",
                     "description": "The password of user. It will be fixed in the software settings, please do not fill in the device in public places."
                 },
-                "wikitext.redirect": {
+                "wikitext.redirects": {
                     "type": "boolean",
                     "description": "When the input page is a redirect page, jump automatically.",
                     "default": "true"
                 },
                 "wikitext.apiPath": {
-                    "type":"string",
+                    "type": "string",
                     "description": "Set the basic path to obtain the API. If you are not sure, please keep the default value.",
                     "default": "/w/api.php"
                 }
@@ -172,16 +172,19 @@
         "@types/bluebird": "^3.5.32",
         "@types/glob": "^7.1.3",
         "@types/mocha": "^5.2.7",
-        "@types/node": "^12.12.50",
+        "@types/node": "^12.12.53",
         "@types/vscode": "^1.43.0",
+        "@types/xml2js": "^0.4.5",
         "glob": "^7.1.5",
         "mocha": "^6.2.3",
         "mwbot": "^1.0.10",
         "ts-loader": "^6.2.2",
         "tslint": "^5.20.0",
-        "typescript": "^3.9.6",
+        "typescript": "^3.9.7",
         "vscode-test": "^1.4.0",
-        "webpack": "^4.43.0",
-        "webpack-cli": "^3.3.12"
-    }
+        "webpack": "^4.44.1",
+        "webpack-cli": "^3.3.12",
+        "xml2js": "^0.4.23"
+    },
+    "dependencies": {}
 }

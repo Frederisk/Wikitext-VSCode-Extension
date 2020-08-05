@@ -21,7 +21,9 @@ export enum action {
     // ...
 }
 
-export enum prop { }
+export enum prop {
+    reVisions = 'revisions'
+ }
 
 export enum rvprop {
     ids = "ids",

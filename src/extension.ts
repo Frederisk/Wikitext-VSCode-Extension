@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 import { getPreview } from './preview';
 import { setHost } from './host';
 import { foo } from './foo';
-import { login, logout, writePage } from './wmcore';
+import { login, logout, writePage, readPage } from './wmcore';
 // import * as mwbot from 'mwbot';
 // import { resolve } from 'dns';
 // import { homedir } from 'os';
@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext): void {
         
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.login",login));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.logout",logout));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.",writePage));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.writePage",writePage));
 
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.test", foo));
 }

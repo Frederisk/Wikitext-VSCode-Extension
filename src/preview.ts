@@ -55,21 +55,15 @@ export function getPreview(): void {
         format: "json",
         text: sourceText,
         contentmodel: "wikitext"
-        // action: "flow-parsoid-utils",
-        // format: "json",
-        // from: "wikitext",
-        // to: "html",
-        // title: "Main_Page",
-        // content: sourceText
     });
     /**
      * target content
      */
     const opts: RequestOptions = {
         hostname: host,
-        // hostname: "zh.wikipedia.org",
         path: vscode.workspace.getConfiguration("wikitext").get("apiPath"),
         method: "POST",
+        timeout: 10000,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': Buffer.byteLength(args)
@@ -80,49 +74,43 @@ export function getPreview(): void {
     req.write(args);
     // call end methord.
     req.end();
-}
 
-function requestCallback(response: IncomingMessage): void {
-    const chunks: Uint8Array[] = [];
-    // get data.
-    response.on('data', data => {
-        console.log(response.statusCode);
-        chunks.push(data);
-    });
-    // end event.
-    response.on('end', () => {
-        console.log(response.statusCode);
-        // console.log(jsontext);
-        // result.
-        const jsontext: string = Buffer.concat(chunks).toString();
-        const json: any = JSON.parse(jsontext);
-        // const warnInfo: string| undefined = json["warnings"]["parse"]["*"];
-        // const errorInfo: string| undefined = json;
-        const result: string | undefined = unescape(json["parse"]["text"]["*"]);
-        // let result: string = JSON.parse(jsontext)["flow-parsoid-utils"]["content"];
-        // console.log(result);
-        // confirm the presence of the panel.
-        if (!currentPlanel) {
-            vscode.window.showInformationMessage("Preview Planel Not be Opened.");
-            return undefined;
-        }
-        // show result.
-        if (result) {
-            currentPlanel.webview.html = result;
-        }
-        // no content, notification error.
-        else {
-            currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
-            vscode.window.showWarningMessage("Fresh Error.");
-        }
-    });
-    // exception status.
-    response.on('error', error => {
-        if (currentPlanel) {
-            currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
-        }
-        vscode.window.showWarningMessage("Fresh Error:\n" + error.name);
-    });
+    function requestCallback(response: IncomingMessage): void {
+        const chunks: Uint8Array[] = [];
+        // get data.
+        response.on('data', data => {
+            console.log(response.statusCode);
+            chunks.push(data);
+        });
+        // end event.
+        response.on('end', () => {
+            // result.
+            const jsontext: string = Buffer.concat(chunks).toString();
+            const json: any = JSON.parse(jsontext);
+            const result: string | undefined = unescape(json["parse"]["text"]["*"]);
+            // confirm the presence of the panel.
+            if (!currentPlanel) {
+                vscode.window.showInformationMessage("Preview Planel Not be Opened.");
+                return undefined;
+            }
+            // show result.
+            if (result) {
+                currentPlanel.webview.html = result;
+            }
+            // no content, notification error.
+            else {
+                currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
+                vscode.window.showWarningMessage("Fresh Error.");
+            }
+        });
+        // exception status.
+        response.on('error', (error: Error) => {
+            if (currentPlanel) {
+                currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
+            }
+            vscode.window.showWarningMessage("Fresh Error:\n" + error.name);
+        });
+    }
 }
 
 function showHtmlInfo(info: string): string {
