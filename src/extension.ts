@@ -26,6 +26,7 @@ export function activate(context: vscode.ExtensionContext): void {
         
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.login",login));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.logout",logout));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.readPage", readPage));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.writePage",writePage));
 
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.test", foo));
