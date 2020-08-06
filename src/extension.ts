@@ -6,15 +6,7 @@
 import * as vscode from 'vscode';
 import { getPreview } from './export_command/preview_function/preview';
 import { setHost } from './export_command/host_function/host';
-import { foo } from './foo';
 import { login, logout, writePage, readPage, viewPage } from './export_command/wikimedia_function/wmcore';
-// import * as mwbot from 'mwbot';
-// import { resolve } from 'dns';
-// import { homedir } from 'os';
-// import { URL } from 'url';
-// import { reporters } from 'mocha';
-// import { rejects, strict } from 'assert';
-// import { isNull } from 'util';
 
 export let extensionContext: vscode.ExtensionContext;
 
