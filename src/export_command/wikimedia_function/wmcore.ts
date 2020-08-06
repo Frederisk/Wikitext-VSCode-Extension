@@ -111,7 +111,93 @@ export async function writePage() {
  * Read Page
  */
 export async function readPage(): Promise<void> {
+    const host: string | undefined = getHost();
 
+    const title: string | undefined = await vscode.window.showInputBox({
+        prompt: "Enter the page name here."
+    });
+    if (!title) {
+        return undefined;
+    }
+
+    const queryInput: querystring.ParsedUrlQueryInput = {
+        action: action.query,
+        format: "xml",
+        prop: prop.reVisions,
+        rvprop: "content",
+        rvslots: "*",
+        titles: title
+    };
+    if (vscode.workspace.getConfiguration("wikitext").get("redirects")) {
+        queryInput.redirects = "true";
+    }
+    const args: string = querystring.stringify(queryInput);
+
+    const opts: RequestOptions = {
+        hostname: host,
+        path: vscode.workspace.getConfiguration("wikitext").get("apiPath"),
+        method: "POST",
+        timeout: 10000,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': Buffer.byteLength(args)
+        }
+    };
+    const req: ClientRequest = request(opts, requestCallback);
+    // write arguments.
+    req.write(args);
+    // call end methord.
+    req.end();
+
+    function requestCallback(response: IncomingMessage) {
+        const chunks: Uint8Array[] = [];
+
+        response.on('data', data => {
+            console.log(response.statusCode);
+            chunks.push(data);
+        });
+
+        response.on('end', () => {
+            // result.
+            const xmltext: string = Buffer.concat(chunks).toString();
+            xml2js.parseString(xmltext, (err: Error, result: any) => {
+                console.log(result);
+                const re = readPageInterface.Convert.toReadPageResult(result);
+
+                const wikiTitle = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.title;
+                if (re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.missing !== undefined ||
+                    re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.invalid !== undefined) {
+                    vscode.window.showWarningMessage(
+                        `The page "${wikiTitle}" you are looking for does not exist.` +
+                        re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.invalidreason ?? ``
+                    );
+                    return undefined;
+                }
+                if (re?.api?.query?.[0]?.interwiki !== undefined) {
+                    vscode.window.showWarningMessage(
+                        `Interwiki page "${re?.api?.query?.[0]?.interwiki?.[0].i?.[0].$?.title}" in space "${re?.api?.query?.[0]?.interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
+                    );
+                    return undefined;
+                }
+
+                const wikiContent = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.revisions?.[0]?.rev?.[0]?.slots?.[0]?.slot?.[0]?._;
+                const wikiModel = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.revisions?.[0]?.rev?.[0]?.slots?.[0]?.slot?.[0]?.$?.contentmodel;
+                console.log(wikiModel);
+                vscode.workspace.openTextDocument({
+                    language: wikiModel,
+                    content: wikiContent
+                });
+
+                console.log(wikiTitle);
+                pageName = wikiTitle;
+
+                const wikiPageID = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.pageid;
+                const wikiNormalized = re.api?.query?.[0]?.normalized?.[0]?.n?.[0].$;
+                const wikiRedirect = re.api?.query?.[0]?.redirects?.[0]?.r?.[0]?.$;
+                vscode.window.showInformationMessage(`Opened page "${wikiTitle}" (page ID:"${wikiPageID}") with Model ${wikiModel}.` + (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) + (wikiRedirect ? ` Redirect: "${wikiRedirect?.from}" => "${wikiRedirect.to}"` : ``));
+            });
+        });
+    }
 }
 
 export function uploadFile(): void {
