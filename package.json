@@ -2,9 +2,15 @@
     "name": "wikitext",
     "displayName": "Wikitext",
     "description": "Wikitext is a document written in a wiki markup language. It is a mixture of content, markup, and metadata. The extension mainly supports the Wiki markup text language based on MediaWiki.",
-    "version": "2.2.1",
+    "version": "2.3.0",
     "publisher": "RoweWilsonFrederiskHolme",
     "license": "MIT",
+    "author": {
+        "name": "Rowe Wilson Frederisk Holme",
+        "email": "frederisk@outlook.com",
+        "url": "https://twitter.com/rwfholme"
+    },
+    "homepage": "",
     "icon": "media/wikitext-icon.png",
     "repository": {
         "type": "git",
@@ -22,16 +28,17 @@
     "activationEvents": [
         "onCommand:wikitext.getPreview",
         "onCommand:wikitext.setHost",
+        "onCommand:wikitext.login",
+        "onCommand:wikitext.logout",
         "onCommand:wikitext.readPage",
-        "onCommand:wikitext.writePage",
-        "onCommand:wikitext.test"
+        "onCommand:wikitext.writePage"
     ],
     "main": "./dist/extension",
     "contributes": {
         "commands": [
             {
                 "command": "wikitext.getPreview",
-                "title": "Get Preview",
+                "title": "Get preview.",
                 "category": "Wikitext",
                 "": "It didn't work for unknown reasons.",
                 "icon": {
@@ -41,31 +48,27 @@
             },
             {
                 "command": "wikitext.setHost",
-                "title": "Set Previewer Host",
+                "title": "Set host setting of API.",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.login",
-                "title": "Login with your account",
+                "title": "Login with your account.",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.logout",
-                "title": "Logout, if you are already loged in",
+                "title": "Logout, if you are already loged in.",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.readPage",
-                "title": "Read Page",
+                "title": "Read Page to edit.",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.writePage",
-                "title": "Write Page"
-            },
-            {
-                "command": "wikitext.test",
-                "title": "TEST",
+                "title": "Write your edit to the website.",
                 "category": "Wikitext"
             }
         ],
@@ -86,19 +89,15 @@
                     "group": "navigation"
                 },
                 {
+                    "command": "wikitext.logout",
+                    "group": "navigation"
+                },
+                {
                     "command": "wikitext.readPage",
                     "group": "navigation"
                 },
                 {
                     "command": "wikitext.writePage",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.logout",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.test",
                     "group": "navigation"
                 }
             ]

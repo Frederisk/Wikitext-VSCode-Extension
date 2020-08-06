@@ -87,7 +87,7 @@ function jsToJSONProps(typ: any): any {
 
 function transform(val: any, typ: any, getProps: any, key: any = ''): any {
     function transformPrimitive(typ: string, val: any): any {
-        if (typeof typ === typeof val) return val;
+        if (typeof typ === typeof val) { return val; }
         return invalidValue(typ, val, key);
     }
 
@@ -104,13 +104,13 @@ function transform(val: any, typ: any, getProps: any, key: any = ''): any {
     }
 
     function transformEnum(cases: string[], val: any): any {
-        if (cases.indexOf(val) !== -1) return val;
+        if (cases.indexOf(val) !== -1) { return val; }
         return invalidValue(cases, val);
     }
 
     function transformArray(typ: any, val: any): any {
         // val must be an array with no invalid elements
-        if (!Array.isArray(val)) return invalidValue("array", val);
+        if (!Array.isArray(val)) { return invalidValue("array", val); }
         return val.map(el => transform(el, typ, getProps));
     }
 
@@ -143,16 +143,16 @@ function transform(val: any, typ: any, getProps: any, key: any = ''): any {
         return result;
     }
 
-    if (typ === "any") return val;
+    if (typ === "any") { return val; }
     if (typ === null) {
-        if (val === null) return val;
+        if (val === null) { return val; }
         return invalidValue(typ, val);
     }
-    if (typ === false) return invalidValue(typ, val);
+    if (typ === false) { return invalidValue(typ, val); }
     while (typeof typ === "object" && typ.ref !== undefined) {
         typ = typeMap[typ.ref];
     }
-    if (Array.isArray(typ)) return transformEnum(typ, val);
+    if (Array.isArray(typ)) { return transformEnum(typ, val); }
     if (typeof typ === "object") {
         return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
             : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
@@ -160,7 +160,7 @@ function transform(val: any, typ: any, getProps: any, key: any = ''): any {
             : invalidValue(typ, val);
     }
     // Numbers can be parsed by Date but shouldn't be.
-    if (typ === Date && typeof val !== "number") return transformDate(val);
+    if (typ === Date && typeof val !== "number") { return transformDate(val); }
     return transformPrimitive(typ, val);
 }
 

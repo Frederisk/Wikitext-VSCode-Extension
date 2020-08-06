@@ -3,8 +3,6 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-// import { r, cast, uncast, o, u, a } from "./convertFunction";
-
 // To parse this data:
 //
 //   import { Convert, ReadPageResult } from "./file";
@@ -14,9 +12,6 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-/**
- * Root intface of ReadPageJson
- */
 export interface ReadPageResult {
     api?: Api;
 }
@@ -34,6 +29,20 @@ export interface Query {
     normalized?: Normalized[];
     redirects?: Redirect[];
     pages?: QueryPage[];
+    interwiki?: Interwiki[];
+}
+
+export interface Interwiki {
+    i?: IElement[];
+}
+
+export interface IElement {
+    $?: I;
+}
+
+export interface I {
+    title?: string;
+    iw?: string;
 }
 
 export interface Normalized {
@@ -41,29 +50,31 @@ export interface Normalized {
 }
 
 export interface NElement {
-    $?: Trans;
+    $?: N;
 }
 
-export interface Trans {
+export interface N {
     from?: string;
     to?: string;
 }
 
 export interface QueryPage {
-    page?: PageItem[];
+    page?: PagePage[];
 }
 
-export interface PageItem {
-    $?: PageInfo;
+export interface PagePage {
+    $?: Page;
     revisions?: Revision[];
 }
 
-export interface PageInfo {
+export interface Page {
     _idx?: string;
     pageid?: string;
     ns?: string;
     title?: string;
     missing?: string;
+    invalidreason?: string;
+    invalid?: string;
 }
 
 export interface Revision {
@@ -75,10 +86,10 @@ export interface Rev {
 }
 
 export interface RevSlot {
-    slot?: SlotItem[];
+    slot?: SlotSlot[];
 }
 
-export interface SlotItem {
+export interface SlotSlot {
     _?: string;
     $?: Slot;
 }
@@ -106,14 +117,14 @@ export class Convert {
     }
 }
 
-export function invalidValue(typ: any, val: any, key: any = ''): never {
+function invalidValue(typ: any, val: any, key: any = ''): never {
     if (key) {
         throw Error(`Invalid value for key "${key}". Expected type ${JSON.stringify(typ)} but got ${JSON.stringify(val)}`);
     }
     throw Error(`Invalid value ${JSON.stringify(val)} for type ${JSON.stringify(typ)}`,);
 }
 
-export function jsonToJSProps(typ: any): any {
+function jsonToJSProps(typ: any): any {
     if (typ.jsonToJS === undefined) {
         const map: any = {};
         typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
@@ -122,7 +133,7 @@ export function jsonToJSProps(typ: any): any {
     return typ.jsonToJS;
 }
 
-export function jsToJSONProps(typ: any): any {
+function jsToJSONProps(typ: any): any {
     if (typ.jsToJSON === undefined) {
         const map: any = {};
         typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });
@@ -183,7 +194,7 @@ function transform(val: any, typ: any, getProps: any, key: any = ''): any {
         });
         Object.getOwnPropertyNames(val).forEach(key => {
             if (!Object.prototype.hasOwnProperty.call(props, key)) {
-                result[key] = val[key];
+                result[key] = transform(val[key], additional, getProps, key);/* val[key]; */
             }
         });
         return result;
@@ -210,31 +221,31 @@ function transform(val: any, typ: any, getProps: any, key: any = ''): any {
     return transformPrimitive(typ, val);
 }
 
-export function cast<T>(val: any, typ: any): T {
+function cast<T>(val: any, typ: any): T {
     return transform(val, typ, jsonToJSProps);
 }
 
-export function uncast<T>(val: T, typ: any): any {
+function uncast<T>(val: T, typ: any): any {
     return transform(val, typ, jsToJSONProps);
 }
 
-export function a(typ: any) {
+function a(typ: any) {
     return { arrayItems: typ };
 }
 
-export function u(...typs: any[]) {
+function u(...typs: any[]) {
     return { unionMembers: typs };
 }
 
-export function o(props: any[], additional: any) {
+function o(props: any[], additional: any) {
     return { props, additional };
 }
 
-export function m(additional: any) {
+function m(additional: any) {
     return { props: [], additional };
 }
 
-export function r(name: string) {
+function r(name: string) {
     return { ref: name };
 }
 
@@ -253,6 +264,17 @@ const typeMap: any = {
         { json: "normalized", js: "normalized", typ: u(undefined, a(r("Normalized"))) },
         { json: "redirects", js: "redirects", typ: u(undefined, a(r("Redirect"))) },
         { json: "pages", js: "pages", typ: u(undefined, a(r("QueryPage"))) },
+        { json: "interwiki", js: "interwiki", typ: u(undefined, a(r("Interwiki"))) },
+    ], false),
+    "Interwiki": o([
+        { json: "i", js: "i", typ: u(undefined, a(r("IElement"))) },
+    ], false),
+    "IElement": o([
+        { json: "$", js: "$", typ: u(undefined, r("I")) },
+    ], false),
+    "I": o([
+        { json: "title", js: "title", typ: u(undefined, "") },
+        { json: "iw", js: "iw", typ: u(undefined, "") },
     ], false),
     "Normalized": o([
         { json: "n", js: "n", typ: u(undefined, a(r("NElement"))) },
@@ -276,7 +298,9 @@ const typeMap: any = {
         { json: "pageid", js: "pageid", typ: u(undefined, "") },
         { json: "ns", js: "ns", typ: u(undefined, "") },
         { json: "title", js: "title", typ: u(undefined, "") },
-        { json: "missing", js: "missing", typ: u(undefined, "") }
+        { json: "missing", js: "missing", typ: u(undefined, "") },
+        { json: "invalidreason", js: "invalidreason", typ: u(undefined, "") },
+        { json: "invalid", js: "invalid", typ: u(undefined, "") },
     ], false),
     "Revision": o([
         { json: "rev", js: "rev", typ: u(undefined, a(r("Rev"))) },

@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 import { getPreview } from './export_command/preview_function/preview';
 import { setHost } from './export_command/host_function/host';
 import { foo } from './foo';
-import { login, logout, writePage, readPage } from './export_command/wikimedia_function/wmcore';
+import { login, logout, writePage, readPage, viewPage } from './export_command/wikimedia_function/wmcore';
 // import * as mwbot from 'mwbot';
 // import { resolve } from 'dns';
 // import { homedir } from 'os';
@@ -28,8 +28,9 @@ export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.logout",logout));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.readPage", readPage));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.writePage",writePage));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.viewpage",viewPage));
 
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.test", foo));
+    // context.subscriptions.push(vscode.commands.registerCommand("wikitext.test", foo));
 }
 
 export function deactivate(): void {

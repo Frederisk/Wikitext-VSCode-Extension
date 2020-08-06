@@ -22,10 +22,10 @@ export function getHost(): string | undefined {
     const host: string | undefined = vscode.workspace.getConfiguration("wikitext").get("host");
     // Login and Session Management
     if (!host) {
-        // 取得失敗，顯示警告
+        // error, show warnning
         vscode.window.showWarningMessage("No Host Be Defined!\nYou haven't defined the host of previewer yet, please input host value in the dialog box and try again.", "Edit", "Cancel").then(result => {
             if (result === "Edit") {
-                // 要求輸入host
+                // enter host
                 setHost();
             }
         });

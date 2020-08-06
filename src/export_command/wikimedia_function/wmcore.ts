@@ -12,6 +12,7 @@ import * as xml2js from 'xml2js';
 import { action, prop } from './mediawiki';
 import { getHost } from '../host_function/host';
 import * as readPageInterface from '../../interface_definition/readPageInterface';
+import { win32 } from 'path';
 
 let bot: MWBot | null = null;
 let pageName: string | undefined = "";
@@ -38,7 +39,7 @@ export function login(): void {
         password: password
     }).then((response) => {
         console.log(response);
-        vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}"`
+        vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
         );
     }).catch((err: Error) => {
         console.log(err);
@@ -48,116 +49,69 @@ export function login(): void {
 
 export function logout(): void {
     bot = null;
-    vscode.window.showErrorMessage("result: \"Success\"");
+    vscode.window.showInformationMessage("result: \"Success\"");
 }
 
 /**
  * Write Page
  */
-export function writePage(): void {
-    if (bot === null) {
-        vscode.window.showErrorMessage("You are not logged in. Please log in and try again.");
+export async function writePage() {
+    const wikiContent: string | undefined = vscode.window.activeTextEditor?.document.getText();
+    if (wikiContent === undefined) {
+        vscode.window.showWarningMessage("There is no active text editor.");
         return undefined;
     }
 
-    vscode.window.showInputBox({
+    if (bot === null) {
+        vscode.window.showWarningMessage("You are not logged in. Please log in and try again.");
+        return undefined;
+    }
+
+    const wikiTitle: string | undefined = await vscode.window.showInputBox({
         value: pageName,
         ignoreFocusOut: true,
         password: false,
         prompt: "Enter the page name here."
     });
 
+    if (!wikiTitle) { return undefined; }
+
+    let wikiSummary: string | undefined = await vscode.window.showInputBox({
+        value: "",
+        ignoreFocusOut: false,
+        password: false,
+        prompt: "Enter the summary of this edit action."
+    });
+    wikiSummary += " // Edit via Wikitext Extension for Visual Studio Code";
+
+    // let editStatus: string = "";
+    await bot.getEditToken().then(response => {
+        vscode.window.showInformationMessage(
+            `Get edit token status is "${response.result}". User "${response.lgusername}" (User ID: "${response.lguserid}") got the token: "${response.token}" and csrftoken: "${response.csrftoken}".`
+        );
+    }).catch((err: Error) => {
+        vscode.window.showErrorMessage(err.name);
+    });
+
+    await bot.edit(wikiTitle, wikiContent, wikiSummary).then(response => {
+        if (response.edit.nochange !== undefined) {
+            vscode.window.showWarningMessage(
+                `No changes have occurred: "${response.edit.nochange}", Edit page "${response.edit.title}" (Page ID: "${response.edit.pageid}") action status is "${response.edit.result}" with Content Model "${response.edit.contentmodel}". Watched by: "${response.edit.watched}".`
+            );
+        }
+        else {
+            vscode.window.showInformationMessage(
+                `Edit page "${response.edit.title}" (Page ID: "${response.edit.pageid}") action status is "${response.edit.result}" with Content Model "${response.edit.contentmodel}" (Version: "${response.edit.oldrevid}" => "${response.edit.newrevid}", Time: "${response.edit.newtimestamp}"). Watched by: "${response.edit.watched}".`
+                );
+        }
+    });
 }
 
 /**
  * Read Page
  */
 export async function readPage(): Promise<void> {
-    const host: string | undefined = getHost();
 
-    const title: string | undefined = await vscode.window.showInputBox({
-        prompt: "Enter the page name here."
-    });
-    if (!title) {
-        return undefined;
-    }
-
-    const queryInput: querystring.ParsedUrlQueryInput = {
-        action: action.query,
-        format: "xml",
-        prop: prop.reVisions,
-        rvprop: "content",
-        rvslots: "*",
-        titles: title
-    };
-    if (vscode.workspace.getConfiguration("wikitext").get("redirects")) {
-        queryInput.redirects = "true";
-    }
-    const args: string = querystring.stringify(queryInput);
-
-    const opts: RequestOptions = {
-        hostname: host,
-        path: vscode.workspace.getConfiguration("wikitext").get("apiPath"),
-        method: "POST",
-        timeout: 10000,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(args)
-        }
-    };
-    const req: ClientRequest = request(opts, requestCallback);
-    // write arguments.
-    req.write(args);
-    // call end methord.
-    req.end();
-
-    function requestCallback(response: IncomingMessage) {
-        const chunks: Uint8Array[] = [];
-
-        response.on('data', data => {
-            console.log(response.statusCode);
-            chunks.push(data);
-        });
-
-        response.on('end', () => {
-            // result.
-            const xmltext: string = Buffer.concat(chunks).toString();
-            xml2js.parseString(xmltext, (err: Error, result: any) => {
-                console.log("obj:");
-                console.log(result);
-
-                const re = readPageInterface.Convert.toReadPageResult(result);
-                const wikiNormalized = re.api?.query?.[0]?.normalized?.[0]?.n?.[0].$;
-
-                //const wikiNormalized = result.api?.query[0]?.normalized[0]?.n[0]?.$;
-
-                console.log(wikiNormalized);
-                const wikiRedirect = re.api?.query?.[0]?.redirects?.[0]?.r?.[0]?.$;
-                console.log(wikiRedirect);
-                const wikiTitle = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.title;
-                console.log(wikiTitle);
-                const wikiPageID = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.pageid;
-                console.log(wikiPageID);
-                const wikiMissing = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.missing;
-                console.log(wikiMissing);
-                const wikiContent = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.revisions?.[0]?.rev?.[0]?.slots?.[0]?.slot?.[0]?._;
-
-                const wikiModel = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.revisions?.[0]?.rev?.[0]?.slots?.[0]?.slot?.[0]?.$?.contentmodel;
-                console.log(wikiModel);
-
-                if (wikiMissing !== undefined) {
-                    vscode.window.showWarningMessage("The page " + wikiTitle + " you are looking for does not exist.");
-                    return undefined;
-                }
-                vscode.workspace.openTextDocument({
-                    language: wikiModel,
-                    content: wikiContent
-                });
-                pageName = wikiTitle;
-                vscode.window.showInformationMessage(`Opened page "${wikiTitle}" (page ID:"${wikiPageID}") with Model ${wikiModel}.` + (wikiNormalized ? ` Normalized: "${wikiNormalized.from} => "${wikiNormalized.to}"` : ``) + (wikiRedirect ? ` Redirect: "${wikiRedirect["from"]}" => "${wikiRedirect["to"]}"` : ``));
-            });
-        });
-    }
 }
 
 export function uploadFile(): void {
