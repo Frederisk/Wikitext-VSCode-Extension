@@ -5,13 +5,13 @@
 
 import * as MWBot from 'mwbot';
 import * as vscode from 'vscode';
-import { getHost } from './host';
 import * as querystring from 'querystring';
-import { action, prop } from './mediawiki';
 import { RequestOptions, ClientRequest, IncomingMessage } from 'http';
 import { request } from 'https';
 import * as xml2js from 'xml2js';
-import * as readPageInterface from './readPageInterface';
+import { action, prop } from './mediawiki';
+import { getHost } from '../host_function/host';
+import * as readPageInterface from '../../interface_definition/readPageInterface';
 
 let bot: MWBot | null = null;
 let pageName: string | undefined = "";
@@ -124,26 +124,25 @@ export async function readPage(): Promise<void> {
             const xmltext: string = Buffer.concat(chunks).toString();
             xml2js.parseString(xmltext, (err: Error, result: any) => {
                 console.log("obj:");
-
                 console.log(result);
-                console.log(JSON.stringify(result));
 
                 const re = readPageInterface.Convert.toReadPageResult(result);
-                
-                const wikiNormalized = result.api?.query[0]?.normalized[0]?.n[0]?.$;
+                const wikiNormalized = re.api?.query?.[0]?.normalized?.[0]?.n?.[0].$;
+
+                //const wikiNormalized = result.api?.query[0]?.normalized[0]?.n[0]?.$;
 
                 console.log(wikiNormalized);
-                const wikiRedirect = result.api?.query[0]?.redirects[0]?.n[0]?.$;
+                const wikiRedirect = re.api?.query?.[0]?.redirects?.[0]?.r?.[0]?.$;
                 console.log(wikiRedirect);
-                const wikiTitle = result.api?.query[0]?.pages[0]?.page[0]?.$?.title;
+                const wikiTitle = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.title;
                 console.log(wikiTitle);
-                const wikiPageID = result.api?.query[0]?.pages[0]?.page[0]?.$?.pageid;
+                const wikiPageID = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.pageid;
                 console.log(wikiPageID);
-                const wikiMissing = result.api?.query[0]?.pages[0]?.page[0]?.$?.missing;
+                const wikiMissing = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.missing;
                 console.log(wikiMissing);
-                const wikiContent = result.api?.query[0]?.pages[0]?.revisions[0]?.rev[0]?.slots[0]?.slot[0]?._;
+                const wikiContent = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.revisions?.[0]?.rev?.[0]?.slots?.[0]?.slot?.[0]?._;
 
-                const wikiModel = result.api?.query[0]?.pages[0]?.revisions[0]?.rev[0]?.slots[0]?.slot[0]?.$?.contentmodel;
+                const wikiModel = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.revisions?.[0]?.rev?.[0]?.slots?.[0]?.slot?.[0]?.$?.contentmodel;
                 console.log(wikiModel);
 
                 if (wikiMissing !== undefined) {
@@ -155,7 +154,7 @@ export async function readPage(): Promise<void> {
                     content: wikiContent
                 });
                 pageName = wikiTitle;
-                vscode.window.showInformationMessage(`Opened page "${wikiTitle}" (page ID:"${wikiPageID}") with Model ${wikiModel}.` + (wikiNormalized ? ` Normalized: "${wikiNormalized["from"]} => "${wikiNormalized["to"]}"` : ``) + (wikiRedirect ? ` Redirect: "${wikiRedirect["from"]}" => "${wikiRedirect["to"]}"` : ``));
+                vscode.window.showInformationMessage(`Opened page "${wikiTitle}" (page ID:"${wikiPageID}") with Model ${wikiModel}.` + (wikiNormalized ? ` Normalized: "${wikiNormalized.from} => "${wikiNormalized.to}"` : ``) + (wikiRedirect ? ` Redirect: "${wikiRedirect["from"]}" => "${wikiRedirect["to"]}"` : ``));
             });
         });
     }

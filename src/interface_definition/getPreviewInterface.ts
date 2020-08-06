@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 // To parse this data:
 //
 //   import { Convert, ReadPageResult } from "./file";
@@ -8,79 +13,39 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface ReadPageResult {
-    api?: Api;
+    parse?: Parse;
 }
 
-export interface Api {
-    $?:     ApiClass;
-    query?: Query[];
+export interface Parse {
+    title?:         string;
+    pageid?:        number;
+    text?:          Text;
+    langlinks?:     any[];
+    categories?:    any[];
+    links?:         any[];
+    templates?:     any[];
+    images?:        any[];
+    externallinks?: any[];
+    sections?:      Section[];
+    parsewarnings?: any[];
+    displaytitle?:  string;
+    iwlinks?:       any[];
+    properties?:    any[];
 }
 
-export interface ApiClass {
-    batchcomplete?: string;
+export interface Section {
+    toclevel?:   number;
+    level?:      string;
+    line?:       string;
+    number?:     string;
+    index?:      string;
+    fromtitle?:  string;
+    byteoffset?: number;
+    anchor?:     string;
 }
 
-export interface Query {
-    normalized?: Normalized[];
-    redirects?:  Redirect[];
-    pages?:      QueryPage[];
-}
-
-export interface Normalized {
-    n?: NElement[];
-}
-
-export interface NElement {
-    $?: N;
-}
-
-export interface N {
-    from?: string;
-    to?:   string;
-}
-
-export interface QueryPage {
-    page?: PagePage[];
-}
-
-export interface PagePage {
-    $?:         Page;
-    revisions?: Revision[];
-}
-
-export interface Page {
-    _idx?:   string;
-    pageid?: string;
-    ns?:     string;
-    title?:  string;
-}
-
-export interface Revision {
-    rev?: Rev[];
-}
-
-export interface Rev {
-    slots?: RevSlot[];
-}
-
-export interface RevSlot {
-    slot?: SlotSlot[];
-}
-
-export interface SlotSlot {
-    _?: string;
-    $?: Slot;
-}
-
-export interface Slot {
-    contentmodel?:  string;
-    contentformat?: string;
-    role?:          string;
-    "xml:space"?:   string;
-}
-
-export interface Redirect {
-    r?: NElement[];
+export interface Text {
+    "*"?: string;
 }
 
 // Converts JSON types to/from your types
@@ -229,63 +194,35 @@ function r(name: string) {
 
 const typeMap: any = {
     "ReadPageResult": o([
-        { json: "api", js: "api", typ: u(undefined, r("Api")) },
+        { json: "parse", js: "parse", typ: u(undefined, r("Parse")) },
     ], false),
-    "Api": o([
-        { json: "$", js: "$", typ: u(undefined, r("ApiClass")) },
-        { json: "query", js: "query", typ: u(undefined, a(r("Query"))) },
-    ], false),
-    "ApiClass": o([
-        { json: "batchcomplete", js: "batchcomplete", typ: u(undefined, "") },
-    ], false),
-    "Query": o([
-        { json: "normalized", js: "normalized", typ: u(undefined, a(r("Normalized"))) },
-        { json: "redirects", js: "redirects", typ: u(undefined, a(r("Redirect"))) },
-        { json: "pages", js: "pages", typ: u(undefined, a(r("QueryPage"))) },
-    ], false),
-    "Normalized": o([
-        { json: "n", js: "n", typ: u(undefined, a(r("NElement"))) },
-    ], false),
-    "NElement": o([
-        { json: "$", js: "$", typ: u(undefined, r("N")) },
-    ], false),
-    "N": o([
-        { json: "from", js: "from", typ: u(undefined, "") },
-        { json: "to", js: "to", typ: u(undefined, "") },
-    ], false),
-    "QueryPage": o([
-        { json: "page", js: "page", typ: u(undefined, a(r("PagePage"))) },
-    ], false),
-    "PagePage": o([
-        { json: "$", js: "$", typ: u(undefined, r("Page")) },
-        { json: "revisions", js: "revisions", typ: u(undefined, a(r("Revision"))) },
-    ], false),
-    "Page": o([
-        { json: "_idx", js: "_idx", typ: u(undefined, "") },
-        { json: "pageid", js: "pageid", typ: u(undefined, "") },
-        { json: "ns", js: "ns", typ: u(undefined, "") },
+    "Parse": o([
         { json: "title", js: "title", typ: u(undefined, "") },
+        { json: "pageid", js: "pageid", typ: u(undefined, 0) },
+        { json: "text", js: "text", typ: u(undefined, r("Text")) },
+        { json: "langlinks", js: "langlinks", typ: u(undefined, a("any")) },
+        { json: "categories", js: "categories", typ: u(undefined, a("any")) },
+        { json: "links", js: "links", typ: u(undefined, a("any")) },
+        { json: "templates", js: "templates", typ: u(undefined, a("any")) },
+        { json: "images", js: "images", typ: u(undefined, a("any")) },
+        { json: "externallinks", js: "externallinks", typ: u(undefined, a("any")) },
+        { json: "sections", js: "sections", typ: u(undefined, a(r("Section"))) },
+        { json: "parsewarnings", js: "parsewarnings", typ: u(undefined, a("any")) },
+        { json: "displaytitle", js: "displaytitle", typ: u(undefined, "") },
+        { json: "iwlinks", js: "iwlinks", typ: u(undefined, a("any")) },
+        { json: "properties", js: "properties", typ: u(undefined, a("any")) },
     ], false),
-    "Revision": o([
-        { json: "rev", js: "rev", typ: u(undefined, a(r("Rev"))) },
+    "Section": o([
+        { json: "toclevel", js: "toclevel", typ: u(undefined, 0) },
+        { json: "level", js: "level", typ: u(undefined, "") },
+        { json: "line", js: "line", typ: u(undefined, "") },
+        { json: "number", js: "number", typ: u(undefined, "") },
+        { json: "index", js: "index", typ: u(undefined, "") },
+        { json: "fromtitle", js: "fromtitle", typ: u(undefined, "") },
+        { json: "byteoffset", js: "byteoffset", typ: u(undefined, 0) },
+        { json: "anchor", js: "anchor", typ: u(undefined, "") },
     ], false),
-    "Rev": o([
-        { json: "slots", js: "slots", typ: u(undefined, a(r("RevSlot"))) },
-    ], false),
-    "RevSlot": o([
-        { json: "slot", js: "slot", typ: u(undefined, a(r("SlotSlot"))) },
-    ], false),
-    "SlotSlot": o([
-        { json: "_", js: "_", typ: u(undefined, "") },
-        { json: "$", js: "$", typ: u(undefined, r("Slot")) },
-    ], false),
-    "Slot": o([
-        { json: "contentmodel", js: "contentmodel", typ: u(undefined, "") },
-        { json: "contentformat", js: "contentformat", typ: u(undefined, "") },
-        { json: "role", js: "role", typ: u(undefined, "") },
-        { json: "xml:space", js: "xml:space", typ: u(undefined, "") },
-    ], false),
-    "Redirect": o([
-        { json: "r", js: "r", typ: u(undefined, a(r("NElement"))) },
+    "Text": o([
+        { json: "*", js: "*", typ: u(undefined, "") },
     ], false),
 };

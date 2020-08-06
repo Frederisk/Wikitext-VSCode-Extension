@@ -16,11 +16,14 @@
     "categories": [
         "Programming Languages",
         "Snippets",
+        "Visualization",
         "Other"
     ],
     "activationEvents": [
         "onCommand:wikitext.getPreview",
         "onCommand:wikitext.setHost",
+        "onCommand:wikitext.readPage",
+        "onCommand:wikitext.writePage",
         "onCommand:wikitext.test"
     ],
     "main": "./dist/extension",

@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { getPreview } from './preview';
-import { setHost } from './host';
+import { getPreview } from './export_command/preview_function/preview';
+import { setHost } from './export_command/host_function/host';
 import { foo } from './foo';
-import { login, logout, writePage, readPage } from './wmcore';
+import { login, logout, writePage, readPage } from './export_command/wikimedia_function/wmcore';
 // import * as mwbot from 'mwbot';
 // import { resolve } from 'dns';
 // import { homedir } from 'os';

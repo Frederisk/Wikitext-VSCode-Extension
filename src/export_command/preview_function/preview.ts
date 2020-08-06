@@ -7,9 +7,9 @@ import * as vscode from 'vscode';
 import * as querystring from 'querystring';
 import { request } from 'https';
 import { ClientRequest, RequestOptions, IncomingMessage } from 'http';
-import { getHost } from './host';
-import { extensionContext } from './extension';
-import { action } from './mediawiki';
+import { getHost } from '../host_function/host';
+import { extensionContext } from '../../extension';
+import { action } from '../wikimedia_function/mediawiki';
 
 
 /**
@@ -86,6 +86,7 @@ export function getPreview(): void {
         response.on('end', () => {
             // result.
             const jsontext: string = Buffer.concat(chunks).toString();
+            console.log(jsontext);
             const json: any = JSON.parse(jsontext);
             const result: string | undefined = unescape(json["parse"]["text"]["*"]);
             // confirm the presence of the panel.
