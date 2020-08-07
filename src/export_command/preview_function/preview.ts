@@ -9,7 +9,7 @@ import { request } from 'https';
 import { ClientRequest, RequestOptions, IncomingMessage } from 'http';
 import { getHost } from '../host_function/host';
 import { extensionContext } from '../../extension';
-import { action } from '../wikimedia_function/mediawiki';
+import { action, format, contextModel } from '../wikimedia_function/mediawiki';
 
 
 /**
@@ -43,22 +43,17 @@ export function getPreview(): void {
     }
     // show loading statu
     currentPlanel.webview.html = showHtmlInfo("Loading...");
-    /**
-     * document text
-     */
+    /** document text */
     const sourceText: string = textEditor.document.getText();
-    /**
-     * arguments
-     */
+
+    /** arguments */
     const args: string = querystring.stringify({
         action: action.parse,
-        format: "json",
+        format: format.json,
         text: sourceText,
-        contentmodel: "wikitext"
+        contentmodel: contextModel.Wikitext
     });
-    /**
-     * target content
-     */
+    /** target content */
     const opts: RequestOptions = {
         hostname: host,
         path: vscode.workspace.getConfiguration("wikitext").get("apiPath"),

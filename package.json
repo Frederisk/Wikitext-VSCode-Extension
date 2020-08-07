@@ -38,7 +38,7 @@
         "commands": [
             {
                 "command": "wikitext.getPreview",
-                "title": "Get preview.",
+                "title": "Get preview",
                 "category": "Wikitext",
                 "": "It didn't work for unknown reasons.",
                 "icon": {
@@ -48,27 +48,27 @@
             },
             {
                 "command": "wikitext.setHost",
-                "title": "Set host setting of API.",
+                "title": "Set host setting of API",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.login",
-                "title": "Login with your account.",
+                "title": "Login with your account",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.logout",
-                "title": "Logout, if you are already loged in.",
+                "title": "Logout, if you are already loged in",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.readPage",
-                "title": "Read Page to edit.",
+                "title": "Read Page to edit",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.writePage",
-                "title": "Write your edit to the website.",
+                "title": "Write your edit to the website",
                 "category": "Wikitext"
             }
         ],

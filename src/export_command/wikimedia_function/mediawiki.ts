@@ -4,16 +4,16 @@
  *--------------------------------------------------------------------------------------------*/
 
 export enum action {
-    // abuseFilterCheckMatch = "abusefiltercheckmatch",
-    // abuseFilterCheckSyntax = "abusefilterchecksyntax",
-    // abuseFilterEvalExpression = "abusefilterevalexpression",
-    // abuseFilterUnblockAutoPromote = "abusefilterunblockautopromote",
-    // abuseLogPrivateDetails = "abuselogprivatedetails",
-    // antiSpoof = "antispoof",
-    // block = "block",
-    // centralAuthToken = "centralauthtoken",
-    // centralNoticeCdnCacheUpdateBanner = "centralnoticecdncacheupdatebanner",
-    // centralNoticeChoiceData = "centralnoticechoicedata",
+    abuseFilterCheckMatch = "abusefiltercheckmatch",
+    abuseFilterCheckSyntax = "abusefilterchecksyntax",
+    abuseFilterEvalExpression = "abusefilterevalexpression",
+    abuseFilterUnblockAutoPromote = "abusefilterunblockautopromote",
+    abuseLogPrivateDetails = "abuselogprivatedetails",
+    antiSpoof = "antispoof",
+    block = "block",
+    centralAuthToken = "centralauthtoken",
+    centralNoticeCdnCacheUpdateBanner = "centralnoticecdncacheupdatebanner",
+    centralNoticeChoiceData = "centralnoticechoicedata",
     // ...
     parse = "parse",
     // ...
@@ -23,7 +23,7 @@ export enum action {
 
 export enum prop {
     reVisions = 'revisions'
- }
+}
 
 export enum rvprop {
     ids = "ids",
@@ -43,5 +43,32 @@ export enum rvprop {
     roles = "roles",
     oresscores = "oresscores"
 }
+
+export enum format{
+    json = "json",
+    jsonFm = "jsonfm",
+    none = "none",
+    php = "php",
+    phpFm = "phpfm",
+    rawFm = "rawfm",
+    xml = "xml",
+    xmlFm = "xmlfm"
+}
+
+export enum contextModel{
+    GadgetDefinition = "GadgetDefinition",
+    JsonSchema = "JsonSchema",
+    MassMessageListContent = "MassMessageListContent",
+    Scribunto = "Scribunto",
+    CSS = "css",
+    FlowBoard = "flow-board",
+    Javascript = "javascript",
+    JSON = "json",
+    SanitizedCSS = "sanitized-css",
+    Text = "text",
+    Unknown = "unknown",
+    Wikitext = "wikitext"
+}
+
 
 // 'zh.wikipedia.org/w/api.php?action=query&prop=revisions&rvslots=*&rvprop=content&titles=Main_Page'

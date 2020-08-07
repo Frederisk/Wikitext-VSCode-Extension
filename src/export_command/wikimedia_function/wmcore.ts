@@ -9,10 +9,9 @@ import * as querystring from 'querystring';
 import { RequestOptions, ClientRequest, IncomingMessage } from 'http';
 import { request } from 'https';
 import * as xml2js from 'xml2js';
-import { action, prop } from './mediawiki';
+import { action, prop, format } from './mediawiki';
 import { getHost } from '../host_function/host';
 import * as readPageInterface from '../../interface_definition/readPageInterface';
-import { win32 } from 'path';
 
 let bot: MWBot | null = null;
 let pageName: string | undefined = "";
@@ -122,7 +121,7 @@ export async function readPage(): Promise<void> {
 
     const queryInput: querystring.ParsedUrlQueryInput = {
         action: action.query,
-        format: "xml",
+        format: format.xml,
         prop: prop.reVisions,
         rvprop: "content",
         rvslots: "*",
@@ -200,14 +199,29 @@ export async function readPage(): Promise<void> {
     }
 }
 
+export function viewPage(): void {
+    const host: string | undefined = getHost();
+
+    const title: string | undefined = await vscode.window.showInputBox({
+        prompt: "Enter the page name here."
+    });
+    if (!title) {
+        return undefined;
+    }
+
+    const queryInput: querystring.ParsedUrlQueryInput = {
+        action: action.parse,
+        format: format.json,
+    };
+    if (vscode.workspace.getConfiguration("wikitext").get("redirects")) {
+        queryInput.redirects = "true";
+    }
+}
+
 export function uploadFile(): void {
 
 }
 
 export function deletedPage(): void {
-
-}
-
-export function viewPage(): void {
 
 }
