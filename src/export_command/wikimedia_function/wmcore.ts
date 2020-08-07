@@ -199,7 +199,7 @@ export async function readPage(): Promise<void> {
     }
 }
 
-export function viewPage(): void {
+export async function viewPage(): Promise<void> {
     const host: string | undefined = getHost();
 
     const title: string | undefined = await vscode.window.showInputBox({
