@@ -5,6 +5,7 @@
 [![VSMarket: wikitext](https://img.shields.io/badge/Visual%20Studio%20Market-wikitext-blueviolet)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
 [![Github: wikitext](https://img.shields.io/badge/Github-wikitext-green)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 [![Build status](https://ci.appveyor.com/api/projects/status/25okygmf42atyvi0?svg=true)](https://ci.appveyor.com/project/Frederisk/wikitext-vscode-extension)
+[![CodeFactor](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension/badge)](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension)
 
 This Visual Studio Code Extension provides support of Wikitext Markup language. With this extension, you can more easily discover your grammatical problems through the marked and styled text. The plugin is based on MediaWiki's Wikitext standard, but the rules are somewhat stricter, which helps users write text that is easier to read and maintain.
 
