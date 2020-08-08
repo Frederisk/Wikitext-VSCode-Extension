@@ -12,5 +12,5 @@ install:
 build_script:
 - sh: >-
     npm install
-    
+
     npm run webpack
