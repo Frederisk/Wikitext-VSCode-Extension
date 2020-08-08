@@ -3,6 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+export function alterNativeValues(...values: string[]): string {
+    return values.join("|");
+}
+
 export enum action {
     abuseFilterCheckMatch = "abusefiltercheckmatch",
     abuseFilterCheckSyntax = "abusefilterchecksyntax",
@@ -44,7 +48,7 @@ export enum rvprop {
     oresscores = "oresscores"
 }
 
-export enum format{
+export enum format {
     json = "json",
     jsonFm = "jsonfm",
     none = "none",
@@ -55,7 +59,7 @@ export enum format{
     xmlFm = "xmlfm"
 }
 
-export enum contextModel{
+export enum contextModel {
     GadgetDefinition = "GadgetDefinition",
     JsonSchema = "JsonSchema",
     MassMessageListContent = "MassMessageListContent",

@@ -3,28 +3,25 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-// To parse this data:
-//
-//   import { Convert, ReadPageResult } from "./file";
-//
-//   const readPageResult = Convert.toReadPageResult(json);
-//
-// These functions will throw an error if the JSON doesn't
-// match the expected interface, even if the JSON is valid.
+import { o, u, r, a, uncast, cast } from "./convertFunction";
 
+/** <root> */
 export interface ReadPageResult {
     api?: Api;
 }
 
+/** api */
 export interface Api {
     $?: ApiClass;
     query?: Query[];
 }
 
+/** api. */
 export interface ApiClass {
     batchcomplete?: string;
 }
 
+/** query */
 export interface Query {
     normalized?: Normalized[];
     redirects?: Redirect[];
@@ -32,41 +29,50 @@ export interface Query {
     interwiki?: Interwiki[];
 }
 
+/** interwiki */
 export interface Interwiki {
     i?: IElement[];
 }
 
+/** i */
 export interface IElement {
     $?: I;
 }
 
+/** i. */
 export interface I {
     title?: string;
     iw?: string;
 }
 
+/** normalized */
 export interface Normalized {
     n?: NElement[];
 }
 
+/** n/r */
 export interface NElement {
     $?: N;
 }
 
+/** n/r. */
 export interface N {
     from?: string;
     to?: string;
 }
 
+/** pages */
 export interface QueryPage {
     page?: PagePage[];
 }
 
+/** page */
 export interface PagePage {
     $?: Page;
     revisions?: Revision[];
 }
 
+/** page. */
 export interface Page {
     _idx?: string;
     pageid?: string;
@@ -77,23 +83,34 @@ export interface Page {
     invalid?: string;
 }
 
+/** revisions */
 export interface Revision {
     rev?: Rev[];
 }
-
+/** rev */
 export interface Rev {
+    $?: RevInfo;
     slots?: RevSlot[];
 }
 
+/** rev. */
+export interface RevInfo {
+    revid?: string;
+    parentid?: string;
+}
+
+/** slots */
 export interface RevSlot {
     slot?: SlotSlot[];
 }
 
+/** slot */
 export interface SlotSlot {
     _?: string;
     $?: Slot;
 }
 
+/** slot. */
 export interface Slot {
     contentmodel?: string;
     contentformat?: string;
@@ -101,155 +118,24 @@ export interface Slot {
     "xml:space"?: string;
 }
 
+/** redirects */
 export interface Redirect {
     r?: NElement[];
 }
 
-// Converts JSON types to/from your types
-// and asserts the results at runtime
+/** ReadPageResultConvert */
 export class Convert {
     public static toReadPageResult(json: any): ReadPageResult {
-        return cast(json, r("ReadPageResult"));
+        return cast(json, r("ReadPageResult"), readPageResultTypeMap);
     }
 
     public static readPageResultToJson(value: ReadPageResult): any {
-        return uncast(value, r("ReadPageResult"));
+        return uncast(value, r("ReadPageResult"), readPageResultTypeMap);
     }
 }
 
-function invalidValue(typ: any, val: any, key: any = ''): never {
-    if (key) {
-        throw Error(`Invalid value for key "${key}". Expected type ${JSON.stringify(typ)} but got ${JSON.stringify(val)}`);
-    }
-    throw Error(`Invalid value ${JSON.stringify(val)} for type ${JSON.stringify(typ)}`,);
-}
 
-function jsonToJSProps(typ: any): any {
-    if (typ.jsonToJS === undefined) {
-        const map: any = {};
-        typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
-        typ.jsonToJS = map;
-    }
-    return typ.jsonToJS;
-}
-
-function jsToJSONProps(typ: any): any {
-    if (typ.jsToJSON === undefined) {
-        const map: any = {};
-        typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });
-        typ.jsToJSON = map;
-    }
-    return typ.jsToJSON;
-}
-
-function transform(val: any, typ: any, getProps: any, key: any = ''): any {
-    function transformPrimitive(typ: string, val: any): any {
-        if (typeof typ === typeof val) { return val; }
-        return invalidValue(typ, val, key);
-    }
-
-    function transformUnion(typs: any[], val: any): any {
-        // val must validate against one typ in typs
-        const l = typs.length;
-        for (let i = 0; i < l; i++) {
-            const typ = typs[i];
-            try {
-                return transform(val, typ, getProps);
-            } catch (_) { }
-        }
-        return invalidValue(typs, val);
-    }
-
-    function transformEnum(cases: string[], val: any): any {
-        if (cases.indexOf(val) !== -1) { return val; }
-        return invalidValue(cases, val);
-    }
-
-    function transformArray(typ: any, val: any): any {
-        // val must be an array with no invalid elements
-        if (!Array.isArray(val)) { return invalidValue("array", val); }
-        return val.map(el => transform(el, typ, getProps));
-    }
-
-    function transformDate(val: any): any {
-        if (val === null) {
-            return null;
-        }
-        const d = new Date(val);
-        if (isNaN(d.valueOf())) {
-            return invalidValue("Date", val);
-        }
-        return d;
-    }
-
-    function transformObject(props: { [k: string]: any }, additional: any, val: any): any {
-        if (val === null || typeof val !== "object" || Array.isArray(val)) {
-            return invalidValue("object", val);
-        }
-        const result: any = {};
-        Object.getOwnPropertyNames(props).forEach(key => {
-            const prop = props[key];
-            const v = Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
-            result[prop.key] = transform(v, prop.typ, getProps, prop.key);
-        });
-        Object.getOwnPropertyNames(val).forEach(key => {
-            if (!Object.prototype.hasOwnProperty.call(props, key)) {
-                result[key] = transform(val[key], additional, getProps, key);/* val[key]; */
-            }
-        });
-        return result;
-    }
-
-    if (typ === "any") { return val; }
-    if (typ === null) {
-        if (val === null) { return val; }
-        return invalidValue(typ, val);
-    }
-    if (typ === false) { return invalidValue(typ, val); }
-    while (typeof typ === "object" && typ.ref !== undefined) {
-        typ = typeMap[typ.ref];
-    }
-    if (Array.isArray(typ)) { return transformEnum(typ, val); }
-    if (typeof typ === "object") {
-        return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
-                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
-                    : invalidValue(typ, val);
-    }
-    // Numbers can be parsed by Date but shouldn't be.
-    if (typ === Date && typeof val !== "number") { return transformDate(val); }
-    return transformPrimitive(typ, val);
-}
-
-function cast<T>(val: any, typ: any): T {
-    return transform(val, typ, jsonToJSProps);
-}
-
-function uncast<T>(val: T, typ: any): any {
-    return transform(val, typ, jsToJSONProps);
-}
-
-function a(typ: any) {
-    return { arrayItems: typ };
-}
-
-function u(...typs: any[]) {
-    return { unionMembers: typs };
-}
-
-function o(props: any[], additional: any) {
-    return { props, additional };
-}
-
-function m(additional: any) {
-    return { props: [], additional };
-}
-
-function r(name: string) {
-    return { ref: name };
-}
-
-const typeMap: any = {
+export const readPageResultTypeMap: any = {
     "ReadPageResult": o([
         { json: "api", js: "api", typ: u(undefined, r("Api")) },
     ], false),
@@ -306,7 +192,12 @@ const typeMap: any = {
         { json: "rev", js: "rev", typ: u(undefined, a(r("Rev"))) },
     ], false),
     "Rev": o([
+        { json: "$", js: "$", typ: u(undefined, r("RevInfo")) },
         { json: "slots", js: "slots", typ: u(undefined, a(r("RevSlot"))) },
+    ], false),
+    "RevInfo": o([
+        { json: "revid", js: "revid", typ: u(undefined, "") },
+        { json: "parentid", js: "parentid", typ: u(undefined, "") },
     ], false),
     "RevSlot": o([
         { json: "slot", js: "slot", typ: u(undefined, a(r("SlotSlot"))) },

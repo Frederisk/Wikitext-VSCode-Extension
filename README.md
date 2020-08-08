@@ -44,7 +44,7 @@ Generally speaking, make sure that your VSCode is always the latest version.
 
 ### The help of
 
-[caltaojihun](https://github.com/caltaojihun)
+[caltaojihun](https://github.com/caltaojihun), [quicktype](https://github.com/quicktype)
 
 <!-- ## Extension Settings
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.

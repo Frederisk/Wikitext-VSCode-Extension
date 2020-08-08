@@ -9,15 +9,16 @@ import * as querystring from 'querystring';
 import { RequestOptions, ClientRequest, IncomingMessage } from 'http';
 import { request } from 'https';
 import * as xml2js from 'xml2js';
-import { action, prop, format } from './mediawiki';
+import { action, prop, format, rvprop, alterNativeValues } from './mediawiki';
 import { getHost } from '../host_function/host';
-import * as readPageInterface from '../../interface_definition/readPageInterface';
+import * as convertFunction from '../../interface_definition/readPageInterface';
+
+const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
 let bot: MWBot | null = null;
 let pageName: string | undefined = "";
 
 export function login(): void {
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const host: string | undefined = getHost();
     if (!host) { return undefined; }
@@ -101,7 +102,7 @@ export async function writePage() {
         else {
             vscode.window.showInformationMessage(
                 `Edit page "${response.edit.title}" (Page ID: "${response.edit.pageid}") action status is "${response.edit.result}" with Content Model "${response.edit.contentmodel}" (Version: "${response.edit.oldrevid}" => "${response.edit.newrevid}", Time: "${response.edit.newtimestamp}"). Watched by: "${response.edit.watched}".`
-                );
+            );
         }
     });
 }
@@ -123,18 +124,19 @@ export async function readPage(): Promise<void> {
         action: action.query,
         format: format.xml,
         prop: prop.reVisions,
-        rvprop: "content",
+        rvprop: alterNativeValues(rvprop.content, rvprop.ids),
         rvslots: "*",
         titles: title
     };
-    if (vscode.workspace.getConfiguration("wikitext").get("redirects")) {
+
+    if (config.get("redirects")) {
         queryInput.redirects = "true";
     }
     const args: string = querystring.stringify(queryInput);
 
     const opts: RequestOptions = {
         hostname: host,
-        path: vscode.workspace.getConfiguration("wikitext").get("apiPath"),
+        path: config.get("apiPath"),
         method: "POST",
         timeout: 10000,
         headers: {
@@ -159,30 +161,30 @@ export async function readPage(): Promise<void> {
         response.on('end', () => {
             // result.
             const xmltext: string = Buffer.concat(chunks).toString();
-            xml2js.parseString(xmltext, (err: Error, result: any) => {
+            xml2js.parseString(xmltext, async (err: Error, result: any) => {
                 console.log(result);
-                const re = readPageInterface.Convert.toReadPageResult(result);
+                const re = convertFunction.Convert.toReadPageResult(result);
 
-                const wikiTitle = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.title;
-                if (re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.missing !== undefined ||
-                    re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.invalid !== undefined) {
+                const wikiTitle = re.api?.query?.[0].pages?.[0].page?.[0].$?.title;
+                if (re.api?.query?.[0].pages?.[0].page?.[0].$?.missing !== undefined ||
+                    re.api?.query?.[0].pages?.[0].page?.[0].$?.invalid !== undefined) {
                     vscode.window.showWarningMessage(
                         `The page "${wikiTitle}" you are looking for does not exist.` +
-                        re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.invalidreason ?? ``
+                        re.api?.query?.[0].pages?.[0].page?.[0].$?.invalidreason || ``
                     );
                     return undefined;
                 }
-                if (re?.api?.query?.[0]?.interwiki !== undefined) {
+                if (re?.api?.query?.[0].interwiki !== undefined) {
                     vscode.window.showWarningMessage(
-                        `Interwiki page "${re?.api?.query?.[0]?.interwiki?.[0].i?.[0].$?.title}" in space "${re?.api?.query?.[0]?.interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
+                        `Interwiki page "${re?.api?.query?.[0].interwiki?.[0].i?.[0].$?.title}" in space "${re?.api?.query?.[0].interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
                     );
                     return undefined;
                 }
 
-                const wikiContent = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.revisions?.[0]?.rev?.[0]?.slots?.[0]?.slot?.[0]?._;
-                const wikiModel = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.revisions?.[0]?.rev?.[0]?.slots?.[0]?.slot?.[0]?.$?.contentmodel;
+                const wikiContent = re.api?.query?.[0].pages?.[0].page?.[0].revisions?.[0].rev?.[0].slots?.[0].slot?.[0]._;
+                const wikiModel = re.api?.query?.[0].pages?.[0].page?.[0].revisions?.[0].rev?.[0].slots?.[0].slot?.[0].$?.contentmodel;
                 console.log(wikiModel);
-                vscode.workspace.openTextDocument({
+                await vscode.workspace.openTextDocument({
                     language: wikiModel,
                     content: wikiContent
                 });
@@ -190,9 +192,9 @@ export async function readPage(): Promise<void> {
                 console.log(wikiTitle);
                 pageName = wikiTitle;
 
-                const wikiPageID = re.api?.query?.[0]?.pages?.[0]?.page?.[0]?.$?.pageid;
-                const wikiNormalized = re.api?.query?.[0]?.normalized?.[0]?.n?.[0].$;
-                const wikiRedirect = re.api?.query?.[0]?.redirects?.[0]?.r?.[0]?.$;
+                const wikiPageID = re.api?.query?.[0].pages?.[0].page?.[0].$?.pageid;
+                const wikiNormalized = re.api?.query?.[0].normalized?.[0].n?.[0].$;
+                const wikiRedirect = re.api?.query?.[0].redirects?.[0].r?.[0].$;
                 vscode.window.showInformationMessage(`Opened page "${wikiTitle}" (page ID:"${wikiPageID}") with Model ${wikiModel}.` + (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) + (wikiRedirect ? ` Redirect: "${wikiRedirect?.from}" => "${wikiRedirect.to}"` : ``));
             });
         });
@@ -213,9 +215,10 @@ export async function viewPage(): Promise<void> {
         action: action.parse,
         format: format.json,
     };
-    if (vscode.workspace.getConfiguration("wikitext").get("redirects")) {
+    if (config.get("redirects")) {
         queryInput.redirects = "true";
     }
+    
 }
 
 export function uploadFile(): void {

@@ -11,7 +11,6 @@ import { getHost } from '../host_function/host';
 import { extensionContext } from '../../extension';
 import { action, format, contextModel } from '../wikimedia_function/mediawiki';
 
-
 /**
  * webview panel
  */
@@ -53,6 +52,7 @@ export function getPreview(): void {
         text: sourceText,
         contentmodel: contextModel.Wikitext
     });
+
     /** target content */
     const opts: RequestOptions = {
         hostname: host,

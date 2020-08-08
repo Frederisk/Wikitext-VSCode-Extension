@@ -15,14 +15,12 @@ export function activate(context: vscode.ExtensionContext): void {
     console.log("Extension is active.");
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.setHost", setHost));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.getPreview", getPreview));
-        
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.login",login));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.logout",logout));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.readPage", readPage));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.writePage",writePage));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.viewpage",viewPage));
 
-    // context.subscriptions.push(vscode.commands.registerCommand("wikitext.test", foo));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.login", login));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.logout", logout));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.readPage", readPage));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.writePage", writePage));
+    // context.subscriptions.push(vscode.commands.registerCommand("wikitext.viewpage", viewPage));
 }
 
 export function deactivate(): void {
