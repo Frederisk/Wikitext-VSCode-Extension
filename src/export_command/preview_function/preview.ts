@@ -9,7 +9,7 @@ import { request } from 'https';
 import { ClientRequest, RequestOptions, IncomingMessage } from 'http';
 import { getHost } from '../host_function/host';
 import { extensionContext } from '../../extension';
-import { action, format, contextModel } from '../wikimedia_function/mediawiki';
+import { action, format, contextModel, alterNativeValues, prop } from '../wikimedia_function/mediawiki';
 
 /**
  * webview panel
@@ -17,6 +17,7 @@ import { action, format, contextModel } from '../wikimedia_function/mediawiki';
 let currentPlanel: vscode.WebviewPanel | undefined = undefined;
 
 export function getPreview(): void {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const textEditor = vscode.window.activeTextEditor;
     // check is there an opened document.
     if (!textEditor) {
@@ -33,7 +34,7 @@ export function getPreview(): void {
         // if have not, try to creat new one.
         currentPlanel = vscode.window.createWebviewPanel(
             "previewer", "WikitextPreviewer", vscode.ViewColumn.Beside, {
-            enableScripts: true
+            enableScripts: config.get("enableJavascript"),
         });
         // register for events that release resources.
         currentPlanel.onDidDispose(() => {
@@ -50,13 +51,16 @@ export function getPreview(): void {
         action: action.parse,
         format: format.json,
         text: sourceText,
+        prop: alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
         contentmodel: contextModel.Wikitext
     });
+
+    console.log(args);
 
     /** target content */
     const opts: RequestOptions = {
         hostname: host,
-        path: vscode.workspace.getConfiguration("wikitext").get("apiPath"),
+        path: config.get("apiPath"),
         method: "POST",
         timeout: 10000,
         headers: {
@@ -70,6 +74,7 @@ export function getPreview(): void {
     // call end methord.
     req.end();
 
+    /** */
     function requestCallback(response: IncomingMessage): void {
         const chunks: Uint8Array[] = [];
         // get data.
@@ -80,18 +85,24 @@ export function getPreview(): void {
         // end event.
         response.on('end', () => {
             // result.
-            const jsontext: string = Buffer.concat(chunks).toString();
-            console.log(jsontext);
-            const json: any = JSON.parse(jsontext);
-            const result: string | undefined = unescape(json["parse"]["text"]["*"]);
+            const result: string = Buffer.concat(chunks).toString();
+            const re: any = JSON.parse(result);
+            console.log(re);
+            const wikiContent: string = unescape(re["parse"]["text"]["*"]);
             // confirm the presence of the panel.
             if (!currentPlanel) {
                 vscode.window.showInformationMessage("Preview Planel Not be Opened.");
                 return undefined;
             }
+
+            const header: string = config.get("getCss") ? re["parse"]["headhtml"]["*"] : `<!DOCTYPE html><html><body>`;
+
+            const end: string = `</body></html>`;
+
             // show result.
-            if (result) {
-                currentPlanel.webview.html = result;
+            if (wikiContent && header) {
+                currentPlanel.webview.html = header + wikiContent + end;
+                console.log(currentPlanel.webview.html);
             }
             // no content, notification error.
             else {

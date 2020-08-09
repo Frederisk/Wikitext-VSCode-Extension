@@ -3,7 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-export function alterNativeValues(...values: string[]): string {
+export function alterNativeValues(...values: (string | undefined)[]): string {
+    values = values.filter(item => {return item !== undefined;});
     return values.join("|");
 }
 
@@ -26,7 +27,30 @@ export enum action {
 }
 
 export enum prop {
-    reVisions = 'revisions'
+    reVisions = "revisions",
+    text = "text",
+    langLinks = "langlinks",
+    categories = "categories",
+    links ="links",
+    templates = "templates",
+    images = "images",
+    externalLinks = "externallinks",
+    sections = "sections",
+    revid = "revid",
+    displayTitle = "displaytitle",
+    iwLinks = "iwlinks",
+    properties = "properties",
+    parseWarnings = "parsewarnings",
+    categoriesHTML = "categorieshtml",
+    headHTML = "headhtml",
+    modules = "modules",
+    jSConfigVars = "jsconfigvars",
+    encodedJSConfigVars = "encodedjsconfigvars",
+    indicators = "indicators",
+    wikitext = "wikitext",
+    limitReportData = "limitreportdata",
+    limitReportHTML = "limitreporthtml",
+    parsetree = "parsetree"
 }
 
 export enum rvprop {

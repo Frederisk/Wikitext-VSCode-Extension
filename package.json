@@ -166,12 +166,22 @@
                 "wikitext.redirects": {
                     "type": "boolean",
                     "description": "When the input page is a redirect page, jump automatically.",
-                    "default": "true"
+                    "default": true
                 },
                 "wikitext.apiPath": {
                     "type": "string",
                     "description": "Set the basic path to obtain the API. If you are not sure, please keep the default value.",
                     "default": "/w/api.php"
+                },
+                "wikitext.getCss": {
+                    "type":"boolean",
+                    "description": "Get CSS when previewing the page. Please note that this feature will greatly increase the extended workload, and some rendering effects may conflict with VSCode. To get the correct display, you may need to enable Previewer's JS support.",
+                    "default": false
+                },
+                "wikitext.enableJavascript": {
+                    "type":"boolean",
+                    "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks. (This feature was turned on by default in the past, but will be turned off by default from now on.)",
+                    "default": false
                 }
             }
         }

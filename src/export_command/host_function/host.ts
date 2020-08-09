@@ -5,9 +5,8 @@
 
 import * as vscode from 'vscode';
 
-const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-
 export function setHost(): void {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     vscode.window.showInputBox({
         prompt: "Please input the host of previewer. such as 'en.wikipedia.org'.",
         //value: extensionContext.globalState.get("host") ?? "en.wikipedia.org",
@@ -20,6 +19,7 @@ export function setHost(): void {
 }
 
 export function getHost(): string | undefined {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     // const host: string | undefined = extensionContext.globalState.get("host");
     const host: string | undefined = config.get("host");
     // Login and Session Management

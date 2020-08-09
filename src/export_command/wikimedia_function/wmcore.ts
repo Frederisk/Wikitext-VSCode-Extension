@@ -13,12 +13,11 @@ import { action, prop, format, rvprop, alterNativeValues } from './mediawiki';
 import { getHost } from '../host_function/host';
 import * as convertFunction from '../../interface_definition/readPageInterface';
 
-const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-
 let bot: MWBot | null = null;
 let pageName: string | undefined = "";
 
 export function login(): void {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const host: string | undefined = getHost();
     if (!host) { return undefined; }
@@ -111,6 +110,7 @@ export async function writePage() {
  * Read Page
  */
 export async function readPage(): Promise<void> {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const host: string | undefined = getHost();
 
     const title: string | undefined = await vscode.window.showInputBox({
@@ -202,6 +202,7 @@ export async function readPage(): Promise<void> {
 }
 
 export async function viewPage(): Promise<void> {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const host: string | undefined = getHost();
 
     const title: string | undefined = await vscode.window.showInputBox({
