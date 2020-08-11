@@ -5,11 +5,33 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [Unreleased]
+## [Todo List]
 
 - Improve the advanced features of Wikitext preview.
 - Adjust the UI to make it easier for users to use Wikitext preview.
 - Find and fix more syntax highlighting issues.
+- Add the function of quick citation to references.
+
+## [2.3.0]\* - 2020-08-09
+
+### Added
+
+- Support for Redirect rendering.
+- Support for some other magic words.
+- The push and pull features for editing. Now you can modify the website content by logging in directly in VSCode.
+- API Path Setting.
+- Support for header parsing in Perviewer.
+- Javascript toggle switch support for Previewer.
+
+### Changed
+
+- All of Behaviour Switches will now act as `constant.language` instead of `keywords`.
+- Adjusted the program structure and optimized performance.
+- Javascript support for Previewer is disabled by default.
+
+### Fixed
+
+- Corrected some programming logic errors.
 
 ## [2.2.1] - 2020-07-10
 

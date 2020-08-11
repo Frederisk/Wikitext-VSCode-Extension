@@ -11,6 +11,12 @@ This Visual Studio Code Extension provides support of Wikitext Markup language. 
 
 Of course, the development of this extension is short, and there may be some errors in operation and labeling. If you find a problem, please report it to me immediately for resolution.
 
+## NEW FEATURES
+
+- Now you can modify the website content by logging in directly in VSCode! Enter the settings page, search Wikitext and find the username and password items, and fill in them. Then press `F1` in the text editor, select `Write your page to the website`!
+
+- Obtain the Wikitext source code directly in VSCode according to the page name without opening the web page. Press F1 and select Read page to edit to use this function.
+
 ## Features
 
 - Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats. <br />
@@ -22,10 +28,10 @@ Of course, the development of this extension is short, and there may be some err
 - The special comment syntax\(`<!--#region-->`&`<!--#endregion-->`\) can folds the code for easy reading. <br />
 <img src="./.asset/Code-region.gif" width="500"/>
 
-- Press `Ctrl + Shift + P` and choose to execute the `Wikitext: Get Preview` command to get a parsed preview of Wikitext in the currently active text editor.<br />
+- Press `Ctrl + Shift + V` directly in the Wikitext content to get a parsed preview of Wikitext in the currently active text editor.<br />
 <img src="./.asset/Code-previewer.gif" width="500">
 
-- Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`...<br />
+- Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`, `@title`...<br />
 <img src="./.asset/Code-snippets.gif" width="500">
 
 ## Requirements
@@ -36,10 +42,14 @@ Generally speaking, make sure that your VSCode is always the latest version.
 
 ## Release Notes
 
-- Added more snippets.
-- Now, the settings about host have been migrated to the Settings page.
-- Fixed some typo and other details.
-- Fixed an issue where the dialog for changing host would not appear.
+- The push and pull features for editing. Now you can modify the website content by logging in directly in VSCode.
+- Added support for header parsing in Perviewer.
+- Added the javascript toggle switch support for Previewer and API Path Setting.
+- Javascript support for Previewer is disabled by default.
+- Support for Redirect rendering and some other magic words.
+- All of Behaviour Switches will now act as `constant.language` instead of `keywords`.
+- Adjusted the program structure and optimized performance.
+- Corrected some programming logic errors.
 
 ## Special Thanks
 

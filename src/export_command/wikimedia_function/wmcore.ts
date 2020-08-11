@@ -138,7 +138,7 @@ export async function readPage(): Promise<void> {
         hostname: host,
         path: config.get("apiPath"),
         method: "POST",
-        timeout: 10000,
+        timeout: 15000,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': Buffer.byteLength(args)
