@@ -5,11 +5,10 @@
 
 import * as vscode from 'vscode';
 import * as querystring from 'querystring';
-import { request } from 'https';
-import { ClientRequest, RequestOptions, IncomingMessage } from 'http';
-import { getHost } from '../host_function/host';
 import { extensionContext } from '../../extension';
 import { action, format, contextModel, alterNativeValues, prop } from '../wikimedia_function/mediawiki';
+import { sendRequest } from '../private_function/mwrequester';
+import { IncomingMessage } from 'http';
 
 /**
  * webview panel
@@ -25,11 +24,7 @@ export function getPreview(): void {
         // if have not, cancle.
         return undefined;
     }
-    // get host
-    let host: string | undefined = getHost();
-    // falied, stop task.
-    if (!host) { return undefined; }
-    // check if have an opened WebViewPanel.
+
     if (!currentPlanel) {
         // if have not, try to creat new one.
         currentPlanel = vscode.window.createWebviewPanel(
@@ -47,32 +42,15 @@ export function getPreview(): void {
     const sourceText: string = textEditor.document.getText();
 
     /** arguments */
-    const args: string = querystring.stringify({
+    const queryInput : querystring.ParsedUrlQueryInput = {
         action: action.parse,
         format: format.json,
         text: sourceText,
         prop: alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
         contentmodel: contextModel.Wikitext
-    });
-
-    console.log(args);
-
-    /** target content */
-    const opts: RequestOptions = {
-        hostname: host,
-        path: config.get("apiPath"),
-        method: "POST",
-        timeout: 10000,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(args)
-        }
     };
-    const req: ClientRequest = request(opts, requestCallback);
-    // write arguments.
-    req.write(args);
-    // call end methord.
-    req.end();
+
+    sendRequest(queryInput, requestCallback);
 
     /** */
     function requestCallback(response: IncomingMessage): void {

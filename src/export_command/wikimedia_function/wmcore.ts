@@ -6,12 +6,12 @@
 import * as MWBot from 'mwbot';
 import * as vscode from 'vscode';
 import * as querystring from 'querystring';
-import { RequestOptions, ClientRequest, IncomingMessage } from 'http';
-import { request } from 'https';
+import { IncomingMessage } from 'http';
 import * as xml2js from 'xml2js';
 import { action, prop, format, rvprop, alterNativeValues } from './mediawiki';
 import { getHost } from '../host_function/host';
 import * as convertFunction from '../../interface_definition/readPageInterface';
+import { sendRequest } from '../private_function/mwrequester';
 
 let bot: MWBot | null = null;
 let pageName: string | undefined = "";
@@ -111,7 +111,6 @@ export async function writePage() {
  */
 export async function readPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const host: string | undefined = getHost();
 
     const title: string | undefined = await vscode.window.showInputBox({
         prompt: "Enter the page name here."
@@ -132,23 +131,8 @@ export async function readPage(): Promise<void> {
     if (config.get("redirects")) {
         queryInput.redirects = "true";
     }
-    const args: string = querystring.stringify(queryInput);
 
-    const opts: RequestOptions = {
-        hostname: host,
-        path: config.get("apiPath"),
-        method: "POST",
-        timeout: 15000,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(args)
-        }
-    };
-    const req: ClientRequest = request(opts, requestCallback);
-    // write arguments.
-    req.write(args);
-    // call end methord.
-    req.end();
+    sendRequest(queryInput, requestCallback);
 
     function requestCallback(response: IncomingMessage) {
         const chunks: Uint8Array[] = [];
@@ -203,21 +187,28 @@ export async function readPage(): Promise<void> {
 
 export async function viewPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const host: string | undefined = getHost();
-
-    const title: string | undefined = await vscode.window.showInputBox({
+    const pageTitle: string | undefined = await vscode.window.showInputBox({
         prompt: "Enter the page name here."
     });
-    if (!title) {
+    if (!pageTitle) {
         return undefined;
     }
 
     const queryInput: querystring.ParsedUrlQueryInput = {
         action: action.parse,
         format: format.json,
+        page : pageTitle,
+        prop: alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
     };
     if (config.get("redirects")) {
         queryInput.redirects = "true";
+    }
+    console.log(queryInput);
+
+    sendRequest(queryInput, requestCallback);
+
+    function requestCallback(response: IncomingMessage): void {
+
     }
     
 }
