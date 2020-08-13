@@ -5,17 +5,16 @@
 
 import * as vscode from 'vscode';
 
-export function setHost(): void {
+export async function setHost(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    vscode.window.showInputBox({
+    const result: string | undefined =  await vscode.window.showInputBox({
         prompt: "Please input the host of previewer. such as 'en.wikipedia.org'.",
         //value: extensionContext.globalState.get("host") ?? "en.wikipedia.org",
         value: config.get("host") || "en.wikipedia.org",
         ignoreFocusOut: false
-    }).then(resule => {
-        // extensionContext.globalState.update("host", resule);
-        config.update("host", resule as string, true);
     });
+    // extensionContext.globalState.update("host", resule);
+    config.update("host", result as string, true);
 }
 
 export function getHost(): string | undefined {

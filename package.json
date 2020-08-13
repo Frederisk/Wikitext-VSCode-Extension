@@ -31,7 +31,8 @@
         "onCommand:wikitext.login",
         "onCommand:wikitext.logout",
         "onCommand:wikitext.readPage",
-        "onCommand:wikitext.writePage"
+        "onCommand:wikitext.writePage",
+        "onCommand:wikitext.viewPage"
     ],
     "main": "./dist/extension",
     "contributes": {
@@ -70,6 +71,11 @@
                 "command": "wikitext.writePage",
                 "title": "Write your edit to the website",
                 "category": "Wikitext"
+            },
+            {
+                "command": "wikitext.viewPage",
+                "title": "View the page",
+                "category": "Wikitext"
             }
         ],
         "menus": {
@@ -98,6 +104,10 @@
                 },
                 {
                     "command": "wikitext.writePage",
+                    "group": "navigation"
+                },
+                {
+                    "command": "wikitext.viewPage",
                     "group": "navigation"
                 }
             ]

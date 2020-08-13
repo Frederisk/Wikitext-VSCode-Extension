@@ -197,7 +197,7 @@ export async function viewPage(): Promise<void> {
     const queryInput: querystring.ParsedUrlQueryInput = {
         action: action.parse,
         format: format.json,
-        page : pageTitle,
+        page: pageTitle,
         prop: alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
     };
     if (config.get("redirects")) {
@@ -208,9 +208,42 @@ export async function viewPage(): Promise<void> {
     sendRequest(queryInput, requestCallback);
 
     function requestCallback(response: IncomingMessage): void {
+        let currentPlanel: vscode.WebviewPanel = vscode.window.createWebviewPanel("pageViewer", "PageViewer", vscode.ViewColumn.Active, {
+            enableScripts: config.get("enableJavascript"),
+        });
 
+        const chunks: Uint8Array[] = [];
+
+        response.on('data', data => {
+            console.log(response.statusCode);
+            chunks.push(data);
+        });
+
+        response.on('end', () => {
+            // result.
+            const result: string = Buffer.concat(chunks).toString();
+            const re: any = JSON.parse(result);
+            console.log(re);
+
+
+            const wikiContent: string = unescape(re["parse"]["text"]["*"]);
+            const header: string = config.get("getCss") ? re["parse"]["headhtml"]["*"] : `<!DOCTYPE html><html><body>`;
+            const end: string = `</body></html>`;
+            if(!currentPlanel){return undefined;}
+
+            if (wikiContent && header) {
+                currentPlanel.webview.html = header + wikiContent + end;
+            }
+            else{
+                currentPlanel.dispose();
+                vscode.window.showErrorMessage("Error.");
+            }
+
+            response.on('error', (error: Error) => {
+                vscode.window.showErrorMessage(error.name);
+            });
+        });
     }
-    
 }
 
 export function uploadFile(): void {

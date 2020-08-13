@@ -66,21 +66,19 @@ export function getPreview(): void {
             const result: string = Buffer.concat(chunks).toString();
             const re: any = JSON.parse(result);
             console.log(re);
-            const wikiContent: string = unescape(re["parse"]["text"]["*"]);
             // confirm the presence of the panel.
             if (!currentPlanel) {
                 vscode.window.showInformationMessage("Preview Planel Not be Opened.");
                 return undefined;
             }
 
+            const wikiContent: string = unescape(re["parse"]["text"]["*"]);
             const header: string = config.get("getCss") ? re["parse"]["headhtml"]["*"] : `<!DOCTYPE html><html><body>`;
-
             const end: string = `</body></html>`;
 
             // show result.
             if (wikiContent && header) {
                 currentPlanel.webview.html = header + wikiContent + end;
-                console.log(currentPlanel.webview.html);
             }
             // no content, notification error.
             else {
