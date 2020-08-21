@@ -124,7 +124,7 @@ export interface Redirect {
 }
 
 /** ReadPageResultConvert */
-export class Convert {
+export class ReadPageConvert {
     public static toReadPageResult(json: any): ReadPageResult {
         return cast(json, r("ReadPageResult"), readPageResultTypeMap);
     }

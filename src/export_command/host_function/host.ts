@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 
 export async function setHost(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const result: string | undefined =  await vscode.window.showInputBox({
+    const result: string | undefined = await vscode.window.showInputBox({
         prompt: "Please input the host of previewer. such as 'en.wikipedia.org'.",
         //value: extensionContext.globalState.get("host") ?? "en.wikipedia.org",
         value: config.get("host") || "en.wikipedia.org",

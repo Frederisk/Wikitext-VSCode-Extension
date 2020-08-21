@@ -9,6 +9,7 @@ import { extensionContext } from '../../extension';
 import { action, format, contextModel, alterNativeValues, prop } from '../wikimedia_function/mediawiki';
 import { sendRequest } from '../private_function/mwrequester';
 import { IncomingMessage } from 'http';
+import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
 
 /**
  * webview panel
@@ -42,7 +43,7 @@ export function getPreview(): void {
     const sourceText: string = textEditor.document.getText();
 
     /** arguments */
-    const queryInput : querystring.ParsedUrlQueryInput = {
+    const queryInput: querystring.ParsedUrlQueryInput = {
         action: action.parse,
         format: format.json,
         text: sourceText,
@@ -64,7 +65,9 @@ export function getPreview(): void {
         response.on('end', () => {
             // result.
             const result: string = Buffer.concat(chunks).toString();
-            const re: any = JSON.parse(result);
+            // const re: any = JSON.parse(result);
+            const re: GetViewResult = GetViewConvert.toGetViewResult(JSON.parse(result));
+
             console.log(re);
             // confirm the presence of the panel.
             if (!currentPlanel) {
@@ -72,18 +75,21 @@ export function getPreview(): void {
                 return undefined;
             }
 
-            const wikiContent: string = unescape(re["parse"]["text"]["*"]);
-            const header: string = config.get("getCss") ? re["parse"]["headhtml"]["*"] : `<!DOCTYPE html><html><body>`;
+            if (re.parse){
+            // const wikiContent: string = unescape(re?.parse?.text?.["*"] || ``);
+            const header: string = config.get("getCss") ? (re.parse.headhtml?.["*"] || ``) : `<!DOCTYPE html><html><body>`;
             const end: string = `</body></html>`;
 
             // show result.
-            if (wikiContent && header) {
-                currentPlanel.webview.html = header + wikiContent + end;
-            }
+            // if (wikiContent && header) {
+            currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
+            currentPlanel.title = `WikitextPreviewer: ${re.parse.displaytitle}`;
+            // }
             // no content, notification error.
-            else {
-                currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
-                vscode.window.showWarningMessage("Fresh Error.");
+            // else {
+            //     currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
+            //     vscode.window.showWarningMessage("Fresh Error.");
+            // }
             }
         });
         // exception status.

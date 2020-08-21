@@ -10,8 +10,9 @@ import { IncomingMessage } from 'http';
 import * as xml2js from 'xml2js';
 import { action, prop, format, rvprop, alterNativeValues } from './mediawiki';
 import { getHost } from '../host_function/host';
-import * as convertFunction from '../../interface_definition/readPageInterface';
+import { ReadPageConvert, ReadPageResult } from '../../interface_definition/readPageInterface';
 import { sendRequest } from '../private_function/mwrequester';
+import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
 
 let bot: MWBot | null = null;
 let pageName: string | undefined = "";
@@ -147,26 +148,32 @@ export async function readPage(): Promise<void> {
             const xmltext: string = Buffer.concat(chunks).toString();
             xml2js.parseString(xmltext, async (err: Error, result: any) => {
                 console.log(result);
-                const re = convertFunction.Convert.toReadPageResult(result);
+                const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
 
-                const wikiTitle = re.api?.query?.[0].pages?.[0].page?.[0].$?.title;
-                if (re.api?.query?.[0].pages?.[0].page?.[0].$?.missing !== undefined ||
-                    re.api?.query?.[0].pages?.[0].page?.[0].$?.invalid !== undefined) {
+                // interwiki
+                if (re.api?.query?.[0].interwiki !== undefined) {
+                    vscode.window.showWarningMessage(
+                        `Interwiki page "${re.api.query[0].interwiki?.[0].i?.[0].$?.title}" in space "${re.api.query[0].interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
+                    );
+                    return undefined;
+                }
+
+                // need page
+                if (!re.api?.query?.[0].pages?.[0].page) { return undefined; }
+                // not exist
+                const wikiTitle = re.api.query[0].pages[0].page[0].$?.title;
+                if (re.api.query[0].pages[0].page[0].$?.missing !== undefined ||
+                    re.api.query[0].pages[0].page[0].$?.invalid !== undefined) {
                     vscode.window.showWarningMessage(
                         `The page "${wikiTitle}" you are looking for does not exist.` +
-                        re.api?.query?.[0].pages?.[0].page?.[0].$?.invalidreason || ``
-                    );
-                    return undefined;
-                }
-                if (re?.api?.query?.[0].interwiki !== undefined) {
-                    vscode.window.showWarningMessage(
-                        `Interwiki page "${re?.api?.query?.[0].interwiki?.[0].i?.[0].$?.title}" in space "${re?.api?.query?.[0].interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
+                        re.api.query[0].pages[0].page[0].$?.invalidreason || ``
                     );
                     return undefined;
                 }
 
-                const wikiContent = re.api?.query?.[0].pages?.[0].page?.[0].revisions?.[0].rev?.[0].slots?.[0].slot?.[0]._;
-                const wikiModel = re.api?.query?.[0].pages?.[0].page?.[0].revisions?.[0].rev?.[0].slots?.[0].slot?.[0].$?.contentmodel;
+                // show doc
+                const wikiContent = re.api.query[0].pages[0].page[0].revisions?.[0].rev?.[0].slots?.[0].slot?.[0]._;
+                const wikiModel = re.api.query[0].pages[0].page[0].revisions?.[0].rev?.[0].slots?.[0].slot?.[0].$?.contentmodel;
                 console.log(wikiModel);
                 await vscode.workspace.openTextDocument({
                     language: wikiModel,
@@ -174,13 +181,19 @@ export async function readPage(): Promise<void> {
                 });
 
                 console.log(wikiTitle);
+                //TODO: update pagename
                 pageName = wikiTitle;
 
-                const wikiPageID = re.api?.query?.[0].pages?.[0].page?.[0].$?.pageid;
-                const wikiNormalized = re.api?.query?.[0].normalized?.[0].n?.[0].$;
-                const wikiRedirect = re.api?.query?.[0].redirects?.[0].r?.[0].$;
+                // show info
+                const wikiPageID = re.api.query[0].pages[0].page[0].$?.pageid;
+                const wikiNormalized = re.api.query[0].normalized?.[0].n?.[0].$;
+                const wikiRedirect = re.api.query[0].redirects?.[0].r?.[0].$;
                 vscode.window.showInformationMessage(`Opened page "${wikiTitle}" (page ID:"${wikiPageID}") with Model ${wikiModel}.` + (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) + (wikiRedirect ? ` Redirect: "${wikiRedirect?.from}" => "${wikiRedirect.to}"` : ``));
             });
+        });
+
+        response.on('error', (error: Error) => {
+            vscode.window.showErrorMessage(error.name);
         });
     }
 }
@@ -222,26 +235,33 @@ export async function viewPage(): Promise<void> {
         response.on('end', () => {
             // result.
             const result: string = Buffer.concat(chunks).toString();
-            const re: any = JSON.parse(result);
+            //const re: any = JSON.parse(result);
+            const re: GetViewResult = GetViewConvert.toGetViewResult(JSON.parse(result));
             console.log(re);
 
-
-            const wikiContent: string = unescape(re["parse"]["text"]["*"]);
-            const header: string = config.get("getCss") ? re["parse"]["headhtml"]["*"] : `<!DOCTYPE html><html><body>`;
-            const end: string = `</body></html>`;
-            if(!currentPlanel){return undefined;}
-
-            if (wikiContent && header) {
-                currentPlanel.webview.html = header + wikiContent + end;
+            if (re.error) {
+                vscode.window.showErrorMessage(`${re.error.code}! ${re.error.info}`);
+                return undefined;
             }
-            else{
-                currentPlanel.dispose();
-                vscode.window.showErrorMessage("Error.");
-            }
+            else if (re.parse) {
+                // const wikiContent: string = unescape(re["parse"]["text"]["*"]);
+                const header: string = config.get("getCss") ? (re.parse.headhtml?.["*"] || ``) : `<!DOCTYPE html><html><body>`;
+                const end: string = `</body></html>`;
 
-            response.on('error', (error: Error) => {
-                vscode.window.showErrorMessage(error.name);
-            });
+                if (!currentPlanel) { return undefined; }
+                // if (wikiContent && header) {
+                currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
+                currentPlanel.title = `WikitextPreviewer: ${re.parse.displaytitle}`;
+                // }
+                // else {
+                //     currentPlanel.dispose();
+                //     vscode.window.showErrorMessage("Error.");
+                // }
+            }
+        });
+
+        response.on('error', (error: Error) => {
+            vscode.window.showErrorMessage(error.name);
         });
     }
 }

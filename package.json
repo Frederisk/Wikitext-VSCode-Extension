@@ -184,12 +184,12 @@
                     "default": "/w/api.php"
                 },
                 "wikitext.getCss": {
-                    "type":"boolean",
+                    "type": "boolean",
                     "description": "Get CSS when previewing the page. Please note that this feature will greatly increase the extended workload, and some rendering effects may conflict with VSCode. To get the correct display, you may need to enable Previewer's JS support.",
                     "default": false
                 },
                 "wikitext.enableJavascript": {
-                    "type":"boolean",
+                    "type": "boolean",
                     "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks. (This feature was turned on by default in the past, but will be turned off by default from now on.)",
                     "default": false
                 }
