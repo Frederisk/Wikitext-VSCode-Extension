@@ -6,24 +6,24 @@
 import { o, u, r, a, cast, uncast } from "./convertFunction";
 
 export interface GetViewResult {
-    parse?:    Parse;
-    error?:    Error;
+    parse?: Parse;
+    error?: Error;
     servedby?: string;
 }
 
 export interface Error {
     code?: string;
     info?: string;
-    "*"?:  string;
+    "*"?: string;
 }
 
 export interface Parse {
-    title?:        string;
-    pageid?:       number;
-    redirects?:    Redirect[];
-    text?:         Headhtml;
+    title?: string;
+    pageid?: number;
+    redirects?: Redirect[];
+    text?: Headhtml;
     displaytitle?: string;
-    headhtml?:     Headhtml;
+    headhtml?: Headhtml;
 }
 
 export interface Headhtml {
@@ -32,7 +32,7 @@ export interface Headhtml {
 
 export interface Redirect {
     from?: string;
-    to?:   string;
+    to?: string;
 }
 
 // Converts JSON types to/from your types

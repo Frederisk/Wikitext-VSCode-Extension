@@ -12,6 +12,16 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 - Find and fix more syntax highlighting issues.
 - Add the function of quick citation to references.
 
+## [3.0.0] - 2020-09-20
+
+### Added
+
+- Added View Page feature.
+
+### Changed
+
+- Improved some functions.
+
 ## [2.3.0]\* - 2020-08-09
 
 ### Added

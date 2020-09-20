@@ -251,7 +251,8 @@ export async function viewPage(): Promise<void> {
                 if (!currentPlanel) { return undefined; }
                 // if (wikiContent && header) {
                 currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
-                currentPlanel.title = `WikitextPreviewer: ${re.parse.displaytitle}`;
+                currentPlanel.title = `WikiViewer: ${re.parse.displaytitle}`;
+
                 // }
                 // else {
                 //     currentPlanel.dispose();

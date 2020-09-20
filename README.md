@@ -15,7 +15,9 @@ Of course, the development of this extension is short, and there may be some err
 
 - Now you can modify the website content by logging in directly in VSCode! Enter the settings page, search Wikitext and find the username and password items, and fill in them. Then press `F1` in the text editor, select `Write your page to the website`!
 
-- Obtain the Wikitext source code directly in VSCode according to the page name without opening the web page. Press F1 and select Read page to edit to use this function.
+- Obtain the Wikitext source code directly in VSCode according to the page name without opening the web page. Press `F1` and select `Read page to edit` to use this function.
+
+- Browse the page by entering the page name. Press `F1` then select `View the page`.
 
 ## Features
 
@@ -44,19 +46,20 @@ Generally speaking, make sure that your VSCode is always the latest version.
 
 - The push and pull features for editing. Now you can modify the website content by logging in directly in VSCode.
 - Added support for header parsing in Perviewer.
+- Added View Page feature.
 - Added the javascript toggle switch support for Previewer and API Path Setting.
 - Javascript support for Previewer is disabled by default.
 - Support for Redirect rendering and some other magic words.
 - All of Behaviour Switches will now act as `constant.language` instead of `keywords`.
 - Adjusted the program structure and optimized performance.
+- Improved some functions.
 - Corrected some programming logic errors.
 
 ## Special Thanks
 
 ### The help of
 
-[caltaojihun](https://github.com/caltaojihun), [quicktype](https://github.com/quicktype)
-
+[caltaojihun](https://github.com/caltaojihun), [Jason Williams](https://github.com/jasonwilliams), [quicktype](https://github.com/quicktype)
 <!-- ## Extension Settings
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 For example:

@@ -53,7 +53,7 @@ export function getPreview(): void {
 
     sendRequest(queryInput, requestCallback);
 
-    /** */
+    /** Call back */
     function requestCallback(response: IncomingMessage): void {
         const chunks: Uint8Array[] = [];
         // get data.
@@ -75,21 +75,23 @@ export function getPreview(): void {
                 return undefined;
             }
 
-            if (re.parse){
-            // const wikiContent: string = unescape(re?.parse?.text?.["*"] || ``);
-            const header: string = config.get("getCss") ? (re.parse.headhtml?.["*"] || ``) : `<!DOCTYPE html><html><body>`;
-            const end: string = `</body></html>`;
+            if (re.parse) {
+                // const wikiContent: string = unescape(re?.parse?.text?.["*"] || ``);
+                const header: string = config.get("getCss") ? (re.parse.headhtml?.["*"] || ``) : `<!DOCTYPE html><html><body>`;
+                const end: string = `</body></html>`;
 
-            // show result.
-            // if (wikiContent && header) {
-            currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
-            currentPlanel.title = `WikitextPreviewer: ${re.parse.displaytitle}`;
-            // }
-            // no content, notification error.
-            // else {
-            //     currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
-            //     vscode.window.showWarningMessage("Fresh Error.");
-            // }
+                // show result.
+                // if (wikiContent && header) {
+                currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
+
+                currentPlanel.title = `WikitextPreviewer: ${re.parse.displaytitle}`;
+
+                // }
+                // no content, notification error.
+                // else {
+                //     currentPlanel.webview.html = showHtmlInfo("ERROR_FRESH_FAIL");
+                //     vscode.window.showWarningMessage("Fresh Error.");
+                // }
             }
         });
         // exception status.
