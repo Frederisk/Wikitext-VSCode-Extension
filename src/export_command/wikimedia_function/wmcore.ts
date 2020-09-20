@@ -15,7 +15,6 @@ import { sendRequest } from '../private_function/mwrequester';
 import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
 
 let bot: MWBot | null = null;
-let pageName: string | undefined = "";
 
 export function login(): void {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
@@ -55,7 +54,7 @@ export function logout(): void {
 /**
  * Write Page
  */
-export async function writePage() {
+export async function writePage() : Promise<void> {
     const wikiContent: string | undefined = vscode.window.activeTextEditor?.document.getText();
     if (wikiContent === undefined) {
         vscode.window.showWarningMessage("There is no active text editor.");
@@ -68,7 +67,7 @@ export async function writePage() {
     }
 
     const wikiTitle: string | undefined = await vscode.window.showInputBox({
-        value: pageName,
+        value: "",
         ignoreFocusOut: true,
         password: false,
         prompt: "Enter the page name here."
@@ -149,46 +148,49 @@ export async function readPage(): Promise<void> {
             xml2js.parseString(xmltext, async (err: Error, result: any) => {
                 console.log(result);
                 const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
+                const query0 = re.api?.query?.[0];
+                const page0 = query0?.pages?.[0].page?.[0];
+                const rev0 = page0?.revisions?.[0].rev?.[0];
 
                 // interwiki
-                if (re.api?.query?.[0].interwiki !== undefined) {
+                if (query0?.interwiki !== undefined) {
                     vscode.window.showWarningMessage(
-                        `Interwiki page "${re.api.query[0].interwiki?.[0].i?.[0].$?.title}" in space "${re.api.query[0].interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
+                        `Interwiki page "${query0.interwiki?.[0].i?.[0].$?.title}" in space "${query0.interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
                     );
                     return undefined;
                 }
 
                 // need page
-                if (!re.api?.query?.[0].pages?.[0].page) { return undefined; }
+                if (!page0) { return undefined; }
                 // not exist
-                const wikiTitle = re.api.query[0].pages[0].page[0].$?.title;
-                if (re.api.query[0].pages[0].page[0].$?.missing !== undefined ||
-                    re.api.query[0].pages[0].page[0].$?.invalid !== undefined) {
+                const wikiTitle = page0.$?.title;
+                if (page0.$?.missing !== undefined ||
+                    page0.$?.invalid !== undefined) {
                     vscode.window.showWarningMessage(
                         `The page "${wikiTitle}" you are looking for does not exist.` +
-                        re.api.query[0].pages[0].page[0].$?.invalidreason || ``
+                        page0.$?.invalidreason || ``
                     );
                     return undefined;
                 }
 
-                // show doc
-                const wikiContent = re.api.query[0].pages[0].page[0].revisions?.[0].rev?.[0].slots?.[0].slot?.[0]._;
-                const wikiModel = re.api.query[0].pages[0].page[0].revisions?.[0].rev?.[0].slots?.[0].slot?.[0].$?.contentmodel;
-                console.log(wikiModel);
-                await vscode.workspace.openTextDocument({
-                    language: wikiModel,
-                    content: wikiContent
-                });
-
-                console.log(wikiTitle);
-                //TODO: update pagename
-                pageName = wikiTitle;
+                const wikiNormalized = query0?.normalized?.[0].n?.[0].$;
+                const wikiRedirect = query0?.redirects?.[0].r?.[0].$;
+                const wikiModel = rev0?.slots?.[0].slot?.[0].$?.contentmodel;
+                vscode.window.showInformationMessage(`Opened page "${wikiTitle}" with Model ${wikiModel}.` + 
+                    (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) + 
+                    (wikiRedirect ? ` Redirect: "${wikiRedirect?.from}" => "${wikiRedirect.to}"` : ``)
+                    );
 
                 // show info
-                const wikiPageID = re.api.query[0].pages[0].page[0].$?.pageid;
-                const wikiNormalized = re.api.query[0].normalized?.[0].n?.[0].$;
-                const wikiRedirect = re.api.query[0].redirects?.[0].r?.[0].$;
-                vscode.window.showInformationMessage(`Opened page "${wikiTitle}" (page ID:"${wikiPageID}") with Model ${wikiModel}.` + (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) + (wikiRedirect ? ` Redirect: "${wikiRedirect?.from}" => "${wikiRedirect.to}"` : ``));
+                const wikiPageID = page0.$?.pageid;
+                const wikiContent = rev0?.slots?.[0].slot?.[0]._;
+                const wikiRevID = rev0?.$?.revid;
+                let info: string = `<%--Comment="Please do not remove this line. This line record contains some important editing data. The content of this line will be automatically removed when you push edits." PageTitle="${wikiTitle}" PageID="${wikiPageID}" RevisionID="${wikiRevID}"--%>`;
+
+                await vscode.workspace.openTextDocument({
+                    language: wikiModel,
+                    content: `${info}\n${wikiContent}`
+                });
             });
         });
 

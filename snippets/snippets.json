@@ -5,6 +5,12 @@
         "description": "Region",
         "scope": "markup.list.unnumbered.wikitext"
     },
+    "redirect": {
+        "prefix": "@redirect",
+        "body": "#REDIRECT [[${1:Pagename}]]",
+        "description": "Redirection",
+        "scope": ""
+    },
     "table": {
         "prefix": "@table",
         "body": "{| ${1:class=\"wikitable\"}\n|+Title\n!\n!\n!\n!\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|-\n|\n|\n|\n|\n|}",
