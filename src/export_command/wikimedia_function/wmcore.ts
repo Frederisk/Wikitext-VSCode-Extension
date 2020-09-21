@@ -54,7 +54,7 @@ export function logout(): void {
 /**
  * Write Page
  */
-export async function writePage() : Promise<void> {
+export async function writePage(): Promise<void> {
     const wikiContent: string | undefined = vscode.window.activeTextEditor?.document.getText();
     if (wikiContent === undefined) {
         vscode.window.showWarningMessage("There is no active text editor.");
@@ -176,10 +176,10 @@ export async function readPage(): Promise<void> {
                 const wikiNormalized = query0?.normalized?.[0].n?.[0].$;
                 const wikiRedirect = query0?.redirects?.[0].r?.[0].$;
                 const wikiModel = rev0?.slots?.[0].slot?.[0].$?.contentmodel;
-                vscode.window.showInformationMessage(`Opened page "${wikiTitle}" with Model ${wikiModel}.` + 
-                    (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) + 
+                vscode.window.showInformationMessage(`Opened page "${wikiTitle}" with Model ${wikiModel}.` +
+                    (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) +
                     (wikiRedirect ? ` Redirect: "${wikiRedirect?.from}" => "${wikiRedirect.to}"` : ``)
-                    );
+                );
 
                 // show info
                 const wikiPageID = page0.$?.pageid;

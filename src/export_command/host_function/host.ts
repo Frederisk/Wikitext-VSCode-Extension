@@ -25,15 +25,15 @@ export function getHost(): string | undefined {
     if (!host) {
         // error, show warnning
         vscode.window.showWarningMessage(
-`No Host Be Defined!
+            `No Host Be Defined!
 You haven't defined the host of previewer yet, please input host value in the dialog box and try again.`
             , "Edit", "Cancel")
             .then(result => {
-            if (result === "Edit") {
-                // enter host
-                setHost();
-            }
-        });
+                if (result === "Edit") {
+                    // enter host
+                    setHost();
+                }
+            });
         return undefined;
     }
     else {

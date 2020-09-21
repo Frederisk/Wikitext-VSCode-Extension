@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 export function alterNativeValues(...values: (string | undefined)[]): string {
-    values = values.filter(item => {return item !== undefined;});
+    values = values.filter(item => { return item !== undefined; });
     return values.join("|");
 }
 
@@ -31,7 +31,7 @@ export enum prop {
     text = "text",
     langLinks = "langlinks",
     categories = "categories",
-    links ="links",
+    links = "links",
     templates = "templates",
     images = "images",
     externalLinks = "externallinks",

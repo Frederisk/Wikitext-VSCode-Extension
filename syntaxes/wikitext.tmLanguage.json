@@ -261,8 +261,8 @@
                                     "match": "(?i)(\\{\\{)(PAGESINCATEGORY|PAGESINCAT|PAGESINCATEGORY|NUMBERINGROUP|NUMINGROUP|PAGESINNS|PAGESINNAMESPACE)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
                                 },
                                 {
-                                    "name":"invalid.deprecated.variables.statistical.wikitext",
-                                    "match":"(\\{\\{)(NUMBEROFVIEWS)(\\}\\})"
+                                    "name": "invalid.deprecated.variables.statistical.wikitext",
+                                    "match": "(\\{\\{)(NUMBEROFVIEWS)(\\}\\})"
                                 },
                                 {
                                     "name": "",
