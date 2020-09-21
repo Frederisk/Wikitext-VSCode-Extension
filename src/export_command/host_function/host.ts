@@ -14,7 +14,8 @@ export async function setHost(): Promise<void> {
         ignoreFocusOut: false
     });
     // extensionContext.globalState.update("host", resule);
-    config.update("host", result as string, true);
+    if (result === undefined) { return undefined; }
+    config.update("host", result, true);
 }
 
 export function getHost(): string | undefined {
