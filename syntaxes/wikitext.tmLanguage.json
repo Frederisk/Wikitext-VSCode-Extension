@@ -95,8 +95,8 @@
                     "name": "markup.changed.wikitext"
                 },
                 "template": {
-                    "begin": "(\\{\\{)(([\\w\\-\\s\\(\\)\\.]*(:)\\s*)*)(?:(#[\\w\\-\\s\\(\\)\\.]+)(:))?([\\w\\-\\s\\(\\)\\.]*)",
-                    "     ": "1(\\{\\{)2(3([\\w\\-\\s\\(\\)\\.]*4(:)\\s*)*)5(?:(#[\\w\\-\\s\\(\\)\\.]+)6(:))?7([\\w\\-\\s\\(\\)\\.]*)",
+                    "begin": "(\\{\\{)(([\\w\\-\\s\\(\\)\\.]*(:))*)(?:(\\s*#[\\w\\-\\s\\(\\)\\.]+)(:))?([\\w\\-\\s\\(\\)\\.]*)",
+                    "     ": "1(\\{\\{)2(3([\\w\\-\\s\\(\\)\\.]*4(:))*)5(?:(\\s*#[\\w\\-\\s\\(\\)\\.]+)6(:))?7([\\w\\-\\s\\(\\)\\.]*)",
                     "end": "(\\}\\})",
                     "captures": {
                         "1": {
@@ -127,7 +127,7 @@
                             "name": "keyword.operator.wikitext"
                         },
                         {
-                            "match": "(?<=\\|)(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*(=)",
+                            "match": "(?<=\\|)(?:\\s*)(?:([-\\w.]+)((:)))?([-\\w\\s\\.:]+)\\s*(=)",
                             "captures": {
                                 "1": {
                                     "name": "entity.other.attribute-name.namespace.wikitext"
@@ -227,6 +227,9 @@
                         },
                         {
                             "include": "#outdatedBehaviorSwitches"
+                        },
+                        {
+                            "include": "#variables"
                         }
                     ],
                     "repository": {
@@ -249,24 +252,32 @@
                                     "match": "(?i)(\\{\\{)(SITENAME|SERVER|SERVERNAME|DIRMARK|DIRECTIONMARK|SCRIPTPATH|STYLEPATH|CURRENTVERSION|CONTENTLANGUAGE|CONTENTLANG|PAGEID|PAGELANGUAGE|CASCADINGSOURCES|REVISIONID|REVISIONDAY|REVISIONDAY2|REVISIONMONTH|REVISIONMONTH1|REVISIONYEAR|REVISIONTIMESTAMP|REVISIONUSER|REVISIONSIZE)(\\}\\})"
                                 },
                                 {
-                                    "name": "constant.language.variables.metadata.wikitext",
-                                    "match": "(?i)(\\{\\{)(PROTECTIONLEVEL|PROTECTIONEXPIRY|DISPLAYTITLE|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
+                                    "commonsname": "constant.language.variables.metadata.wikitext",
+                                    "commonsmatch": "(?i)(\\{\\{)(PROTECTIONLEVEL|PROTECTIONEXPIRY|DISPLAYTITLE|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
                                 },
                                 {
-                                    "name": "constant.language.variables.statistical.wikitext",
-                                    "match": "(?i)(\\{\\{)(NUMBEROFPAGES|NUMBEROFARTICLES|NUMBEROFFILES|NUMBEROFEDITS|NUMBEROFUSERS|NUMBEROFADMINS|NUMBEROFACTIVEUSERS(?:(:R)?))(\\}\\})"
+                                    "commonsname": "constant.language.variables.statistical.wikitext",
+                                    "commonsmatch": "(?i)(\\{\\{)(NUMBEROFPAGES|NUMBEROFARTICLES|NUMBEROFFILES|NUMBEROFEDITS|NUMBEROFVIEWS|NUMBEROFUSERS|NUMBEROFADMINS|NUMBEROFACTIVEUSERS(?:(:R)?))(\\}\\})"
                                 },
                                 {
-                                    "name": "constant.language.variables.statistical.wikitext",
-                                    "match": "(?i)(\\{\\{)(PAGESINCATEGORY|PAGESINCAT|PAGESINCATEGORY|NUMBERINGROUP|NUMINGROUP|PAGESINNS|PAGESINNAMESPACE)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
+                                    "commonsname": "constant.language.variables.statistical.wikitext",
+                                    "commonsmatch": "(?i)(\\{\\{)(PAGESINCATEGORY|PAGESINCAT|PAGESINCATEGORY|NUMBERINGROUP|NUMINGROUP|PAGESINNS|PAGESINNAMESPACE)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
                                 },
                                 {
-                                    "name": "invalid.deprecated.variables.statistical.wikitext",
-                                    "match": "(\\{\\{)(NUMBEROFVIEWS)(\\}\\})"
+                                    "commons": "",
+                                    "": "(?i)(\\{\\{)(FULLPAGENAME|PAGENAME|BASEPAGENAME|ROOTPAGENAME|SUBPAGENAME|SUBJECTPAGENAME|ARTICLEPAGENAME|TALKPAGENAME|FULLPAGENAMEE|PAGENAMEE|BASEPAGENAMEE|SUBPAGENAMEE|SUBJECTPAGENAMEE|TALKPAGENAMEE)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
                                 },
                                 {
-                                    "name": "",
-                                    "": "(?i)(\\{\\{)(FULLPAGENAME|PAGENAME|BASEPAGENAME|ROOTPAGENAME|SUBPAGENAME|SUBJECTPAGENAME|ARTICLEPAGENAME|TALKPAGENAME)(:[\\w\\-\\s\\(\\)\\.\\|]*)?(\\}\\})"
+                                    "commons": "",
+                                    "": "(?i)(\\{\\{)(NAMESPACE|SUBJECTSPACE|ARTICLESPACE|TALKSPACE|NAMESPACEE|SUBJECTSPACEE|TALKSPACEE)(\\}\\})"
+                                },
+                                {
+                                    "commons":"",
+                                    "":"(\\{\\{)(\\!)(\\}\\})"
+                                },
+                                {
+                                    "commons":"",
+                                    "": "ISBN"
                                 }
                             ]
                         }

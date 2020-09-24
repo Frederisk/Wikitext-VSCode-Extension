@@ -1,4 +1,4 @@
-# Wikitext Markup Language Support for Visual Studio Code
+# Wikitext Markup Language Support Extension for Visual Studio Code
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://raw.githubusercontent.com/Frederisk/Wikitext-VSCode-Extension/master/LICENSE.txt)
 [![Twitter: @rwfholme](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
