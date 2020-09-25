@@ -37,7 +37,7 @@ export function getPreview(): void {
             currentPlanel = undefined;
         }, null, extensionContext.subscriptions);
     }
-    // show loading statu
+    // show loading status
     currentPlanel.webview.html = showHtmlInfo("Loading...");
     /** document text */
     const sourceText: string = textEditor.document.getText();

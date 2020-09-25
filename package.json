@@ -64,12 +64,12 @@
             },
             {
                 "command": "wikitext.readPage",
-                "title": "Read Page to edit",
+                "title": "Pull Page to edit",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.writePage",
-                "title": "Write your edit to the website",
+                "title": "Post your edit to the website",
                 "category": "Wikitext"
             },
             {

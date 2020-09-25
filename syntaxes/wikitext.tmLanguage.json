@@ -272,12 +272,20 @@
                                     "": "(?i)(\\{\\{)(NAMESPACE|SUBJECTSPACE|ARTICLESPACE|TALKSPACE|NAMESPACEE|SUBJECTSPACEE|TALKSPACEE)(\\}\\})"
                                 },
                                 {
-                                    "commons":"",
-                                    "":"(\\{\\{)(\\!)(\\}\\})"
+                                    "commons": "",
+                                    "": "(\\{\\{)(\\!)(\\}\\})"
                                 },
                                 {
-                                    "commons":"",
-                                    "": "ISBN"
+                                    "name": "constant.language.variables.isbn.wikitext",
+                                    "match": "ISBN\\s+((9[\\-\\s]?7[\\-\\s]?[89][\\-\\s]?)?([0-9][\\-\\s]?){10})"
+                                },
+                                {
+                                    "name": "constant.language.variables.rfc.wikitext",
+                                    "match": "RFC\\s+[0-9]+"
+                                },
+                                {
+                                    "name": "constant.language.variables.pmid.wikitext",
+                                    "match": "PMID\\s+[0-9]+"
                                 }
                             ]
                         }

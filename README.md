@@ -11,11 +11,13 @@ This Visual Studio Code Extension provides support of Wikitext Markup language. 
 
 Of course, the development of this extension is short, and there may be some errors in operation and labeling. If you find a problem, please report it to me immediately for resolution.
 
+If you get help with this project, give this project a star or recommend it to others, thanks!😸
+
 ## NEW FEATURES
 
-- Now you can modify the website content by logging in directly in VSCode! Enter the settings page, search Wikitext and find the username and password items, and fill in them. Then press `F1` in the text editor, select `Write your page to the website`!
+- Now you can modify the website content by logging in directly in VSCode! Enter the settings page, search Wikitext and find the username and password items, and fill in them. Then press `F1` in the text editor, select `Post your page to the website`!
 
-- Obtain the Wikitext source code directly in VSCode according to the page name without opening the web page. Press `F1` and select `Read page to edit` to use this function.
+- Obtain the Wikitext source code directly in VSCode according to the page name without opening the web page. Press `F1` and select `Pull page to edit` to use this function.
 
 - Browse the page by entering the page name. Press `F1` then select `View the page`.
 
