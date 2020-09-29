@@ -137,12 +137,12 @@ export async function readPage(): Promise<void> {
     function requestCallback(response: IncomingMessage) {
         const chunks: Uint8Array[] = [];
 
-        response.on('data', data => {
+        response.on("data", data => {
             console.log(response.statusCode);
             chunks.push(data);
         });
 
-        response.on('end', () => {
+        response.on("end", () => {
             // result.
             const xmltext: string = Buffer.concat(chunks).toString();
             xml2js.parseString(xmltext, async (err: Error, result: any) => {

@@ -32,7 +32,8 @@
         "onCommand:wikitext.logout",
         "onCommand:wikitext.readPage",
         "onCommand:wikitext.writePage",
-        "onCommand:wikitext.viewPage"
+        "onCommand:wikitext.viewPage",
+        "onCommand:wikitext.clientLogin"
     ],
     "main": "./dist/extension",
     "contributes": {

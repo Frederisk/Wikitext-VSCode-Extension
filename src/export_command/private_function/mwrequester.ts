@@ -26,12 +26,12 @@ function getRequestOptions(timeout: number, args: string): RequestOptions {
     const host: string | undefined = getHost();
     /** target content */
     const opts: RequestOptions = {
-        hostname: host,
-        path: config.get("apiPath"),
-        method: "POST",
-        timeout: timeout,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+        'hostname': host,
+        'path': config.get("apiPath"),
+        'method': "POST",
+        'timeout': timeout,
+        'headers': {
+            'Content-Type': "application/x-www-form-urlencoded",
             'Content-Length': Buffer.byteLength(args)
         }
     };
