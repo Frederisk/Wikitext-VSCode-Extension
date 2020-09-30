@@ -20,6 +20,8 @@ export enum action {
     centralNoticeCdnCacheUpdateBanner = "centralnoticecdncacheupdatebanner",
     centralNoticeChoiceData = "centralnoticechoicedata",
     // ...
+    login = "login",
+    // ...
     parse = "parse",
     // ...
     query = "query",
@@ -73,29 +75,41 @@ export enum rvprop {
 }
 
 export enum format {
-    json = "json",
-    jsonFm = "jsonfm",
+    jSON = "json",
+    jSONFm = "jsonfm",
     none = "none",
-    php = "php",
-    phpFm = "phpfm",
+    pHP = "php",
+    pHPFm = "phpfm",
     rawFm = "rawfm",
-    xml = "xml",
-    xmlFm = "xmlfm"
+    xML = "xml",
+    xMLFm = "xmlfm"
 }
 
 export enum contextModel {
-    GadgetDefinition = "GadgetDefinition",
-    JsonSchema = "JsonSchema",
-    MassMessageListContent = "MassMessageListContent",
-    Scribunto = "Scribunto",
-    CSS = "css",
-    FlowBoard = "flow-board",
-    Javascript = "javascript",
-    JSON = "json",
-    SanitizedCSS = "sanitized-css",
-    Text = "text",
-    Unknown = "unknown",
-    Wikitext = "wikitext"
+    gadgetDefinition = "GadgetDefinition",
+    jsonSchema = "JsonSchema",
+    massMessageListContent = "MassMessageListContent",
+    scribunto = "Scribunto",
+    cSS = "css",
+    flowBoard = "flow-board",
+    javascript = "javascript",
+    jSON = "json",
+    sanitizedCSS = "sanitized-css",
+    text = "text",
+    unknown = "unknown",
+    wikitext = "wikitext"
+}
+
+export enum tokentype {
+    createAccount = "createaccount",
+    cSRF = "csrf",
+    deleteGlobalAccount = "deleteglobalaccount",
+    login = "login",
+    patrol = "patrol",
+    rollback = "rollback",
+    setGlobalAccountStatus = "setglobalaccountstatus",
+    userRights = "userrights",
+    watch = "watch"
 }
 
 

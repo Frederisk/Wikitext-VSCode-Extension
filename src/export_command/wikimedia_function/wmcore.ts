@@ -36,7 +36,7 @@ export function login(): void {
     bot?.login({
         username: userName,
         password: password
-    }).then((response) => {
+    }).then((response: any) => {
         console.log(response);
         vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
         );
@@ -46,7 +46,16 @@ export function login(): void {
     });
 }
 
-export function logout(): void {
+export async function logout(): Promise<void> {
+    await bot?.getEditToken();
+    const result = await bot?.request({
+        'action': 'logout',
+        'token': bot.editToken,
+        'format': format.xml
+    });
+
+    console.log(result);
+
     bot = null;
     vscode.window.showInformationMessage("result: \"Success\"");
 }
@@ -84,7 +93,7 @@ export async function writePage(): Promise<void> {
     wikiSummary += " // Edit via Wikitext Extension for Visual Studio Code";
 
     // let editStatus: string = "";
-    await bot.getEditToken().then(response => {
+    await bot.getEditToken().then((response: any) => {
         vscode.window.showInformationMessage(
             `Get edit token status is "${response.result}". User "${response.lgusername}" (User ID: "${response.lguserid}") got the token: "${response.token}" and csrftoken: "${response.csrftoken}".`
         );
@@ -137,12 +146,12 @@ export async function readPage(): Promise<void> {
     function requestCallback(response: IncomingMessage) {
         const chunks: Uint8Array[] = [];
 
-        response.on("data", data => {
+        response.on('data', data => {
             console.log(response.statusCode);
             chunks.push(data);
         });
 
-        response.on("end", () => {
+        response.on('end', () => {
             // result.
             const xmltext: string = Buffer.concat(chunks).toString();
             xml2js.parseString(xmltext, async (err: Error, result: any) => {

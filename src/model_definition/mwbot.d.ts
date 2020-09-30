@@ -14,6 +14,8 @@ type bluebird<R> = import("bluebird") <R>;
  */
 declare class MWBot {
 
+  editToken: string
+
   //////////////////////////////////////////
   // CONSTRUCTOR                          //
   //////////////////////////////////////////
