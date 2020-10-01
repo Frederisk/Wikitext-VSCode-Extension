@@ -45,10 +45,10 @@ export function getPreview(): void {
     /** arguments */
     const queryInput: querystring.ParsedUrlQueryInput = {
         action: action.parse,
-        format: format.json,
+        format: format.jSON,
         text: sourceText,
         prop: alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
-        contentmodel: contextModel.Wikitext
+        contentmodel: contextModel.wikitext
     };
 
     sendRequest(queryInput, requestCallback);

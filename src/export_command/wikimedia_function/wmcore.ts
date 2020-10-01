@@ -51,7 +51,7 @@ export async function logout(): Promise<void> {
     const result = await bot?.request({
         'action': 'logout',
         'token': bot.editToken,
-        'format': format.xml
+        'format': format.xML
     });
 
     console.log(result);
@@ -130,7 +130,7 @@ export async function readPage(): Promise<void> {
 
     const queryInput: querystring.ParsedUrlQueryInput = {
         action: action.query,
-        format: format.xml,
+        format: format.xML,
         prop: prop.reVisions,
         rvprop: alterNativeValues(rvprop.content, rvprop.ids),
         rvslots: "*",
@@ -220,7 +220,7 @@ export async function viewPage(): Promise<void> {
 
     const queryInput: querystring.ParsedUrlQueryInput = {
         action: action.parse,
-        format: format.json,
+        format: format.jSON,
         page: pageTitle,
         prop: alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
     };
