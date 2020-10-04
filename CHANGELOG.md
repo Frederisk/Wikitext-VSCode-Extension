@@ -12,6 +12,22 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 - Find and fix more syntax highlighting issues.
 - Add the function of quick citation to references.
 
+## [3.1.0] - 2020-10-
+
+### Added
+
+- Redirect snippet.
+- More Magic Words supports.
+- ISBN/RFC/PMID supports.
+
+### Changed
+
+- modified some command names.
+
+### Fixed
+
+- Fixed the problem of incomplete logout.
+
 ## [3.0.0] - 2020-09-20
 
 ### Added
