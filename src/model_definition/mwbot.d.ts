@@ -7,6 +7,13 @@ declare module 'mwbot';
 
 type bluebird<R> = import("bluebird") <R>;
 
+interface counterInterface{
+  total: number,
+  resolved: number,
+  fulfilled: number,
+  rejected: number
+}
+
 /**
  * MWBot library
  *
@@ -14,8 +21,17 @@ type bluebird<R> = import("bluebird") <R>;
  */
 declare class MWBot {
 
-  editToken: string
+  //////////////////////////////////////////
+  // FIELD                                //
+  //////////////////////////////////////////
 
+  state: object;
+  editToken: string;
+  loggedIn: boolean;
+  createaccountToken: string;
+  counter: counterInterface;
+  // defaultOptions: 
+  
   //////////////////////////////////////////
   // CONSTRUCTOR                          //
   //////////////////////////////////////////

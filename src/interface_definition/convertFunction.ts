@@ -6,19 +6,29 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export function cast<T>(val: any, typ: any, typeMap: any): T {
-    return transform(val, typ, jsonToJSProps, "", typeMap);
-}
-
-export function uncast<T>(val: T, typ: any, typeMap: any): any {
-    return transform(val, typ, jsToJSONProps, "", typeMap);
-}
-
 function invalidValue(typ: any, val: any, key: any = ''): never {
     if (key) {
         throw Error(`Invalid value for key "${key}". Expected type ${JSON.stringify(typ)} but got ${JSON.stringify(val)}`);
     }
     throw Error(`Invalid value ${JSON.stringify(val)} for type ${JSON.stringify(typ)}`,);
+}
+
+function jsonToJSProps(typ: any): any {
+    if (typ.jsonToJS === undefined) {
+        const map: any = {};
+        typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
+        typ.jsonToJS = map;
+    }
+    return typ.jsonToJS;
+}
+
+function jsToJSONProps(typ: any): any {
+    if (typ.jsToJSON === undefined) {
+        const map: any = {};
+        typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });
+        typ.jsToJSON = map;
+    }
+    return typ.jsToJSON;
 }
 
 function transform(value: any, type: any, getProps: any, key: any, typeMap: any): any {
@@ -100,22 +110,12 @@ function transform(value: any, type: any, getProps: any, key: any, typeMap: any)
     return transformPrimitive(type, value);
 }
 
-function jsonToJSProps(typ: any): any {
-    if (typ.jsonToJS === undefined) {
-        const map: any = {};
-        typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
-        typ.jsonToJS = map;
-    }
-    return typ.jsonToJS;
+export function cast<T>(val: any, typ: any, typeMap: any): T {
+    return transform(val, typ, jsonToJSProps, "", typeMap);
 }
 
-function jsToJSONProps(typ: any): any {
-    if (typ.jsToJSON === undefined) {
-        const map: any = {};
-        typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });
-        typ.jsToJSON = map;
-    }
-    return typ.jsToJSON;
+export function uncast<T>(val: T, typ: any, typeMap: any): any {
+    return transform(val, typ, jsToJSONProps, "", typeMap);
 }
 
 export function a(typ: any) {

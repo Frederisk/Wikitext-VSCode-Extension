@@ -5,13 +5,11 @@
 
 import * as MWBot from 'mwbot';
 import * as vscode from 'vscode';
-import * as querystring from 'querystring';
-import { IncomingMessage } from 'http';
 import * as xml2js from 'xml2js';
 import { action, prop, format, rvprop, alterNativeValues } from './mediawiki';
 import { getHost } from '../host_function/host';
 import { ReadPageConvert, ReadPageResult } from '../../interface_definition/readPageInterface';
-import { sendRequest } from '../private_function/mwrequester';
+// import { sendRequest } from '../private_function/mwrequester';
 import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
 
 let bot: MWBot | null = null;
@@ -121,91 +119,89 @@ export async function readPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const title: string | undefined = await vscode.window.showInputBox({
-        prompt: "Enter the page name here."
+        prompt: "Enter the page name here.",
+        ignoreFocusOut: true
     });
-    if (!title) {
-        return undefined;
-    }
+    if (!title) { return undefined; }
 
-    const queryInput: querystring.ParsedUrlQueryInput = {
-        action: action.query,
-        format: format.xML,
-        prop: prop.reVisions,
-        rvprop: alterNativeValues(rvprop.content, rvprop.ids),
-        rvslots: "*",
-        titles: title
+    const queryInput: any = {
+        'action': action.query,
+        'prop': prop.reVisions,
+        'rvprop': alterNativeValues(rvprop.content, rvprop.ids),
+        'rvslots': "*",
+        'titles': title
     };
 
     if (config.get("redirects")) {
-        queryInput.redirects = "true";
+        queryInput['redirects'] = "true";
     }
 
-    sendRequest(queryInput, requestCallback);
+    // sendRequest(queryInput, requestCallback);
 
-    function requestCallback(response: IncomingMessage) {
-        const chunks: Uint8Array[] = [];
+    // function requestCallback(response: IncomingMessage) {
+    //     const chunks: Uint8Array[] = [];
 
-        response.on('data', data => {
-            console.log(response.statusCode);
-            chunks.push(data);
-        });
+    //     response.on('data', data => {
+    //         console.log(response.statusCode);
+    //         chunks.push(data);
+    //     });
 
-        response.on('end', () => {
-            // result.
-            const xmltext: string = Buffer.concat(chunks).toString();
-            xml2js.parseString(xmltext, async (err: Error, result: any) => {
-                console.log(result);
-                const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
-                const query0 = re.api?.query?.[0];
-                const page0 = query0?.pages?.[0].page?.[0];
-                const rev0 = page0?.revisions?.[0].rev?.[0];
+    //     response.on('end', () => {
+    //         // result.
+    //         const xmltext: string = Buffer.concat(chunks).toString();
+    //         xml2js.parseString(xmltext, async (err: Error, result: any) => {
+    //             console.log(result);
+    //             const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
+    //             const query0 = re.api?.query?.[0];
+    //             const page0 = query0?.pages?.[0].page?.[0];
+    //             const rev0 = page0?.revisions?.[0].rev?.[0];
 
-                // interwiki
-                if (query0?.interwiki !== undefined) {
-                    vscode.window.showWarningMessage(
-                        `Interwiki page "${query0.interwiki?.[0].i?.[0].$?.title}" in space "${query0.interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
-                    );
-                    return undefined;
-                }
+    //             // interwiki
+    //             if (query0?.interwiki !== undefined) {
+    //                 vscode.window.showWarningMessage(
+    //                     `Interwiki page "${query0.interwiki?.[0].i?.[0].$?.title}" in space "${query0.interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
+    //                 );
+    //                 return undefined;
+    //             }
 
-                // need page
-                if (!page0) { return undefined; }
-                // not exist
-                const wikiTitle = page0.$?.title;
-                if (page0.$?.missing !== undefined ||
-                    page0.$?.invalid !== undefined) {
-                    vscode.window.showWarningMessage(
-                        `The page "${wikiTitle}" you are looking for does not exist.` +
-                        page0.$?.invalidreason || ``
-                    );
-                    return undefined;
-                }
+    //             // need page
+    //             if (!page0) { return undefined; }
+    //             // not exist
+    //             const wikiTitle = page0.$?.title;
+    //             if (page0.$?.missing !== undefined ||
+    //                 page0.$?.invalid !== undefined) {
+    //                 vscode.window.showWarningMessage(
+    //                     `The page "${wikiTitle}" you are looking for does not exist.` +
+    //                     page0.$?.invalidreason || ``
+    //                 );
+    //                 return undefined;
+    //             }
 
-                const wikiNormalized = query0?.normalized?.[0].n?.[0].$;
-                const wikiRedirect = query0?.redirects?.[0].r?.[0].$;
-                const wikiModel = rev0?.slots?.[0].slot?.[0].$?.contentmodel;
-                vscode.window.showInformationMessage(`Opened page "${wikiTitle}" with Model ${wikiModel}.` +
-                    (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) +
-                    (wikiRedirect ? ` Redirect: "${wikiRedirect?.from}" => "${wikiRedirect.to}"` : ``)
-                );
+    //             const wikiNormalized = query0?.normalized?.[0].n?.[0].$;
+    //             const wikiRedirect = query0?.redirects?.[0].r?.[0].$;
+    //             const wikiModel = rev0?.slots?.[0].slot?.[0].$?.contentmodel;
+    //             vscode.window.showInformationMessage(`Opened page "${wikiTitle}" with Model ${wikiModel}.` +
+    //                 (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) +
+    //                 (wikiRedirect ? ` Redirect: "${wikiRedirect?.from}" => "${wikiRedirect.to}"` : ``)
+    //             );
 
-                // show info
-                const wikiPageID = page0.$?.pageid;
-                const wikiContent = rev0?.slots?.[0].slot?.[0]._;
-                const wikiRevID = rev0?.$?.revid;
-                let info: string = `<%--Comment="Please do not remove this line. This line record contains some important editing data. The content of this line will be automatically removed when you push edits." PageTitle="${wikiTitle}" PageID="${wikiPageID}" RevisionID="${wikiRevID}"--%>`;
+    //             // show info
+    //             const wikiPageID = page0.$?.pageid;
+    //             const wikiContent = rev0?.slots?.[0].slot?.[0]._;
+    //             const wikiRevID = rev0?.$?.revid;
+    //             let info: string = `<%--Comment="Please do not remove this line. This line record contains some important editing data. The content of this line will be automatically removed when you push edits." PageTitle="${wikiTitle}" PageID="${wikiPageID}" RevisionID="${wikiRevID}"--%>`;
 
-                await vscode.workspace.openTextDocument({
-                    language: wikiModel,
-                    content: `${info}\n${wikiContent}`
-                });
-            });
-        });
+    //             await vscode.workspace.openTextDocument({
+    //                 language: wikiModel,
+    //                 content: `${info}\n${wikiContent}`
+    //             });
+    //         });
+    //     });
 
-        response.on('error', (error: Error) => {
-            vscode.window.showErrorMessage(error.name);
-        });
-    }
+    //     response.on('error', (error: Error) => {
+    //         vscode.window.showErrorMessage(error.name);
+    //     });
+    // }
 }
 
 export async function viewPage(): Promise<void> {
@@ -213,11 +209,10 @@ export async function viewPage(): Promise<void> {
     const host: string | undefined = getHost();
     if (!host) { return undefined; }
     const pageTitle: string | undefined = await vscode.window.showInputBox({
-        prompt: "Enter the page name here."
+        prompt: "Enter the page name here.",
+        ignoreFocusOut: true
     });
-    if (!pageTitle) {
-        return undefined;
-    }
+    if (!pageTitle) { return undefined; }
 
     bot = bot ?? new MWBot({
         apiUrl: "https://" + host + config.get("apiPath")
@@ -225,7 +220,6 @@ export async function viewPage(): Promise<void> {
 
     const args: any = {
         'action': action.parse,
-        // format: format.jSON,
         'page': pageTitle,
         'prop': alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
     };
@@ -236,7 +230,7 @@ export async function viewPage(): Promise<void> {
         const result = await bot?.request(args);
         const re: GetViewResult = GetViewConvert.toGetViewResult(result);
 
-        if(!re.parse) {return undefined;}
+        if (!re.parse) { return undefined; }
         let currentPlanel: vscode.WebviewPanel = vscode.window.createWebviewPanel("pageViewer", "PageViewer", vscode.ViewColumn.Active, {
             enableScripts: config.get("enableJavascript"),
         });
@@ -247,7 +241,7 @@ export async function viewPage(): Promise<void> {
         if (!currentPlanel) { return undefined; }
         currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
         currentPlanel.title = `WikiViewer: ${re.parse.displaytitle}`;
-        
+
     }
     catch (error) {
         vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
@@ -255,10 +249,10 @@ export async function viewPage(): Promise<void> {
     }
 }
 
-export function uploadFile(): void {
+// export function uploadFile(): void {
 
-}
+// }
 
-export function deletedPage(): void {
+// export function deletedPage(): void {
 
-}
+// }
