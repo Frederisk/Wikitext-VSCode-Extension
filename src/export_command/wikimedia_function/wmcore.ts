@@ -50,8 +50,7 @@ export async function logout(): Promise<void> {
     await bot?.getEditToken();
     const result = await bot?.request({
         'action': 'logout',
-        'token': bot.editToken,
-        'format': format.xML
+        'token': bot.editToken
     });
 
     console.log(result);
@@ -211,6 +210,8 @@ export async function readPage(): Promise<void> {
 
 export async function viewPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+    const host: string | undefined = getHost();
+    if (!host) { return undefined; }
     const pageTitle: string | undefined = await vscode.window.showInputBox({
         prompt: "Enter the page name here."
     });
@@ -218,63 +219,39 @@ export async function viewPage(): Promise<void> {
         return undefined;
     }
 
-    const queryInput: querystring.ParsedUrlQueryInput = {
-        action: action.parse,
-        format: format.jSON,
-        page: pageTitle,
-        prop: alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
+    bot = bot ?? new MWBot({
+        apiUrl: "https://" + host + config.get("apiPath")
+    });
+
+    const args: any = {
+        'action': action.parse,
+        // format: format.jSON,
+        'page': pageTitle,
+        'prop': alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
     };
     if (config.get("redirects")) {
-        queryInput.redirects = "true";
+        args['redirects'] = "true";
     }
-    console.log(queryInput);
+    try {
+        const result = await bot?.request(args);
+        const re: GetViewResult = GetViewConvert.toGetViewResult(result);
 
-    sendRequest(queryInput, requestCallback);
-
-    function requestCallback(response: IncomingMessage): void {
+        if(!re.parse) {return undefined;}
         let currentPlanel: vscode.WebviewPanel = vscode.window.createWebviewPanel("pageViewer", "PageViewer", vscode.ViewColumn.Active, {
             enableScripts: config.get("enableJavascript"),
         });
 
-        const chunks: Uint8Array[] = [];
+        const header: string = config.get("getCss") ? (re.parse.headhtml?.["*"] || ``) : `<!DOCTYPE html><html><body>`;
+        const end: string = `</body></html>`;
 
-        response.on('data', data => {
-            console.log(response.statusCode);
-            chunks.push(data);
-        });
-
-        response.on('end', () => {
-            // result.
-            const result: string = Buffer.concat(chunks).toString();
-            //const re: any = JSON.parse(result);
-            const re: GetViewResult = GetViewConvert.toGetViewResult(JSON.parse(result));
-            console.log(re);
-
-            if (re.error) {
-                vscode.window.showErrorMessage(`${re.error.code}! ${re.error.info}`);
-                return undefined;
-            }
-            else if (re.parse) {
-                // const wikiContent: string = unescape(re["parse"]["text"]["*"]);
-                const header: string = config.get("getCss") ? (re.parse.headhtml?.["*"] || ``) : `<!DOCTYPE html><html><body>`;
-                const end: string = `</body></html>`;
-
-                if (!currentPlanel) { return undefined; }
-                // if (wikiContent && header) {
-                currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
-                currentPlanel.title = `WikiViewer: ${re.parse.displaytitle}`;
-
-                // }
-                // else {
-                //     currentPlanel.dispose();
-                //     vscode.window.showErrorMessage("Error.");
-                // }
-            }
-        });
-
-        response.on('error', (error: Error) => {
-            vscode.window.showErrorMessage(error.name);
-        });
+        if (!currentPlanel) { return undefined; }
+        currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
+        currentPlanel.title = `WikiViewer: ${re.parse.displaytitle}`;
+        
+    }
+    catch (error) {
+        vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
+        return undefined;
     }
 }
 
