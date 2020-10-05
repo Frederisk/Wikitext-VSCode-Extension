@@ -2,7 +2,7 @@
     "name": "wikitext",
     "displayName": "Wikitext",
     "description": "Wikitext is a document written in a wiki markup language. It is a mixture of content, markup, and metadata. The extension mainly supports the Wiki markup text language based on MediaWiki.",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "publisher": "RoweWilsonFrederiskHolme",
     "license": "MIT",
     "author": {
@@ -41,7 +41,7 @@
                 "command": "wikitext.getPreview",
                 "title": "Get preview",
                 "category": "Wikitext",
-                "": "It didn't work for unknown reasons.",
+                "": "The icon didn't work for unknown reasons.🧐",
                 "icon": {
                     "light": "media/preview-light.svg",
                     "dark": "media/preview-dark.svg"
@@ -213,7 +213,6 @@
         "@types/mocha": "^5.2.7",
         "@types/node": "^12.12.62",
         "@types/vscode": "^1.43.0",
-        "@types/xml2js": "^0.4.5",
         "glob": "^7.1.5",
         "mocha": "^6.2.3",
         "mwbot": "^1.0.10",
@@ -222,8 +221,7 @@
         "typescript": "^3.9.7",
         "vscode-test": "^1.4.0",
         "webpack": "^4.44.2",
-        "webpack-cli": "^3.3.12",
-        "xml2js": "^0.4.23"
+        "webpack-cli": "^3.3.12"
     },
     "dependencies": {}
 }

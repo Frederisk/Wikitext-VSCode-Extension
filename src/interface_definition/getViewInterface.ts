@@ -41,7 +41,6 @@ export class GetViewConvert {
     public static toGetViewResult(json: any): GetViewResult {
         return cast(json, r("GetViewResult"), getViewTypeMap);
     }
-
     public static GetViewResultToJson(value: GetViewResult): any {
         return uncast(value, r("GetViewResult"), getViewTypeMap);
     }

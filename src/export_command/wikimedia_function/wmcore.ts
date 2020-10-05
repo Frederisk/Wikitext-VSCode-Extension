@@ -5,21 +5,17 @@
 
 import * as MWBot from 'mwbot';
 import * as vscode from 'vscode';
-import * as xml2js from 'xml2js';
-import { action, prop, format, rvprop, alterNativeValues } from './mediawiki';
+import { action, prop, rvprop, alterNativeValues } from './mediawiki';
 import { getHost } from '../host_function/host';
 import { ReadPageConvert, ReadPageResult } from '../../interface_definition/readPageInterface';
-// import { sendRequest } from '../private_function/mwrequester';
 import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
 
-let bot: MWBot | null = null;
+export let bot: MWBot | null = null;
 
 export function login(): void {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-
     const host: string | undefined = getHost();
     if (!host) { return undefined; }
-
     const userName: string | undefined = config.get("userName");
     const password: string | undefined = config.get("password");
     if (!userName || !password) {
@@ -117,14 +113,19 @@ export async function writePage(): Promise<void> {
  */
 export async function readPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-
+    const host: string | undefined = getHost();
+    if (!host) { return undefined; }
     const title: string | undefined = await vscode.window.showInputBox({
         prompt: "Enter the page name here.",
         ignoreFocusOut: true
     });
     if (!title) { return undefined; }
 
-    const queryInput: any = {
+    bot = bot ?? new MWBot({
+        apiUrl: "https://" + host + config.get("apiPath")
+    });
+
+    const args: any = {
         'action': action.query,
         'prop': prop.reVisions,
         'rvprop': alterNativeValues(rvprop.content, rvprop.ids),
@@ -133,75 +134,54 @@ export async function readPage(): Promise<void> {
     };
 
     if (config.get("redirects")) {
-        queryInput['redirects'] = "true";
+        args['redirects'] = "true";
     }
 
-    // sendRequest(queryInput, requestCallback);
+    try {
+        const result = await bot?.request(args);
+        const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
+        if (re.query?.interwiki) {
+            vscode.window.showWarningMessage(
+                `Interwiki page "${re.query.interwiki[0].title}" in space "${re.query.interwiki[0].iw}" are currently not supported. Please try to modify host.`
+            );
+        }
 
-    // function requestCallback(response: IncomingMessage) {
-    //     const chunks: Uint8Array[] = [];
+        // need page
+        if (!re.query?.pages) { return undefined; }
 
-    //     response.on('data', data => {
-    //         console.log(response.statusCode);
-    //         chunks.push(data);
-    //     });
+        const page = re.query.pages[Object.keys(re.query.pages)[0]];
 
-    //     response.on('end', () => {
-    //         // result.
-    //         const xmltext: string = Buffer.concat(chunks).toString();
-    //         xml2js.parseString(xmltext, async (err: Error, result: any) => {
-    //             console.log(result);
-    //             const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
-    //             const query0 = re.api?.query?.[0];
-    //             const page0 = query0?.pages?.[0].page?.[0];
-    //             const rev0 = page0?.revisions?.[0].rev?.[0];
+        if (page.missing !== undefined || page.invalid !== undefined) {
+            vscode.window.showWarningMessage(
+                `The page "${page.title}" you are looking for does not exist.` +
+                page.invalidreason || ``);
+            return undefined;
+        }
 
-    //             // interwiki
-    //             if (query0?.interwiki !== undefined) {
-    //                 vscode.window.showWarningMessage(
-    //                     `Interwiki page "${query0.interwiki?.[0].i?.[0].$?.title}" in space "${query0.interwiki?.[0].i?.[0].$?.iw}" are currently not supported. Please try to modify host.`
-    //                 );
-    //                 return undefined;
-    //             }
+        const revision = page.revisions?.[0];
 
-    //             // need page
-    //             if (!page0) { return undefined; }
-    //             // not exist
-    //             const wikiTitle = page0.$?.title;
-    //             if (page0.$?.missing !== undefined ||
-    //                 page0.$?.invalid !== undefined) {
-    //                 vscode.window.showWarningMessage(
-    //                     `The page "${wikiTitle}" you are looking for does not exist.` +
-    //                     page0.$?.invalidreason || ``
-    //                 );
-    //                 return undefined;
-    //             }
+        vscode.window.showInformationMessage(
+            `Opened page "${page.title}" with Model ${revision?.slots?.main?.contentmodel}.` +
+            (re.query.normalized ? ` Normalized: "${re.query.normalized[0].from}" => "${re.query.normalized[0].to}".` : ``) +
+            (re.query.redirects ? ` Redirect: "${re.query.redirects[0].from}" => "${re.query.redirects[0].to}"` : ``)
+        );
 
-    //             const wikiNormalized = query0?.normalized?.[0].n?.[0].$;
-    //             const wikiRedirect = query0?.redirects?.[0].r?.[0].$;
-    //             const wikiModel = rev0?.slots?.[0].slot?.[0].$?.contentmodel;
-    //             vscode.window.showInformationMessage(`Opened page "${wikiTitle}" with Model ${wikiModel}.` +
-    //                 (wikiNormalized ? ` Normalized: "${wikiNormalized.from}" => "${wikiNormalized.to}".` : ``) +
-    //                 (wikiRedirect ? ` Redirect: "${wikiRedirect?.from}" => "${wikiRedirect.to}"` : ``)
-    //             );
+        // show info
+        // const wikiPageID = page0.$?.pageid;
+        // const wikiContent = rev0?.slots?.[0].slot?.[0]._;
+        // const wikiRevID = rev0?.$?.revid;
+        // let info: string = `<%--Comment="Please do not remove this line. This line record contains some important editing data. The content of this line will be automatically removed when you push edits." PageTitle="${wikiTitle}" PageID="${wikiPageID}" RevisionID="${wikiRevID}"--%>`;
 
-    //             // show info
-    //             const wikiPageID = page0.$?.pageid;
-    //             const wikiContent = rev0?.slots?.[0].slot?.[0]._;
-    //             const wikiRevID = rev0?.$?.revid;
-    //             let info: string = `<%--Comment="Please do not remove this line. This line record contains some important editing data. The content of this line will be automatically removed when you push edits." PageTitle="${wikiTitle}" PageID="${wikiPageID}" RevisionID="${wikiRevID}"--%>`;
-
-    //             await vscode.workspace.openTextDocument({
-    //                 language: wikiModel,
-    //                 content: `${info}\n${wikiContent}`
-    //             });
-    //         });
-    //     });
-
-    //     response.on('error', (error: Error) => {
-    //         vscode.window.showErrorMessage(error.name);
-    //     });
-    // }
+        await vscode.workspace.openTextDocument(
+            {
+                language: revision?.slots?.main?.contentmodel,
+                content: revision?.slots?.main?.empty
+            }
+        );
+    }
+    catch (error) {
+        vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
+    }
 }
 
 export async function viewPage(): Promise<void> {
@@ -226,6 +206,7 @@ export async function viewPage(): Promise<void> {
     if (config.get("redirects")) {
         args['redirects'] = "true";
     }
+
     try {
         const result = await bot?.request(args);
         const re: GetViewResult = GetViewConvert.toGetViewResult(result);
@@ -245,7 +226,6 @@ export async function viewPage(): Promise<void> {
     }
     catch (error) {
         vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
-        return undefined;
     }
 }
 

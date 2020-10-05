@@ -14,6 +14,12 @@ export interface Query {
     normalized?: Normalized[];
     redirects?: Normalized[];
     pages?: { [key: string]: Page };
+    interwiki?: Interwiki[];
+}
+
+export interface Interwiki {
+    title?: string;
+    iw?: string;
 }
 
 export interface Normalized {
@@ -27,6 +33,8 @@ export interface Page {
     title?: string;
     revisions?: Revision[];
     missing?: string;
+    invalidreason?: string;
+    invalid?: string;
 }
 
 export interface Revision {
@@ -65,6 +73,11 @@ export const readPageResultTypeMap: any = {
         { json: "normalized", js: "normalized", typ: u(undefined, a(r("Normalized"))) },
         { json: "redirects", js: "redirects", typ: u(undefined, a(r("Normalized"))) },
         { json: "pages", js: "pages", typ: u(undefined, m(r("Page"))) },
+        { json: "interwiki", js: "interwiki", typ: u(undefined, a(r("Interwiki"))) },
+    ], false),
+    "Interwiki": o([
+        { json: "title", js: "title", typ: u(undefined, "") },
+        { json: "iw", js: "iw", typ: u(undefined, "") },
     ], false),
     "Normalized": o([
         { json: "from", js: "from", typ: u(undefined, "") },
@@ -76,6 +89,8 @@ export const readPageResultTypeMap: any = {
         { json: "title", js: "title", typ: u(undefined, "") },
         { json: "revisions", js: "revisions", typ: u(undefined, a(r("Revision"))) },
         { json: "missing", js: "missing", typ: u(undefined, "") },
+        { json: "invalidreason", js: "invalidreason", typ: u(undefined, "") },
+        { json: "invalid", js: "invalid", typ: u(undefined, "") },
     ], false),
     "Revision": o([
         { json: "revid", js: "revid", typ: u(undefined, 0) },
