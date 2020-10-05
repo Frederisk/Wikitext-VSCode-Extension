@@ -47,22 +47,17 @@ Generally speaking, make sure that your VSCode is always the latest version.
 
 ## Release Notes
 
-- The push and pull features for editing. Now you can modify the website content by logging in directly in VSCode.
-- Added support for header parsing in Perviewer.
-- Added View Page feature.
-- Added the javascript toggle switch support for Previewer and API Path Setting.
-- Javascript support for Previewer is disabled by default.
-- Support for Redirect rendering and some other magic words.
-- All of Behaviour Switches will now act as `constant.language` instead of `keywords`.
-- Adjusted the program structure and optimized performance.
-- Improved some functions.
-- Corrected some programming logic errors.
+- Added Redirect snippet, more Magic Words supports, and ISBN/RFC/PMID supports.
+- The View, Preview, and Pull functions will now first try to use the login account to execute.
+- Fixed the problem of incomplete logout.
+- Modified some command names.
 
 ## Special Thanks
 
 - [caltaojihun](https://github.com/caltaojihun)
 - [Jason Williams](https://github.com/jasonwilliams)
 - [quicktype](https://github.com/quicktype)
+- [dj radon](https://github.com/djradon)
 
 <!-- ## Extension Settings
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.

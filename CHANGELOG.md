@@ -12,7 +12,7 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 - Find and fix more syntax highlighting issues.
 - Add the function of quick citation to references.
 
-## [3.1.0] - 2020-10-
+## [3.1.0] - 2020-10-05
 
 ### Added
 
@@ -22,7 +22,8 @@ The version marked with an asterisk(&ast;) means that the version has been adjus
 
 ### Changed
 
-- modified some command names.
+- Modified some command names.
+- The View, Preview, and Pull functions will now first try to use the login account to execute.
 
 ### Fixed
 
