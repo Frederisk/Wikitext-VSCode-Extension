@@ -10,7 +10,6 @@ import { action, contextModel, alterNativeValues, prop } from '../wikimedia_func
 import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
 import { bot as imbot } from '../wikimedia_function/wmcore';
 import { getHost } from '../host_function/host';
-import { EDESTADDRREQ } from 'constants';
 
 /**
  * webview panel

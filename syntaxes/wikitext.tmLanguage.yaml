@@ -1,0 +1,744 @@
+$schema: 'https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json'
+name: Wikitext
+scopeName: source.wikitext
+patterns:
+  - include: '#comments'
+  - include: '#wikitext'
+  - include: '#xml'
+repository:
+  wikitext:
+    patterns:
+      - include: '#argument'
+      - include: '#entity'
+      - include: '#signature'
+      - include: '#redirect'
+      - include: '#magicWords'
+      - include: '#convert'
+      - include: '#list'
+      - include: '#table'
+      - include: '#fontStyle'
+      - include: '#externalLink'
+      - include: '#brokenExternLink'
+      - include: '#internalLink'
+      - include: '#template'
+      - include: '#heading'
+      - include: '#break'
+      - include: '#wikixml'
+    repository:
+      convert:
+        begin: '(\-\{)([a-zA-Z](\|))?'
+        end: '(\}\-)'
+        captures:
+          '1':
+            name: punctuation.definition.tag.template.wikitext
+          '2':
+            name: entity.name.function.type.wikitext
+          '3':
+            name: keyword.operator.wikitext
+        patterns:
+          - include: $self
+          - match: '([\w\-]*)(:)(.*?)(;?)'
+            name: entity.name.function.language.wikitext
+      break:
+        match: '^\-{4,}'
+        name: markup.changed.wikitext
+      template:
+        begin: >-
+          (\{\{)(([\w\-\s\(\)\.]*(:))*)(?:(\s*#[\w\-\s\(\)\.]+)(:))?([\w\-\s\(\)\.]*)
+        '     ': >-
+          1(\{\{)2(3([\w\-\s\(\)\.]*4(:))*)5(?:(\s*#[\w\-\s\(\)\.]+)6(:))?7([\w\-\s\(\)\.]*)
+        end: '(\}\})'
+        captures:
+          '1':
+            name: punctuation.definition.tag.template.wikitext
+          '2':
+            name: entity.name.tag.localname.wikitext
+          '4':
+            name: punctuation.separator.namespace.wikitext
+          '5':
+            name: entity.name.function.wikitext
+          '6':
+            name: punctuation.separator.namespace.wikitext
+          '7':
+            name: entity.name.tag.localname.wikitext
+        patterns:
+          - include: $self
+          - match: (\|)
+            name: keyword.operator.wikitext
+          - match: '(?<=\|)(?:\s*)(?:([-\w.]+)((:)))?([-\w\s\.:]+)\s*(=)'
+            captures:
+              '1':
+                name: entity.other.attribute-name.namespace.wikitext
+              '2':
+                name: entity.other.attribute-name.wikitext
+              '3':
+                name: punctuation.separator.namespace.wikitext
+              '4':
+                name: entity.other.attribute-name.localname.wikitext
+              '5':
+                name: keyword.operator.equal.wikitext
+      externalLink:
+        patterns:
+          - name: string.quoted.wikitext
+            begin: >-
+              (\[)((?:((http(s)?)|(ftp(s)?)):\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#@!\$&'\(\)\*\+,;=.]+)
+            end: '(\])'
+            captures:
+              '1':
+                name: punctuation.definition.tag.externalLink.wikitext
+              '2':
+                name: entity.name.tag.url.wikitext
+            patterns:
+              - include: '#argument'
+              - include: '#comments'
+      brokenExternLink:
+        patterns:
+          - name: invalid.illegal.bad-url.wikitext
+            begin: '(\[)([\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#@!\$&''\(\)\*\+,;=.]+)'
+            end: '(\])'
+            captures:
+              '1':
+                name: punctuation.definition.tag.externalLink.wikitext
+            patterns:
+              - include: $self
+      redirect:
+        patterns:
+          - match: >-
+              (?i)(^\s*?#REDIRECT)\s*?(\[\[)(([\w\-\s\(\)\.]*?:)*)?([^\|\[\]]*)?(|[^\[\]]*?)?(\]\])
+            captures:
+              '1':
+                name: keyword.control.redirect.wikitext
+              '2':
+                name: punctuation.definition.tag.internalLink.begin.wikitext
+              '3':
+                name: entity.name.tag.namespace.wikitext
+              '4': {}
+              '5':
+                name: entity.other.attribute-name.wikitext
+              '6':
+                name: invalid.deprecated.ineffective.wikitext
+              '7':
+                name: punctuation.definition.tag.internalLink.end.wikitext
+      magicWords:
+        patterns:
+          - include: '#behaviorSwitches'
+          - include: '#outdatedBehaviorSwitches'
+          - include: '#variables'
+        repository:
+          behaviorSwitches:
+            name: constant.language.behaviorSwitches.wikitext
+            match: >-
+              (?i)(__)(NOTOC|FORCETOC|TOC|NOEDITSECTION|NEWSECTIONLINK|NOGALLERY|HIDDENCAT|EXPECTUNUSEDCATEGORY|NOCONTENTCONVERT|NOCC|NOTITLECONVERT|NOTC|INDEX|NOINDEX|STATICREDIRECT|NOGLOBAL|DISAMBIG)(__)
+          outdatedBehaviorSwitches:
+            name: invalid.deprecated.behaviorSwitches.wikitext
+            match: (?i)(__)(START|END)(__)
+          variables:
+            patterns:
+              - name: constant.language.variables.time.wikitext
+                match: >-
+                  (?i)(\{\{)(CURRENTYEAR|CURRENTMONTH|CURRENTMONTH1|CURRENTMONTHNAME|CURRENTMONTHNAMEGEN|CURRENTMONTHABBREV|CURRENTDAY|CURRENTDAY2|CURRENTDOW|CURRENTDAYNAME|CURRENTTIME|CURRENTHOUR|CURRENTWEEK|CURRENTTIMESTAMP|LOCALYEAR|LOCALMONTH|LOCALMONTH1|LOCALMONTHNAME|LOCALMONTHNAMEGEN|LOCALMONTHABBREV|LOCALDAY|LOCALDAY2|LOCALDOW|LOCALDAYNAME|LOCALTIME|LOCALHOUR|LOCALWEEK|LOCALTIMESTAMP)(\}\})
+              - name: constant.language.variables.metadata.wikitext
+                match: >-
+                  (?i)(\{\{)(SITENAME|SERVER|SERVERNAME|DIRMARK|DIRECTIONMARK|SCRIPTPATH|STYLEPATH|CURRENTVERSION|CONTENTLANGUAGE|CONTENTLANG|PAGEID|PAGELANGUAGE|CASCADINGSOURCES|REVISIONID|REVISIONDAY|REVISIONDAY2|REVISIONMONTH|REVISIONMONTH1|REVISIONYEAR|REVISIONTIMESTAMP|REVISIONUSER|REVISIONSIZE)(\}\})
+              - commonsname: constant.language.variables.metadata.wikitext
+                commonsmatch: >-
+                  (?i)(\{\{)(PROTECTIONLEVEL|PROTECTIONEXPIRY|DISPLAYTITLE|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)(:[\w\-\s\(\)\.\|]*)?(\}\})
+              - commonsname: constant.language.variables.statistical.wikitext
+                commonsmatch: >-
+                  (?i)(\{\{)(NUMBEROFPAGES|NUMBEROFARTICLES|NUMBEROFFILES|NUMBEROFEDITS|NUMBEROFVIEWS|NUMBEROFUSERS|NUMBEROFADMINS|NUMBEROFACTIVEUSERS(?:(:R)?))(\}\})
+              - commonsname: constant.language.variables.statistical.wikitext
+                commonsmatch: >-
+                  (?i)(\{\{)(PAGESINCATEGORY|PAGESINCAT|PAGESINCATEGORY|NUMBERINGROUP|NUMINGROUP|PAGESINNS|PAGESINNAMESPACE)(:[\w\-\s\(\)\.\|]*)?(\}\})
+              - commons: ''
+                '': >-
+                  (?i)(\{\{)(FULLPAGENAME|PAGENAME|BASEPAGENAME|ROOTPAGENAME|SUBPAGENAME|SUBJECTPAGENAME|ARTICLEPAGENAME|TALKPAGENAME|FULLPAGENAMEE|PAGENAMEE|BASEPAGENAMEE|SUBPAGENAMEE|SUBJECTPAGENAMEE|TALKPAGENAMEE)(:[\w\-\s\(\)\.\|]*)?(\}\})
+              - commons: ''
+                '': >-
+                  (?i)(\{\{)(NAMESPACE|SUBJECTSPACE|ARTICLESPACE|TALKSPACE|NAMESPACEE|SUBJECTSPACEE|TALKSPACEE)(\}\})
+              - commons: ''
+                '': '(\{\{)(\!)(\}\})'
+              - name: constant.language.variables.isbn.wikitext
+                match: 'ISBN\s+((9[\-\s]?7[\-\s]?[89][\-\s]?)?([0-9][\-\s]?){10})'
+              - name: constant.language.variables.rfc.wikitext
+                match: 'RFC\s+[0-9]+'
+              - name: constant.language.variables.pmid.wikitext
+                match: 'PMID\s+[0-9]+'
+      signature:
+        patterns:
+          - name: keyword.other.signature.wikitext
+            match: '~{3,5}'
+      list:
+        name: markup.list.wikitext
+        patterns:
+          - match: '^([#*;:]+)'
+            captures:
+              '1':
+                name: markup.bold.style.wikitext
+      argument:
+        name: markup.heading
+        begin: '{{{'
+        end: '}}}'
+        patterns:
+          - include: $self
+          - match: '([\w\-\s\(\)\.]*)(\|)?'
+            captures:
+              '1':
+                name: variable.other.wikitext
+              '2':
+                name: keyword.operator.wikitext
+      heading:
+        name: markup.heading.wikitext
+        match: '^={1,6}.+?={1,6}$'
+        patterns:
+          - include: $self
+      fontStyle:
+        patterns:
+          - include: '#bold'
+          - include: '#italic'
+        repository:
+          bold:
+            begin: ''''''''
+            end: (''')|$
+            name: markup.bold.wikitext
+            patterns:
+              - include: '#italic'
+              - include: $self
+          italic:
+            begin: ''''''
+            end: '((?=[^''])|(?=''''))''''((?=[^''])|(?=''''))|$'
+            name: markup.italic.wikitext
+            patterns:
+              - include: '#bold'
+              - include: $self
+      internalLink:
+        TODO: SINGLE LINE
+        name: string.quoted.wikitext
+        begin: '(\[\[)(([\w\-\s\(\)\.]*:)*?)?([^\|\[\]]*)?'
+        end: '(\]\])'
+        captures:
+          '1':
+            name: punctuation.definition.tag.internalLink.wikitext
+          '2':
+            name: entity.name.tag.namespace.wikitext
+          '3': {}
+          '4':
+            name: entity.other.attribute-name.wikitext
+        patterns:
+          - include: $self
+          - match: '(\|)|(?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)'
+            captures:
+              '1':
+                name: keyword.operator.wikitext
+              '5':
+                name: entity.other.attribute-name.localname.wikitext
+      table:
+        patterns:
+          - name: meta.tag.block.table.wikitext
+            begin: '^\s*(\{\|)(.*?)$'
+            end: '^\s*(\|\})'
+            captures:
+              '1':
+                name: punctuation.definition.tag.table.wikitext
+              '2':
+                patterns:
+                  - include: '#tagStuff'
+            patterns:
+              - include: $self
+              - include: '#tagStuff'
+              - name: invalid.illegal.bad-table-context.wikitext
+                begin: '^\s*(\|\-)[\s]*'
+                end: $
+                beginCaptures:
+                  '1':
+                    name: punctuation.definition.tag.begin.wikitext
+              - name: meta.tag.block.th.heading
+                begin: ^\s*(!)((.*?)(\|))?(.*?)(?=(!!)|$)
+                end: $
+                beginCaptures:
+                  '1':
+                    name: punctuation.definition.tag.begin.wikitext
+                  '3':
+                    patterns:
+                      - include: '#tagStuff'
+                  '4':
+                    name: punctuation.definition.tag.wikitext
+                  '5':
+                    name: markup.bold.style.wikitext
+                patterns:
+                  - name: meta.tag.block.th.inline
+                    match: (!!)((.*?)(\|))?(.*?)(?=(!!)|$)
+                    captures:
+                      '1':
+                        name: punctuation.definition.tag.begin.wikitext
+                      '3':
+                        patterns:
+                          - include: '#tagStuff'
+                          - include: $self
+                      '4':
+                        name: punctuation.definition.tag.wikitext
+                      '5':
+                        name: markup.bold.style.wikitext
+                  - include: $self
+              - name: string.quoted.wikitext
+                begin: ^\s*(\|)
+                end: $
+                beginCaptures:
+                  '1':
+                    name: punctuation.definition.tag.wikitext
+                  '2':
+                    patterns:
+                      - include: '#tagStuff'
+                  '3':
+                    name: punctuation.definition.tag.wikitext
+                patterns:
+                  - include: $self
+                  - match: \|\|
+                    name: keyword.operator.wikitext
+      wikixml:
+        patterns:
+          - include: '#nowiki'
+          - include: '#graph'
+          - include: '#templatedata'
+        repository:
+          nowiki:
+            begin: (?i)(<)(nowiki\s*)(^>)*(>)
+            beginCaptures:
+              '0':
+                name: meta.tag.metadata.nowiki.start.wikitext
+              '1':
+                name: punctuation.definition.tag.begin.wikitext
+              '2':
+                name: entity.name.tag.wikitext
+              '3':
+                patterns:
+                  - match: ' ([a-zA-Z-]+)'
+                    name: entity.other.attribute-name.wikitext
+                  - include: '#doublequotedString'
+                  - include: '#singlequotedString'
+              '4':
+                name: punctuation.definition.tag.end.wikitext
+            end: (?i)(</)(nowiki)\s*(>)
+            endCaptures:
+              '0':
+                name: meta.tag.metadata.nowiki.end.wikitext
+              '1':
+                name: punctuation.definition.tag.begin.wikitext
+              '2':
+                name: entity.name.tag.wikitext
+              '3':
+                name: punctuation.definition.tag.end.wikitext
+            name: meta.embedded.block.wikitext
+          graph:
+            begin: (?i)(<)(graph\s*)(^>)*(>)
+            beginCaptures:
+              '0':
+                name: meta.tag.metadata.graph.start.wikitext
+              '1':
+                name: punctuation.definition.tag.begin.wikitext
+              '2':
+                name: entity.name.tag.wikitext
+              '3':
+                patterns:
+                  - match: ' ([a-zA-Z-]+)'
+                    name: entity.other.attribute-name.wikitext
+                  - include: '#doublequotedString'
+                  - include: '#singlequotedString'
+              '4':
+                name: punctuation.definition.tag.end.wikitext
+            end: (?i)(</)(graph)\s*(>)
+            endCaptures:
+              '0':
+                name: meta.tag.metadata.graph.end.wikitext
+              '1':
+                name: punctuation.definition.tag.begin.wikitext
+              '2':
+                name: entity.name.tag.wikitext
+              '3':
+                name: punctuation.definition.tag.end.wikitext
+            contentName: source.json
+            patterns:
+              - include: '#wikijson'
+          templatedata:
+            begin: (?i)(<)(templatedata\s*)(^>)*(>)
+            beginCaptures:
+              '0':
+                name: meta.tag.metadata.templatedata.start.wikitext
+              '1':
+                name: punctuation.definition.tag.begin.wikitext
+              '2':
+                name: entity.name.tag.wikitext
+              '3':
+                patterns:
+                  - match: ' ([a-zA-Z-]+)'
+                    name: entity.other.attribute-name.wikitext
+                  - include: '#doublequotedString'
+                  - include: '#singlequotedString'
+              '4':
+                name: punctuation.definition.tag.end.wikitext
+            end: (?i)(</)(templatedata)\s*(>)
+            endCaptures:
+              '0':
+                name: meta.tag.metadata.templatedata.end.wikitext
+              '1':
+                name: punctuation.definition.tag.begin.wikitext
+              '2':
+                name: entity.name.tag.wikitext
+              '3':
+                name: punctuation.definition.tag.end.wikitext
+            contentName: source.json
+            patterns:
+              - include: '#wikijson'
+          wikijson:
+            patterns:
+              - include: '#jsonValue'
+            repository:
+              jsonArray:
+                begin: '\['
+                beginCaptures:
+                  '0':
+                    name: punctuation.definition.array.begin.json
+                end: '\]'
+                endCaptures:
+                  '0':
+                    name: punctuation.definition.array.end.json
+                name: meta.structure.array.json
+                patterns:
+                  - include: '#jsonValue'
+                  - match: ','
+                    name: punctuation.separator.array.json
+                  - match: '[^\s\]]'
+                    name: invalid.illegal.expected-array-separator.json
+              jsonComments:
+                patterns:
+                  - begin: /\*\*(?!/)
+                    captures:
+                      '0':
+                        name: punctuation.definition.comment.json
+                    end: \*/
+                    name: comment.block.documentation.json
+                  - begin: /\*
+                    captures:
+                      '0':
+                        name: punctuation.definition.comment.json
+                    end: \*/
+                    name: comment.block.json
+                  - captures:
+                      '1':
+                        name: punctuation.definition.comment.json
+                    match: (//).*$\n?
+                    name: comment.line.double-slash.js
+              jsonConstant:
+                match: '\b(?:true|false|null)\b'
+                name: constant.language.json
+              jsonNumber:
+                match: |-
+                  (?x)        # turn on extended mode
+                    -?        # an optional minus
+                    (?:
+                      0       # a zero
+                      |       # ...or...
+                      [1-9]   # a 1-9 character
+                      \d*     # followed by zero or more digits
+                    )
+                    (?:
+                      (?:
+                        \.    # a period
+                        \d+   # followed by one or more digits
+                      )?
+                      (?:
+                        [eE]  # an e character
+                        [+-]? # followed by an option +/-
+                        \d+   # followed by one or more digits
+                      )?      # make exponent optional
+                    )?        # make decimal portion optional
+                name: constant.numeric.json
+              jsonObject:
+                begin: '\{'
+                beginCaptures:
+                  '0':
+                    name: punctuation.definition.dictionary.begin.json
+                end: '\}'
+                endCaptures:
+                  '0':
+                    name: punctuation.definition.dictionary.end.json
+                name: meta.structure.dictionary.json
+                patterns:
+                  - comment: the JSON object key
+                    include: '#jsonObjectkey'
+                  - include: '#jsoncomments'
+                  - begin: ':'
+                    beginCaptures:
+                      '0':
+                        name: punctuation.separator.dictionary.key-value.json
+                    end: '(,)|(?=\})'
+                    endCaptures:
+                      '1':
+                        name: punctuation.separator.dictionary.pair.json
+                    name: meta.structure.dictionary.value.json
+                    patterns:
+                      - comment: the JSON object value
+                        include: '#jsonValue'
+                      - match: '[^\s,]'
+                        name: invalid.illegal.expected-dictionary-separator.json
+                  - match: '[^\s\}]'
+                    name: invalid.illegal.expected-dictionary-separator.json
+              jsonString:
+                begin: '"'
+                beginCaptures:
+                  '0':
+                    name: punctuation.definition.string.begin.json
+                end: '"'
+                endCaptures:
+                  '0':
+                    name: punctuation.definition.string.end.json
+                name: string.quoted.double.json
+                patterns:
+                  - include: '#jsonStringcontent'
+              jsonObjectkey:
+                begin: '"'
+                beginCaptures:
+                  '0':
+                    name: punctuation.support.type.property-name.begin.json
+                end: '"'
+                endCaptures:
+                  '0':
+                    name: punctuation.support.type.property-name.end.json
+                name: string.json support.type.property-name.json
+                patterns:
+                  - include: '#jsonStringcontent'
+              jsonStringcontent:
+                patterns:
+                  - match: |-
+                      (?x)                # turn on extended mode
+                        \\                # a literal backslash
+                        (?:               # ...followed by...
+                          ["\\/bfnrt]     # one of these characters
+                          |               # ...or...
+                          u               # a u
+                          [0-9a-fA-F]{4}) # and four hex digits
+                    name: constant.character.escape.json
+                  - match: \\.
+                    name: invalid.illegal.unrecognized-string-escape.json
+              jsonValue:
+                patterns:
+                  - include: '#jsonConstant'
+                  - include: '#jsonNumber'
+                  - include: '#jsonString'
+                  - include: '#jsonArray'
+                  - include: '#jsonObject'
+                  - include: '#jsonComments'
+  xml:
+    patterns:
+      - begin: '(<\?)\s*([-_a-zA-Z0-9]+)'
+        captures:
+          '1':
+            name: punctuation.definition.tag.wikitext
+          '2':
+            name: entity.name.tag.wikitext
+        end: (\?>)
+        name: meta.tag.preprocessor.wikitext
+        patterns:
+          - match: ' ([a-zA-Z-]+)'
+            name: entity.other.attribute-name.wikitext
+          - include: '#doublequotedString'
+          - include: '#singlequotedString'
+      - begin: '(<!)(DOCTYPE)\s+([:a-zA-Z_][:a-zA-Z0-9_.-]*)'
+        captures:
+          '1':
+            name: punctuation.definition.tag.wikitext
+          '2':
+            name: keyword.other.doctype.wikitext
+          '3':
+            name: variable.language.documentroot.wikitext
+        end: \s*(>)
+        name: meta.tag.sgml.doctype.wikitext
+        patterns:
+          - include: '#internalSubset'
+      - begin: '(<)((?:([-_a-zA-Z0-9]+)(:))?([-_a-zA-Z0-9:]+))(?=(\s[^>]*)?></\2>)'
+        beginCaptures:
+          '1':
+            name: punctuation.definition.tag.wikitext
+          '2':
+            name: entity.name.tag.wikitext
+          '3':
+            name: entity.name.tag.namespace.wikitext
+          '4':
+            name: punctuation.separator.namespace.wikitext
+          '5':
+            name: entity.name.tag.localname.wikitext
+        end: '(>)(</)((?:([-_a-zA-Z0-9]+)(:))?([-_a-zA-Z0-9:]+))(>)'
+        endCaptures:
+          '1':
+            name: punctuation.definition.tag.wikitext
+          '2':
+            name: punctuation.definition.tag.wikitext
+          '3':
+            name: entity.name.tag.wikitext
+          '4':
+            name: entity.name.tag.namespace.wikitext
+          '5':
+            name: punctuation.separator.namespace.wikitext
+          '6':
+            name: entity.name.tag.localname.wikitext
+          '7':
+            name: punctuation.definition.tag.wikitext
+        name: meta.tag.no-content.wikitext
+        patterns:
+          - include: '#tagStuff'
+      - begin: '(</?)(?:([-\w\.]+)((:)))?([-\w\.:]+)'
+        captures:
+          '1':
+            name: punctuation.definition.tag.xml
+          '2':
+            name: entity.name.tag.namespace.xml
+          '3':
+            name: entity.name.tag.xml
+          '4':
+            name: punctuation.separator.namespace.xml
+          '5':
+            name: entity.name.tag.localname.xml
+        end: (/?>)
+        name: meta.tag.wikitext
+        patterns:
+          - include: '#tagStuff'
+      - begin: <%@
+        beginCaptures:
+          '0':
+            name: punctuation.section.embedded.begin.wikitext
+        end: '%>'
+        endCaptures:
+          '0':
+            name: punctuation.section.embedded.end.wikitext
+        name: source.java-props.embedded.wikitext
+        patterns:
+          - match: page|include|taglib
+            name: keyword.other.page-props.wikitext
+      - begin: '<%[!=]?(?!--)'
+        beginCaptures:
+          '0':
+            name: punctuation.section.embedded.begin.wikitext
+        end: (?!--)%>
+        endCaptures:
+          '0':
+            name: punctuation.section.embedded.end.wikitext
+        name: source.java.embedded.wikitext
+        patterns:
+          - include: source.java
+      - begin: '<!\[CDATA\['
+        beginCaptures:
+          '0':
+            name: punctuation.definition.string.begin.wikitext
+        end: ']]>'
+        endCaptures:
+          '0':
+            name: punctuation.definition.string.end.wikitext
+        name: string.unquoted.cdata.wikitext
+    repository:
+      entityDecl:
+        comment: <!ENTITY (% example )SYSTEM( test)>
+        begin: >-
+          (<!)(ENTITY)\s+(%\s+)?([:a-zA-Z_][:a-zA-Z0-9_.-]*)(\s+(?:SYSTEM|PUBLIC)\s+)?
+        captures:
+          '1':
+            name: punctuation.definition.tag.wikitext
+          '2':
+            name: keyword.other.entity.wikitext
+          '3':
+            name: punctuation.definition.entity.wikitext
+          '4':
+            name: variable.language.entity.wikitext
+          '5':
+            name: keyword.other.entitytype.wikitext
+        end: (>)
+        patterns:
+          - include: '#doublequotedString'
+          - include: '#singlequotedString'
+      bare-ampersand:
+        match: '&'
+        name: invalid.illegal.bad-ampersand.wikitext
+      internalSubset:
+        begin: '(\[)'
+        captures:
+          '1':
+            name: punctuation.definition.constant.wikitext
+        end: '(\])'
+        name: meta.internalsubset.wikitext
+        patterns:
+          - include: '#entityDecl'
+          - include: '#parameterEntity'
+          - include: '#comments'
+      parameterEntity:
+        captures:
+          '1':
+            name: punctuation.definition.constant.wikitext
+          '3':
+            name: punctuation.definition.constant.wikitext
+        comment: '%adasd;'
+        match: '(%)([:a-zA-Z_][:a-zA-Z0-9_.-]*)(;)'
+        name: constant.character.parameter-entity.wikitext
+  doublequotedString:
+    begin: '"'
+    beginCaptures:
+      '0':
+        name: punctuation.definition.string.begin.wikitext
+    end: '"'
+    endCaptures:
+      '0':
+        name: punctuation.definition.string.end.wikitext
+    name: string.quoted.double.wikitext
+    patterns:
+      - include: '#entity'
+      - include: '#bare-ampersand'
+  tagStuff:
+    patterns:
+      - captures:
+          '1':
+            name: entity.other.attribute-name.namespace.wikitext
+          '2':
+            name: entity.other.attribute-name.wikitext
+          '3':
+            name: punctuation.separator.namespace.wikitext
+          '4':
+            name: entity.other.attribute-name.localname.wikitext
+          '5':
+            name: keyword.operator.equal.wikitext
+        comment: '  asd:dasd='
+        match: '(?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)'
+      - include: '#doublequotedString'
+      - include: '#singlequotedString'
+  singlequotedString:
+    begin: ''''
+    beginCaptures:
+      '0':
+        name: punctuation.definition.string.begin.wikitext
+    end: ''''
+    endCaptures:
+      '0':
+        name: punctuation.definition.string.end.wikitext
+    name: string.quoted.single.wikitext
+    patterns:
+      - include: '#entity'
+      - include: '#bare-ampersand'
+  entity:
+    captures:
+      '1':
+        name: punctuation.definition.constant.wikitext
+      '3':
+        name: punctuation.definition.constant.wikitext
+    comment: '&(#)c123;'
+    match: '(&)([:a-zA-Z_][:a-zA-Z0-9_.-]*|#[0-9]+|#x[0-9a-fA-F]+)(;)'
+    name: constant.character.entity.wikitext
+  comments:
+    patterns:
+      - begin: <%--
+        end: '--%>'
+        name: comment.block.xml
+        captures:
+          '0':
+            name: punctuation.definition.comment.xml
+      - begin: <!--
+        captures:
+          '0':
+            name: punctuation.definition.comment.wikitext
+        end: '-->'
+        name: comment.block.wikitext

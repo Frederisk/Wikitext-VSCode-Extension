@@ -197,15 +197,12 @@
         }
     },
     "scripts": {
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "test": "node ./out/test/runTest.js",
-        "pretest": "webpack --mode production",
-        "vscode:prepublish": "webpack --mode production",
-        "webpack": "webpack --mode development",
-        "webpack-dev": "webpack --mode development --watch",
-        "test-compile": "tsc -p ./",
-        "lint": "tslint -p ./"
+        "vscode:prepublish": "npm run convert && webpack --mode production",
+        "compile": "npm run convert && webpack --mode development",
+        "watch": "npm run convert && webpack --mode development --watch",
+        "pretest": "webpack --config webpack.pertest.js --mode development",
+        "test": "node ./dist/test/runTest.js",
+        "convert": "npx js-yaml snippets/snippets.yaml > snippets/snippets.json && npx js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json"
     },
     "devDependencies": {
         "@types/bluebird": "^3.5.32",
@@ -214,6 +211,7 @@
         "@types/node": "^12.12.62",
         "@types/vscode": "^1.43.0",
         "glob": "^7.1.5",
+        "js-yaml": "^3.14.0",
         "mocha": "^6.2.3",
         "mwbot": "^1.0.10",
         "ts-loader": "^6.2.2",

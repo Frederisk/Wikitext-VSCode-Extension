@@ -1,3 +1,8 @@
+################################################################################################
+#   Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
+#   Licensed under the MIT License. See License.txt in the project root for license information.
+################################################################################################
+
 version: 1.0.{build}
 image: Ubuntu2004
 install:
@@ -13,4 +18,6 @@ build_script:
 - sh: >-
     npm install
 
-    npm run webpack
+    npm install vsce -g
+
+    npx vsce package
