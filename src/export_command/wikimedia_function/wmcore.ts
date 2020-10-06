@@ -12,9 +12,9 @@ import { GetViewResult, GetViewConvert } from '../../interface_definition/getVie
 
 export let bot: MWBot | null = null;
 
-export function login(): void {
+export async function login(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const host: string | undefined = getHost();
+    const host: string | undefined = await getHost();
     if (!host) { return undefined; }
     const userName: string | undefined = config.get("userName");
     const password: string | undefined = config.get("password");
@@ -113,7 +113,7 @@ export async function writePage(): Promise<void> {
  */
 export async function readPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const host: string | undefined = getHost();
+    const host: string | undefined = await getHost();
     if (!host) { return undefined; }
     const title: string | undefined = await vscode.window.showInputBox({
         prompt: "Enter the page name here.",
@@ -186,7 +186,7 @@ export async function readPage(): Promise<void> {
 
 export async function viewPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const host: string | undefined = getHost();
+    const host: string | undefined = await getHost();
     if (!host) { return undefined; }
     const pageTitle: string | undefined = await vscode.window.showInputBox({
         prompt: "Enter the page name here.",

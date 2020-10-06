@@ -5,39 +5,36 @@
 
 import * as vscode from 'vscode';
 
-export async function setHost(): Promise<void> {
+export async function setHost(): Promise<string | undefined> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+
     const result: string | undefined = await vscode.window.showInputBox({
         prompt: "Please input the host of previewer. such as 'en.wikipedia.org'.",
-        //value: extensionContext.globalState.get("host") ?? "en.wikipedia.org",
         value: config.get("host") || "en.wikipedia.org",
         ignoreFocusOut: false
     });
-    // extensionContext.globalState.update("host", resule);
-    if (result === undefined) { return undefined; }
-    config.update("host", result, true);
+    if (result) {
+        config.update("host", result, true);
+        return result;
+    }
 }
 
-export function getHost(): string | undefined {
+export async function getHost(): Promise<string | undefined> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    // const host: string | undefined = extensionContext.globalState.get("host");
     const host: string | undefined = config.get("host");
+    if (host) { return host; }
+
     // Login and Session Management
-    if (!host) {
-        // error, show warnning
-        vscode.window.showWarningMessage(
-            `No Host Be Defined!
-You haven't defined the host of previewer yet, please input host value in the dialog box and try again.`
-            , "Edit", "Cancel")
-            .then(result => {
-                if (result === "Edit") {
-                    // enter host
-                    setHost();
-                }
-            });
-        return undefined;
+    // error, show warnning
+    const result = await vscode.window.showWarningMessage(
+        `No Host Be Defined!
+You haven't defined the host of previewer yet, please input host value in the dialog box (or in settings) and try again.`
+        , "Edit", "Cancel");
+
+    if (result === "Edit") {
+        return await setHost();
     }
-    else {
-        return host;
+    else{
+        return undefined;
     }
 }

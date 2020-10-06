@@ -2,8 +2,7 @@
 
 All notable changes to the "Wikitext" extension will be documented in this file.
 
-The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.
-<!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
+(The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
 ## [Todo List]
 

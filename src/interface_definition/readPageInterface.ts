@@ -64,7 +64,7 @@ export class ReadPageConvert {
     }
 }
 
-export const readPageResultTypeMap: any = {
+const readPageResultTypeMap: any = {
     "ReadPageResult": o([
         { json: "batchcomplete", js: "batchcomplete", typ: u(undefined, "") },
         { json: "query", js: "query", typ: u(undefined, r("Query")) },
