@@ -14,7 +14,7 @@ Of course, the development of this extension is short, and there may be some err
 
 If you get help with this project, give this project a star or recommend it to others, thanks!😸
 
-## NEW FEATURES*
+## NEW FEATURES
 
 - Now you can modify the website content by logging in directly in VSCode! Enter the settings page, search Wikitext and find the username and password items, and fill in them. Then press `F1` in the text editor, select `Post your page to the website`!
 

@@ -49,10 +49,12 @@ export async function getPreview(): Promise<void> {
 
     /** arguments */
     const args = {
-        action: action.parse,
-        text: sourceText,
-        prop: alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
-        contentmodel: contextModel.wikitext
+        'action': action.parse,
+        'text': sourceText,
+        'prop': alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
+        'contentmodel': contextModel.wikitext,
+        'pst': "yes",
+        'disableeditsection': "yes"
     };
 
     try {

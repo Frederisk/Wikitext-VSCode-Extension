@@ -111,6 +111,3 @@ export enum tokentype {
     userRights = "userrights",
     watch = "watch"
 }
-
-
-// 'zh.wikipedia.org/w/api.php?action=query&prop=revisions&rvslots=*&rvprop=content&titles=Main_Page'
