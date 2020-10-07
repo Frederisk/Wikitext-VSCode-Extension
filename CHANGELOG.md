@@ -11,6 +11,22 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 - Find and fix more syntax highlighting issues.
 - Add the function of quick citation to references.
 
+## [3.1.1] - 2020-10-07
+
+### Added
+
+- Pre-added support for URI invocation, but no official functions have been added yet.
+
+### Changed
+
+- Disabled edit section links in preview.
+- Removed some unusable code to improve performance.
+
+### Fixed
+
+- With PST turned on, Substituted templates, signatures, etc. can now be rendered correctly.
+- Modified the operation logic of GetHost.
+
 ## [3.1.0] - 2020-10-05
 
 ### Added

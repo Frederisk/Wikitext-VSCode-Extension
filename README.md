@@ -5,7 +5,7 @@
 [![VSMarket: wikitext](https://img.shields.io/badge/Visual%20Studio%20Market-wikitext-blueviolet)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
 [![Github: wikitext](https://img.shields.io/badge/Github-wikitext-green)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 [![Build status](https://ci.appveyor.com/api/projects/status/25okygmf42atyvi0?svg=true)](https://ci.appveyor.com/project/Frederisk/wikitext-vscode-extension)
-[![CodeFactor](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension/badge)](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension)
+[![CodeFactor Status](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension/badge)](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension)
 [![Patreon Donate](https://img.shields.io/badge/donate-patreon-orange)](https://www.patreon.com/rwfholme)
 
 This Visual Studio Code Extension provides support of Wikitext Markup language. With this extension, you can more easily discover your grammatical problems through the marked and styled text. The plugin is based on MediaWiki's Wikitext standard, but the rules are somewhat stricter, which helps users write text that is easier to read and maintain.
@@ -47,10 +47,11 @@ Generally speaking, make sure that your VSCode is always the latest version.
 
 ## Release Notes
 
-- Added Redirect snippet, more Magic Words supports, and ISBN/RFC/PMID supports.
-- The View, Preview, and Pull functions will now first try to use the login account to execute.
-- Fixed the problem of incomplete logout.
-- Modified some command names.
+- Disabled edit section links in preview.
+- Modified the operation logic of GetHost.
+- Removed some unusable code to improve performance.
+- Pre-added support for URI invocation, but no official functions have been added yet.
+- With PST turned on, Substituted templates, signatures, etc. can now be rendered correctly.
 
 ## Special Thanks
 
