@@ -1,4 +1,3 @@
-import { URL } from 'url';
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,6 +11,12 @@ export function baseUriProcess(uri: vscode.Uri) {
         case "/WriteLine":
         case "/Write":
             vscode.window.showInformationMessage(uri.query);
+            break;
+        case "ViewPage":
+
+            break;
+        case "EditPage":
+
             break;
         default:
             break;

@@ -1,3 +1,9 @@
+################################################################################################
+ #  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
+ #  Licensed under the MIT License. See License.txt in the project root for license information.
+################################################################################################
+
+---
 $schema: 'https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json'
 name: Wikitext
 scopeName: source.wikitext

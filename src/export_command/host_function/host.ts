@@ -34,7 +34,7 @@ You haven't defined the host of previewer yet, please input host value in the di
     if (result === "Edit") {
         return await setHost();
     }
-    else{
+    else {
         return undefined;
     }
 }

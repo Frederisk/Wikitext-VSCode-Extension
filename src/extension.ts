@@ -4,16 +4,21 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { getPreview } from './export_command/preview_function/preview';
+import { getPreview, getPageView } from './export_command/wikimedia_function/view';
 import { setHost } from './export_command/host_function/host';
-import { login, logout, writePage, readPage, viewPage } from './export_command/wikimedia_function/wmcore';
-import { baseUriProcess } from './export_command/uri_function/uriTest';
+import { login, logout } from './export_command/wikimedia_function/bot';
+import { writePage, readPage } from './export_command/wikimedia_function/core';
+import { baseUriProcess } from './export_command/uri_function/uri';
 
 export let extensionContext: vscode.ExtensionContext;
 
 export function activate(context: vscode.ExtensionContext): void {
-    extensionContext = context;
     console.log("Extension is active.");
+
+    extensionContext = context;
+
+    context.subscriptions.push(vscode.window.registerUriHandler({ handleUri: baseUriProcess }));
+
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.setHost", setHost));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.getPreview", getPreview));
 
@@ -21,9 +26,7 @@ export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.logout", logout));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.readPage", readPage));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.writePage", writePage));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.viewPage", viewPage));
-
-    context.subscriptions.push(vscode.window.registerUriHandler({handleUri:baseUriProcess}));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.viewPage", getPageView));
 }
 
 export function deactivate(): void {

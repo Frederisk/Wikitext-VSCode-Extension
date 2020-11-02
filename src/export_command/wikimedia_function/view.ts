@@ -4,11 +4,11 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import * as MWBot from 'mwbot';
+import * as mwbot from 'mwbot';
 import { extensionContext } from '../../extension';
-import { action, contextModel, alterNativeValues, prop } from '../wikimedia_function/mediawiki';
+import { action, contextModel, alterNativeValues, prop } from './args';
 import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
-import { bot as imbot } from '../wikimedia_function/wmcore';
+import { bot } from './bot';
 import { getHost } from '../host_function/host';
 
 /**
@@ -17,6 +17,17 @@ import { getHost } from '../host_function/host';
 let currentPlanel: vscode.WebviewPanel | undefined = undefined;
 
 export async function getPreview(): Promise<void> {
+    function showHtmlInfo(info: string): string {
+        return `
+    <body>
+        <section>
+            <h2>
+                ${info}
+            </h2>
+        </section>
+    </body>`;
+    }
+
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const textEditor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
     // check is there an opened document.
@@ -43,7 +54,7 @@ export async function getPreview(): Promise<void> {
     /** document text */
     const sourceText: string = textEditor.document.getText();
 
-    const bot: MWBot = imbot ?? new MWBot({
+    const tbot: MWBot = bot ?? new mwbot({
         apiUrl: "https://" + host + config.get("apiPath")
     });
 
@@ -58,7 +69,7 @@ export async function getPreview(): Promise<void> {
     };
 
     try {
-        const result = await bot?.request(args);
+        const result = await tbot?.request(args);
         const re: GetViewResult = GetViewConvert.toGetViewResult(result);
         // confirm the presence of the panel.
         if (!currentPlanel) {
@@ -77,15 +88,50 @@ export async function getPreview(): Promise<void> {
     catch (error) {
         vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
     }
+}
 
-    function showHtmlInfo(info: string): string {
-        return `
-    <body>
-        <section>
-            <h2>
-                ${info}
-            </h2>
-        </section>
-    </body>`;
+export async function getPageView(): Promise<void> {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+    const host: string | undefined = await getHost();
+    if (!host) { return undefined; }
+    const pageTitle: string | undefined = await vscode.window.showInputBox({
+        prompt: "Enter the page name here.",
+        ignoreFocusOut: true
+    });
+    if (!pageTitle) { return undefined; }
+
+    const tbot: MWBot = bot ?? new mwbot({
+        apiUrl: "https://" + host + config.get("apiPath")
+    });
+
+    const args: any = {
+        'action': action.parse,
+        'page': pageTitle,
+        'prop': alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
+    };
+    if (config.get("redirects")) {
+        args['redirects'] = "true";
+    }
+
+    try {
+        const result = await tbot.request(args);
+        const re: GetViewResult = GetViewConvert.toGetViewResult(result);
+
+        if (!re.parse) { return undefined; }
+        let currentPlanel: vscode.WebviewPanel = vscode.window.createWebviewPanel("pageViewer", "PageViewer", vscode.ViewColumn.Active, {
+            enableScripts: config.get("enableJavascript"),
+        });
+
+        const header: string = config.get("getCss") ? (re.parse.headhtml?.["*"] || ``) : `<!DOCTYPE html><html><body>`;
+        const end: string = `</body></html>`;
+
+        if (!currentPlanel) { return undefined; }
+        currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
+        currentPlanel.title = `WikiViewer: ${re.parse.displaytitle}`;
+
+    }
+    catch (error) {
+        let e = error as Error;
+        vscode.window.showErrorMessage(`ErrorCode:${error.code}| ErrorInfo:${error.info}`);
     }
 }
