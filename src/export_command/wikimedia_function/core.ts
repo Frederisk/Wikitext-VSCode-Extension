@@ -7,8 +7,7 @@ import * as mwbot from 'mwbot';
 import * as vscode from 'vscode';
 import { action, prop, rvprop, alterNativeValues } from './args';
 import { getHost } from '../host_function/host';
-import { ReadPageConvert, ReadPageResult } from '../../interface_definition/readPageInterface';
-import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
+import { ReadPageConvert, ReadPageResult, Main } from '../../interface_definition/readPageInterface';
 import { bot } from './bot';
 
 /**
@@ -63,7 +62,7 @@ export async function writePage(): Promise<void> {
             );
         }
     }).catch((err: Error) => {
-        vscode.window.showErrorMessage(err.name);
+        vscode.window.showErrorMessage(`$Error:{err.name}. Your Token: ${bot?.editToken}`);
     });
 }
 
@@ -126,18 +125,20 @@ export async function readPage(): Promise<void> {
             (re.query.redirects ? ` Redirect: "${re.query.redirects[0].from}" => "${re.query.redirects[0].to}"` : ``)
         );
 
+        const slotsMain: Main | undefined = page.revisions?.[0].slots?.main;
+
+        const info: string = `<%--[PAGE_INFO] Comment="Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits." PageTitle="${re.query.interwiki?.[0].title}" PageID="${page.pageid}" RevisionID="${page.revisions?.[0].revid}" ContentModel="${slotsMain?.contentmodel}" ContentFormat="${slotsMain?.contentformat}" [END_PAGE_INFO]--%>`;
+
         // show info
         // const wikiPageID = page0.$?.pageid;
         // const wikiContent = rev0?.slots?.[0].slot?.[0]._;
         // const wikiRevID = rev0?.$?.revid;
         // let info: string = `<%--Comment="Please do not remove this line. This line record contains some important editing data. The content of this line will be automatically removed when you push edits." PageTitle="${wikiTitle}" PageID="${wikiPageID}" RevisionID="${wikiRevID}"--%>`;
 
-        await vscode.workspace.openTextDocument(
-            {
-                language: revision?.slots?.main?.contentmodel,
-                content: revision?.slots?.main?.empty
-            }
-        );
+        await vscode.workspace.openTextDocument({
+            language: revision?.slots?.main?.contentmodel,
+            content: revision?.slots?.main?.empty
+        });
     }
     catch (error) {
         vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
