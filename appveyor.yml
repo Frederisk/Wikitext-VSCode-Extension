@@ -10,10 +10,8 @@ init:
       sudo apt update
 
       sudo apt upgrade -y
-
-      sudo apt update
 install:
-  - sh: sudo apt install nodejs
+  - sh: sudo apt install nodejs -y
 build_script:
   - sh: >-
       npm install vsce js-yaml -g
