@@ -24,6 +24,11 @@ export interface Parse {
     text?: Headhtml;
     displaytitle?: string;
     headhtml?: Headhtml;
+    categorieshtml?: CategoriesHTML;
+}
+
+export interface CategoriesHTML {
+    "*"?: string;
 }
 
 export interface Headhtml {
@@ -64,6 +69,10 @@ const getViewTypeMap: any = {
         { json: "text", js: "text", typ: u(undefined, r("Headhtml")) },
         { json: "displaytitle", js: "displaytitle", typ: u(undefined, "") },
         { json: "headhtml", js: "headhtml", typ: u(undefined, r("Headhtml")) },
+        { json: "categorieshtml", js: "categorieshtml", typ: u(undefined, r("CategoriesHTML")) },
+    ], false),
+    "CategoriesHTML": o([
+        { json: "*", js: "*", typ: u(undefined, "") },
     ], false),
     "Headhtml": o([
         { json: "*", js: "*", typ: u(undefined, "") },

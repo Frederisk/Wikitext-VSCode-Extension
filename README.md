@@ -14,14 +14,6 @@ Of course, the development of this extension is short, and there may be some err
 
 If you get help with this project, give this project a star or recommend it to others, thanks!😸
 
-## NEW FEATURES
-
-- Now you can modify the website content by logging in directly in VSCode! Enter the settings page, search Wikitext and find the username and password items, and fill in them. Then press `F1` in the text editor, select `Post your page to the website`!
-
-- Obtain the Wikitext source code directly in VSCode according to the page name without opening the web page. Press `F1` and select `Pull page to edit` to use this function.
-
-- Browse the page by entering the page name. Press `F1` then select `View the page`.
-
 ## Features
 
 - Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats. <br />
@@ -39,11 +31,44 @@ If you get help with this project, give this project a star or recommend it to o
 - Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`, `@title`...<br />
 <img src="./.asset/Code-snippets.gif" width="500">
 
-## Requirements
+- You can modify the website content by logging in directly in VSCode! Enter the settings page, search Wikitext and find the username and password items, and fill in them. Then press `F1` in the text editor, select `Post your page to the website`!
+
+- Obtain the Wikitext source code directly in VSCode according to the page name without opening the web page. Press `F1` and select `Pull page to edit` to use this function.
+
+- Browse the page by entering the page name. Press `F1` then select `View the page`.
+
+## Usage
+
+### Usage Requirements
 
 Please ensure that your VSCode version is higher than 1.43.0, this version requirements may change in the future.
 
 Generally speaking, make sure that your VSCode is always the latest version.
+
+## Development
+
+### Development Requirements
+
+- [Node.js](https://nodejs.org) (with npm) at least 10.x.x
+
+### How to build this extension yourself
+
+First clone this repository and change directory to the repository, then install VS Code Extension Manager and other packages:
+
+```sh
+npm install vsce -g # VS Code Extension Manager
+npm install js-yaml -g # js to yaml
+npm install # devDependencies
+
+```
+
+Package this project and you will get a vsix file:
+
+```sh
+npx vsce package
+```
+
+This is it!
 
 ## Release Notes
 

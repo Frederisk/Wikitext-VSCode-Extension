@@ -192,6 +192,11 @@
                     "type": "boolean",
                     "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks. (This feature was turned on by default in the past, but will be turned off by default from now on.)",
                     "default": false
+                },
+                "wikitext.articalPath": {
+                    "type": "string",
+                    "description": "Set the basic path to obtain the artical. If you are not sure what is this. please keep the default value.",
+                    "default": "/wiki/"
                 }
             }
         }
@@ -211,7 +216,6 @@
         "@types/node": "^12.12.62",
         "@types/vscode": "^1.43.0",
         "glob": "^7.1.5",
-        "js-yaml": "^3.14.0",
         "mocha": "^6.2.3",
         "mwbot": "^1.0.10",
         "ts-loader": "^6.2.2",
