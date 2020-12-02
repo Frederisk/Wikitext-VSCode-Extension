@@ -3,17 +3,22 @@
 #   Licensed under the MIT License. See License.txt in the project root for license information.
 ################################################################################################
 
-version: 2.0.{build}
+version: 2.1.{build}
 image: Ubuntu2004
-init:
-  - sh: >-
-      sudo apt update
+# init:
+#   - sh: >-
+#       sudo apt update
 
-      sudo apt upgrade -y
+#       sudo apt upgrade -y
 
-      sudo apt update
+#       sudo apt update
 install:
-  - sh: sudo apt install nodejs -y
+  - sh: >-
+        sudo apt update
+
+        sudo apt upgrade -y
+
+        sudo apt install nodejs -y
 build_script:
   - sh: >-
       npm install vsce js-yaml -g

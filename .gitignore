@@ -1,7 +1,14 @@
-out
-dist
-node_modules
-.vscode-test/
-*.vsix
+# Compiled dictories
+out/**
+dist/**
+
+#Compiled JSON
 syntaxes/*.json
 snippets/*.json
+
+# Dependencies
+node_modules/**
+.vscode-test/**
+
+# Packaged extensions
+*.vsix
