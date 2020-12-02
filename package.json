@@ -27,13 +27,13 @@
     ],
     "activationEvents": [
         "onCommand:wikitext.getPreview",
-        "onCommand:wikitext.setHost",
         "onCommand:wikitext.login",
         "onCommand:wikitext.logout",
         "onCommand:wikitext.readPage",
         "onCommand:wikitext.writePage",
-        "onCommand:wikitext.viewPage"
-    ],
+        "onCommand:wikitext.viewPage",
+        "onUri"
+        ],
     "main": "./dist/extension",
     "contributes": {
         "commands": [
@@ -46,11 +46,6 @@
                     "light": "media/preview-light.svg",
                     "dark": "media/preview-dark.svg"
                 }
-            },
-            {
-                "command": "wikitext.setHost",
-                "title": "Set host setting of API",
-                "category": "Wikitext"
             },
             {
                 "command": "wikitext.login",
@@ -83,11 +78,6 @@
                 {
                     "command": "wikitext.getPreview",
                     "when": "editorLangId == wikitext",
-                    "alt": "wikitext.setHost",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.setHost",
                     "group": "navigation"
                 },
                 {

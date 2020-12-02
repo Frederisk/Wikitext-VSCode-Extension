@@ -19,6 +19,8 @@ install:
         sudo apt upgrade -y
 
         sudo apt install nodejs -y
+
+        sudo apt update
 build_script:
   - sh: >-
       npm install vsce js-yaml -g

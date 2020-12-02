@@ -5,21 +5,21 @@
 
 import * as vscode from 'vscode';
 
-export async function setHost(): Promise<string | undefined> {
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-
-    const result: string | undefined = await vscode.window.showInputBox({
-        prompt: "Please input the host of previewer. such as 'en.wikipedia.org'.",
-        value: config.get("host") || "en.wikipedia.org",
-        ignoreFocusOut: false
-    });
-    if (result) {
-        config.update("host", result, true);
-        return result;
-    }
-}
-
 export async function getHost(): Promise<string | undefined> {
+    async function setHost(): Promise<string | undefined> {
+        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+
+        const result: string | undefined = await vscode.window.showInputBox({
+            prompt: "Please input the host of previewer. such as 'en.wikipedia.org'.",
+            value: config.get("host") || "en.wikipedia.org",
+            ignoreFocusOut: false
+        });
+        if (result) {
+            config.update("host", result, true);
+            return result;
+        }
+    }
+
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const host: string | undefined = config.get("host");
     if (host) { return host; }
