@@ -5,20 +5,17 @@
 {
     "compilerOptions": {
         /* Visit https://aka.ms/tsconfig.json to read more about this file */
-
         /* Basic Options */
-        "target": "es6",
-        "module": "commonjs",
+        "target": "ES2019",
+        "module": "CommonJS",
         "lib": [
-            "es6"
+            "ES2019"
         ],
         "sourceMap": true,
-        "outDir": "dist",
+        "outDir": "out",
         "rootDir": "src",
-
         /* Strict Type-Checking Options */
         "strict": true /* enable all strict type-checking options */
-
         /* Additional Checks */
         // "noUnusedParameters": true,  /* Report errors on unused parameters. */
         // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
