@@ -6,7 +6,9 @@
 version: 2.0.{build}
 image: Ubuntu2004
 init:
-  - sh: sudo apt update
+  - sh: >-
+      sudo apt update -y
+      sudo apt upgrade -y
 install:
   - sh: sudo apt install nodejs
 build_script:
