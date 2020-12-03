@@ -33,7 +33,7 @@
         "onCommand:wikitext.writePage",
         "onCommand:wikitext.viewPage",
         "onUri"
-        ],
+    ],
     "main": "./dist/extension",
     "contributes": {
         "commands": [
@@ -197,7 +197,8 @@
         "watch": "npm run convert && webpack --config webpack.config.js --mode development --watch",
         "pretest": "tsc -p ./",
         "test": "node ./out/test/runTest.js",
-        "convert": "npx js-yaml snippets/snippets.yaml > snippets/snippets.json && npx js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json"
+        "convert": "npx js-yaml snippets/snippets.yaml > snippets/snippets.json && npx js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json",
+        "deploy": "vsce publish --yarn"
     },
     "devDependencies": {
         "@types/bluebird": "^3.5.32",
@@ -211,7 +212,7 @@
         "ts-loader": "^6.2.2",
         "tslint": "^5.20.0",
         "typescript": "^3.9.7",
-        "vscode-test": "^1.4.0",
+        "vscode-test": "^1.4.1",
         "webpack": "^4.44.2",
         "webpack-cli": "^3.3.12"
     },
