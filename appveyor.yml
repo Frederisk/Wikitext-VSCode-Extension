@@ -22,8 +22,8 @@ build_script:
       npm install
 
       npx vsce package
-# test_script:
-#   - sh: npm test
+test_script:
+  - sh: npm test
 notifications:
   - provider: Email
     to:
