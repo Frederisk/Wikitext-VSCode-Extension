@@ -13,8 +13,6 @@ init:
 install:
   - sh: >-
       sudo apt install nodejs -y
-
-      sudo apt update
 build_script:
   - sh: >-
       npm install vsce js-yaml -g
