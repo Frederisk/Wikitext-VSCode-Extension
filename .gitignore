@@ -1,14 +1,14 @@
 # Compiled dictories
-out/**
-dist/**
+out/
+dist/
 
 #Compiled JSON
 syntaxes/*.json
 snippets/*.json
 
 # Dependencies
-node_modules/**
-.vscode-test/**
+node_modules/
+.vscode-test/
 
 # Packaged extensions
 *.vsix

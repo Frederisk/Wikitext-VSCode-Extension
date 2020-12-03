@@ -1,15 +1,15 @@
 # Workspace config
-.vs/**
-.vscode/**
-.vscode-test/**
-.github/**
+.vs/
+.vscode/
+.vscode-test/
+.github/
 
 # Source code
-out/**
-src/**
+out/
+src/
 
 # Modules
-node_modules/**
+node_modules/
 
 # YAML files
 snippets/*.yaml
