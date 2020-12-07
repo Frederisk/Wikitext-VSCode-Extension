@@ -47,15 +47,15 @@ suite('WikimediaFunction Core TestSuite', () => {
         const pageTitle = "Some String";
         const content = "Content here";
         //
-        const hasStr = `<%--  [PAGE_INFO] ${InfoType.PageTitle}=  "${pageTitle}"  [END_PAGE_INFO] --%>\r${content}`;
+        const hasStr = `<%--  [PAGE_INFO] ${InfoType.PageTitle}=  #${pageTitle}#  [END_PAGE_INFO] --%>\r${content}`;
         const noStr = content;
         const mutiStr = `<%-- [PAGE_INFO]
-        Comment="Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits."
-        PageTitle="User:Rowe Wilson Frederisk Holme"
-        PageID="6364830"
-        RevisionID="60746059"
-        ContentModel="wikitext"
-        ContentFormat="text/x-wiki"
+        Comment=#Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.#
+        PageTitle=#User:Rowe Wilson Frederisk Holme#
+        PageID=#6364830#
+        RevisionID=#60746059#
+        ContentModel=#wikitext#
+        ContentFormat=#text/x-wiki#
         [END_PAGE_INFO] --%>
         {{Soft redirect|User:Роу Уилсон Фредериск Холм}}
         <!--{{produceEncouragement|count=1}}-->{{patrol}}`;

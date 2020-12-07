@@ -29,7 +29,7 @@ export function getContentInfo(content: string): { content: string, info: IPageI
     if (info) {
         content = content.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
         const foo = (infoName: string): string | undefined => {
-            const reg = new RegExp(`(?<=${infoName}\\s*=\\s*").*?(?=")`);
+            const reg = new RegExp(`(?<=${infoName}\\s*=\\s*#).*?(?=#)`);
             return info.match(reg)?.[0];
         };
         pageInfo = {
@@ -174,12 +174,12 @@ export async function readPage(): Promise<void> {
 
         const infoHead: string =
             "<%-- [PAGE_INFO]\r" +
-            `Comment="Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits."\r` +
-            `${InfoType.PageTitle}="${page.title}"\r` +
-            `${InfoType.PageID}="${page.pageid}"\r` +
-            `${InfoType.RevisionID}="${revision?.revid}"\r` +
-            `${InfoType.ContentModel}="${slotsMain?.contentmodel}"\r` +
-            `${InfoType.ContentFormat}="${slotsMain?.contentformat}"\r` +
+            `Comment=#Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.#\r` +
+            `${InfoType.PageTitle}=#${page.title}#\r` +
+            `${InfoType.PageID}=#${page.pageid}#\r` +
+            `${InfoType.RevisionID}=#${revision?.revid}#\r` +
+            `${InfoType.ContentModel}=#${slotsMain?.contentmodel}#\r` +
+            `${InfoType.ContentFormat}=#${slotsMain?.contentformat}#\r` +
             "[END_PAGE_INFO] --%>";
 
         await vscode.workspace.openTextDocument({
