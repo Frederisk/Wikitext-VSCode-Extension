@@ -11,6 +11,25 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 - Find and fix more syntax highlighting issues.
 - Add the function of quick citation to references.
 
+## [3.2.0] - 2020-12-
+
+### Added
+
+- Categories view.
+
+### Changed
+
+- Optimized the packaging structure.
+- URI can make extension activate now.
+
+### Removed
+
+- The setHost command has been removed, you should use Settings instead.
+
+### Fixed
+
+- CSS & image rendering.
+
 ## [3.1.1] - 2020-10-07
 
 ### Added
@@ -26,6 +45,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 - With PST turned on, Substituted templates, signatures, etc. can now be rendered correctly.
 - Modified the operation logic of GetHost.
+- Some syntaxes errors, such as: Template, Patterns,Bare ampersand, and Tag Stuff.
 
 ## [3.1.0] - 2020-10-05
 

@@ -53,7 +53,7 @@ Generally speaking, make sure that your VSCode is always the latest version.
 
 ### How to build this extension yourself
 
-First clone this repository and change directory to the repository, then install VS Code Extension Manager and other packages:
+Firstly, clone this repository and change directory to the repository, then install VS Code Extension Manager and other packages:
 
 ```sh
 npm install vsce -g # VS Code Extension Manager
@@ -72,11 +72,12 @@ This is it!
 
 ## Release Notes
 
-- Disabled edit section links in preview.
-- Modified the operation logic of GetHost.
-- Removed some unusable code to improve performance.
-- Pre-added support for URI invocation, but no official functions have been added yet.
-- With PST turned on, Substituted templates, signatures, etc. can now be rendered correctly.
+- Added Categories view.
+- Optimized the packaging structure.
+- URI can make extension activate now.
+- The setHost command has been removed, you should use Settings instead.
+- Fixed CSS & image rendering.
+- Fixed some syntaxes errors, such as: Template, Patterns,Bare ampersand, and Tag Stuff.
 
 ## Special Thanks
 

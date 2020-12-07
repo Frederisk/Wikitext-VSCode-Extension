@@ -1,11 +1,11 @@
 ################################################################################################
- #  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
- #  Licensed under the MIT License. See License.txt in the project root for license information.
+#  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
+#  Licensed under the MIT License. See License.txt in the project root for license information.
 ################################################################################################
 
 ---
 region:
-  prefix: '@region'
+  prefix: "@region"
   body: |-
     <!--#region ${1:chapter}-->
     ${2:}
@@ -13,12 +13,12 @@ region:
   description: Region
   scope: markup.list.unnumbered.wikitext
 redirect:
-  prefix: '@redirect'
-  body: '#REDIRECT [[${1:Pagename}]]'
+  prefix: "@redirect"
+  body: "#REDIRECT [[${1:Pagename}]]"
   description: Redirection
-  scope: ''
+  scope: ""
 table:
-  prefix: '@table'
+  prefix: "@table"
   body: |
     {| ${1:class="wikitable"}
     |+Title
@@ -43,52 +43,52 @@ table:
     |
     |}
   description: Table
-  scope: ''
+  scope: ""
 codeBlock:
-  prefix: '@codeblock'
+  prefix: "@codeblock"
   body: |-
     <syntaxhighlight lang="${1:c#}" line="${2:1}" start="${3:1}">
 
     </syntaxhighlight>
   description: Code Block
-  scope: ''
+  scope: ""
 comments:
-  prefix: '@comments'
-  body: '<!--${1:comments}-->'
+  prefix: "@comments"
+  body: "<!--${1:comments}-->"
   description: Comments
-  scope: ''
+  scope: ""
 todo:
-  prefix: '@todo'
-  body: '<!--TODO:${1:Task}-->'
+  prefix: "@todo"
+  body: "<!--TODO:${1:Task}-->"
   description: Todo Task
-  scope: ''
+  scope: ""
 title:
-  prefix: '@title'
-  body: '== ${1:title} =='
+  prefix: "@title"
+  body: "== ${1:title} =="
   description: Title<2>
-  scope: ''
+  scope: ""
 subtitle1:
-  prefix: '@subt1'
-  body: '=== ${1:title} ==='
+  prefix: "@subt1"
+  body: "=== ${1:title} ==="
   description: Subtitle1<3>
-  scope: ''
+  scope: ""
 subtitle2:
-  prefix: '@subt2'
-  body: '==== ${1:title} ===='
+  prefix: "@subt2"
+  body: "==== ${1:title} ===="
   description: Subtitle2<4>
-  scope: ''
+  scope: ""
 subtitle3:
-  prefix: '@subt3'
-  body: '===== ${1:title} ====='
+  prefix: "@subt3"
+  body: "===== ${1:title} ====="
   description: Subtitle3<5>
-  scope: ''
+  scope: ""
 subtitle4:
-  prefix: '@subt4'
-  body: '====== ${1:title} ======'
+  prefix: "@subt4"
+  body: "====== ${1:title} ======"
   description: Subtitle4<6>
-  scope: ''
+  scope: ""
 pageTitle:
-  prefix: '@pagetitle'
-  body: '= ${1:title} ='
+  prefix: "@pagetitle"
+  body: "= ${1:title} ="
   description: PageTitle<1>
-  scope: ''
+  scope: ""
