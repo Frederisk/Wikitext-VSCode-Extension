@@ -2,7 +2,7 @@
 #   Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
 #   Licensed under the MIT License. See License.txt in the project root for license information.
 ################################################################################################
-
+---
 version: 2.2.{build}
 image: Ubuntu2004
 init:
@@ -21,7 +21,7 @@ build_script:
 
       npx vsce package
 test_script:
-  - sh: npm test
+  - sh: npm run test
 notifications:
   - provider: Email
     to:

@@ -46,7 +46,7 @@ async function viewPage(query: string): Promise<void> {
         args['redirects'] = "true";
     }
 
-    const pars: IDictionary<string> = parseArgs(query);
+    const pars: IParameters = parseArgs(query);
     if (pars["PageID"]) {
         args["pageid"] = pars["PageID"];
     }
@@ -65,13 +65,13 @@ async function viewPage(query: string): Promise<void> {
     getView("pageViewer", "WikiViewer", args);
 }
 
-interface IDictionary<T> {
-    [Key: string]: T;
+interface IParameters {
+    [Key: string]: string;
 }
 
-function parseArgs(query: string): IDictionary<string> {
+export function parseArgs(query: string): IParameters {
     const queries = query.split("&");
-    let pars: IDictionary<string> = {};
+    let pars: IParameters = {};
     for (const item of queries) {
         const eq: number = item.indexOf("=");
         if (eq >= 0) {

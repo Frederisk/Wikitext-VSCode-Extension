@@ -12,8 +12,8 @@
             "ES2019"
         ],
         "sourceMap": true,
-        "outDir": "out",
-        "rootDir": "src",
+        "outDir": "./out",
+        "rootDir": "./src",
         /* Strict Type-Checking Options */
         "strict": true /* enable all strict type-checking options */
         /* Additional Checks */
@@ -26,7 +26,7 @@
         ".vscode-test"
     ],
     "include": [
-        "src/**/*.ts",
+        "./src/**/*.ts",
         "./node_modules/vscode/vscode.d.ts",
         "./node_modules/vscode/lib/*"
     ]

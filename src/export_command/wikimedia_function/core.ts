@@ -10,6 +10,40 @@ import { getHost } from '../host_function/host';
 import { ReadPageConvert, ReadPageResult, Main } from '../../interface_definition/readPageInterface';
 import { bot } from './bot';
 
+export enum InfoType {
+    PageTitle = "PageTitle",
+    PageID = "PageID",
+    RevisionID = "RevisionID",
+    ContentModel = "ContentModel",
+    ContentFormat = "ContentFormat"
+}
+
+export interface IPageInfos {
+    [key: string]: string | undefined;
+}
+
+export function getContentInfo(content: string): { content: string, info: IPageInfos | null } {
+    const info: string | undefined = content.match(/(?<=\<%\-\-\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*\-\-%\>)/)?.[0];
+
+    let pageInfo: IPageInfos | null = null;
+    if (info) {
+        content = content.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
+        const foo = (infoName: string): string | undefined => {
+            const reg = new RegExp(`(?<=${infoName}\\s*=\\s*").*?(?=")`);
+            return info.match(reg)?.[0];
+        };
+        pageInfo = {
+            PageTitle: foo(InfoType.PageTitle),
+            PageID: foo(InfoType.PageID),
+            RevisionID: foo(InfoType.RevisionID),
+            ContentModel: foo(InfoType.ContentModel),
+            ContentFormat: foo(InfoType.ContentFormat)
+        };
+    }
+
+    return { content: content, info: pageInfo };
+}
+
 /**
  * Write/Post Page
  */
@@ -19,14 +53,18 @@ export async function writePage(): Promise<void> {
         return undefined;
     }
 
-    const wikiContent: string | undefined = vscode.window.activeTextEditor?.document.getText();
+    let wikiContent: string | undefined = vscode.window.activeTextEditor?.document.getText();
     if (wikiContent === undefined) {
         vscode.window.showWarningMessage("There is no active text editor.");
         return undefined;
     }
 
+    const contentInfo: { content: string, info: IPageInfos | null } = getContentInfo(wikiContent);
+
+    console.log(contentInfo);
+
     const wikiTitle: string | undefined = await vscode.window.showInputBox({
-        value: "",
+        value: contentInfo.info?.[InfoType.PageTitle] || "",
         ignoreFocusOut: true,
         prompt: "Enter the page name here."
     });
@@ -39,31 +77,32 @@ export async function writePage(): Promise<void> {
         value: "",
         ignoreFocusOut: false,
         prompt: "Enter the summary of this edit action."
-    });
-    wikiSummary += " // Edit via Wikitext Extension for VSCode";
+    }) + " // Edit via Wikitext Extension for VSCode";
 
-    await bot.getEditToken().then((response: any) => {
-        vscode.window.showInformationMessage(
-            `Get edit token status is "${response.result}". User "${response.lgusername}" (User ID: "${response.lguserid}") got the token: "${response.token}" and csrftoken: "${response.csrftoken}".`
-        );
-    }).catch((err: Error) => {
-        vscode.window.showErrorMessage(err.name);
-    });
-
-    await bot.edit(wikiTitle, wikiContent, wikiSummary).then(response => {
-        if (response.edit.nochange !== undefined) {
-            vscode.window.showWarningMessage(
-                `No changes have occurred: "${response.edit.nochange}", Edit page "${response.edit.title}" (Page ID: "${response.edit.pageid}") action status is "${response.edit.result}" with Content Model "${response.edit.contentmodel}". Watched by: "${response.edit.watched}".`
-            );
-        }
-        else {
+    try {
+        await bot.getEditToken().then((response: any) => {
             vscode.window.showInformationMessage(
-                `Edit page "${response.edit.title}" (Page ID: "${response.edit.pageid}") action status is "${response.edit.result}" with Content Model "${response.edit.contentmodel}" (Version: "${response.edit.oldrevid}" => "${response.edit.newrevid}", Time: "${response.edit.newtimestamp}"). Watched by: "${response.edit.watched}".`
+                `Get edit token status is "${response.result}". User "${response.lgusername}" (User ID: "${response.lguserid}") got the token: "${response.token}" and csrftoken: "${response.csrftoken}".`
             );
-        }
-    }).catch((err: Error) => {
+        });
+
+        await bot.edit(wikiTitle, contentInfo.content, wikiSummary).then(response => {
+            if (response.edit.nochange !== undefined) {
+                vscode.window.showWarningMessage(
+                    `No changes have occurred: "${response.edit.nochange}", Edit page "${response.edit.title}" (Page ID: "${response.edit.pageid}") action status is "${response.edit.result}" with Content Model "${response.edit.contentmodel}". Watched by: "${response.edit.watched}".`
+                );
+            }
+            else {
+                vscode.window.showInformationMessage(
+                    `Edit page "${response.edit.title}" (Page ID: "${response.edit.pageid}") action status is "${response.edit.result}" with Content Model "${response.edit.contentmodel}" (Version: "${response.edit.oldrevid}" => "${response.edit.newrevid}", Time: "${response.edit.newtimestamp}"). Watched by: "${response.edit.watched}".`
+                );
+            }
+        });
+
+    }
+    catch (error) {
         vscode.window.showErrorMessage(`$Error:{err.name}. Your Token: ${bot?.editToken}`);
-    });
+    }
 }
 
 /**
@@ -127,17 +166,25 @@ export async function readPage(): Promise<void> {
 
         vscode.window.showInformationMessage(
             `Opened page "${page.title}" with Model ${revision?.slots?.main?.contentmodel}.` +
-            (re.query.normalized ? ` Normalized: "${re.query.normalized[0].from}" => "${re.query.normalized[0].to}".` : ``) +
-            (re.query.redirects ? ` Redirect: "${re.query.redirects[0].from}" => "${re.query.redirects[0].to}"` : ``)
+            (re.query.normalized ? ` Normalized: "${re.query.normalized[0].from}" => "${re.query.normalized[0].to}".` : "") +
+            (re.query.redirects ? ` Redirect: "${re.query.redirects[0].from}" => "${re.query.redirects[0].to}"` : "")
         );
 
         const slotsMain: Main | undefined = revision?.slots?.main;
 
-        const info: string = `<%--[PAGE_INFO] Comment="Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits." PageTitle="${page.title}" PageID="${page.pageid}" RevisionID="${revision?.revid}" ContentModel="${slotsMain?.contentmodel}" ContentFormat="${slotsMain?.contentformat}" [END_PAGE_INFO]--%>`;
+        const infoHead: string =
+            "<%-- [PAGE_INFO]\r" +
+            `Comment="Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits."\r` +
+            `${InfoType.PageTitle}="${page.title}"\r` +
+            `${InfoType.PageID}="${page.pageid}"\r` +
+            `${InfoType.RevisionID}="${revision?.revid}"\r` +
+            `${InfoType.ContentModel}="${slotsMain?.contentmodel}"\r` +
+            `${InfoType.ContentFormat}="${slotsMain?.contentformat}"\r` +
+            "[END_PAGE_INFO] --%>";
 
         await vscode.workspace.openTextDocument({
             language: revision?.slots?.main?.contentmodel,
-            content: info + "\r" + revision?.slots?.main?.empty
+            content: infoHead + "\r\r" + revision?.slots?.main?.empty
         });
     }
     catch (error) {

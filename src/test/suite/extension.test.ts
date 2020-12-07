@@ -10,10 +10,10 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 // import * as myExtension from '../extension';
 
-suite('Extension Test Suite', () => {
+suite('Extension TestSuite', () => {
     vscode.window.showInformationMessage('Start all tests.');
 
-    test('Sample test', () => {
+    test('Sample Test', () => {
         assert.strictEqual(-1, [1, 2, 3].indexOf(5));
         assert.strictEqual(-1, [1, 2, 3].indexOf(0));
     });
@@ -21,11 +21,98 @@ suite('Extension Test Suite', () => {
 
 
 import { alterNativeValues } from '../../export_command/wikimedia_function/args';
-suite('wikimedia function test suite', () => {
-    test('alterNativeValues test', () => {
+suite('WikimediaFunction Args TestSuite', () => {
+    test('AlterNativeValues Test', () => {
+
+        // Arrange
+        // meta
         const first: string = "first", second = "second", third = "third", alt = "|";
 
-        assert.strictEqual(alterNativeValues(first, second), first + alt + second);
-        assert.strictEqual(alterNativeValues(undefined, undefined, third),third);
+        // Act
+        const first_Second = alterNativeValues(first, second);
+        const und_und_Third = alterNativeValues(undefined, undefined, third);
+
+        // Assert
+        assert.strictEqual(first_Second, first + alt + second);
+        assert.strictEqual(und_und_Third, third);
+    });
+});
+
+import { getContentInfo, IPageInfos, InfoType } from '../../export_command/wikimedia_function/core';
+suite('WikimediaFunction Core TestSuite', () => {
+    test('GetContentInfo Test', () => {
+
+        // Arrange
+        //meta
+        const pageTitle = "Some String";
+        const content = "Content here";
+        //
+        const hasStr = `<%--  [PAGE_INFO] ${InfoType.PageTitle}=  "${pageTitle}"  [END_PAGE_INFO] --%>\r${content}`;
+        const noStr = content;
+        const mutiStr = `<%-- [PAGE_INFO]
+        Comment="Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits."
+        PageTitle="User:Rowe Wilson Frederisk Holme"
+        PageID="6364830"
+        RevisionID="60746059"
+        ContentModel="wikitext"
+        ContentFormat="text/x-wiki"
+        [END_PAGE_INFO] --%>
+        {{Soft redirect|User:Роу Уилсон Фредериск Холм}}
+        <!--{{produceEncouragement|count=1}}-->{{patrol}}`;
+
+        // Act
+        const hasInfo = getContentInfo(hasStr);
+        const noInfo = getContentInfo(noStr);
+        const mutiInfo = getContentInfo(mutiStr);
+
+        // Assert
+        // hasInfo
+        assert.strictEqual(hasInfo.content, content, "hasInfo content faild");
+        assert.deepStrictEqual(hasInfo.info, {
+            PageTitle: pageTitle,
+            PageID: undefined,
+            RevisionID: undefined,
+            ContentFormat: undefined,
+            ContentModel: undefined
+        }, "hasInfo info faild");
+        // noInfo
+        assert.strictEqual(noInfo.content, content, "noInfo content faild");
+        assert.deepStrictEqual(noInfo.info, null, "noInfo info faild");
+        // mutiInfo
+        assert.notStrictEqual(mutiInfo.info, null, "mutiInfo info faild");
+    });
+});
+
+import { parseArgs } from '../../export_command/uri_function/uri';
+suite('URIFunction URI TestSuite', () => {
+
+    test('Parse Test', () => {
+
+        // Arrange
+        // meta
+        const arg1 = "arg1", arg2 = "arg2", bare = "string";
+        //
+        const singleStr = `${arg1}=1`;
+        const mutiStr = `${arg1}=1&${arg2}=2`;
+        const bareStr = bare;
+        const mutiWithBareStr = `${arg1}=1&${bare}`;
+
+        // Act
+        const singlePar = parseArgs(singleStr);
+        const mutiPar = parseArgs(mutiStr);
+        const barePar = parseArgs(bareStr);
+        const mutiWithBarePar = parseArgs(mutiWithBareStr);
+
+        // Assert
+        // singlePar
+        assert.strictEqual(singlePar[arg1], "1");
+        // mutiPar
+        assert.strictEqual(mutiPar[arg1], "1");
+        assert.strictEqual(mutiPar[arg2], "2");
+        // barePar
+        assert.strictEqual(barePar[bare], "");
+        // muti&barePar
+        assert.strictEqual(mutiWithBarePar[arg1], "1");
+        assert.strictEqual(mutiWithBarePar[bare], "");
     });
 });
