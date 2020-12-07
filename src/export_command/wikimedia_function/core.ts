@@ -71,14 +71,20 @@ export async function writePage(): Promise<void> {
  */
 export async function readPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+
+    // get host
     const host: string | undefined = await getHost();
     if (!host) { return undefined; }
+
+    // get title name
     const title: string | undefined = await vscode.window.showInputBox({
         prompt: "Enter the page name here.",
         ignoreFocusOut: true
     });
+    // if title is null or empty, do nothing
     if (!title) { return undefined; }
 
+    // constructing
     const tbot: MWBot = bot ?? new mwbot({
         apiUrl: "https://" + host + config.get("apiPath")
     });
@@ -90,12 +96,12 @@ export async function readPage(): Promise<void> {
         'rvslots': "*",
         'titles': title
     };
-
     if (config.get("redirects")) {
         args['redirects'] = "true";
     }
 
     try {
+        // get request result
         const result = await tbot.request(args);
         // Conver result as class
         const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
@@ -105,7 +111,7 @@ export async function readPage(): Promise<void> {
             );
         }
 
-        // need page
+        // need a page elements
         if (!re.query?.pages) { return undefined; }
 
         const page = re.query.pages[Object.keys(re.query.pages)[0]];
@@ -129,15 +135,9 @@ export async function readPage(): Promise<void> {
 
         const info: string = `<%--[PAGE_INFO] Comment="Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits." PageTitle="${re.query.interwiki?.[0].title}" PageID="${page.pageid}" RevisionID="${page.revisions?.[0].revid}" ContentModel="${slotsMain?.contentmodel}" ContentFormat="${slotsMain?.contentformat}" [END_PAGE_INFO]--%>`;
 
-        // show info
-        // const wikiPageID = page0.$?.pageid;
-        // const wikiContent = rev0?.slots?.[0].slot?.[0]._;
-        // const wikiRevID = rev0?.$?.revid;
-        // let info: string = `<%--Comment="Please do not remove this line. This line record contains some important editing data. The content of this line will be automatically removed when you push edits." PageTitle="${wikiTitle}" PageID="${wikiPageID}" RevisionID="${wikiRevID}"--%>`;
-
         await vscode.workspace.openTextDocument({
             language: revision?.slots?.main?.contentmodel,
-            content: revision?.slots?.main?.empty
+            content: info + "\n\r" + revision?.slots?.main?.empty
         });
     }
     catch (error) {
