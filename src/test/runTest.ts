@@ -9,6 +9,7 @@ import { runTests } from 'vscode-test';
 
 async function main() {
     try {
+        console.log("Starting test.");
         // The folder containing the Extension Manifest package.json
         // Passed to `--extensionDevelopmentPath`
         const extensionDevelopmentPath = path.resolve(__dirname, '../../');
@@ -16,10 +17,11 @@ async function main() {
         // The path to test runner
         // Passed to --extensionTestsPath
         const extensionTestsPath = path.resolve(__dirname, './suite/index');
-
+        console.log("Runing test.");
         // Download VS Code, unzip it and run the integration test
         await runTests({ extensionDevelopmentPath, extensionTestsPath });
     } catch (err) {
+        console.log(err);
         console.error('Failed to run tests');
         process.exit(1);
     }

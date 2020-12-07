@@ -14,8 +14,18 @@ suite('Extension Test Suite', () => {
     vscode.window.showInformationMessage('Start all tests.');
 
     test('Sample test', () => {
-        assert.equal(-1, [1, 2, 3].indexOf(5));
-        assert.equal(-1, [1, 2, 3].indexOf(0));
-        //assert.equal(1, [1, 2, 3].indexOf(4));
+        assert.strictEqual(-1, [1, 2, 3].indexOf(5));
+        assert.strictEqual(-1, [1, 2, 3].indexOf(0));
+    });
+});
+
+
+import { alterNativeValues } from '../../export_command/wikimedia_function/args';
+suite('wikimedia function test suite', () => {
+    test('alterNativeValues test', () => {
+        const first: string = "first", second = "second", third = "third", alt = "|";
+
+        assert.strictEqual(alterNativeValues(first, second), first + alt + second);
+        assert.strictEqual(alterNativeValues(undefined, undefined, third),third);
     });
 });

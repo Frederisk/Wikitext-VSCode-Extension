@@ -3,24 +3,16 @@
 #   Licensed under the MIT License. See License.txt in the project root for license information.
 ################################################################################################
 
-version: 2.1.{build}
+version: 2.2.{build}
 image: Ubuntu2004
-# init:
-#   - sh: >-
-#       sudo apt update
+init:
+  - sh: >-
+      export DISPLAY=':99.0'
 
-#       sudo apt upgrade -y
-
-#       sudo apt update
+      /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 install:
   - sh: >-
-        sudo apt update
-
-        sudo apt upgrade -y
-
-        sudo apt install nodejs -y
-
-        sudo apt update
+      sudo apt install nodejs -y
 build_script:
   - sh: >-
       npm install vsce js-yaml -g
@@ -28,8 +20,8 @@ build_script:
       npm install
 
       npx vsce package
-# test_script:
-#   - sh: npm test
+test_script:
+  - sh: npm test
 notifications:
   - provider: Email
     to:
