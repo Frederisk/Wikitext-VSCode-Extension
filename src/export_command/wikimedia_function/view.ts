@@ -7,131 +7,117 @@ import * as vscode from 'vscode';
 import * as mwbot from 'mwbot';
 import { extensionContext } from '../../extension';
 import { action, contextModel, alterNativeValues, prop } from './args';
-import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
+import { GetViewResult, GetViewConvert, Parse } from '../../interface_definition/getViewInterface';
 import { bot } from './bot';
 import { getHost } from '../host_function/host';
 
 /**
  * webview panel
  */
-let currentPlanel: vscode.WebviewPanel | undefined = undefined;
+let previewCurrentPlanel: vscode.WebviewPanel | undefined = undefined;
 
 export async function getPreview(): Promise<void> {
-    function showHtmlInfo(info: string): string {
-        return `
-    <body>
-        <section>
-            <h2>
-                ${info}
-            </h2>
-        </section>
-    </body>`;
-    }
-
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const textEditor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
-    // check is there an opened document.
-    if (!textEditor) {
-        vscode.window.showInformationMessage("No Active Wikitext Editor.");
-        // if have not, cancle.
-        return undefined;
-    }
+
     const host: string | undefined = await getHost();
     if (!host) { return undefined; }
-    if (!currentPlanel) {
-        // if have not, try to creat new one.
-        currentPlanel = vscode.window.createWebviewPanel(
-            "previewer", "WikitextPreviewer", vscode.ViewColumn.Beside, {
-            enableScripts: config.get("enableJavascript"),
-        });
-        // register for events that release resources.
-        currentPlanel.onDidDispose(() => {
-            currentPlanel = undefined;
-        }, null, extensionContext.subscriptions);
-    }
-    // show loading status
-    currentPlanel.webview.html = showHtmlInfo("Loading...");
-    /** document text */
-    const sourceText: string = textEditor.document.getText();
 
-    const tbot: MWBot = bot ?? new mwbot({
-        apiUrl: "https://" + host + config.get("apiPath")
-    });
+    /** document text */
+    const sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
 
     /** arguments */
     const args = {
         'action': action.parse,
         'text': sourceText,
-        'prop': alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
+        'prop': alterNativeValues(
+            prop.text,
+            prop.displayTitle,
+            prop.categoriesHTML,
+            (config.get("getCss") ? prop.headHTML : undefined)
+        ),
         'contentmodel': contextModel.wikitext,
-        'pst': "yes",
+        'pst': "whynot",
         'disableeditsection': "yes"
     };
 
-    try {
-        const result = await tbot?.request(args);
-        const re: GetViewResult = GetViewConvert.toGetViewResult(result);
-        // confirm the presence of the panel.
-        if (!currentPlanel) {
-            vscode.window.showInformationMessage("Preview Planel Not be Opened.");
-            return undefined;
-        }
-        if (!re.parse) { return undefined; }
-        const header: string = config.get("getCss") ? (re.parse.headhtml?.["*"] || ``) : `<!DOCTYPE html><html><body>`;
-        const end: string = `</body></html>`;
-        // show result.
-        // if (wikiContent && header) {
-        currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
+    const viewerTitle: string = "WikitextPreviewer";
 
-        currentPlanel.title = `WikitextPreviewer: ${re.parse.displaytitle}`;
+    // if no planel, creat one
+    if (!previewCurrentPlanel) {
+        // if have not, try to creat new one.
+        previewCurrentPlanel = vscode.window.createWebviewPanel(
+            "previewer", viewerTitle, vscode.ViewColumn.Beside, {
+            enableScripts: config.get("enableJavascript"),
+        });
+        // register for events that release resources.
+        previewCurrentPlanel.onDidDispose(() => {
+            previewCurrentPlanel = undefined;
+        }, null, extensionContext.subscriptions);
     }
-    catch (error) {
-        vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
-    }
+    getView(previewCurrentPlanel, viewerTitle, args);
 }
 
 export async function getPageView(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const host: string | undefined = await getHost();
-    if (!host) { return undefined; }
+
     const pageTitle: string | undefined = await vscode.window.showInputBox({
         prompt: "Enter the page name here.",
         ignoreFocusOut: true
     });
     if (!pageTitle) { return undefined; }
 
-    const tbot: MWBot = bot ?? new mwbot({
-        apiUrl: "https://" + host + config.get("apiPath")
-    });
-
     const args: any = {
         'action': action.parse,
         'page': pageTitle,
-        'prop': alterNativeValues(prop.text, prop.displayTitle, (config.get("getCss") ? prop.headHTML : undefined)),
+        'prop': alterNativeValues(
+            prop.text,
+            prop.displayTitle,
+            prop.categoriesHTML,
+            (config.get("getCss") ? prop.headHTML : undefined)
+        ),
     };
     if (config.get("redirects")) {
         args['redirects'] = "true";
     }
 
+    // Show
+    getView("pageViewer", "WikiViewer", args);
+}
+
+export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: any): Promise<void> {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+    if (typeof (currentPlanel) === "string") {
+        currentPlanel = vscode.window.createWebviewPanel(currentPlanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript"), });
+    }
+
+    function showHtmlInfo(info: string): string {
+        return `<!DOCTYPE html><html><body><h2>${info}</h2></body></html>`;
+    }
+
+    const host: string | undefined = await getHost();
+    if (!host) { return undefined; }
+    const tbot: MWBot = bot ?? new mwbot({
+        apiUrl: "https://" + host + config.get("apiPath")
+    });
+
+    currentPlanel.webview.html = showHtmlInfo("Loading...");
+
     try {
         const result = await tbot.request(args);
-        const re: GetViewResult = GetViewConvert.toGetViewResult(result);
-
+        const re: GetViewResult = GetViewConvert.GetViewResultToJson(result);
         if (!re.parse) { return undefined; }
-        let currentPlanel: vscode.WebviewPanel = vscode.window.createWebviewPanel("pageViewer", "PageViewer", vscode.ViewColumn.Active, {
-            enableScripts: config.get("enableJavascript"),
-        });
 
-        const header: string = config.get("getCss") ? (re.parse.headhtml?.["*"] || ``) : `<!DOCTYPE html><html><body>`;
-        const end: string = `</body></html>`;
+        const htmlHead: string = config.get("getCss") ? (re.parse.headhtml?.["*"]?.replace("<head>", `<head><base href="https://${host + config.get("articalPath")}">`) || ``) : `<!DOCTYPE html><html><head><base href="https://${host + config.get("articalPath")}" /></head><body>`;
+        const htmlEnd: string = `</body></html>`;
+        const html = htmlHead + re.parse.text?.["*"] + "<hr />" + re.parse.categorieshtml?.["*"] + htmlEnd;
 
-        if (!currentPlanel) { return undefined; }
-        currentPlanel.webview.html = header + re.parse.text?.["*"] + end;
-        currentPlanel.title = `WikiViewer: ${re.parse.displaytitle}`;
-
+        currentPlanel.webview.html = html;
+        currentPlanel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
     }
     catch (error) {
-        let e = error as Error;
         vscode.window.showErrorMessage(`ErrorCode:${error.code}| ErrorInfo:${error.info}`);
+        if (currentPlanel) {
+            currentPlanel.webview.html = showHtmlInfo("Error");
+        }
     }
 }

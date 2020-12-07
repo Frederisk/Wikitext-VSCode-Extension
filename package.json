@@ -2,7 +2,7 @@
     "name": "wikitext",
     "displayName": "Wikitext",
     "description": "Wikitext is a document written in a wiki markup language. It is a mixture of content, markup, and metadata. The extension mainly supports the Wiki markup text language based on MediaWiki.",
-    "version": "3.1.1",
+    "version": "3.2.0",
     "publisher": "RoweWilsonFrederiskHolme",
     "license": "MIT",
     "author": {
@@ -27,13 +27,13 @@
     ],
     "activationEvents": [
         "onCommand:wikitext.getPreview",
-        "onCommand:wikitext.setHost",
         "onCommand:wikitext.login",
         "onCommand:wikitext.logout",
         "onCommand:wikitext.readPage",
         "onCommand:wikitext.writePage",
-        "onCommand:wikitext.viewPage"
-    ],
+        "onCommand:wikitext.viewPage",
+        "onUri"
+        ],
     "main": "./dist/extension",
     "contributes": {
         "commands": [
@@ -46,11 +46,6 @@
                     "light": "media/preview-light.svg",
                     "dark": "media/preview-dark.svg"
                 }
-            },
-            {
-                "command": "wikitext.setHost",
-                "title": "Set host setting of API",
-                "category": "Wikitext"
             },
             {
                 "command": "wikitext.login",
@@ -83,11 +78,6 @@
                 {
                     "command": "wikitext.getPreview",
                     "when": "editorLangId == wikitext",
-                    "alt": "wikitext.setHost",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.setHost",
                     "group": "navigation"
                 },
                 {
@@ -192,16 +182,21 @@
                     "type": "boolean",
                     "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks. (This feature was turned on by default in the past, but will be turned off by default from now on.)",
                     "default": false
+                },
+                "wikitext.articalPath": {
+                    "type": "string",
+                    "description": "Set the basic path to obtain the artical. If you are not sure what is this. please keep the default value.",
+                    "default": "/wiki/"
                 }
             }
         }
     },
     "scripts": {
-        "vscode:prepublish": "npm run convert && webpack --mode production",
-        "compile": "npm run convert && webpack --mode development",
-        "watch": "npm run convert && webpack --mode development --watch",
-        "pretest": "webpack --config webpack.pertest.js --mode development",
-        "test": "node ./dist/test/runTest.js",
+        "vscode:prepublish": "npm run convert && webpack --config webpack.config.js --mode production",
+        "compile": "npm run convert && webpack --config webpack.config.js --mode development",
+        "watch": "npm run convert && webpack --config webpack.config.js --mode development --watch",
+        "pretest": "tsc -p ./",
+        "test": "node ./out/test/runTest.js",
         "convert": "npx js-yaml snippets/snippets.yaml > snippets/snippets.json && npx js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json"
     },
     "devDependencies": {
@@ -211,7 +206,6 @@
         "@types/node": "^12.12.62",
         "@types/vscode": "^1.43.0",
         "glob": "^7.1.5",
-        "js-yaml": "^3.14.0",
         "mocha": "^6.2.3",
         "mwbot": "^1.0.10",
         "ts-loader": "^6.2.2",

@@ -1,10 +1,31 @@
-.vscode/**
-.vscode-test/**
-.vs/**
-.gitignore
-vsc-extension-quickstart.md
+# Workspace config
+.vs/
+.vscode/
+.vscode-test/
+.github/
+
+# Source code
+out/
+src/
+
+# Modules
+node_modules/
+
+# YAML files
+snippets/*.yaml
+syntaxes/*.yaml
+appveyor.yml
+
+# Compiled config
 **/tsconfig.json
 **/tslint.json
-**/*.map
+webpack.config.js
+
+# Uncompiled files
 **/*.ts
+
+# Git Ignore file
+.gitignore
+
+# Packaged extensions
 *.vsix

@@ -113,7 +113,7 @@ export async function readPage(): Promise<void> {
 
         // need a page elements
         if (!re.query?.pages) { return undefined; }
-
+        // get first page
         const page = re.query.pages[Object.keys(re.query.pages)[0]];
 
         if (page.missing !== undefined || page.invalid !== undefined) {
@@ -122,7 +122,7 @@ export async function readPage(): Promise<void> {
                 page.invalidreason || ``);
             return undefined;
         }
-
+        // first revision
         const revision = page.revisions?.[0];
 
         vscode.window.showInformationMessage(
@@ -131,13 +131,13 @@ export async function readPage(): Promise<void> {
             (re.query.redirects ? ` Redirect: "${re.query.redirects[0].from}" => "${re.query.redirects[0].to}"` : ``)
         );
 
-        const slotsMain: Main | undefined = page.revisions?.[0].slots?.main;
+        const slotsMain: Main | undefined = revision?.slots?.main;
 
-        const info: string = `<%--[PAGE_INFO] Comment="Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits." PageTitle="${re.query.interwiki?.[0].title}" PageID="${page.pageid}" RevisionID="${page.revisions?.[0].revid}" ContentModel="${slotsMain?.contentmodel}" ContentFormat="${slotsMain?.contentformat}" [END_PAGE_INFO]--%>`;
+        const info: string = `<%--[PAGE_INFO] Comment="Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits." PageTitle="${page.title}" PageID="${page.pageid}" RevisionID="${revision?.revid}" ContentModel="${slotsMain?.contentmodel}" ContentFormat="${slotsMain?.contentformat}" [END_PAGE_INFO]--%>`;
 
         await vscode.workspace.openTextDocument({
             language: revision?.slots?.main?.contentmodel,
-            content: info + "\n\r" + revision?.slots?.main?.empty
+            content: info + "\r" + revision?.slots?.main?.empty
         });
     }
     catch (error) {
