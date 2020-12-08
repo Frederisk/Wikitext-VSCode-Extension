@@ -6,12 +6,12 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 ## [Todo List]
 
+- Add the function of quick citation to references.
 - Improve the advanced features of Wikitext preview.
 - Adjust the UI to make it easier for users to use Wikitext preview.
 - Find and fix more syntax highlighting issues.
-- Add the function of quick citation to references.
 
-## [3.2.0] - 2020-12-
+## [3.2.0] - 2020-12-08
 
 ### Added
 
