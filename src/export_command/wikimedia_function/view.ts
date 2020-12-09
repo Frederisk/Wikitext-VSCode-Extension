@@ -23,7 +23,11 @@ export async function getPreview(): Promise<void> {
     if (!host) { return undefined; }
 
     /** document text */
-    const sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
+    let sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
+    if (!sourceText) {return undefined;}
+
+    // remove
+    sourceText = sourceText?.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
 
     /** arguments */
     const args = {
