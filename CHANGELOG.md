@@ -13,6 +13,8 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 ## [3.2.0] - 2020-12-08
 
+
+
 ### Added
 
 - Categories view.
@@ -29,6 +31,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 ### Fixed
 
 - CSS & image rendering.
+- Some syntaxes errors, such as: Template, Patterns,Bare ampersand, and Tag Stuff.
 
 ## [3.1.1] - 2020-10-07
 
