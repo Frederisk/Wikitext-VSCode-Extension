@@ -15,16 +15,16 @@ interface IArchiveResponse {
 }
 
 export class WebCiteInfo {
+
     url: string;
-    archiveApiUrl: string;
-    accessDate: string;
     title: string | undefined;
+    accessDate: string;
     siteName: string | undefined;
     publishDate: string | undefined;
     archivedUrl: string | undefined;
     archivedDate: string | undefined;
-
-    metaData!: cheerio.Root;
+    private archiveApiUrl: string;
+    private metaData!: cheerio.Root;
 
     constructor(url: string) {
         this.url = url;
@@ -32,13 +32,18 @@ export class WebCiteInfo {
         this.archiveApiUrl = "https://archive.org/wayback/available?url=" + url;
     }
 
-    public async toString(format: string) {
-        await this.buildInfo();
+    public toString(format: string): string {
+        format = getReplacedString(format, "url", this.url);
         format = getReplacedString(format, "title", this.title);
-
+        format = getReplacedString(format, "accessdate", this.accessDate);
+        format = getReplacedString(format, "website", this.siteName);
+        format = getReplacedString(format, "publicationdate", this.publishDate);
+        format = getReplacedString(format, "archiveurl", this.archivedUrl);
+        format = getReplacedString(format, "archivedate", this.archivedDate);
+        return format;
     }
 
-    private async buildInfo(): Promise<void> {
+    public async buildInfo(): Promise<void> {
         await this.fetchArchive();
         this.setTitle();
         this.setPublishedDate();
@@ -59,7 +64,7 @@ export class WebCiteInfo {
         // Check archive and get the closest
         if (archiveJSON.archived_snapshots.closest) {
             this.archivedUrl = archiveJSON.archived_snapshots.closest.url;
-            this.archivedDate = DateTime.fromFormat(archiveJSON.archived_snapshots.closest.timestamp, "yyyMMddhhmmss").toISODate();
+            this.archivedDate = DateTime.fromFormat(archiveJSON.archived_snapshots.closest.timestamp, "yyyyMMddhhmmss").toISODate();
         }
     }
 
@@ -72,9 +77,12 @@ export class WebCiteInfo {
     }
 
     private setPublishedDate(): void {
-        this.publishDate =
+        const date =
             this.getAttr("meta[property='article:published_time']") ||
             this.getAttr("time", "datetime");
+        if (date) {
+            this.publishDate = DateTime.fromISO(date).toISODate();
+        }
     }
 
     private setSiteName(): void {
