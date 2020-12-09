@@ -7,7 +7,7 @@ import * as mwbot from 'mwbot';
 import * as vscode from 'vscode';
 import { getHost } from '../host_function/host';
 
-export let bot: MWBot | null = null;
+export let bot: MWBot | undefined = undefined;
 
 export async function login(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
@@ -50,6 +50,6 @@ export async function logout(): Promise<void> {
     // it will be {} if success
     console.log(result);
     // clear bot
-    bot = null;
+    bot = undefined;
     vscode.window.showInformationMessage("result: \"Success\"");
 }

@@ -24,7 +24,7 @@ export async function getPreview(): Promise<void> {
 
     /** document text */
     let sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
-    if (!sourceText) {return undefined;}
+    if (!sourceText) { return undefined; }
 
     // remove
     sourceText = sourceText?.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
@@ -111,9 +111,12 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         const re: GetViewResult = GetViewConvert.GetViewResultToJson(result);
         if (!re.parse) { return undefined; }
 
-        const htmlHead: string = config.get("getCss") ? (re.parse.headhtml?.["*"]?.replace("<head>", `<head><base href="https://${host + config.get("articalPath")}">`) || ``) : `<!DOCTYPE html><html><head><base href="https://${host + config.get("articalPath")}" /></head><body>`;
-        const htmlEnd: string = `</body></html>`;
-        const html = htmlHead + re.parse.text?.["*"] + "<hr />" + re.parse.categorieshtml?.["*"] + htmlEnd;
+        const htmlHead: string = config.get("getCss") ? (re.parse.headhtml?.["*"]?.replace("<head>", `<head><base href="https://${host + config.get("articalPath")}">`) || "") : `<!DOCTYPE html><html><head><base href="https://${host + config.get("articalPath")}" /></head><body>`;
+        const htmlText: string = re.parse.text?.["*"] || "";
+        const htmlCategories: string = re.parse.categorieshtml?.["*"] ? "<hr />" + re.parse.categorieshtml?.["*"] : "";
+        const htmlEnd: string = "</body></html>";
+
+        const html: string = htmlHead + htmlText + htmlCategories + htmlEnd;
 
         currentPlanel.webview.html = html;
         currentPlanel.title = `${viewerTitle}: ${re.parse.displaytitle}`;

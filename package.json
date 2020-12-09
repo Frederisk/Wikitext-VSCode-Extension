@@ -2,7 +2,7 @@
     "name": "wikitext",
     "displayName": "Wikitext",
     "description": "Wikitext is a document written in a wiki markup language. It is a mixture of content, markup, and metadata. The extension mainly supports the Wiki markup text language based on MediaWiki.",
-    "version": "3.2.0",
+    "version": "3.2.1",
     "publisher": "RoweWilsonFrederiskHolme",
     "license": "MIT",
     "author": {
@@ -42,8 +42,8 @@
                 "title": "Get preview",
                 "category": "Wikitext",
                 "icon": {
-                    "light": "media/preview-light.svg",
-                    "dark": "media/preview-dark.svg"
+                    "light": "./media/preview-light.svg",
+                    "dark": "./media/preview-dark.svg"
                 }
             },
             {

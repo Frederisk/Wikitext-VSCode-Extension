@@ -48,7 +48,7 @@ export function getContentInfo(content: string): { content: string, info: IPageI
  * Write/Post Page
  */
 export async function writePage(): Promise<void> {
-    if (bot === null) {
+    if (bot === undefined) {
         vscode.window.showWarningMessage("You are not logged in. Please log in and try again.");
         return undefined;
     }
@@ -111,9 +111,19 @@ export async function writePage(): Promise<void> {
 export async function readPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
-    // get host
-    const host: string | undefined = await getHost();
-    if (!host) { return undefined; }
+    // constructing
+    let tbot: MWBot;
+    if (bot) {
+        tbot = bot;
+    }
+    else {
+        // get host
+        const host: string | undefined = await getHost();
+        if (!host) { return undefined; }
+        tbot = new mwbot({
+            apiUrl: "https://" + host + config.get("apiPath")
+        });
+    }
 
     // get title name
     const title: string | undefined = await vscode.window.showInputBox({
@@ -122,11 +132,6 @@ export async function readPage(): Promise<void> {
     });
     // if title is null or empty, do nothing
     if (!title) { return undefined; }
-
-    // constructing
-    const tbot: MWBot = bot ?? new mwbot({
-        apiUrl: "https://" + host + config.get("apiPath")
-    });
 
     const args: any = {
         'action': action.query,
