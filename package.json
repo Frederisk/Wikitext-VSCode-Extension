@@ -41,7 +41,6 @@
                 "command": "wikitext.getPreview",
                 "title": "Get preview",
                 "category": "Wikitext",
-                "": "The icon didn't work for unknown reasons.🧐",
                 "icon": {
                     "light": "media/preview-light.svg",
                     "dark": "media/preview-dark.svg"
@@ -74,6 +73,13 @@
             }
         ],
         "menus": {
+            "editor/title": [
+                {
+                    "command": "wikitext.getPreview",
+                    "when": "editorLangId == wikitext",
+                    "group": "navigation"
+                }
+            ],
             "commandPalette": [
                 {
                     "command": "wikitext.getPreview",
