@@ -8,6 +8,7 @@ import { getPreview, getPageView } from './export_command/wikimedia_function/vie
 import { login, logout } from './export_command/wikimedia_function/bot';
 import { writePage, readPage } from './export_command/wikimedia_function/core';
 import { baseUriProcess } from './export_command/uri_function/uri';
+import { addWebCite } from './export_command/cite_function/web';
 
 export let extensionContext: vscode.ExtensionContext;
 
@@ -26,6 +27,8 @@ export function activate(context: vscode.ExtensionContext): void {
     // View
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.getPreview", getPreview));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.viewPage", getPageView));
+    // Cite
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.citeWeb", addWebCite));
 }
 
 export function deactivate(): void {

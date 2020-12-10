@@ -10,7 +10,8 @@ export async function getHost(): Promise<string | undefined> {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
         const result: string | undefined = await vscode.window.showInputBox({
-            prompt: "Please input the host of previewer. such as 'en.wikipedia.org'.",
+            prompt: "Please input the host of previewer.",
+            placeHolder: "en.wikipedia.org",
             value: config.get("host") || "en.wikipedia.org",
             ignoreFocusOut: false
         });

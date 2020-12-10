@@ -101,7 +101,7 @@ export async function writePage(): Promise<void> {
 
     }
     catch (error) {
-        vscode.window.showErrorMessage(`$Error:{err.name}. Your Token: ${bot?.editToken}`);
+        vscode.window.showErrorMessage(`Error:${error.name}. Your Token: ${bot?.editToken}`);
     }
 }
 

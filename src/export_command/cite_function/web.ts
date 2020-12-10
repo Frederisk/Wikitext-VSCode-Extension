@@ -1,17 +1,47 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+// Part of the content comes from https://github.com/jasonwilliams/mediawiki-support/blob/master/src/webCitation.ts under license Apache-2.0
+
 import fetch, { Response } from "node-fetch";
 import * as cheerio from "cheerio";
 import { DateTime } from "luxon";
+import * as vscode from "vscode";
+import { IArchiveResult } from "../../interface_definition/archiveInterface";
 
-interface IArchiveResponse {
-    archived_snapshots: {
-        closest?: {
-            available: boolean;
-            url: string;
-            timestamp: string;
-            status: string;
-        };
-    };
-    url: string;
+export async function addWebCite() {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+
+    const url: string | undefined = await vscode.window.showInputBox({
+        prompt: "input the URL that you want to ref.",
+        placeHolder: "https://sample.com",
+        ignoreFocusOut: false
+    });
+    if (!url) { return undefined; }
+
+    const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Parsing the URL...");
+    try {
+
+        const citeInfo: WebCiteInfo = new WebCiteInfo(url);
+        await citeInfo.buildInfo();
+        const result: string = citeInfo.toString(config.get("webCiteFormat") ?? "");
+
+        const editor = vscode.window.activeTextEditor;
+        const selection = editor?.selection;
+
+        if (selection) {
+            editor?.edit((editorBuilder) => {
+                editorBuilder.insert(selection.active, result);
+            });
+        }
+    }
+    catch (error) {
+        vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
+    }
+    finally {
+        barMessage.dispose();
+    }
 }
 
 export class WebCiteInfo {
@@ -59,7 +89,7 @@ export class WebCiteInfo {
         const websiteText: string = await results[0].text();
         this.metaData = cheerio.load(websiteText);
 
-        const archiveJSON: IArchiveResponse = await results[1].json();
+        const archiveJSON: IArchiveResult = await results[1].json();
 
         // Check archive and get the closest
         if (archiveJSON.archived_snapshots.closest) {

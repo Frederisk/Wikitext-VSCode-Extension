@@ -32,6 +32,7 @@
         "onCommand:wikitext.readPage",
         "onCommand:wikitext.writePage",
         "onCommand:wikitext.viewPage",
+        "onCommand:wikitext.citeWeb",
         "onUri"
     ],
     "main": "./dist/extension",
@@ -70,6 +71,11 @@
                 "command": "wikitext.viewPage",
                 "title": "View the page",
                 "category": "Wikitext"
+            },
+            {
+                "command": "wikitext.citeWeb",
+                "title": "Add a web citation",
+                "category": "Wikitext"
             }
         ],
         "menus": {
@@ -105,6 +111,11 @@
                 {
                     "command": "wikitext.viewPage",
                     "group": "navigation"
+                },
+                {
+                    "command": "wikitext.citeWeb",
+                    "group": "navigation",
+                    "when": "editorLangId == wikitext"
                 }
             ]
         },
@@ -193,6 +204,11 @@
                     "type": "string",
                     "description": "Set the basic path to obtain the artical. If you are not sure what is this. please keep the default value.",
                     "default": "/wiki/"
+                },
+                "wikitext.webCiteFormat": {
+                    "type": "string",
+                    "markdownDescription": "Setting the generation of web reference tags. The configuration of this option is similar to the code section of MakeRef in meta wikimedia. The available fields: `url`, `title`, `accessdate`, `website`, `archiveurl` ,and `archivedate`.\n\n**This function is only a preview function, it may change or become a separate new extension in the future. Please pay attention to the changelog of this function every time you update this extension.**",
+                    "default": "{{cite web<!url> |url={$url}</!url><!title> |title={$title}</!title><!accessdate> |access-date={$accessdate}</!accessdate><!website> |website={$website}</!website><!publicationdate> |publication-date={$publicationdate}</!publicationdate><!archiveurl> |archive-url={$archiveurl}</!archiveurl><!archivedate> |archive-date={$archivedate}</!archivedate>}}"
                 }
             }
         }
