@@ -11,9 +11,21 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 - Adjust the UI to make it easier for users to use Wikitext preview.
 - Find and fix more syntax highlighting issues.
 
+## [3.2.1] - 2020-12-10
+
+### Added
+
+- Preview icon in the title menu bar.
+
+### Changed
+
+- Logic optimization and detailed problem correction. (Viewer and getHost)
+
+### Fixed
+
+- PAGE_INFO part is output in preview because of a mistake.
+
 ## [3.2.0] - 2020-12-08
-
-
 
 ### Added
 

@@ -25,7 +25,7 @@ If you get help with this project, give this project a star or recommend it to o
 - The special comment syntax\(`<!--#region-->`&`<!--#endregion-->`\) can folds the code for easy reading. <br />
 <img src="./asset/Code-region.gif" width="500"/>
 
-- Press `Ctrl + Shift + V` directly in the Wikitext content to get a parsed preview of Wikitext in the currently active text editor.<br />
+- Press `Ctrl + Shift + V` or click the Preview icon in the title menu bar directly in the Wikitext content to get a parsed preview of Wikitext in the currently active text editor.<br />
 <img src="./asset/Code-previewer.gif" width="500">
 
 - Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`, `@title`...<br />
@@ -72,12 +72,9 @@ This is it!
 
 ## Release Notes
 
-- Added Categories view.
-- Optimized the packaging structure.
-- URI can make extension activate now.
-- The setHost command has been removed, you should use Settings instead.
-- Fixed CSS & image rendering.
-- Fixed some syntaxes errors, such as: Template, Patterns,Bare ampersand, and Tag Stuff.
+- Added Preview icon in the title menu bar.
+- Fixed PAGE_INFO part is output in preview because of a mistake.
+- Logic optimization and detailed problem correction.
 
 ## Special Thanks
 
