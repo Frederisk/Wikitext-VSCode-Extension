@@ -54,12 +54,12 @@
             },
             {
                 "command": "wikitext.logout",
-                "title": "Logout, if you are already loged in",
+                "title": "Logout, if you are already logged in",
                 "category": "Wikitext"
             },
             {
                 "command": "wikitext.readPage",
-                "title": "Pull Page to edit",
+                "title": "Pull page to edit",
                 "category": "Wikitext"
             },
             {
