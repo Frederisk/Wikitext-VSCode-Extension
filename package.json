@@ -202,7 +202,7 @@
                 },
                 "wikitext.articalPath":{
                     "type":"string",
-                    "description": "Set the basic path to obtain the article. If you are not sure what is this. please keep the default value.",
+                    "description": "No Effect.",
                     "default": "/wiki/",
                     "deprecationMessage": "Setting Name with Typo! please use \"Article Path\" instead."
 
