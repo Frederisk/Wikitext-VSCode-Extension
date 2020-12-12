@@ -17,8 +17,6 @@ build_script:
   - sh: >-
       npm install vsce js-yaml -g
 
-      npm install
-
       npx vsce package
 test_script:
   - sh: npm run test
