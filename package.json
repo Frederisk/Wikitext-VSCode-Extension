@@ -214,7 +214,7 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "npm run convert && webpack --config webpack.config.js --mode production",
+        "vscode:prepublish": "npm install && npm run convert && webpack --config webpack.config.js --mode production",
         "compile": "npm run convert && webpack --config webpack.config.js --mode development",
         "watch": "npm run convert && webpack --config webpack.config.js --mode development --watch",
         "pretest": "tsc -p ./",
