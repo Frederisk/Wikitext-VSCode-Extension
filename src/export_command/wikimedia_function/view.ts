@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 import * as mwbot from 'mwbot';
 import { extensionContext } from '../../extension';
 import { action, contextModel, alterNativeValues, prop } from './args';
-import { GetViewResult, GetViewConvert, Parse } from '../../interface_definition/getViewInterface';
+import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
 import { bot } from './bot';
 import { getHost } from '../host_function/host';
 
@@ -111,7 +111,9 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         const re: GetViewResult = GetViewConvert.GetViewResultToJson(result);
         if (!re.parse) { return undefined; }
 
-        const htmlHead: string = config.get("getCss") ? (re.parse.headhtml?.["*"]?.replace("<head>", `<head><base href="https://${host + config.get("articalPath")}">`) || "") : `<!DOCTYPE html><html><head><base href="https://${host + config.get("articalPath")}" /></head><body>`;
+        const articlePath = config.get("articlePath");
+
+        const htmlHead: string = config.get("getCss") ? (re.parse.headhtml?.["*"]?.replace("<head>", `<head><base href="https://${host + articlePath}">`) || "") : `<!DOCTYPE html><html><head><base href="https://${host + articlePath}" /></head><body>`;
         const htmlText: string = re.parse.text?.["*"] || "";
         const htmlCategories: string = re.parse.categorieshtml?.["*"] ? "<hr />" + re.parse.categorieshtml?.["*"] : "";
         const htmlEnd: string = "</body></html>";

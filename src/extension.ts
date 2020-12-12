@@ -14,7 +14,6 @@ export let extensionContext: vscode.ExtensionContext;
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Extension is active.");
-
     extensionContext = context;
     // URI
     context.subscriptions.push(vscode.window.registerUriHandler({ handleUri: baseUriProcess }));

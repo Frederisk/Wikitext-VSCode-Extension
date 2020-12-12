@@ -200,9 +200,16 @@
                     "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks. (This feature was turned on by default in the past, but will be turned off by default from now on.)",
                     "default": false
                 },
-                "wikitext.articalPath": {
+                "wikitext.articalPath":{
+                    "type":"string",
+                    "description": "Set the basic path to obtain the article. If you are not sure what is this. please keep the default value.",
+                    "default": "/wiki/",
+                    "deprecationMessage": "Setting Name with Typo! please use \"Article Path\" instead."
+
+                },
+                "wikitext.articlePath": {
                     "type": "string",
-                    "description": "Set the basic path to obtain the artical. If you are not sure what is this. please keep the default value.",
+                    "description": "Set the basic path to obtain the article. If you are not sure what is this. please keep the default value.",
                     "default": "/wiki/"
                 },
                 "wikitext.webCiteFormat": {
