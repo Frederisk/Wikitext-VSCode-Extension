@@ -112,8 +112,9 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         if (!re.parse) { return undefined; }
 
         const articlePath = config.get("articlePath");
+        const baseHref = `<base href="https://${host + articlePath}" />"`;
 
-        const htmlHead: string = config.get("getCss") ? (re.parse.headhtml?.["*"]?.replace("<head>", `<head><base href="https://${host + articlePath}">`) || "") : `<!DOCTYPE html><html><head><base href="https://${host + articlePath}" /></head><body>`;
+        const htmlHead: string = config.get("getCss") as boolean && re.parse.headhtml?.["*"]?.replace("<head>", "<head>" + baseHref)  || `<!DOCTYPE html><html><head>${baseHref}</head><body>`;
         const htmlText: string = re.parse.text?.["*"] || "";
         const htmlCategories: string = re.parse.categorieshtml?.["*"] ? "<hr />" + re.parse.categorieshtml?.["*"] : "";
         const htmlEnd: string = "</body></html>";

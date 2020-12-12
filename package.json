@@ -2,7 +2,7 @@
     "name": "wikitext",
     "displayName": "Wikitext",
     "description": "Wikitext is a document written in a wiki markup language. It is a mixture of content, markup, and metadata. The extension mainly supports the Wiki markup text language based on MediaWiki.",
-    "version": "3.2.1",
+    "version": "3.2.2",
     "publisher": "RoweWilsonFrederiskHolme",
     "license": "MIT",
     "author": {
@@ -200,12 +200,11 @@
                     "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks. (This feature was turned on by default in the past, but will be turned off by default from now on.)",
                     "default": false
                 },
-                "wikitext.articalPath":{
-                    "type":"string",
+                "wikitext.articalPath": {
+                    "type": "string",
                     "description": "No Effect.",
                     "default": "/wiki/",
                     "deprecationMessage": "Setting Name with Typo! please use \"Article Path\" instead."
-
                 },
                 "wikitext.articlePath": {
                     "type": "string",
@@ -227,7 +226,7 @@
         "pretest": "tsc -p ./",
         "test": "node ./out/test/runTest.js",
         "convert": "npx js-yaml snippets/snippets.yaml > snippets/snippets.json && npx js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json",
-        "deploy": "vsce publish --yarn"
+        "deploy": "vsce publish"
     },
     "devDependencies": {
         "@types/bluebird": "^3.5.32",

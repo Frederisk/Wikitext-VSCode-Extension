@@ -11,6 +11,16 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 - Adjust the UI to make it easier for users to use Wikitext preview.
 - Find and fix more syntax highlighting issues.
 
+## [3.2.2] - 2020-12-12
+
+### Added
+
+- The function of quick citation to references.
+
+### Fixed
+
+- Some typos in the setting and command name.
+
 ## [3.2.1] - 2020-12-10
 
 ### Added
@@ -122,7 +132,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 ### Fixed
 
-- Fixed some typo and other details.
+- Fixed some typos and other details.
 - Fixed an issue where the dialog for changing host would not appear.
 
 ## [2.2.0] - 2020-05-19

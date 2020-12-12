@@ -59,7 +59,6 @@ Firstly, clone this repository and change directory to the repository, then inst
 npm install vsce -g # VS Code Extension Manager
 npm install js-yaml -g # js to yaml
 npm install # devDependencies
-
 ```
 
 Package this project and you will get a vsix file:
@@ -72,9 +71,8 @@ This is it!
 
 ## Release Notes
 
-- Added Preview icon in the title menu bar.
-- Fixed PAGE_INFO part is output in preview because of a mistake.
-- Logic optimization and detailed problem correction.
+- Added the function of quick citation to references.
+- Fixed some typos in the setting and command name. Please note: You may need to go to the settings page to update some options.
 
 ## Special Thanks
 
