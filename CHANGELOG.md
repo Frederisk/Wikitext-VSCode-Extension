@@ -4,13 +4,6 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
-## [Todo List]
-
-- Add the function of quick citation to references.
-- Improve the advanced features of Wikitext preview.
-- Adjust the UI to make it easier for users to use Wikitext preview.
-- Find and fix more syntax highlighting issues.
-
 ## [3.2.2] - 2020-12-12
 
 ### Added
