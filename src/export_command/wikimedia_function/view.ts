@@ -101,7 +101,7 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
     const host: string | undefined = await getHost();
     if (!host) { return undefined; }
     const tbot: MWBot = bot ?? new mwbot({
-        apiUrl: "https://" + host + config.get("apiPath")
+        apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
     });
 
     currentPlanel.webview.html = showHtmlInfo("Loading...");
@@ -112,9 +112,9 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         if (!re.parse) { return undefined; }
 
         const articlePath = config.get("articlePath");
-        const baseHref = `<base href="https://${host + articlePath}" />"`;
+        const baseHref = `<base href="${config.get("transferProtocol") + host + articlePath}" />"`;
 
-        const htmlHead: string = config.get("getCss") as boolean && re.parse.headhtml?.["*"]?.replace("<head>", "<head>" + baseHref)  || `<!DOCTYPE html><html><head>${baseHref}</head><body>`;
+        const htmlHead: string = config.get("getCss") as boolean && re.parse.headhtml?.["*"]?.replace("<head>", "<head>" + baseHref) || `<!DOCTYPE html><html><head>${baseHref}</head><body>`;
         const htmlText: string = re.parse.text?.["*"] || "";
         const htmlCategories: string = re.parse.categorieshtml?.["*"] ? "<hr />" + re.parse.categorieshtml?.["*"] : "";
         const htmlEnd: string = "</body></html>";

@@ -23,7 +23,7 @@ export async function login(): Promise<void> {
     }
 
     bot = new mwbot({
-        apiUrl: "https://" + host + config.get("apiPath")
+        apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
     });
 
     try {

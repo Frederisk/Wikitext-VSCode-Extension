@@ -121,7 +121,7 @@ export async function readPage(): Promise<void> {
         const host: string | undefined = await getHost();
         if (!host) { return undefined; }
         tbot = new mwbot({
-            apiUrl: "https://" + host + config.get("apiPath")
+            apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
         });
     }
 

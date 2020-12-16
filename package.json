@@ -215,6 +215,18 @@
                     "type": "string",
                     "markdownDescription": "Setting the generation of web reference tags. The configuration of this option is similar to the code section of MakeRef in meta wikimedia. The available fields: `url`, `title`, `accessdate`, `website`, `archiveurl` ,and `archivedate`.\n\n**This function is only a preview function, it may change or become a separate new extension in the future. Please pay attention to the changelog of this function every time you update this extension.**",
                     "default": "{{cite web<!url> |url={$url}</!url><!title> |title={$title}</!title><!accessdate> |access-date={$accessdate}</!accessdate><!website> |website={$website}</!website><!publicationdate> |publication-date={$publicationdate}</!publicationdate><!archiveurl> |archive-url={$archiveurl}</!archiveurl><!archivedate> |archive-date={$archivedate}</!archivedate>}}"
+                },
+                "wikitext.transferProtocol": {
+                    "type": "string",
+                    "enum": [
+                        "http://",
+                        "https://"
+                    ],
+                    "enumDescriptions": [
+                        "HyperText Transfer Protocol",
+                        "HyperText Transfer Protocol Secure"
+                    ],
+                    "description": "Select the transfer protocol used when accessing the API."
                 }
             }
         }
