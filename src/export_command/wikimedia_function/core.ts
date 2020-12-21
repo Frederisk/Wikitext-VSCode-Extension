@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as mwbot from 'mwbot';
+import * as MWBot from 'mwbot';
 import * as vscode from 'vscode';
 import { action, prop, rvprop, alterNativeValues } from './args';
 import { getHost } from '../host_function/host';
@@ -120,7 +120,7 @@ export async function readPage(): Promise<void> {
         // get host
         const host: string | undefined = await getHost();
         if (!host) { return undefined; }
-        tbot = new mwbot({
+        tbot = new MWBot({
             apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
         });
     }
@@ -147,6 +147,7 @@ export async function readPage(): Promise<void> {
     try {
         // get request result
         const result = await tbot.request(args);
+        console.log(result);
         // Conver result as class
         const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
         if (re.query?.interwiki) {

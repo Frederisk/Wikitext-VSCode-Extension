@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as mwbot from 'mwbot';
+import * as MWBot from 'mwbot';
 import * as vscode from 'vscode';
 import { getHost } from '../host_function/host';
 
@@ -22,7 +22,7 @@ export async function login(): Promise<void> {
         return undefined;
     }
 
-    bot = new mwbot({
+    bot = new MWBot({
         apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
     });
 

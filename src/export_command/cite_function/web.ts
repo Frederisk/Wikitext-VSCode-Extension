@@ -8,9 +8,9 @@ import fetch, { Response } from "node-fetch";
 import * as cheerio from "cheerio";
 import { DateTime } from "luxon";
 import * as vscode from "vscode";
-import { IArchiveResult } from "../../interface_definition/archiveInterface";
+import { ArchiveConvert, ArchiveResult } from "../../interface_definition/archiveInterface";
 
-export async function addWebCite() {
+export async function addWebCite(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const url: string | undefined = await vscode.window.showInputBox({
@@ -89,12 +89,14 @@ export class WebCiteInfo {
         const websiteText: string = await results[0].text();
         this.metaData = cheerio.load(websiteText);
 
-        const archiveJSON: IArchiveResult = await results[1].json();
+        const archiveJSON: ArchiveResult = await results[1].json();
+        const re = ArchiveConvert.toArchiveResult(archiveJSON);
+        console.log(archiveJSON);
 
         // Check archive and get the closest
-        if (archiveJSON.archived_snapshots.closest) {
-            this.archivedUrl = archiveJSON.archived_snapshots.closest.url;
-            this.archivedDate = DateTime.fromFormat(archiveJSON.archived_snapshots.closest.timestamp, "yyyyMMddhhmmss").toISODate();
+        if (re.archived_snapshots.closest) {
+            this.archivedUrl = re.archived_snapshots.closest.url;
+            this.archivedDate = DateTime.fromFormat(re.archived_snapshots.closest.timestamp, "yyyyMMddhhmmss").toISODate();
         }
     }
 

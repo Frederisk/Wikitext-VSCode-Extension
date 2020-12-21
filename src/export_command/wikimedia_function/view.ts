@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import * as mwbot from 'mwbot';
+import * as MWBot from 'mwbot';
 import { extensionContext } from '../../extension';
 import { action, contextModel, alterNativeValues, prop } from './args';
 import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
@@ -100,7 +100,7 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
 
     const host: string | undefined = await getHost();
     if (!host) { return undefined; }
-    const tbot: MWBot = bot ?? new mwbot({
+    const tbot: MWBot = bot ?? new MWBot({
         apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
     });
 
