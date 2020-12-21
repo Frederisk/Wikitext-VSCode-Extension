@@ -5,14 +5,65 @@
 
 import { a, u, o, m, r, uncast, cast } from "./convertFunction";
 
+/*
+    ReadPageResult {
+        // warnings: Warnings {
+        //     main: WarnMain {
+        //         *: string
+        //     }
+        // },
+        batchcomplete?: string,
+        query?: Query {
+            normalized?: Jump[] {
+                from?: string,
+                to?: string
+            },
+            redirects?: Jump[] {
+                from?: string,
+                to?: string
+            },
+            pages?: {
+                [key: string]: Page {
+                    pageid?: number,
+                    ns?: number,
+                    title?: string,
+                    revisions?: Revision[] {
+                        revid?: number,
+                        parentid?: number,
+                        // contentformat?: string,
+                        // contentmodel?: string,
+                        // *?: string
+                        slots?: Slots {
+                            main?: Main {
+                                main?: Main {
+                                    contentmodel?: string,
+                                    contentformat?: string,
+                                    *?: string
+                                }
+                            }
+                        }
+                    },
+                    missing?: string,
+                    invalidreason?: string,
+                    invalid?: string
+                }
+            },
+            interwiki?: Interwiki[] {
+                title?: string,
+                iw?: string
+            }
+        }
+    }
+ */
+
 export interface ReadPageResult {
     batchcomplete?: string;
     query?: Query;
 }
 
 export interface Query {
-    normalized?: Normalized[];
-    redirects?: Normalized[];
+    normalized?: Jump[];
+    redirects?: Jump[];
     pages?: { [key: string]: Page };
     interwiki?: Interwiki[];
 }
@@ -22,7 +73,7 @@ export interface Interwiki {
     iw?: string;
 }
 
-export interface Normalized {
+export interface Jump {
     from?: string;
     to?: string;
 }
@@ -50,7 +101,7 @@ export interface Slots {
 export interface Main {
     contentmodel?: string;
     contentformat?: string;
-    empty?: string;
+    "*"?: string;
 }
 
 /** ReadPageResultConvert */
@@ -70,8 +121,8 @@ const readPageResultTypeMap: any = {
         { json: "query", js: "query", typ: u(undefined, r("Query")) },
     ], false),
     "Query": o([
-        { json: "normalized", js: "normalized", typ: u(undefined, a(r("Normalized"))) },
-        { json: "redirects", js: "redirects", typ: u(undefined, a(r("Normalized"))) },
+        { json: "normalized", js: "normalized", typ: u(undefined, a(r("Jump"))) },
+        { json: "redirects", js: "redirects", typ: u(undefined, a(r("Jump"))) },
         { json: "pages", js: "pages", typ: u(undefined, m(r("Page"))) },
         { json: "interwiki", js: "interwiki", typ: u(undefined, a(r("Interwiki"))) },
     ], false),
@@ -79,7 +130,7 @@ const readPageResultTypeMap: any = {
         { json: "title", js: "title", typ: u(undefined, "") },
         { json: "iw", js: "iw", typ: u(undefined, "") },
     ], false),
-    "Normalized": o([
+    "Jump": o([
         { json: "from", js: "from", typ: u(undefined, "") },
         { json: "to", js: "to", typ: u(undefined, "") },
     ], false),
@@ -103,6 +154,6 @@ const readPageResultTypeMap: any = {
     "Main": o([
         { json: "contentmodel", js: "contentmodel", typ: u(undefined, "") },
         { json: "contentformat", js: "contentformat", typ: u(undefined, "") },
-        { json: "*", js: "empty", typ: u(undefined, "") },
+        { json: "*", js: "*", typ: u(undefined, "") },
     ], false),
 };

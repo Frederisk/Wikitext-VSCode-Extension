@@ -6,6 +6,21 @@
 import { a, u, o, m, r, cast, uncast } from "./convertFunction";
 
 // https://archive.org/help/wayback_api.php
+
+/*
+    ArchiveResult {
+        archived_snapshots: ArchivedSnapshots {
+            closest?: Closest {
+                available: boolean,
+                url: string,
+                timestamp: string,
+                status: string
+            }
+        },
+        url: string
+    }
+ */
+
 export interface ArchiveResult {
     archived_snapshots: ArchivedSnapshots;
     url: string;

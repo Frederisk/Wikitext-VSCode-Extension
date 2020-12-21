@@ -53,7 +53,7 @@ export async function writePage(): Promise<void> {
         return undefined;
     }
 
-    let wikiContent: string | undefined = vscode.window.activeTextEditor?.document.getText();
+    const wikiContent: string | undefined = vscode.window.activeTextEditor?.document.getText();
     if (wikiContent === undefined) {
         vscode.window.showWarningMessage("There is no active text editor.");
         return undefined;
@@ -190,7 +190,7 @@ export async function readPage(): Promise<void> {
 
         await vscode.workspace.openTextDocument({
             language: revision?.slots?.main?.contentmodel,
-            content: infoHead + "\r\r" + revision?.slots?.main?.empty
+            content: infoHead + "\r\r" + revision?.slots?.main?.["*"]
         });
     }
     catch (error) {
