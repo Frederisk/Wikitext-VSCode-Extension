@@ -218,6 +218,7 @@
                 },
                 "wikitext.transferProtocol": {
                     "type": "string",
+                    "default": "https://",
                     "enum": [
                         "http://",
                         "https://"
