@@ -47,12 +47,12 @@ export async function addWebCite(): Promise<void> {
 export class WebCiteInfo {
 
     url: string;
-    title: string | undefined;
+    title?: string;
     accessDate: string;
-    siteName: string | undefined;
-    publishDate: string | undefined;
-    archivedUrl: string | undefined;
-    archivedDate: string | undefined;
+    siteName?: string;
+    publishDate?: string;
+    archivedUrl?: string;
+    archivedDate?: string;
     private archiveApiUrl: string;
     private metaData!: cheerio.Root;
 

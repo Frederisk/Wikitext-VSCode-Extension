@@ -13,11 +13,14 @@ export async function login(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const host: string | undefined = await getHost();
-    const userName: string | undefined = config.get("userName");
-    const password: string | undefined = config.get("password");
-
     if (!host) { return undefined; }
-    if (!userName || !password) {
+
+    const userInfo: { username?: string, password?: string } = {
+        username: config.get("userName"),
+        password: config.get("password")
+    };
+
+    if (!userInfo.username || !userInfo.password) {
         vscode.window.showWarningMessage("You have not filled in the user name or password, please go to the settings to edit them and try again.");
         return undefined;
     }
@@ -27,10 +30,7 @@ export async function login(): Promise<void> {
     });
 
     try {
-        const response = await bot?.login({
-            username: userName,
-            password: password
-        });
+        const response = await bot?.login(userInfo);
         console.log(response);
         vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
         );
