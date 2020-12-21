@@ -57,8 +57,17 @@ import { a, u, o, m, r, uncast, cast } from "./convertFunction";
  */
 
 export interface ReadPageResult {
+    warnings?: Warnings;
     batchcomplete?: string;
     query?: Query;
+}
+
+export interface Warnings {
+    main?: WarnMain;
+}
+
+export interface WarnMain {
+    "*"?: string;
 }
 
 export interface Query {
@@ -92,6 +101,24 @@ export interface Revision {
     revid?: number;
     parentid?: number;
     slots?: Slots;
+    /**
+     * Outdated
+     *
+     * slots.main.contentformat: string
+     */
+    contentformat?: string;
+    /**
+     * Outdated
+     *
+     * slots.main.contentmodel: string
+     */
+    contentmodel?: string;
+    /**
+     * Outdated
+     *
+     * slots.main.*: string
+     */
+    "*"?: string;
 }
 
 export interface Slots {
@@ -117,8 +144,15 @@ export class ReadPageConvert {
 
 const readPageResultTypeMap: any = {
     "ReadPageResult": o([
+        { json: "warnings", js: "warnings", typ: u(undefined, r("Warnings"))},
         { json: "batchcomplete", js: "batchcomplete", typ: u(undefined, "") },
         { json: "query", js: "query", typ: u(undefined, r("Query")) },
+    ], false),
+    "Warnings": o([
+        { json: "main", js: "main", typ: u(undefined, r("WarnMain")) },
+    ], false),
+    "WarnMain": o([
+        { json: "*", js: "*", typ: u(undefined, "") }
     ], false),
     "Query": o([
         { json: "normalized", js: "normalized", typ: u(undefined, a(r("Jump"))) },
@@ -147,6 +181,10 @@ const readPageResultTypeMap: any = {
         { json: "revid", js: "revid", typ: u(undefined, 0) },
         { json: "parentid", js: "parentid", typ: u(undefined, 0) },
         { json: "slots", js: "slots", typ: u(undefined, r("Slots")) },
+        // Outdated
+        { json: "contentmodel", js: "contentmodel", typ: u(undefined, "") },
+        { json: "contentformat", js: "contentformat", typ: u(undefined, "") },
+        { json: "*", js: "*", typ: u(undefined, "") },
     ], false),
     "Slots": o([
         { json: "main", js: "main", typ: u(undefined, r("Main")) },

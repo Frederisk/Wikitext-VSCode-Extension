@@ -7,7 +7,7 @@ import * as MWBot from 'mwbot';
 import * as vscode from 'vscode';
 import { action, prop, rvprop, alterNativeValues } from './args';
 import { getHost } from '../host_function/host';
-import { ReadPageConvert, ReadPageResult, Main } from '../../interface_definition/readPageInterface';
+import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../interface_definition/readPageInterface';
 import { bot } from './bot';
 
 export enum InfoType {
@@ -156,10 +156,11 @@ export async function readPage(): Promise<void> {
             );
         }
 
-        // need a page elements
-        if (!re.query?.pages) { return undefined; }
+
         // get first page
-        const page = re.query.pages[Object.keys(re.query.pages)[0]];
+        const page = re.query?.pages?.[Object.keys(re.query.pages)[0]];
+        // need a page elements
+        if (!page) { return undefined; }
 
         if (page.missing !== undefined || page.invalid !== undefined) {
             vscode.window.showWarningMessage(
@@ -170,27 +171,29 @@ export async function readPage(): Promise<void> {
         // first revision
         const revision = page.revisions?.[0];
 
+        const content: Main | Revision | undefined = revision?.slots?.main || revision;
+
+        const normalized: Jump | undefined = re.query?.normalized?.[0];
+        const redirects: Jump | undefined = re.query?.redirects?.[0];
         vscode.window.showInformationMessage(
-            `Opened page "${page.title}" with Model ${revision?.slots?.main?.contentmodel}.` +
-            (re.query.normalized ? ` Normalized: "${re.query.normalized[0].from}" => "${re.query.normalized[0].to}".` : "") +
-            (re.query.redirects ? ` Redirect: "${re.query.redirects[0].from}" => "${re.query.redirects[0].to}"` : "")
+            `Opened page "${page.title}" with Model ${content?.contentmodel}.` +
+            (normalized ? ` Normalized: "${normalized.from}" => "${normalized.to}".` : "") +
+            (redirects ? ` Redirect: "${redirects.from}" => "${redirects.to}"` : "")
         );
 
-        const slotsMain: Main | undefined = revision?.slots?.main;
-
         const infoHead: string =
-            "<%-- [PAGE_INFO]\r" +
-            `Comment=#Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.#\r` +
-            `${InfoType.PageTitle}=#${page.title}#\r` +
-            `${InfoType.PageID}=#${page.pageid}#\r` +
-            `${InfoType.RevisionID}=#${revision?.revid}#\r` +
-            `${InfoType.ContentModel}=#${slotsMain?.contentmodel}#\r` +
-            `${InfoType.ContentFormat}=#${slotsMain?.contentformat}#\r` +
-            "[END_PAGE_INFO] --%>";
+            `<%-- [PAGE_INFO]
+Comment=#Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.#
+${InfoType.PageTitle}=#${page.title}#
+${InfoType.PageID}=#${page.pageid}#
+${InfoType.RevisionID}=#${revision?.revid}#
+${InfoType.ContentModel}=#${content?.contentmodel}#
+${InfoType.ContentFormat}=#${content?.contentformat}#
+[END_PAGE_INFO] --%>`;
 
         await vscode.workspace.openTextDocument({
-            language: revision?.slots?.main?.contentmodel,
-            content: infoHead + "\r\r" + revision?.slots?.main?.["*"]
+            language: content?.contentmodel,
+            content: infoHead + "\r\r" + content?.["*"]
         });
     }
     catch (error) {
