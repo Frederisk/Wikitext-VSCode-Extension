@@ -119,6 +119,25 @@
                 }
             ]
         },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "wikisite",
+                    "title": "Wikisite",
+                    "icon": "./media/dep.svg"
+                }
+            ]
+        },
+        "views": {
+            "wikisite": [
+                {
+                    "id": "control-panel",
+                    "name": "Control Panel",
+                    "icon": "./media/dep.svg",
+                    "contextualTitle": "Wikisite"
+                }
+            ]
+        },
         "keybindings": [
             {
                 "command": "wikitext.getPreview",
