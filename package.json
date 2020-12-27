@@ -4,17 +4,21 @@
     "description": "Wikitext is a document written in a wiki markup language. It is a mixture of content, markup, and metadata. The extension mainly supports the Wiki markup text language based on MediaWiki.",
     "version": "3.2.2",
     "publisher": "RoweWilsonFrederiskHolme",
-    "license": "MIT",
+    "license": "SEE LICENSE IN LICENSE.txt",
     "author": {
         "name": "Rowe Wilson Frederisk Holme",
         "email": "frederisk@outlook.com",
         "url": "https://twitter.com/rwfholme"
     },
-    "homepage": "",
-    "icon": "media/wikitext-icon.png",
+    "homepage": "https://github.com/Frederisk/Wikitext-VSCode-Extension/blob/master/README.md",
+    "icon": "./media/wikitext-icon.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/Frederisk/Wikitext-VSCode-Extension.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Frederisk/Wikitext-VSCode-Extension/issues",
+        "email": "frederisk@outlook.com"
     },
     "engines": {
         "vscode": "^1.43.0"
