@@ -296,7 +296,7 @@ repository:
         patterns:
           - include: $self
           - match: '(\|)|(?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)'
-            #         1 |1           2 space 234:432 5  word  5   6=6
+            #       1 |1           2 space 234:432 5  word  5   6=6
             # TODO:
             captures:
               1:

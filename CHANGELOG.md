@@ -4,6 +4,21 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.2.3] - 2020-12-28
+
+### Added
+
+- Optional for transfer poypcol.
+- Support of pull function for old version mediawiki.
+
+### Changed
+
+- Adjust the conversion period of some interfaces to runtime. Incorrect JSON format will be thrown error.
+
+### Fixed
+
+- Some logic errors.
+
 ## [3.2.2] - 2020-12-12
 
 ### Added

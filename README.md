@@ -71,8 +71,18 @@ This is it!
 
 ## Release Notes
 
-- Added the function of quick citation to references.
-- Fixed some typos in the setting and command name. Please note: You may need to go to the settings page to update some options.
+- Added the optional for transfer poypcol.
+- Added support of pull function for old version mediawiki.
+- Adjust the conversion period of some interfaces to runtime. Incorrect JSON format will be thrown error.
+- Fixed some logic errors.
+
+### Changed
+
+- Adjust the conversion period of some interfaces to runtime. Incorrect JSON format will be thrown error.
+
+### Fixed
+
+- Some logic errors.
 
 ## Special Thanks
 
