@@ -17,7 +17,7 @@
         "url": "https://github.com/Frederisk/Wikitext-VSCode-Extension.git"
     },
     "engines": {
-        "vscode": "^1.43.0"
+        "vscode": "^1.50.0"
     },
     "categories": [
         "Programming Languages",
@@ -268,13 +268,9 @@
         "@types/mocha": "^5.2.7",
         "@types/node": "^12.12.62",
         "@types/node-fetch": "^2.5.7",
-        "@types/vscode": "^1.43.0",
-        "cheerio": "^1.0.0-rc.3",
+        "@types/vscode": "^1.50.0",
         "glob": "^7.1.5",
-        "luxon": "^1.25.0",
         "mocha": "^6.2.3",
-        "mwbot": "^1.0.10",
-        "node-fetch": "^2.6.1",
         "ts-loader": "^6.2.2",
         "tslint": "^5.20.0",
         "typescript": "^3.9.7",
@@ -282,5 +278,10 @@
         "webpack": "^4.44.2",
         "webpack-cli": "^3.3.12"
     },
-    "dependencies": {}
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.3",
+        "luxon": "^1.25.0",
+        "mwbot": "^1.0.10",
+        "node-fetch": "^2.6.1"
+    }
 }
