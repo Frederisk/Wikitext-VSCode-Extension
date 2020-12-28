@@ -55,31 +55,44 @@ export async function writePage(): Promise<void> {
         let args: any;
         let result: any;
         let token: string | undefined;
+        let errors: any[] = [{}, {}];
 
-        args = {
-            'action': action.query,
-            'meta': 'tokens',
-            'type': 'csrf'
-        };
-        result = await bot.request(args);
-        const reNew: TokensResult = TokensConvert.toTokensResult(result);
-        token = reNew.query?.tokens?.csrftoken;
-        if (token) {
-            return token;
+        try {
+            args = {
+                'action': action.query,
+                'meta': 'tokens',
+                'type': 'csrf'
+            };
+            result = await bot.request(args);
+            const reNew: TokensResult = TokensConvert.toTokensResult(result);
+            token = reNew.query?.tokens?.csrftoken;
+            if (token) {
+                return token;
+            }
+        }
+        catch (error) {
+            console.log(error);
+            errors[0] = error;
         }
 
-        args = {
-            'action': "tokens",
-            'type': "edit"
-        };
-        result = await bot.request(args);
-        const reOld: OldTokensResult = OldTokensConvert.toOldTokensResult(result);
-        token = reOld.tokens?.edittoken;
-        if (token) {
-            return token;
+        try {
+            args = {
+                'action': "tokens",
+                'type': "edit"
+            };
+            result = await bot.request(args);
+            const reOld: OldTokensResult = OldTokensConvert.toOldTokensResult(result);
+            token = reOld.tokens?.edittoken;
+            if (token) {
+                return token;
+            }
+        }
+        catch (error) {
+            console.log(error);
+            errors[1] = error;
         }
 
-        throw new Error("Could not get edit token");
+        throw new Error(`Could not get edit token: NEW: ${errors[0].name}; OLD: ${errors[1].name}`);
     }
 
     if (bot === undefined) {
@@ -129,7 +142,7 @@ export async function writePage(): Promise<void> {
     }
     catch (error) {
         console.log(error);
-        vscode.window.showErrorMessage(`Error:${error.name}. Your Token: ${bot?.editToken}`);
+        vscode.window.showErrorMessage(`Error:${error.name}, ${error.message}. Your Token: ${bot?.editToken}`);
     }
 }
 
