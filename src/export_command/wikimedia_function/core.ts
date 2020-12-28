@@ -51,12 +51,13 @@ export function getContentInfo(content: string): { content: string, info: IPageI
  */
 export async function writePage(): Promise<void> {
     async function getEditToken(bot: MWBot): Promise<string> {
+        console.log("try get token.");
         let args: any;
         let result: any;
         let token: string | undefined;
 
         args = {
-            'actions': action.query,
+            'action': action.query,
             'meta': 'tokens',
             'type': 'csrf'
         };
@@ -68,7 +69,7 @@ export async function writePage(): Promise<void> {
         }
 
         args = {
-            'actions': "tokens",
+            'action': "tokens",
             'type': "edit"
         };
         result = await bot.request(args);
@@ -218,10 +219,11 @@ ${InfoType.ContentModel}=#${content?.contentmodel}#
 ${InfoType.ContentFormat}=#${content?.contentformat}#
 [END_PAGE_INFO] --%>`;
 
-        await vscode.workspace.openTextDocument({
+        const textDocument = await vscode.workspace.openTextDocument({
             language: content?.contentmodel,
             content: infoHead + "\r\r" + content?.["*"]
         });
+        vscode.window.showTextDocument(textDocument);
     }
     catch (error) {
         vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
