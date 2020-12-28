@@ -7,11 +7,11 @@ import { a, u, o, m, r, uncast, cast } from "./convertFunction";
 
 /*
     ReadPageResult {
-        // warnings: Warnings {
-        //     main: WarnMain {
-        //         *: string
-        //     }
-        // },
+        warnings: Warnings {
+            main: WarnMain {
+                *: string
+            }
+        },
         batchcomplete?: string,
         query?: Query {
             normalized?: Jump[] {
@@ -30,9 +30,6 @@ import { a, u, o, m, r, uncast, cast } from "./convertFunction";
                     revisions?: Revision[] {
                         revid?: number,
                         parentid?: number,
-                        // contentformat?: string,
-                        // contentmodel?: string,
-                        // *?: string
                         slots?: Slots {
                             main?: Main {
                                 main?: Main {
@@ -42,6 +39,10 @@ import { a, u, o, m, r, uncast, cast } from "./convertFunction";
                                 }
                             }
                         }
+                        // Old
+                        contentformat?: string,
+                        contentmodel?: string,
+                        *?: string
                     },
                     missing?: string,
                     invalidreason?: string,

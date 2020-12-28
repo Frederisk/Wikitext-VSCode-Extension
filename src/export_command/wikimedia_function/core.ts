@@ -8,7 +8,9 @@ import * as vscode from 'vscode';
 import { action, prop, rvprop, alterNativeValues } from './args';
 import { getHost } from '../host_function/host';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../interface_definition/readPageInterface';
+import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
 import { bot } from './bot';
+import { TokensConvert, TokensResult } from '../../interface_definition/tokensInteface';
 
 export enum InfoType {
     PageTitle = "PageTitle",
@@ -48,6 +50,37 @@ export function getContentInfo(content: string): { content: string, info: IPageI
  * Write/Post Page
  */
 export async function writePage(): Promise<void> {
+    async function getEditToken(bot: MWBot): Promise<string> {
+        let args: any;
+        let result: any;
+        let token: string | undefined;
+
+        args = {
+            'actions': action.query,
+            'meta': 'tokens',
+            'type': 'csrf'
+        };
+        result = await bot.request(args);
+        const reNew: TokensResult = TokensConvert.toTokensResult(result);
+        token = reNew.query?.tokens?.csrftoken;
+        if (token) {
+            return token;
+        }
+
+        args = {
+            'actions': "tokens",
+            'type': "edit"
+        };
+        result = await bot.request(args);
+        const reOld: OldTokensResult = OldTokensConvert.toOldTokensResult(result);
+        token = reOld.tokens?.edittoken;
+        if (token) {
+            return token;
+        }
+
+        throw new Error("Could not get edit token");
+    }
+
     if (bot === undefined) {
         vscode.window.showWarningMessage("You are not logged in. Please log in and try again.");
         return undefined;
@@ -60,7 +93,6 @@ export async function writePage(): Promise<void> {
     }
 
     const contentInfo: { content: string, info: IPageInfos | null } = getContentInfo(wikiContent);
-
     console.log(contentInfo);
 
     const wikiTitle: string | undefined = await vscode.window.showInputBox({
@@ -72,20 +104,15 @@ export async function writePage(): Promise<void> {
         vscode.window.showWarningMessage("Empty Title, Post failed.");
         return undefined;
     }
-
-    let wikiSummary: string | undefined = await vscode.window.showInputBox({
+    const wikiSummary: string | undefined = await vscode.window.showInputBox({
         value: "",
         ignoreFocusOut: false,
-        prompt: "Enter the summary of this edit action."
+        prompt: "Enter the summary of this edit action.",
+        placeHolder: " // Edit via Wikitext Extension for VSCode"
     }) + " // Edit via Wikitext Extension for VSCode";
 
     try {
-        await bot.getEditToken().then((response: any) => {
-            vscode.window.showInformationMessage(
-                `Get edit token status is "${response.result}". User "${response.lgusername}" (User ID: "${response.lguserid}") got the token: "${response.token}" and csrftoken: "${response.csrftoken}".`
-            );
-        });
-
+        bot.editToken = await getEditToken(bot);
         await bot.edit(wikiTitle, contentInfo.content, wikiSummary).then(response => {
             if (response.edit.nochange !== undefined) {
                 vscode.window.showWarningMessage(
@@ -98,9 +125,9 @@ export async function writePage(): Promise<void> {
                 );
             }
         });
-
     }
     catch (error) {
+        console.log(error);
         vscode.window.showErrorMessage(`Error:${error.name}. Your Token: ${bot?.editToken}`);
     }
 }
