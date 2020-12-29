@@ -33,6 +33,7 @@
         "onCommand:wikitext.writePage",
         "onCommand:wikitext.viewPage",
         "onCommand:wikitext.citeWeb",
+        "onView:control-panel",
         "onUri"
     ],
     "main": "./dist/extension",
@@ -131,6 +132,7 @@
         "views": {
             "wikisite": [
                 {
+                    "type": "webview",
                     "id": "control-panel",
                     "name": "Control Panel",
                     "icon": "./media/dep.svg",

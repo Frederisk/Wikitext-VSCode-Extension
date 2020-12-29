@@ -83,7 +83,8 @@ suite('WikimediaFunction Core TestSuite', () => {
     });
 });
 
-import { parseArgs } from '../../export_command/uri_function/uri';
+import { WikitextUriHandler } from '../../export_command/uri_function/uri';
+const parseArgs = WikitextUriHandler.parseArgs;
 suite('URIFunction URI TestSuite', () => {
 
     test('Parse Test', () => {

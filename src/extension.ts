@@ -7,16 +7,24 @@ import * as vscode from 'vscode';
 import { getPreview, getPageView } from './export_command/wikimedia_function/view';
 import { login, logout } from './export_command/wikimedia_function/bot';
 import { writePage, readPage } from './export_command/wikimedia_function/core';
-import { baseUriProcess } from './export_command/uri_function/uri';
+import { WikitextUriHandler } from './export_command/uri_function/uri';
 import { addWebCite } from './export_command/cite_function/web';
+import { WikisiteProvider } from './export_command/wikisite_provider/provider';
 
 export let extensionContext: vscode.ExtensionContext;
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Extension is active.");
     extensionContext = context;
+
+    // Window
     // URI
-    context.subscriptions.push(vscode.window.registerUriHandler({ handleUri: baseUriProcess }));
+    context.subscriptions.push(vscode.window.registerUriHandler(new WikitextUriHandler));
+    // Webview View
+    // VSCode version ^1.50.0 need
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider("control-panel", new WikisiteProvider/*, { webviewOptions: { retainContextWhenHidden: true } }*/));
+
+    // Commands
     // Bot
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.login", login));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.logout", logout));
