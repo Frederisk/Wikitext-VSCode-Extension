@@ -12,3 +12,6 @@ node_modules/
 
 # Packaged extensions
 *.vsix
+
+# Log file
+*.log

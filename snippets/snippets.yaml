@@ -6,7 +6,7 @@
 ---
 region:
   prefix: "@region"
-  body: |-
+  body: |
     <!--#region ${1:chapter}-->
     ${2:}
     <!--#endregion-->
@@ -91,4 +91,17 @@ pageTitle:
   prefix: "@pagetitle"
   body: "= ${1:title} ="
   description: PageTitle<1>
+  scope: ""
+pageInfo:
+  prefix: "@pageinfo"
+  body: |
+    <%-- [PAGE_INFO]
+    Comment=#${1:}#
+    PageTitle=#${2:}#
+    PageID=#${3:}#
+    RevisionID=#${4:}#
+    ContentModel=#${5:}#
+    ContentFormat=#${6:}#
+    [END_PAGE_INFO] --%>
+  description: Page Info Struct
   scope: ""
