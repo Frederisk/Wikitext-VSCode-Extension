@@ -5,6 +5,7 @@ dist/
 #Compiled JSON
 syntaxes/*.json
 snippets/*.json
+language-configuration.json
 
 # Dependencies
 node_modules/

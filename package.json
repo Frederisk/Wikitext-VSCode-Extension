@@ -243,7 +243,7 @@
         "watch": "npm run convert && webpack --config webpack.config.js --mode development --watch",
         "pretest": "tsc -p ./",
         "test": "node ./out/test/runTest.js",
-        "convert": "npx js-yaml snippets/snippets.yaml > snippets/snippets.json && npx js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json",
+        "convert": "npx js-yaml snippets/snippets.yaml > snippets/snippets.json && npx js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json && npx js-yaml language-configuration.yaml > language-configuration.json",
         "deploy": "vsce publish"
     },
     "devDependencies": {
