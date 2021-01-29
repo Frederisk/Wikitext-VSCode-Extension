@@ -192,7 +192,7 @@
                 },
                 "wikitext.apiPath": {
                     "type": "string",
-                    "description": "Set the basic path to obtain the API. If you are not sure, please keep the default value.",
+                    "markdownDescription": "Set the basic path to obtain the API. If you are not sure, please check the `Special:Version` page of your site.",
                     "default": "/w/api.php"
                 },
                 "wikitext.getCss": {
@@ -213,7 +213,7 @@
                 },
                 "wikitext.articlePath": {
                     "type": "string",
-                    "description": "Set the basic path to obtain the article. If you are not sure what is this. please keep the default value.",
+                    "markdownDescription": "Set the basic path to obtain the article. please check the `Special:Version` page of your site (No need for `$1`).",
                     "default": "/wiki/"
                 },
                 "wikitext.webCiteFormat": {
