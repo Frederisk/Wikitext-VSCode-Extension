@@ -31,46 +31,55 @@ autoClosingPairs:
     - '}-'
   - - '<!--'
     - '-->'
-  - - <hr /
-    - '>'
-  - - <br /
-    - '>'
-  - - <mapframe /
-    - '>'
-  - - <code>
-    - </code>
-  - - <nowiki>
-    - </nowiki>
-  - - <blockquote>
-    - </blockquote>
-  - - <ref>
-    - </ref>
-  - - <math>
-    - </math>
-  - - <chem>
-    - </chem>
-  - - <span>
-    - </span>
-  - - <pre>
-    - </pre>
-  - - <div>
-    - </div>
-  - - <hiero>
-    - </hiero>
-  - - <score>
-    - </score>
-  - - <syntaxhighlight>
-    - </syntaxhighlight>
-  - - <graph>
-    - </graph>
-  - - <s>
-    - </s>
-  - - <i>
-    - </i>
-  - - <b>
-    - </b>
+  # more tags: https://www.mediawiki.org/wiki/Parser_extension_tags
   - - <>
     - </>
+  - - <b>
+    - </b>
+  - - <br /
+    - '>'
+  - - <blockquote>
+    - </blockquote>
+  - - <ce>
+    - </ce>
+  - - <chem>
+    - </chem>
+  - - <code>
+    - </code>
+  - - <div>
+    - </div>
+  - - <graph>
+    - </graph>
+  - - <hiero>
+    - </hiero>
+  - - <hr /
+    - '>'
+  - - <i>
+    - </i>
+  - - <includeonly>
+    - </includeonly>
+  - - <mapframe /
+    - '>'
+  - - <math>
+    - </math>
+  - - <noinclude>
+    - </noinclude>
+  - - <nowiki>
+    - </nowiki>
+  - - <onlyinclude>
+    - </onlyinclude>
+  - - <pre>
+    - </pre>
+  - - <ref>
+    - </ref>
+  - - <s>
+    - </s>
+  - - <score>
+    - </score>
+  - - <span>
+    - </span>
+  - - <syntaxhighlight>
+    - </syntaxhighlight>
 # symbols that that can be used to surround a selection
 surroundingPairs:
   - - '{'
