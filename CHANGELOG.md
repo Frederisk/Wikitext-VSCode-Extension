@@ -4,6 +4,13 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.2.4] - 2021-3-18
+
+### Added
+
+- More snippets and auto closing pairs.
+- Provided CSS adjustment support for Perviewer.
+
 ## [3.2.3] - 2020-12-28
 
 ### Added

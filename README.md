@@ -55,7 +55,7 @@ Generally speaking, make sure that your VSCode is always the latest version.
 
 Firstly, clone this repository and change directory to the repository, then install VS Code Extension Manager and other packages:
 
-```sh
+```bash
 npm install vsce -g # VS Code Extension Manager
 npm install js-yaml -g # js to yaml
 npm install # devDependencies
@@ -63,7 +63,7 @@ npm install # devDependencies
 
 Package this project and you will get a vsix file:
 
-```sh
+```bash
 npx vsce package
 ```
 
@@ -71,18 +71,8 @@ This is it!
 
 ## Release Notes
 
-- Added the optional for transfer poypcol.
-- Added support of pull function for old version mediawiki.
-- Adjust the conversion period of some interfaces to runtime. Incorrect JSON format will be thrown error.
-- Fixed some logic errors.
-
-### Changed
-
-- Adjust the conversion period of some interfaces to runtime. Incorrect JSON format will be thrown error.
-
-### Fixed
-
-- Some logic errors.
+- Added more snippets and auto closing pairs.
+- Provided CSS adjustment support for Perviewer.
 
 ## Special Thanks
 
