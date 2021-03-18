@@ -233,6 +233,12 @@
                         "HyperText Transfer Protocol Secure"
                     ],
                     "description": "Select the transfer protocol used when accessing the API."
+                },
+                "wikitext.previewCssStyle": {
+                    "type": "string",
+                    "multipleOf": 0,
+                    "markdownDescription": "CSS attached to Perviewer. This content always works, regardless of whether [GetCss](#wikitext.getCss) is enabled or not. To enable CSS for a specific category of themes, you can use the class filter name `vscode-light`, `vscode-dark`, `vscode-high-contrast` etc. See [Extension guides](https://code.visualstudio.com/api/extension-guides/webview#theming-webview-content) to learn more.",
+                    "default": ".vscode-dark img[class^=\"mwe-math-fallback-image\"]{filter: invert(85%);} .vscode-light {} .vscode-high-contrast img[class^=\"mwe-math-fallback-image\"]{background-color: white; filter: invert(100%);}"
                 }
             }
         }
@@ -267,6 +273,5 @@
         "vscode-test": "^1.4.1",
         "webpack": "^4.44.2",
         "webpack-cli": "^3.3.12"
-    },
-    "dependencies": {}
+    }
 }

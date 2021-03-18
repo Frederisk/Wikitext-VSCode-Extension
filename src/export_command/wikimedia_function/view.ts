@@ -91,7 +91,7 @@ export async function getPageView(): Promise<void> {
 export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: any): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     if (typeof (currentPlanel) === "string") {
-        currentPlanel = vscode.window.createWebviewPanel(currentPlanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript"), });
+        currentPlanel = vscode.window.createWebviewPanel(currentPlanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript") });
     }
 
     function showHtmlInfo(info: string): string {
@@ -112,9 +112,12 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         if (!re.parse) { return undefined; }
 
         const articlePath = config.get("articlePath");
-        const baseHref = `<base href="${config.get("transferProtocol") + host + articlePath}" />"`;
+        const styleContent = config.get("previewCssStyle");
 
-        const htmlHead: string = config.get("getCss") as boolean && re.parse.headhtml?.["*"]?.replace("<head>", "<head>" + baseHref) || `<!DOCTYPE html><html><head>${baseHref}</head><body>`;
+        const baseHref = `<base href="${config.get("transferProtocol") + host + articlePath}" />"`;
+        const style = `<style>${styleContent}</style>`;
+
+        const htmlHead: string = config.get("getCss") as boolean && re.parse.headhtml?.["*"]?.replace("<head>", "<head>" + baseHref + style) || `<!DOCTYPE html><html><head>${baseHref + style}</head><body>`;
         const htmlText: string = re.parse.text?.["*"] || "";
         const htmlCategories: string = re.parse.categorieshtml?.["*"] ? "<hr />" + re.parse.categorieshtml?.["*"] : "";
         const htmlEnd: string = "</body></html>";
