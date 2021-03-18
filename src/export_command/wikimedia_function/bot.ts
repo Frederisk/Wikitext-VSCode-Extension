@@ -51,5 +51,5 @@ export async function logout(): Promise<void> {
     console.log(result);
     // clear bot
     bot = undefined;
-    vscode.window.showInformationMessage("result: \"Success\"");
+    vscode.window.showInformationMessage('result: "Success"');
 }

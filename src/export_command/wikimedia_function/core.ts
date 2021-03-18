@@ -12,6 +12,9 @@ import { OldTokensConvert, OldTokensResult } from '../../interface_definition/ol
 import { bot } from './bot';
 import { TokensConvert, TokensResult } from '../../interface_definition/tokensInteface';
 
+/**
+ *
+ */
 export enum InfoType {
     PageTitle = "PageTitle",
     PageID = "PageID",
@@ -24,22 +27,27 @@ export interface IPageInfos {
     [key: string]: string | undefined;
 }
 
-export function getContentInfo(content: string): { content: string, info: IPageInfos | null } {
+interface IContentInfo {
+    content: string;
+    info?: IPageInfos;
+}
+
+export function getContentInfo(content: string): IContentInfo {
     const info: string | undefined = content.match(/(?<=\<%\-\-\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*\-\-%\>)/)?.[0];
 
-    let pageInfo: IPageInfos | null = null;
+    let pageInfo: IPageInfos | undefined = undefined;
     if (info) {
         content = content.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
-        const foo = (infoName: string): string | undefined => {
+        const getInfo = (infoName: string): string | undefined => {
             const reg = new RegExp(`(?<=${infoName}\\s*=\\s*#).*?(?=#)`);
             return info.match(reg)?.[0];
         };
         pageInfo = {
-            PageTitle: foo(InfoType.PageTitle),
-            PageID: foo(InfoType.PageID),
-            RevisionID: foo(InfoType.RevisionID),
-            ContentModel: foo(InfoType.ContentModel),
-            ContentFormat: foo(InfoType.ContentFormat)
+            PageTitle: getInfo(InfoType.PageTitle),
+            PageID: getInfo(InfoType.PageID),
+            RevisionID: getInfo(InfoType.RevisionID),
+            ContentModel: getInfo(InfoType.ContentModel),
+            ContentFormat: getInfo(InfoType.ContentFormat)
         };
     }
 
@@ -55,7 +63,7 @@ export async function writePage(): Promise<void> {
         let args: any;
         let result: any;
         let token: string | undefined;
-        let errors: any[] = [{}, {}];
+        let errors: any[] = [undefined, undefined];
 
         try {
             args = {
@@ -74,22 +82,23 @@ export async function writePage(): Promise<void> {
             console.log(error);
             errors[0] = error;
         }
-
-        try {
-            args = {
-                'action': "tokens",
-                'type': "edit"
-            };
-            result = await bot.request(args);
-            const reOld: OldTokensResult = OldTokensConvert.toOldTokensResult(result);
-            token = reOld.tokens?.edittoken;
-            if (token) {
-                return token;
+        if (errors[0] !== undefined) {
+            try {
+                args = {
+                    'action': "tokens",
+                    'type': "edit"
+                };
+                result = await bot.request(args);
+                const reOld: OldTokensResult = OldTokensConvert.toOldTokensResult(result);
+                token = reOld.tokens?.edittoken;
+                if (token) {
+                    return token;
+                }
             }
-        }
-        catch (error) {
-            console.log(error);
-            errors[1] = error;
+            catch (error) {
+                console.log(error);
+                errors[1] = error;
+            }
         }
 
         throw new Error(`Could not get edit token: NEW: ${errors[0].name}; OLD: ${errors[1].name}`);
@@ -106,7 +115,7 @@ export async function writePage(): Promise<void> {
         return undefined;
     }
 
-    const contentInfo: { content: string, info: IPageInfos | null } = getContentInfo(wikiContent);
+    const contentInfo: IContentInfo = getContentInfo(wikiContent);
     console.log(contentInfo);
 
     const wikiTitle: string | undefined = await vscode.window.showInputBox({
@@ -217,9 +226,9 @@ export async function readPage(): Promise<void> {
         const normalized: Jump | undefined = re.query?.normalized?.[0];
         const redirects: Jump | undefined = re.query?.redirects?.[0];
         vscode.window.showInformationMessage(
-            `Opened page "${page.title}" with Model ${content?.contentmodel}.` +
-            (normalized ? ` Normalized: "${normalized.from}" => "${normalized.to}".` : "") +
-            (redirects ? ` Redirect: "${redirects.from}" => "${redirects.to}"` : "")
+            `Opened page "${page.title}" with Model ${content?.contentmodel}. ` +
+            `Normalized: ${normalized ? `${normalized.from} => ${normalized.to}` : undefined}. ` +
+            `Redirect: ${redirects ? `${redirects.from} => ${redirects.to}` : undefined}`
         );
 
         const infoHead: string =
