@@ -77,9 +77,9 @@ suite('WikimediaFunction Core TestSuite', () => {
         }, "hasInfo info faild");
         // noInfo
         assert.strictEqual(noInfo.content, content, "noInfo content faild");
-        assert.deepStrictEqual(noInfo.info, null, "noInfo info faild");
+        assert.deepStrictEqual(noInfo.info, undefined, "noInfo info faild");
         // mutiInfo
-        assert.notStrictEqual(mutiInfo.info, null, "mutiInfo info faild");
+        assert.notStrictEqual(mutiInfo.info, undefined, "mutiInfo info faild");
     });
 });
 
