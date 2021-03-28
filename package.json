@@ -260,7 +260,7 @@
         "@types/mocha": "^5.2.7",
         "@types/node": "^12.20.7",
         "@types/node-fetch": "^2.5.8",
-        "@types/vscode": "^1.54.0",
+        "@types/vscode": "^1.43.0",
         "cheerio": "^1.0.0-rc.3",
         "glob": "^7.1.5",
         "luxon": "^1.26.0",
