@@ -58,7 +58,7 @@ Firstly, clone this repository and change directory to the repository, then inst
 ```bash
 npm install vsce -g # VS Code Extension Manager
 npm install js-yaml -g # js to yaml
-npm install # devDependencies
+npm ci # devDependencies
 ```
 
 Package this project and you will get a vsix file:
