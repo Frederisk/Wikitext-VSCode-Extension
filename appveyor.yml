@@ -15,7 +15,7 @@ install:
       sudo apt install nodejs -y
 build_script:
   - sh: >-
-      npm install vsce js-yaml -g
+      npm install vsce@latest js-yaml@latest -g
 
       npx vsce package
 test_script:
