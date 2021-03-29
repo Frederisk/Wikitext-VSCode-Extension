@@ -12,10 +12,12 @@ init:
       /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 install:
   - sh: >-
+      curl -sL https://deb.nodesource.com/setup_current.x | bash -
+
       sudo apt install nodejs npm -y
 build_script:
   - sh: >-
-      npm install node@latest npm@latest -g
+      npm install npm@latest -g
 
       npm install vsce@latest js-yaml@latest -g
 
