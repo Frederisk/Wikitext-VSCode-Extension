@@ -16,12 +16,11 @@ install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
 build_script:
-  - sh: >-
-      npm install vsce js-yaml yarn -g
+  - npm install vsce js-yaml yarn -g
 
-      npx vsce package
+  - npx vsce package
 test_script:
-  - sh: npm run test
+  - npm run test
 notifications:
   - provider: Email
     to:
