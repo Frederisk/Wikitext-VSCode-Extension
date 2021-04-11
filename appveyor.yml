@@ -9,6 +9,7 @@ environment:
   matrix:
     - nodejs_version: "14"
     - nodejs_version: "10"
+    - nodejs_version: "15"
 matrix:
   allow_failures:
     - nodejs_version: "15"
@@ -22,7 +23,6 @@ install:
   - ps: Install-Product node $env:nodejs_version
 build_script:
   - npm install vsce js-yaml yarn -g
-
   - npx vsce package
 test_script:
   - npm run test
