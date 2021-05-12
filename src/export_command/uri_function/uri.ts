@@ -29,7 +29,7 @@ function write(query: string): void {
     vscode.window.showInformationMessage(query);
 }
 
-async function viewPage(query: string): Promise<void> {
+function viewPage(query: string): void {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const args: any = {
