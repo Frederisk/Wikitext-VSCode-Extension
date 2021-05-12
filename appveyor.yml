@@ -3,16 +3,16 @@
 #   Licensed under the MIT License. See License.txt in the project root for license information.
 ################################################################################################
 ---
-version: 3.0.{build}
+version: 3.1.{build}
 image: Visual Studio 2019
 environment:
   matrix:
     - nodejs_version: "14"
     - nodejs_version: "10"
-    - nodejs_version: "15"
+    - nodejs_version: "16"
 matrix:
   allow_failures:
-    - nodejs_version: "15"
+    - nodejs_version: "16"
 # init:
 #   - sh: >-
 #       export DISPLAY=':99.0'
@@ -23,7 +23,7 @@ install:
   - ps: Install-Product node $env:nodejs_version
 build_script:
   - npm install vsce js-yaml yarn -g
-  - npx vsce package
+  - vsce package
 test_script:
   - npm run test
 notifications:
