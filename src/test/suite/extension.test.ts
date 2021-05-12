@@ -29,12 +29,12 @@ suite('WikimediaFunction Args TestSuite', () => {
         const first: string = "first", second = "second", third = "third", alt = "|";
 
         // Act
-        const first_Second = alterNativeValues(first, second);
-        const und_und_Third = alterNativeValues(undefined, undefined, third);
+        const firstSecond = alterNativeValues(first, second);
+        const undUndThird = alterNativeValues(undefined, undefined, third);
 
         // Assert
-        assert.strictEqual(first_Second, first + alt + second);
-        assert.strictEqual(und_und_Third, third);
+        assert.strictEqual(firstSecond, first + alt + second);
+        assert.strictEqual(undUndThird, third);
     });
 });
 
