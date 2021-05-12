@@ -252,6 +252,11 @@ ${InfoType.ContentFormat}=#${content?.contentformat}#
     }
 }
 
+
+function getCode(args: any) {
+
+}
+
 // export function uploadFile(): void {
 
 // }

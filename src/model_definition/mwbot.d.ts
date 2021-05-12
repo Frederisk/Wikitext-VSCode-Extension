@@ -7,7 +7,7 @@ declare module 'mwbot';
 
 type bluebird<R> = import("bluebird") <R>;
 
-interface counterInterface{
+interface counterInterface {
   total: number,
   resolved: number,
   fulfilled: number,
@@ -30,8 +30,8 @@ declare class MWBot {
   loggedIn: boolean;
   createaccountToken: string;
   counter: counterInterface;
-  // defaultOptions: 
-  
+  // defaultOptions:
+
   //////////////////////////////////////////
   // CONSTRUCTOR                          //
   //////////////////////////////////////////
@@ -39,7 +39,7 @@ declare class MWBot {
   /**
    * Constructs a new MWBot instance
    * It is advised to create one bot instance for every API to use
-   * A bot instance has its own state (e.g. tokens) that is 
+   * A bot instance has its own state (e.g. tokens) that is
      necessary for some operations
    *
    * @param {{}} [customOptions]        Custom options
@@ -321,7 +321,7 @@ declare class MWBot {
    * @param {string}  [summary]
    * @param {number}  [concurrency]
    * @param {object}  [customRequestOptions]
-   * 
+   *
    * @returns {bluebird}
    */
   batch(jobs: object | any[], summary?: string, concurrency?: number, customRequestOptions?: object): bluebird<any>;
@@ -376,4 +376,3 @@ declare class MWBot {
    */
   static logStatus(status: any, currentCounter: any, totalCounter: any, operation: any, pageName: any, reason: any): void;
 }
-

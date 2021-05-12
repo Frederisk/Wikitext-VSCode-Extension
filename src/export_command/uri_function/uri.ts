@@ -5,20 +5,21 @@
 
 import * as vscode from 'vscode';
 import { action, alterNativeValues, prop, contextModel } from '../wikimedia_function/args';
+import { } from '../wikimedia_function/core';
 import { getView } from '../wikimedia_function/view';
 
-export function baseUriProcess(uri: vscode.Uri) {
+export function baseUriProcess(uri: vscode.Uri): void {
     // vscode://rowewilsonfrederiskholme.wikitext/WriteLine?你好，世界！
     switch (uri.path) {
         case "/WriteLine":
         case "/Write":
             write(uri.query);
             break;
-        case "ViewPage":
+        case "/ViewPage":
             viewPage(uri.query);
             break;
-        case "EditPage":
-
+        case "/ReadPage":
+            readPage(uri.query);
             break;
         default:
             break;
@@ -32,36 +33,55 @@ function write(query: string): void {
 function viewPage(query: string): void {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
-    const args: any = {
-        'action': action.parse,
-        'prop': alterNativeValues(
-            prop.text,
-            prop.displayTitle,
-            prop.categoriesHTML,
-            (config.get("getCss") ? prop.headHTML : undefined)
-        ),
-    };
-    if (config.get("redirects")) {
-        args['redirects'] = "true";
-    }
+    // default args value
+    const args: any = { 'action': action.parse };
 
     const pars: IParameters = parseArgs(query);
-    if (pars["PageID"]) {
-        args["pageid"] = pars["PageID"];
-    }
-    else if (pars["Page"]) {
-        args["page"] = pars["Page"];
-    }
-    else if (pars["Text"]) {
-        args["text"] = pars["Text"];
-        args['contentmodel'] = contextModel.wikitext;
-        args['pst'] = "yes";
-    }
-    else {
-        return undefined;
-    }
 
-    getView("pageViewer", "WikiViewer", args);
+    args["prop"] = pars["Prop"] ?? alterNativeValues(
+        prop.text,
+        prop.displayTitle,
+        prop.categoriesHTML,
+        (config.get("getCss") ? prop.headHTML : undefined)
+    );
+
+    args["text"] = pars["Text"] ?? undefined;
+    args["title"] = pars["Title"] ?? undefined;
+    args["summary"] = pars["Summary"] ?? undefined;
+
+    args["revid"] = pars["RevID"] ?? undefined;
+    args["page"] = pars["Page"] ?? undefined;
+    args["pageid"] = pars["PageID"] ?? undefined;
+    args["oldid"] = pars["OldID"] ?? undefined;
+
+    args["redirects"] = pars["Redirects"] ?? undefined;
+
+    args["pst"] = pars["PST"] ?? "true";
+    args["onlypst"] = pars["OnlyPST"] ?? undefined;
+
+    args["section"] = pars["Section"] ?? undefined;
+    args["sectiontitle"] = pars["SectionTitle"] ?? undefined;
+
+    args["useskin"] = pars["UseSkin"] ?? undefined;
+    args["contentformat"] = pars["ContentFormat"] ?? undefined;
+    args["contentmodel"] = pars["ContentModel"] ?? contextModel.wikitext;
+
+    let tbot: MWBot = new MWBot(
+        {
+            apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + ["APIPath"]
+        }
+    );
+
+    const baseHref = (pars["TransferProtocol"] ?? "https://") + pars["SiteHost"] + pars["ArticlePath"];
+
+    getView("pageViewer", "WikiViewer", args, tbot, baseHref);
+}
+
+function readPage(query: string): void {
+    const pars: IParameters = parseArgs(query);
+
+
+
 }
 
 interface IParameters {

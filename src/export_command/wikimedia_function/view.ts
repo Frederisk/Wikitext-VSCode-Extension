@@ -10,6 +10,7 @@ import { action, contextModel, alterNativeValues, prop } from './args';
 import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
 import { bot } from './bot';
 import { getHost } from '../host_function/host';
+import { getBot } from './bot';
 
 /**
  * webview panel
@@ -58,11 +59,22 @@ export async function getPreview(): Promise<void> {
             previewCurrentPlanel = undefined;
         }, null, extensionContext.subscriptions);
     }
-    getView(previewCurrentPlanel, viewerTitle, args);
+
+    const tbot: MWBot | undefined = await getBot();
+    if (!tbot) {
+        return undefined;
+    }
+
+    const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
+
+    getView(previewCurrentPlanel, viewerTitle, args, tbot, baseHref);
 }
 
 export async function getPageView(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+
+    const host: string | undefined = await getHost();
+    if (!host) { return undefined; }
 
     const pageTitle: string | undefined = await vscode.window.showInputBox({
         prompt: "Enter the page name here.",
@@ -84,11 +96,17 @@ export async function getPageView(): Promise<void> {
         args['redirects'] = "true";
     }
 
-    // Show
-    getView("pageViewer", "WikiViewer", args);
+    const tbot: MWBot | undefined = await getBot();
+    if (!tbot) {
+        return undefined;
+    }
+
+    const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
+
+    getView("pageViewer", "WikiViewer", args, tbot, baseHref);
 }
 
-export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: any): Promise<void> {
+export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: any, tbot: MWBot, baseURI: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     if (typeof (currentPlanel) === "string") {
         currentPlanel = vscode.window.createWebviewPanel(currentPlanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript") });
@@ -98,12 +116,6 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         return `<!DOCTYPE html><html><body><h2>${info}</h2></body></html>`;
     }
 
-    const host: string | undefined = await getHost();
-    if (!host) { return undefined; }
-    const tbot: MWBot = bot ?? new MWBot({
-        apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
-    });
-
     currentPlanel.webview.html = showHtmlInfo("Loading...");
 
     try {
@@ -111,13 +123,11 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         const re: GetViewResult = GetViewConvert.GetViewResultToJson(result);
         if (!re.parse) { return undefined; }
 
-        const articlePath = config.get("articlePath");
-        const styleContent = config.get("previewCssStyle");
+        const baseElem = `<base href="${baseURI}" />"`;
 
-        const baseHref = `<base href="${config.get("transferProtocol") + host + articlePath}" />"`;
-        const style = `<style>${styleContent}</style>`;
+        const style = `<style>${config.get("previewCssStyle")}</style>`;
 
-        const htmlHead: string = config.get("getCss") as boolean && re.parse.headhtml?.["*"]?.replace("<head>", "<head>" + baseHref + style) || `<!DOCTYPE html><html><head>${baseHref + style}</head><body>`;
+        const htmlHead: string = re.parse.headhtml?.["*"]?.replace("<head>", "<head>" + baseElem + style) ?? `<!DOCTYPE html><html><head>${baseElem + style}</head><body>`;
         const htmlText: string = re.parse.text?.["*"] || "";
         const htmlCategories: string = re.parse.categorieshtml?.["*"] ? "<hr />" + re.parse.categorieshtml?.["*"] : "";
         const htmlEnd: string = "</body></html>";

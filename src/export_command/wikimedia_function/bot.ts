@@ -53,3 +53,20 @@ export async function logout(): Promise<void> {
     bot = undefined;
     vscode.window.showInformationMessage('result: "Success"');
 }
+
+export async function getBot(): Promise<MWBot | undefined> {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+    let tbot: MWBot;
+    if (bot) {
+        tbot = bot;
+    }
+    else {
+        // get host
+        const host: string | undefined = await getHost();
+        if (!host) { return undefined; }
+        tbot = new MWBot({
+            apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
+        });
+    }
+    return tbot;
+}
