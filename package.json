@@ -244,9 +244,9 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "npm ci && npm run convert && webpack --config webpack.config.js --mode production",
-        "compile": "npm run convert && webpack --config webpack.config.js --mode development",
-        "watch": "npm run convert && webpack --config webpack.config.js --mode development --watch",
+        "vscode:prepublish": "yarn && yarn run convert && webpack --config webpack.config.js --mode production",
+        "compile": "yarn run convert && webpack --config webpack.config.js --mode development",
+        "watch": "yarn run convert && webpack --config webpack.config.js --mode development --watch",
         "pretest": "tsc -p ./",
         "test": "node ./out/test/runTest.js",
         "convert": "npx js-yaml snippets/snippets.yaml > snippets/snippets.json && npx js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json && npx js-yaml language-configuration.yaml > language-configuration.json",
