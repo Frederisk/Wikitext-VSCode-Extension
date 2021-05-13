@@ -9,10 +9,10 @@ environment:
   matrix:
     - nodejs_version: "14"
     - nodejs_version: "10"
-    - nodejs_version: "16"
+    - nodejs_version: "15"
 matrix:
   allow_failures:
-    - nodejs_version: "16"
+    - nodejs_version: "15"
 # init:
 #   - sh: >-
 #       export DISPLAY=':99.0'
@@ -22,8 +22,9 @@ install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
 build_script:
-  - npm install vsce js-yaml yarn -g
-  - vsce package
+  - npm install yarn -g
+  - yarn
+  - yarn run compile
 test_script:
   - npm run test
 notifications:

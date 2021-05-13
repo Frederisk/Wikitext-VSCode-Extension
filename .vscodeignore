@@ -19,9 +19,12 @@ appveyor.yml
 # Compiled config
 **/tsconfig.json
 **/tslint.json
+**/.eslintrc.json
 webpack.config.js
+.yarnrc
 
 # Uncompiled files
+**/*.map
 **/*.ts
 
 # Git Ignore file

@@ -244,13 +244,13 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "yarn && yarn run convert && webpack --config webpack.config.js --mode production",
-        "compile": "yarn run convert && webpack --config webpack.config.js --mode development",
-        "watch": "yarn run convert && webpack --config webpack.config.js --mode development --watch",
-        "pretest": "tsc -p ./",
-        "test": "node ./out/test/runTest.js",
-        "convert": "npx js-yaml snippets/snippets.yaml > snippets/snippets.json && npx js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json && npx js-yaml language-configuration.yaml > language-configuration.json",
+        "vscode:prepublish": "yarn run compile",
+        "compile": "yarn run convert && webpack --config webpack.config.js --mode production",
         "lint": "eslint -c .eslintrc.js --ext .ts ./src",
+        "watch": "yarn run convert && webpack --config webpack.config.js --mode development --watch",
+        "pretest": "tsc -p ./ && yarn run lint",
+        "test": "node ./out/test/runTest.js",
+        "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json && js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json && js-yaml language-configuration.yaml > language-configuration.json",
         "deploy": "vsce publish"
     },
     "devDependencies": {
@@ -264,10 +264,9 @@
         "@types/vscode": "^1.43.0",
         "@typescript-eslint/eslint-plugin": "^4.23.0",
         "@typescript-eslint/parser": "^4.23.0",
-        "cheerio": "^1.0.0-rc.3",
         "eslint": "^7.26.0",
         "glob": "^7.1.5",
-        "luxon": "^1.26.0",
+        "js-yaml": "^4.1.0",
         "mocha": "^8.3.2",
         "mwbot": "^2.0.0",
         "node-fetch": "^2.6.1",
@@ -276,5 +275,9 @@
         "vscode-test": "^1.4.1",
         "webpack": "^5.28.0",
         "webpack-cli": "^4.6.0"
+    },
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.9",
+        "luxon": "^1.26.0"
     }
 }

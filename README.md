@@ -56,15 +56,14 @@ Generally speaking, make sure that your VSCode is always the latest version.
 Firstly, clone this repository and change directory to the repository, then install VS Code Extension Manager and other packages:
 
 ```bash
-npm install vsce -g # VS Code Extension Manager
-npm install js-yaml -g # js to yaml
-npm ci # devDependencies
+npm install yarn vsce -g # VS Code Extension Manager
+yarn # devDependencies
 ```
 
 Package this project and you will get a vsix file:
 
 ```bash
-npx vsce package
+vsce package
 ```
 
 This is it!
