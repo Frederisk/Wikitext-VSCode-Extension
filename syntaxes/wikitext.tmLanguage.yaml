@@ -368,7 +368,7 @@ repository:
                 match: ^\s*(\|\+)(.*?)$
                 captures:
                   1:
-                    name: punctuation.definition.tag.wikitext
+                    name: punctuation.definition.tag.begin.wikitext
                   2:
                     name: string.unquoted.caption.wikitext
                 end: $
