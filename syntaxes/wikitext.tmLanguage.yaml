@@ -350,7 +350,7 @@ repository:
                   5:
                     name: markup.bold.style.wikitext
                 patterns:
-                  - name: meta.tag.block.th.inline
+                  - name: meta.tag.block.th.inline.wikitext
                     match: (!!)((.*?)(\|))?(.*?)(?=(!!)|$)
                     captures:
                       1:
@@ -363,6 +363,16 @@ repository:
                         name: punctuation.definition.tag.wikitext
                       5:
                         name: markup.bold.style.wikitext
+                  - include: $self
+              - name: meta.tag.block.caption.wikitext
+                match: ^\s*(\|\+)(.*?)$
+                captures:
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: string.unquoted.caption.wikitext
+                end: $
+                patterns:
                   - include: $self
               - name: string.quoted.wikitext
                 begin: ^\s*(\|)
