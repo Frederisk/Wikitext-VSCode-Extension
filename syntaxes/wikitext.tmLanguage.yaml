@@ -622,7 +622,6 @@ repository:
                   - include: "#jsonArray"
                   - include: "#jsonObject"
                   - include: "#jsonComments"
-  #
   xml:
     patterns:
       - begin: '(<\?)\s*([-_a-zA-Z0-9]+)'
@@ -780,7 +779,9 @@ repository:
       - include: "#bare-ampersand"
   tagStuff:
     patterns:
-      - captures:
+      - match: '(?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)'
+        #       1 space 123:321 4  name  4   5=5
+        captures:
           1:
             name: entity.other.attribute-name.namespace.wikitext
           2:
@@ -791,8 +792,6 @@ repository:
             name: entity.other.attribute-name.localname.wikitext
           5:
             name: keyword.operator.equal.wikitext
-        comment: "  asd:dasd="
-        match: '(?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)'
       - include: "#doublequotedString"
       - include: "#singlequotedString"
   singlequotedString:

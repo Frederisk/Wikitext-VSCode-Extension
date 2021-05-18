@@ -7,7 +7,7 @@ import * as MWBot from 'mwbot';
 import * as vscode from 'vscode';
 import { getHost } from '../host_function/host';
 
-export let bot: MWBot | undefined = undefined;
+export let bot: MWBot | undefined;
 
 export async function login(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");

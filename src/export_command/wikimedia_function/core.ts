@@ -9,7 +9,7 @@ import { action, prop, rvprop, alterNativeValues } from './args';
 import { getHost } from '../host_function/host';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
-import { bot } from './bot';
+import { bot, getBot } from './bot';
 import { TokensConvert, TokensResult } from '../../interface_definition/tokensInteface';
 
 /**
@@ -35,7 +35,7 @@ interface IContentInfo {
 export function getContentInfo(content: string): IContentInfo {
     const info: string | undefined = content.match(/(?<=\<%\-\-\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*\-\-%\>)/)?.[0];
 
-    let pageInfo: IPageInfos | undefined = undefined;
+    let pageInfo: IPageInfos | undefined;
     if (info) {
         content = content.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
         const getInfo = (infoName: string): string | undefined => {
@@ -162,18 +162,8 @@ export async function readPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     // constructing
-    let tbot: MWBot;
-    if (bot) {
-        tbot = bot;
-    }
-    else {
-        // get host
-        const host: string | undefined = await getHost();
-        if (!host) { return undefined; }
-        tbot = new MWBot({
-            apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
-        });
-    }
+    let tbot: MWBot | undefined = await getBot();
+    if(tbot === undefined){return undefined;}
 
     // get title name
     const title: string | undefined = await vscode.window.showInputBox({

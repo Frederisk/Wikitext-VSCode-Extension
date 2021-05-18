@@ -15,7 +15,7 @@ import { getBot } from './bot';
 /**
  * webview panel
  */
-let previewCurrentPlanel: vscode.WebviewPanel | undefined = undefined;
+let previewCurrentPlanel: vscode.WebviewPanel | undefined;
 
 export async function getPreview(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");

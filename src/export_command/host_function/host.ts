@@ -32,5 +32,5 @@ export async function getHost(): Promise<string | undefined> {
 You haven't defined the host of previewer yet, please input host value in the dialog box (or in settings) and try again.`
         , "Edit", "Cancel");
 
-    return result === "Edit" ? await setHost() : undefined;
+    return result === "Edit" ? setHost() : undefined;
 }
