@@ -396,7 +396,9 @@ repository:
           - include: "#templatedata"
         repository:
           nowiki:
-            begin: (?i)(<)(nowiki\s*)(^>)*(>)
+            name: meta.embedded.block.wikitext
+            begin: (?i)(<)(nowiki)\s*?([^>]*)(>)
+            #          1<12nowiki2    3a="a"34>4
             beginCaptures:
               0:
                 name: meta.tag.metadata.nowiki.start.wikitext
@@ -410,6 +412,7 @@ repository:
                     name: entity.other.attribute-name.wikitext
                   - include: "#doublequotedString"
                   - include: "#singlequotedString"
+                  - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
             end: (?i)(</)(nowiki)\s*(>)
@@ -422,9 +425,8 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 name: punctuation.definition.tag.end.wikitext
-            name: meta.embedded.block.wikitext
           graph:
-            begin: (?i)(<)(graph\s*)(^>)*(>)
+            begin: (?i)(<)(graph)\s*?([^>]*)(>)
             beginCaptures:
               0:
                 name: meta.tag.metadata.graph.start.wikitext
@@ -438,6 +440,7 @@ repository:
                     name: entity.other.attribute-name.wikitext
                   - include: "#doublequotedString"
                   - include: "#singlequotedString"
+                  - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
             end: (?i)(</)(graph)\s*(>)
@@ -454,7 +457,7 @@ repository:
             patterns:
               - include: "#wikijson"
           templatedata:
-            begin: (?i)(<)(templatedata\s*)(^>)*(>)
+            begin: (?i)(<)(templatedata)\s*?([^>]*)(>)
             beginCaptures:
               0:
                 name: meta.tag.metadata.templatedata.start.wikitext
@@ -468,6 +471,7 @@ repository:
                     name: entity.other.attribute-name.wikitext
                   - include: "#doublequotedString"
                   - include: "#singlequotedString"
+                  - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
             end: (?i)(</)(templatedata)\s*(>)
