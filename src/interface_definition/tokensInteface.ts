@@ -39,6 +39,7 @@ export class TokensConvert {
     }
 }
 
+/* eslint-disable @typescript-eslint/naming-convention */
 const tokensTypeMap: any = {
     "TokensResult": o([
         { json: "batchcomplete", js: "batchcomplete", typ: u(undefined, "") },

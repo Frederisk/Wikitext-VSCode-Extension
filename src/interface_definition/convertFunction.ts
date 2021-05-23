@@ -126,7 +126,7 @@ export function u(...typs: any[]) {
     return { unionMembers: typs };
 }
 
-export function o(props: { json: string, js: string, typ: any }[], additional: any) {
+export function o(props: { json: string; js: string; typ: any }[], additional: any) {
     return { props, additional };
 }
 

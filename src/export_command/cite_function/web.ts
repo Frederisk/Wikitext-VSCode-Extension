@@ -94,9 +94,9 @@ export class WebCiteInfo {
         console.log(archiveJSON);
 
         // Check archive and get the closest
-        if (re.archived_snapshots.closest) {
-            this.archivedUrl = re.archived_snapshots.closest.url;
-            this.archivedDate = DateTime.fromFormat(re.archived_snapshots.closest.timestamp, "yyyyMMddhhmmss").toISODate();
+        if (re.archivedSnapshots.closest) {
+            this.archivedUrl = re.archivedSnapshots.closest.url;
+            this.archivedDate = DateTime.fromFormat(re.archivedSnapshots.closest.timestamp, "yyyyMMddhhmmss").toISODate();
         }
     }
 

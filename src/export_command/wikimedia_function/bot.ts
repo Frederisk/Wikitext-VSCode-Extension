@@ -15,7 +15,7 @@ export async function login(): Promise<void> {
     const host: string | undefined = await getHost();
     if (!host) { return undefined; }
 
-    const userInfo: { username?: string, password?: string } = {
+    const userInfo: { username?: string; password?: string } = {
         username: config.get("userName"),
         password: config.get("password")
     };

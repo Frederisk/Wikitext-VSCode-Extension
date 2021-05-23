@@ -4,8 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { action, alterNativeValues, prop, contextModel } from '../wikimedia_function/args';
-import { } from '../wikimedia_function/core';
+import { Action, alterNativeValues, Prop, ContextModel } from '../wikimedia_function/args';
 import { getView } from '../wikimedia_function/view';
 
 export function baseUriProcess(uri: vscode.Uri): void {
@@ -34,15 +33,15 @@ function viewPage(query: string): void {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     // default args value
-    const args: any = { 'action': action.parse };
+    const args: any = { 'action': Action.parse };
 
     const pars: IParameters = parseArgs(query);
 
     args["prop"] = pars["Prop"] ?? alterNativeValues(
-        prop.text,
-        prop.displayTitle,
-        prop.categoriesHTML,
-        (config.get("getCss") ? prop.headHTML : undefined)
+        Prop.text,
+        Prop.displayTitle,
+        Prop.categoriesHTML,
+        (config.get("getCss") ? Prop.headHTML : undefined)
     );
 
     args["text"] = pars["Text"] ?? undefined;
@@ -64,7 +63,7 @@ function viewPage(query: string): void {
 
     args["useskin"] = pars["UseSkin"] ?? undefined;
     args["contentformat"] = pars["ContentFormat"] ?? undefined;
-    args["contentmodel"] = pars["ContentModel"] ?? contextModel.wikitext;
+    args["contentmodel"] = pars["ContentModel"] ?? ContextModel.wikitext;
 
     let tbot: MWBot = new MWBot(
         {

@@ -6,9 +6,8 @@
 import * as vscode from 'vscode';
 import * as MWBot from 'mwbot';
 import { extensionContext } from '../../extension';
-import { action, contextModel, alterNativeValues, prop } from './args';
-import { GetViewResult, GetViewConvert } from '../../interface_definition/getViewInterface';
-import { bot } from './bot';
+import { Action, ContextModel, alterNativeValues, Prop } from './args';
+import { GetViewResult, ViewConverter } from '../../interface_definition/getViewInterface';
 import { getHost } from '../host_function/host';
 import { getBot } from './bot';
 
@@ -32,15 +31,15 @@ export async function getPreview(): Promise<void> {
 
     /** arguments */
     const args = {
-        'action': action.parse,
+        'action': Action.parse,
         'text': sourceText,
         'prop': alterNativeValues(
-            prop.text,
-            prop.displayTitle,
-            prop.categoriesHTML,
-            (config.get("getCss") ? prop.headHTML : undefined)
+            Prop.text,
+            Prop.displayTitle,
+            Prop.categoriesHTML,
+            (config.get("getCss") ? Prop.headHTML : undefined)
         ),
-        'contentmodel': contextModel.wikitext,
+        'contentmodel': ContextModel.wikitext,
         'pst': "whynot",
         'disableeditsection': "yes"
     };
@@ -83,13 +82,13 @@ export async function getPageView(): Promise<void> {
     if (!pageTitle) { return undefined; }
 
     const args: any = {
-        'action': action.parse,
+        'action': Action.parse,
         'page': pageTitle,
         'prop': alterNativeValues(
-            prop.text,
-            prop.displayTitle,
-            prop.categoriesHTML,
-            (config.get("getCss") ? prop.headHTML : undefined)
+            Prop.text,
+            Prop.displayTitle,
+            Prop.categoriesHTML,
+            (config.get("getCss") ? Prop.headHTML : undefined)
         ),
     };
     if (config.get("redirects")) {
@@ -120,7 +119,7 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
 
     try {
         const result = await tbot.request(args);
-        const re: GetViewResult = GetViewConvert.GetViewResultToJson(result);
+        const re: GetViewResult = ViewConverter.getViewResultToJson(result);
         if (!re.parse) { return undefined; }
 
         const baseElem = `<base href="${baseURI}" />"`;

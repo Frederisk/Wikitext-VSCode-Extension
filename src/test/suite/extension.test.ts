@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as assert from 'assert';
-
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
+import * as assert from 'assert';
+
 // import * as myExtension from '../extension';
 
 // suite('Extension TestSuite', () => {
@@ -47,7 +47,7 @@ suite('WikimediaFunction Core TestSuite', () => {
         const pageTitle = "Some String";
         const content = "Content here";
         // test set
-        const hasStr = `<%--  [PAGE_INFO] ${InfoType.PageTitle}=  #${pageTitle}#  [END_PAGE_INFO] --%>\r${content}`;
+        const hasStr = `<%--  [PAGE_INFO] ${InfoType.pageTitle}=  #${pageTitle}#  [END_PAGE_INFO] --%>\r${content}`;
         const noStr = content;
         const mutiStr = `<%-- [PAGE_INFO]
         Comment=#Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.#
@@ -69,11 +69,11 @@ suite('WikimediaFunction Core TestSuite', () => {
         // hasInfo
         assert.strictEqual(hasInfo.content, content, "hasInfo content faild");
         assert.deepStrictEqual(hasInfo.info, {
-            PageTitle: pageTitle,
-            PageID: undefined,
-            RevisionID: undefined,
-            ContentFormat: undefined,
-            ContentModel: undefined
+            pageTitle: pageTitle,
+            pageID: undefined,
+            revisionID: undefined,
+            contentFormat: undefined,
+            contentModel: undefined
         }, "hasInfo info faild");
         // noInfo
         assert.strictEqual(noInfo.content, content, "noInfo content faild");

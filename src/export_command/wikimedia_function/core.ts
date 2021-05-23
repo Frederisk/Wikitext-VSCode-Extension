@@ -3,10 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as MWBot from 'mwbot';
 import * as vscode from 'vscode';
-import { action, prop, rvprop, alterNativeValues } from './args';
-import { getHost } from '../host_function/host';
+import { Action, Prop, RvProp, alterNativeValues } from './args';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
 import { bot, getBot } from './bot';
@@ -16,11 +14,11 @@ import { TokensConvert, TokensResult } from '../../interface_definition/tokensIn
  *
  */
 export enum InfoType {
-    PageTitle = "PageTitle",
-    PageID = "PageID",
-    RevisionID = "RevisionID",
-    ContentModel = "ContentModel",
-    ContentFormat = "ContentFormat"
+    pageTitle = "PageTitle",
+    pageID = "PageID",
+    revisionID = "RevisionID",
+    contentModel = "ContentModel",
+    contentFormat = "ContentFormat"
 }
 
 export interface IPageInfos {
@@ -43,11 +41,11 @@ export function getContentInfo(content: string): IContentInfo {
             return info.match(reg)?.[0];
         };
         pageInfo = {
-            PageTitle: getInfo(InfoType.PageTitle),
-            PageID: getInfo(InfoType.PageID),
-            RevisionID: getInfo(InfoType.RevisionID),
-            ContentModel: getInfo(InfoType.ContentModel),
-            ContentFormat: getInfo(InfoType.ContentFormat)
+            pageTitle: getInfo(InfoType.pageTitle),
+            pageID: getInfo(InfoType.pageID),
+            revisionID: getInfo(InfoType.revisionID),
+            contentModel: getInfo(InfoType.contentModel),
+            contentFormat: getInfo(InfoType.contentFormat)
         };
     }
 
@@ -67,7 +65,7 @@ export async function writePage(): Promise<void> {
 
         try {
             args = {
-                'action': action.query,
+                'action': Action.query,
                 'meta': 'tokens',
                 'type': 'csrf'
             };
@@ -119,7 +117,7 @@ export async function writePage(): Promise<void> {
     console.log(contentInfo);
 
     const wikiTitle: string | undefined = await vscode.window.showInputBox({
-        value: contentInfo.info?.[InfoType.PageTitle] || "",
+        value: contentInfo.info?.pageTitle || "",
         ignoreFocusOut: true,
         prompt: "Enter the page name here."
     });
@@ -174,9 +172,9 @@ export async function readPage(): Promise<void> {
     if (!title) { return undefined; }
 
     const args: any = {
-        'action': action.query,
-        'prop': prop.reVisions,
-        'rvprop': alterNativeValues(rvprop.content, rvprop.ids),
+        'action': Action.query,
+        'prop': Prop.reVisions,
+        'rvprop': alterNativeValues(RvProp.content, RvProp.ids),
         'rvslots': "*",
         'titles': title
     };
@@ -224,11 +222,11 @@ export async function readPage(): Promise<void> {
         const infoHead: string =
             `<%-- [PAGE_INFO]
 Comment=#Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.#
-${InfoType.PageTitle}=#${page.title}#
-${InfoType.PageID}=#${page.pageid}#
-${InfoType.RevisionID}=#${revision?.revid}#
-${InfoType.ContentModel}=#${content?.contentmodel}#
-${InfoType.ContentFormat}=#${content?.contentformat}#
+${InfoType.pageTitle}=#${page.title}#
+${InfoType.pageID}=#${page.pageid}#
+${InfoType.revisionID}=#${revision?.revid}#
+${InfoType.contentModel}=#${content?.contentmodel}#
+${InfoType.contentFormat}=#${content?.contentformat}#
 [END_PAGE_INFO] --%>`;
 
         const textDocument = await vscode.workspace.openTextDocument({

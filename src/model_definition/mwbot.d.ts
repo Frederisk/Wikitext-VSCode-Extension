@@ -5,13 +5,13 @@
 
 declare module 'mwbot';
 
-type bluebird<R> = import("bluebird") <R>;
+type BlueBird<R> = import("bluebird") <R>;
 
-interface counterInterface {
-  total: number,
-  resolved: number,
-  fulfilled: number,
-  rejected: number
+interface CounterInterface {
+  total: number;
+  resolved: number;
+  fulfilled: number;
+  rejected: number;
 }
 
 /**
@@ -29,7 +29,7 @@ declare class MWBot {
   editToken: string;
   loggedIn: boolean;
   createaccountToken: string;
-  counter: counterInterface;
+  counter: CounterInterface;
   // defaultOptions:
 
   //////////////////////////////////////////
@@ -91,9 +91,9 @@ declare class MWBot {
    *
    * @param {object} requestOptions
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  rawRequest(requestOptions: object): bluebird<any>;
+  rawRequest(requestOptions: object): BlueBird<any>;
 
   /**
    *Executes a request with the ability to use custom parameters and custom request options
@@ -101,9 +101,9 @@ declare class MWBot {
    * @param {object} params               Request Parameters
    * @param {object} customRequestOptions Custom request options
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  request(params: object, customRequestOptions?: object): bluebird<any>;
+  request(params: object, customRequestOptions?: object): BlueBird<any>;
 
   //////////////////////////////////////////
   // CORE FUNCTIONS                       //
@@ -116,43 +116,43 @@ declare class MWBot {
    *
    * @param {object} [loginOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  login(loginOptions?: object): bluebird<any>;
+  login(loginOptions?: object): BlueBird<any>;
 
   /**
    * Gets an edit token
    * This is currently only compatible with MW >= 1.24
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  getEditToken(): bluebird<any>;
+  getEditToken(): BlueBird<any>;
 
   /**
    * Gets an edit token
    * Requires MW 1.27+
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  getCreateaccountToken(): bluebird<any>;
+  getCreateaccountToken(): BlueBird<any>;
 
   /**
    * Combines Login  with GetEditToken
    *
    * @param {object} loginOptions
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  loginGetEditToken(loginOptions: object): bluebird<any>;
+  loginGetEditToken(loginOptions: object): BlueBird<any>;
 
   /**
    * Combines Login  with GetCreateaccountToken
    *
    * @param {object} loginOptions
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  loginGetCreateaccountToken(loginOptions: object): bluebird<any>;
+  loginGetCreateaccountToken(loginOptions: object): BlueBird<any>;
 
   //////////////////////////////////////////
   // CRUD OPERATIONS                      //
@@ -166,9 +166,9 @@ declare class MWBot {
    * @param {string}  [summary]
    * @param {object}  [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  create(title: string, content: string, summary?: string, customRequestOptions?: object): bluebird<any>;
+  create(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<any>;
 
   /**
    * Reads the content / and meta-data of one (or many) wikipages
@@ -178,9 +178,9 @@ declare class MWBot {
    * @param {string}  title    For multiple Pages use: PageA|PageB|PageC
    * @param {object}      [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  read(title: string,/*redirect?: boolean, */ customRequestOptions?: object): bluebird<any>;
+  read(title: string,/*redirect?: boolean, */ customRequestOptions?: object): BlueBird<any>;
 
   // /**
   //  * Reads the content / and meta-data of one (or many) wikipages
@@ -227,9 +227,9 @@ declare class MWBot {
    * @param {string}  [summary]
    * @param {object}      [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  edit(title: string, content: string, summary?: string, customRequestOptions?: object): bluebird<any>;
+  edit(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<any>;
 
   /**
    * Updates existing wiki pages. Does not create new ones.
@@ -239,9 +239,9 @@ declare class MWBot {
    * @param {string}  [summary]
    * @param {object}  [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  update(title: string, content: string, summary?: string, customRequestOptions?: object): bluebird<any>;
+  update(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<any>;
 
   /**
    * Updates existing wiki pages. Does not create new ones.
@@ -251,9 +251,9 @@ declare class MWBot {
    * @param {string}  [summary]
    * @param {object}      [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  updateFromID(pageid: number, content: string, summary?: string, customRequestOptions?: object): bluebird<any>;
+  updateFromID(pageid: number, content: string, summary?: string, customRequestOptions?: object): BlueBird<any>;
 
   /**
    * Deletes a new wiki page
@@ -262,9 +262,9 @@ declare class MWBot {
    * @param {string}  [reason]
    * @param {object}      [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  delete(title: string, reason?: string, customRequestOptions?: object): bluebird<any>;
+  delete(title: string, reason?: string, customRequestOptions?: object): BlueBird<any>;
 
   /**
   * Moves a wiki page
@@ -274,9 +274,9 @@ declare class MWBot {
   * @param {string}  [reason]
   * @param {object}      [customRequestOptions]
   *
-  * @returns {bluebird}
+  * @returns {BlueBird}
   */
-  move(oldTitle: string, newTitle: string, reason?: string, customRequestOptions?: object): bluebird<any>;
+  move(oldTitle: string, newTitle: string, reason?: string, customRequestOptions?: object): BlueBird<any>;
 
   /**
    * Uploads a file
@@ -287,9 +287,9 @@ declare class MWBot {
    * @param {object}  [customParams]
    * @param {object}  [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  upload(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): bluebird<any>;
+  upload(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): BlueBird<any>;
 
   /**
    * Uploads a file and overwrites existing ones
@@ -300,9 +300,9 @@ declare class MWBot {
    * @param {object}  [customParams]
    * @param {object}  [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  uploadOverwrite(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): bluebird<any>;
+  uploadOverwrite(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): BlueBird<any>;
 
 
   //////////////////////////////////////////
@@ -322,9 +322,9 @@ declare class MWBot {
    * @param {number}  [concurrency]
    * @param {object}  [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  batch(jobs: object | any[], summary?: string, concurrency?: number, customRequestOptions?: object): bluebird<any>;
+  batch(jobs: object | any[], summary?: string, concurrency?: number, customRequestOptions?: object): BlueBird<any>;
 
   /**
    * Execute an ASK Query
@@ -333,9 +333,9 @@ declare class MWBot {
    * @param {string} [apiUrl]
    * @param {object} [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  askQuery(query: string, apiUrl?: string, customRequestOptions?: object): bluebird<any>;
+  askQuery(query: string, apiUrl?: string, customRequestOptions?: object): BlueBird<any>;
 
   /**
    * Executes a SPARQL Query
@@ -345,9 +345,9 @@ declare class MWBot {
    * @param {string} [endpointUrl]
    * @param {object} [customRequestOptions]
    *
-   * @returns {bluebird}
+   * @returns {BlueBird}
    */
-  sparqlQuery(query: string, endpointUrl?: string, customRequestOptions?: object): bluebird<any>;
+  sparqlQuery(query: string, endpointUrl?: string, customRequestOptions?: object): BlueBird<any>;
 
   //////////////////////////////////////////
   // HELPER FUNCTIONS                     //

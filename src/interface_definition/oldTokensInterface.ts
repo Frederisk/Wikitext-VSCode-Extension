@@ -31,6 +31,7 @@ export class OldTokensConvert {
     }
 }
 
+/* eslint-disable @typescript-eslint/naming-convention */
 const oldTokensTypeMap: any = {
     "OldTokensResult": o([
         { json: "tokens", js: "tokens", typ: u(undefined, r("Tokens")) },

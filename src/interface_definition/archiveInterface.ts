@@ -22,7 +22,7 @@ import { a, u, o, m, r, cast, uncast } from "./convertFunction";
  */
 
 export interface ArchiveResult {
-    archived_snapshots: ArchivedSnapshots;
+    archivedSnapshots: ArchivedSnapshots;
     url: string;
 }
 
@@ -47,9 +47,10 @@ export class ArchiveConvert {
     }
 }
 
+/* eslint-disable @typescript-eslint/naming-convention */
 const archiveTypeMap: any = {
     "ArchiveResult": o([
-        { json: "archived_snapshots", js: "archived_snapshots", typ: r("ArchivedSnapshots") },
+        { json: "archivedSnapshots", js: "archivedSnapshots", typ: r("ArchivedSnapshots") },
         { json: "url", js: "url", typ: "" },
     ], false),
     "ArchivedSnapshots": o([

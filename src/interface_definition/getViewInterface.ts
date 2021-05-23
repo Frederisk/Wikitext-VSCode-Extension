@@ -67,15 +67,16 @@ export interface Redirect {
 
 // Converts JSON types to/from your types
 // and asserts the results at runtime
-export class GetViewConvert {
+export class ViewConverter {
     public static toGetViewResult(json: any): GetViewResult {
         return cast(json, r("GetViewResult"), getViewTypeMap);
     }
-    public static GetViewResultToJson(value: GetViewResult): any {
+    public static getViewResultToJson(value: GetViewResult): any {
         return uncast(value, r("GetViewResult"), getViewTypeMap);
     }
 }
 
+/* eslint-disable @typescript-eslint/naming-convention */
 const getViewTypeMap: any = {
     "GetViewResult": o([
         { json: "parse", js: "parse", typ: u(undefined, r("Parse")) },
