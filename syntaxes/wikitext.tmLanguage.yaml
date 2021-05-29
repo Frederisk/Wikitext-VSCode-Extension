@@ -111,30 +111,32 @@ repository:
                 name: keyword.operator.equal.wikitext
       externalLink:
         patterns:
-          - name: string.quoted.wikitext
-            begin: >-
-              (\[)((?:((http(s)?)|(ftp(s)?)):\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#@!\$&'\(\)\*\+,;=.]+)
-            # 1 [12   34http5s5 4 6ftp7s7 63: //   str       .  str                anystring             2
-            # TODO: remove ()
-            # END_TODO: remove ()
-            end: '(\])'
-            #     1 ]1
+          - name: meta.link.external.wikitext
+            match: (\[)((?:(?:(?:http(?:s)?)|(?:ftp(?:s)?)):\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#%@!\$&'\(\)\*\+,;=.]+)\s*?([^\]]*)(\])
             captures:
               1:
-                name: punctuation.definition.tag.externalLink.wikitext
+                name: punctuation.definition.tag.link.external.wikitext
               2:
                 name: entity.name.tag.url.wikitext
-            patterns:
-              - include: $self
+              3:
+                name: string.other.link.external.title.wikitext
+                patterns:
+                  - include: $self
+              4:
+                name: punctuation.definition.tag.link.external.wikitext
           - name: invalid.illegal.bad-url.wikitext
-            begin: '(\[)([\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#@!\$&''\(\)\*\+,;=.]+)'
-            #       1 [12 str       .  str              anystring                 2
-            end: '(\])'
+            match: (\[)([\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#%@!\$&''\(\)\*\+,;=.]+)\s*?([^\]]*)(\])
             captures:
               1:
-                name: punctuation.definition.tag.externalLink.wikitext
-            patterns:
-              - include: $self
+                name: punctuation.definition.tag.link.external.wikitext
+              2:
+                name: entity.name.tag.url.wikitext
+              3:
+                name: string.other.link.external.title.wikitext
+                patterns:
+                  - include: $self
+              4:
+                name: punctuation.definition.tag.link.external.wikitext
       redirect:
         patterns:
           - match: >-
@@ -144,7 +146,7 @@ repository:
               1:
                 name: keyword.control.redirect.wikitext
               2:
-                name: punctuation.definition.tag.internalLink.begin.wikitext
+                name: punctuation.definition.tag.link.internal.begin.wikitext
               3:
                 name: entity.name.tag.namespace.wikitext
               4:
@@ -153,7 +155,7 @@ repository:
               6:
                 name: invalid.deprecated.ineffective.wikitext
               7:
-                name: punctuation.definition.tag.internalLink.end.wikitext
+                name: punctuation.definition.tag.link.internal.end.wikitext
       magicWords:
         patterns:
           - include: "#behaviorSwitches"
@@ -161,7 +163,7 @@ repository:
           - include: "#variables"
         repository:
           behaviorSwitches:
-            name: constant.language.behaviorSwitches.wikitext
+            name: constant.language.behaviorswitches.wikitext
             match: |-
               (?x)      # turn on extended mode
                 (?i)    # ignore case
@@ -171,7 +173,7 @@ repository:
                     )
                   (__)
           outdatedBehaviorSwitches:
-            name: invalid.deprecated.behaviorSwitches.wikitext
+            name: invalid.deprecated.behaviorswitches.wikitext
             match: |-
               (?x)
                 (?i)
@@ -201,23 +203,23 @@ repository:
                         )
                       (\}\})
               # TODO:
-              - commonsname: constant.language.variables.metadata.wikitext
-                commonsmatch: |-
-                  (?i)(\{\{)(PROTECTIONLEVEL|PROTECTIONEXPIRY|DISPLAYTITLE|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)(:[\w\-\s\(\)\.\|]*)?(\}\})
-              - commonsname: constant.language.variables.statistical.wikitext
-                commonsmatch: |
-                  (?i)(\{\{)(NUMBEROFPAGES|NUMBEROFARTICLES|NUMBEROFFILES|NUMBEROFEDITS|NUMBEROFVIEWS|NUMBEROFUSERS|NUMBEROFADMINS|NUMBEROFACTIVEUSERS(?:(:R)?))(\}\})
-              - commonsname: constant.language.variables.statistical.wikitext
-                commonsmatch: |-
-                  (?i)(\{\{)(PAGESINCATEGORY|PAGESINCAT|PAGESINCATEGORY|NUMBERINGROUP|NUMINGROUP|PAGESINNS|PAGESINNAMESPACE)(:[\w\-\s\(\)\.\|]*)?(\}\})
-              - commons: ""
-                "": >-
-                  (?i)(\{\{)(FULLPAGENAME|PAGENAME|BASEPAGENAME|ROOTPAGENAME|SUBPAGENAME|SUBJECTPAGENAME|ARTICLEPAGENAME|TALKPAGENAME|FULLPAGENAMEE|PAGENAMEE|BASEPAGENAMEE|SUBPAGENAMEE|SUBJECTPAGENAMEE|TALKPAGENAMEE)(:[\w\-\s\(\)\.\|]*)?(\}\})
-              - commons: ""
-                "": >-
-                  (?i)(\{\{)(NAMESPACE|SUBJECTSPACE|ARTICLESPACE|TALKSPACE|NAMESPACEE|SUBJECTSPACEE|TALKSPACEE)(\}\})
-              - commons: ""
-                "": '(\{\{)(\!)(\}\})'
+              # - commonsname: constant.language.variables.metadata.wikitext
+              #   commonsmatch: |-
+              #     (?i)(\{\{)(PROTECTIONLEVEL|PROTECTIONEXPIRY|DISPLAYTITLE|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)(:[\w\-\s\(\)\.\|]*)?(\}\})
+              # - commonsname: constant.language.variables.statistical.wikitext
+              #   commonsmatch: |
+              #     (?i)(\{\{)(NUMBEROFPAGES|NUMBEROFARTICLES|NUMBEROFFILES|NUMBEROFEDITS|NUMBEROFVIEWS|NUMBEROFUSERS|NUMBEROFADMINS|NUMBEROFACTIVEUSERS(?:(:R)?))(\}\})
+              # - commonsname: constant.language.variables.statistical.wikitext
+              #   commonsmatch: |-
+              #     (?i)(\{\{)(PAGESINCATEGORY|PAGESINCAT|PAGESINCATEGORY|NUMBERINGROUP|NUMINGROUP|PAGESINNS|PAGESINNAMESPACE)(:[\w\-\s\(\)\.\|]*)?(\}\})
+              # - commons: ""
+              #   "": >-
+              #     (?i)(\{\{)(FULLPAGENAME|PAGENAME|BASEPAGENAME|ROOTPAGENAME|SUBPAGENAME|SUBJECTPAGENAME|ARTICLEPAGENAME|TALKPAGENAME|FULLPAGENAMEE|PAGENAMEE|BASEPAGENAMEE|SUBPAGENAMEE|SUBJECTPAGENAMEE|TALKPAGENAMEE)(:[\w\-\s\(\)\.\|]*)?(\}\})
+              # - commons: ""
+              #   "": >-
+              #     (?i)(\{\{)(NAMESPACE|SUBJECTSPACE|ARTICLESPACE|TALKSPACE|NAMESPACEE|SUBJECTSPACEE|TALKSPACEE)(\}\})
+              # - commons: ""
+              #   "": '(\{\{)(\!)(\}\})'
               # END_TODO:
               - name: constant.language.variables.isbn.wikitext
                 match: 'ISBN\s+((9[\-\s]?7[\-\s]?[89][\-\s]?)?([0-9][\-\s]?){10})'
@@ -287,7 +289,7 @@ repository:
         end: '(\]\])'
         captures:
           1:
-            name: punctuation.definition.tag.internalLink.wikitext
+            name: punctuation.definition.tag.link.internal.wikitext
           2:
             name: entity.name.tag.namespace.wikitext
           3:
@@ -393,11 +395,12 @@ repository:
         patterns:
           - include: "#nowiki"
           - include: "#graph"
+          - include: "#ref"
           - include: "#templatedata"
         repository:
           nowiki:
-            name: meta.embedded.block.wikitext
-            begin: (?i)(<)(nowiki)\s*?([^>]*)(>)
+            contentName: meta.embedded.block.nowiki.wikitext
+            begin: (?i)(<)(nowiki)(\s+[^>\/]+)?\s*(>)
             #          1<12nowiki2    3a="a"34>4
             beginCaptures:
               0:
@@ -409,7 +412,9 @@ repository:
               3:
                 patterns:
                   - match: " ([a-zA-Z-]+)"
-                    name: entity.other.attribute-name.wikitext
+                    captures:
+                      1:
+                        name: entity.other.attribute-name.wikitext
                   - include: "#doublequotedString"
                   - include: "#singlequotedString"
                   - include: $self
@@ -425,8 +430,41 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 name: punctuation.definition.tag.end.wikitext
+          ref:
+            contentName: meta.embedded.block.ref.wikitext
+            begin: (?i)(<)(ref)(\s+[^>\/]+)?\s*(>)
+            beginCaptures:
+              0:
+                name: meta.tag.metadata.ref.start.wikitext
+              1:
+                name: punctuation.definition.tag.begin.wikitext
+              2:
+                name: entity.name.tag.wikitext
+              3:
+                patterns:
+                  - match: " ([a-zA-Z-]+)"
+                    captures:
+                      1:
+                        name: entity.other.attribute-name.wikitext
+                  - include: "#doublequotedString"
+                  - include: "#singlequotedString"
+                  - include: $self
+              4:
+                name: punctuation.definition.tag.end.wikitext
+            end: (?i)(</)(ref)\s*(>)
+            endCaptures:
+              0:
+                name: meta.tag.metadata.ref.end.wikitext
+              1:
+                name: punctuation.definition.tag.begin.wikitext
+              2:
+                name: entity.name.tag.wikitext
+              3:
+                name: punctuation.definition.tag.end.wikitext
+            patterns:
+              - include: $self
           graph:
-            begin: (?i)(<)(graph)\s*?([^>]*)(>)
+            begin: (?i)(<)(graph)(\s+[^>\/]+)?\s*(>)
             beginCaptures:
               0:
                 name: meta.tag.metadata.graph.start.wikitext
@@ -437,7 +475,9 @@ repository:
               3:
                 patterns:
                   - match: " ([a-zA-Z-]+)"
-                    name: entity.other.attribute-name.wikitext
+                    captures:
+                      1:
+                        name: entity.other.attribute-name.wikitext
                   - include: "#doublequotedString"
                   - include: "#singlequotedString"
                   - include: $self
@@ -453,22 +493,24 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 name: punctuation.definition.tag.end.wikitext
-            contentName: source.json
+            contentName: source.json.graph.wikitext
             patterns:
               - include: "#wikijson"
           templatedata:
-            begin: (?i)(<)(templatedata)\s*?([^>]*)(>)
+            begin: (?i)(<)(templatedata)(\s+[^>\/]+)?\s*(>)
             beginCaptures:
               0:
                 name: meta.tag.metadata.templatedata.start.wikitext
               1:
                 name: punctuation.definition.tag.begin.wikitext
               2:
-                name: entity.name.tag.wikitext
+                name: entity.name.tag.wikitext.tenplatedata.wikitext
               3:
                 patterns:
                   - match: " ([a-zA-Z-]+)"
-                    name: entity.other.attribute-name.wikitext
+                    captures:
+                      1:
+                        name: entity.other.attribute-name.wikitext
                   - include: "#doublequotedString"
                   - include: "#singlequotedString"
                   - include: $self
