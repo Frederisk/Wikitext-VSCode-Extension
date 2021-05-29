@@ -146,6 +146,9 @@
                     "Wikitext",
                     "WikiText"
                 ],
+                "mimetypes": [
+                    "text/x-wiki"
+                ],
                 "configuration": "./language-configuration.json"
             }
         ],
@@ -155,11 +158,9 @@
                 "scopeName": "source.wikitext",
                 "path": "./syntaxes/wikitext.tmLanguage.json",
                 "embeddedLanguages": {
-                    "source.css": "css",
-                    "source.json": "json"
-                },
-                "tokenTypes": {
-                    "source.json": "other"
+                    "source.json": "json",
+                    "text.html.basic": "html",
+                    "text.xml": "xml"
                 }
             }
         ],
@@ -205,12 +206,6 @@
                     "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks. (This feature was turned on by default in the past, but will be turned off by default from now on.)",
                     "default": false
                 },
-                "wikitext.articalPath": {
-                    "type": "string",
-                    "description": "No Effect.",
-                    "default": "/wiki/",
-                    "deprecationMessage": "Setting Name with Typo! please use \"Article Path\" instead."
-                },
                 "wikitext.articlePath": {
                     "type": "string",
                     "markdownDescription": "Set the basic path to obtain the article. please check the `Special:Version` page of your site (No need for `$1`).",
@@ -250,7 +245,7 @@
         "watch": "yarn run convert && webpack --config webpack.config.js --mode development --watch",
         "pretest": "tsc -p ./ && yarn run lint",
         "test": "node ./out/test/runTest.js",
-        "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json && js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json && js-yaml language-configuration.yaml > language-configuration.json",
+        "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json & js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json & js-yaml language-configuration.yaml > language-configuration.json &",
         "deploy": "vsce publish"
     },
     "devDependencies": {
