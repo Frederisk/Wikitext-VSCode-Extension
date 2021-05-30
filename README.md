@@ -5,7 +5,7 @@
 [![VSMarket: wikitext](https://img.shields.io/badge/Visual%20Studio%20Market-wikitext-blueviolet)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
 [![GitHub: wikitext](https://img.shields.io/badge/GitHub-wikitext-green)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 [![Build status](https://ci.appveyor.com/api/projects/status/25okygmf42atyvi0?svg=true)](https://ci.appveyor.com/project/Frederisk/wikitext-vscode-extension)
-[![GitHub Actions CodeQL](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions?query=workflow%3ACodeQL)
+[![GitHub Actions CodeQL](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/codeql-analysis.yml/badge.svg/)](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions?query=workflow%3ACodeQL)
 [![CodeFactor Status](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension/badge)](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension)
 [![Patreon Donate](https://img.shields.io/badge/donate-patreon-orange)](https://www.patreon.com/rwfholme)
 
@@ -43,6 +43,17 @@ If you get help with this project, give this project a star or recommend it to o
 
 - Browse the page by entering the page name. Press `F1` then select `View the page`.
 
+## Release Notes
+
+- Removed unnecessary assets, The size of the installation file is now ⅒ the original size!
+- Enhanced URI view page function.
+- Added Table caption syntax.
+- Added `<ref>` tag synax.
+- Fixed errors about XML syntax.
+- Turn part of the synax analysis into a built-in language extension that depends on VSCode such as XML and JSON.
+- Changed some of textmate scopes.
+- The extension will be activated when language is set to wikitext to speed up user commands.
+
 ## Usage
 
 ### Usage Requirements
@@ -63,21 +74,16 @@ Firstly, clone this repository and change directory to the repository, then inst
 
 ```bash
 npm install yarn vsce -g # VS Code Extension Manager
-yarn # devDependencies
+yarn install # Install devDependencies
 ```
 
-Package this project and you will get a vsix file:
+Package this project and you will get a .vsix file:
 
 ```bash
-vsce package
+vsce package --yarn # Package Extension with yarn
 ```
 
 This is it!
-
-## Release Notes
-
-- Added more snippets and auto closing pairs.
-- Provided CSS adjustment support for Perviewer.
 
 ## Special Thanks
 

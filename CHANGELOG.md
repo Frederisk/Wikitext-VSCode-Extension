@@ -4,7 +4,26 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
-## [3.2.4] - 2021-3-18
+## [3.3.0] - 2021-05-30
+
+### Added
+
+- Table caption syntax.
+- `<ref>` tag synax.
+
+### Changed
+
+- Enhanced URI view page function.
+- Some of textmate scopes.
+- Turn part of the analysis into a built-in language extension that depends on VSCode such as XML and JSON.
+- The extension will be activated when language is set to wikitext to speed up user commands.
+- Removed unnecessary assets.
+
+### Fixed
+
+- Errors about XML syntax.
+
+## [3.2.4] - 2021-03-18
 
 ### Added
 

@@ -14,6 +14,7 @@ node_modules/
 # YAML files
 snippets/*.yaml
 syntaxes/*.yaml
+language-configuration.yaml
 appveyor.yml
 
 # Compiled config
@@ -32,3 +33,6 @@ webpack.config.js
 
 # Packaged extensions
 *.vsix
+
+# Log file
+*.log
