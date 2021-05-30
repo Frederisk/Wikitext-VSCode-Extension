@@ -1,0 +1,39 @@
+---
+name: "VSCEPublish"
+
+on:
+  # Start action after created a release
+  release:
+    types:
+      - created
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+   # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: Build
+        run: |
+          npm install yarn vsce -g
+          yarn install
+
+      - name: Test
+        run: xvfb-run -a yarn test
+
+      - name: Publish
+        if: ${{ success() }}
+        run: echo "success!" # yarn run deploy
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
