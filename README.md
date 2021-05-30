@@ -17,20 +17,25 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Features
 
-- Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats. <br />
-<img src="./asset/Code-mainPage.png" width="500"/>
+- Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats.
 
-- Automatic matching and closing of simple parentheses reduces unnecessary double typing. <br />
-<img src="./asset/Code-video.gif" width="500"/>
+    <img alt="Code main page" src="https://user-images.githubusercontent.com/29837738/120096683-7a217900-c15f-11eb-9f9c-b4d77ecce486.png" width="512"/>
 
-- The special comment syntax\(`<!--#region-->`&`<!--#endregion-->`\) can folds the code for easy reading. <br />
-<img src="./asset/Code-region.gif" width="500"/>
+- Automatic matching and closing of simple parentheses reduces unnecessary double typing.
 
-- Press `Ctrl + Shift + V` or click the Preview icon in the title menu bar directly in the Wikitext content to get a parsed preview of Wikitext in the currently active text editor.<br />
-<img src="./asset/Code-previewer.gif" width="500">
+    <img alt="Code video" src="https://user-images.githubusercontent.com/29837738/120096717-a6d59080-c15f-11eb-9921-e5555de74f29.gif" width="512"/>
 
-- Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`, `@title`...<br />
-<img src="./asset/Code-snippets.gif" width="500">
+- The special comment syntax\(`<!--#region-->`&`<!--#endregion-->`\) can folds the code for easy reading.
+
+    <img alt="Code region" src="https://user-images.githubusercontent.com/29837738/120096736-c076d800-c15f-11eb-8f70-7cfdd73a3307.gif" width="512"/>
+
+- Press `Ctrl + Shift + V` or click the Preview icon in the title menu bar directly in the Wikitext content to get a parsed preview of Wikitext in the currently active text editor.
+
+    <img alt="Code previewer" src="https://user-images.githubusercontent.com/29837738/120096761-ddaba680-c15f-11eb-8d14-f0705f7d39ba.gif" width="512">
+
+- Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`, `@title`...
+
+    <img alt="Code snippets" src="https://user-images.githubusercontent.com/29837738/120096799-0af85480-c160-11eb-8a34-f47603a41935.gif" width="512">
 
 - You can modify the website content by logging in directly in VSCode! Enter the settings page, search Wikitext and find the username and password items, and fill in them. Then press `F1` in the text editor, select `Post your page to the website`!
 
