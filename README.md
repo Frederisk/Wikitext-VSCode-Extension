@@ -1,12 +1,11 @@
 # Wikitext Markup Language Support Extension for Visual Studio Code
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow)](https://raw.githubusercontent.com/Frederisk/Wikitext-VSCode-Extension/master/LICENSE.txt)
-[![Twitter: @rwfholme](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
-[![VSMarket: wikitext](https://img.shields.io/badge/Visual%20Studio%20Market-wikitext-blueviolet)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
-[![GitHub: wikitext](https://img.shields.io/badge/GitHub-wikitext-green)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
+[![VSMarket: wikitext](https://vsmarketplacebadge.apphb.com/version/RoweWilsonFrederiskHolme.Wikitext.svg?color=blueviolet&logo=visual-studio-code&style=?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
+[![GitHub: wikitext](https://img.shields.io/badge/GitHub-wikitext-yellow)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 [![Build status](https://ci.appveyor.com/api/projects/status/25okygmf42atyvi0?svg=true)](https://ci.appveyor.com/project/Frederisk/wikitext-vscode-extension)
 [![GitHub Actions CodeQL](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/codeql-analysis.yml/badge.svg/)](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions?query=workflow%3ACodeQL)
 [![CodeFactor Status](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension/badge)](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension)
+[![Twitter: @rwfholme](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
 [![Patreon Donate](https://img.shields.io/badge/donate-patreon-orange)](https://www.patreon.com/rwfholme)
 
 This Visual Studio Code Extension provides support of Wikitext Markup language. With this extension, you can more easily discover your grammatical problems through the marked and styled text. The plugin is based on MediaWiki's Wikitext standard, but the rules are somewhat stricter, which helps users write text that is easier to read and maintain.
