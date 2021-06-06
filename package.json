@@ -204,7 +204,7 @@
                 },
                 "wikitext.enableJavascript": {
                     "type": "boolean",
-                    "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks. (This feature was turned on by default in the past, but will be turned off by default from now on.)",
+                    "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks.",
                     "default": false
                 },
                 "wikitext.articlePath": {
