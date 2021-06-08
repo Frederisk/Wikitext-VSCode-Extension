@@ -28,7 +28,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 ### Added
 
 - More snippets and auto closing pairs.
-- Provided CSS adjustment support for Perviewer.
+- Provided CSS adjustment support for Previewer.
 
 ## [3.2.3] - 2020-12-28
 
@@ -141,7 +141,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 - Support for some other magic words.
 - The push and pull features for editing. Now you can modify the website content by logging in directly in VSCode.
 - API Path Setting.
-- Support for header parsing in Perviewer.
+- Support for header parsing in Previewer.
 - Javascript toggle switch support for Previewer.
 
 ### Changed
