@@ -28,7 +28,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 ### Added
 
 - More snippets and auto closing pairs.
-- Provided CSS adjustment support for Perviewer.
+- Provided CSS adjustment support for Previewer.
 
 ## [3.2.3] - 2020-12-28
 
