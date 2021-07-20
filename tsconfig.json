@@ -12,8 +12,8 @@
             "ES2019"
         ],
         "sourceMap": true,
-        "outDir": "./out",
-        "rootDir": "./src",
+        "outDir": "./out/",
+        "rootDir": "./src/",
         /* Strict Type-Checking Options */
         "strict": true /* enable all strict type-checking options */
         /* Additional Checks */
@@ -22,8 +22,7 @@
         // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
     },
     "exclude": [
-        "node_modules",
-        ".vscode-test"
+        "./.vscode-test/*"
     ],
     "include": [
         "./src/**/*.ts",
