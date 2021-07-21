@@ -146,7 +146,7 @@ export class ReadPageConvert {
 /* eslint-disable @typescript-eslint/naming-convention */
 const readPageResultTypeMap: any = {
     "ReadPageResult": o([
-        { json: "warnings", js: "warnings", typ: u(undefined, r("Warnings"))},
+        { json: "warnings", js: "warnings", typ: u(undefined, r("Warnings")) },
         { json: "batchcomplete", js: "batchcomplete", typ: u(undefined, "") },
         { json: "query", js: "query", typ: u(undefined, r("Query")) },
     ], false),

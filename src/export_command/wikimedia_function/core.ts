@@ -161,7 +161,7 @@ export async function readPage(): Promise<void> {
 
     // constructing
     let tbot: MWBot | undefined = await getBot();
-    if(tbot === undefined){return undefined;}
+    if (tbot === undefined) { return undefined; }
 
     // get title name
     const title: string | undefined = await vscode.window.showInputBox({

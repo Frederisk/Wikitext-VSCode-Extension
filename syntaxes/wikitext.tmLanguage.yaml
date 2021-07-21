@@ -34,7 +34,7 @@ repository:
       extensionComments:
         patterns:
           - begin: (<%--)\s*\[[A-Z_]*\]
-          #        1<%--1    [TYPENAME]
+            #      1<%--1    [TYPENAME]
             end: \[[A-Z_]*\]\s*(--%>)
             name: comment.block.documentation.special.wikitext.extension
             captures:
