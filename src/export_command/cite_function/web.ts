@@ -22,7 +22,6 @@ export async function addWebCite(): Promise<void> {
 
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Parsing the URL...");
     try {
-
         const citeInfo: WebCiteInfo = new WebCiteInfo(url);
         await citeInfo.buildInfo();
         const result: string = citeInfo.toString(config.get("webCiteFormat") ?? "");
@@ -36,7 +35,7 @@ export async function addWebCite(): Promise<void> {
             });
         }
     }
-    catch (error) {
+    catch (error: any) {
         vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
     }
     finally {
@@ -44,7 +43,7 @@ export async function addWebCite(): Promise<void> {
     }
 }
 
-export class WebCiteInfo {
+class WebCiteInfo {
 
     url: string;
     title?: string;

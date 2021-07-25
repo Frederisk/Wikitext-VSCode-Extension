@@ -35,7 +35,7 @@ export async function login(): Promise<void> {
         vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
         );
     }
-    catch (error) {
+    catch (error: any) {
         console.log(error);
         vscode.window.showErrorMessage(error.message);
     }

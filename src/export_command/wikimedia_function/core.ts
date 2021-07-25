@@ -147,7 +147,7 @@ export async function writePage(): Promise<void> {
             }
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.log(error);
         vscode.window.showErrorMessage(`Error:${error.name}, ${error.message}. Your Token: ${bot?.editToken}`);
     }
@@ -182,6 +182,10 @@ export async function readPage(): Promise<void> {
         args['redirects'] = "true";
     }
 
+    getPageCode(args, tbot);
+}
+
+export async function getPageCode(args: any, tbot: MWBot) {
     try {
         // get request result
         const result = await tbot.request(args);
@@ -193,7 +197,6 @@ export async function readPage(): Promise<void> {
                 `Interwiki page "${re.query.interwiki[0].title}" in space "${re.query.interwiki[0].iw}" are currently not supported. Please try to modify host.`
             );
         }
-
 
         // get first page
         const page = re.query?.pages?.[Object.keys(re.query.pages)[0]];
@@ -235,15 +238,15 @@ ${InfoType.contentFormat}=#${content?.contentformat}#
         });
         vscode.window.showTextDocument(textDocument);
     }
-    catch (error) {
+    catch (error: any) {
         vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
     }
 }
 
 
-function getCode(args: any) {
+// function getCode(args: any) {
 
-}
+// }
 
 // export function uploadFile(): void {
 

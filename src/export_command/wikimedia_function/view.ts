@@ -105,6 +105,15 @@ export async function getPageView(): Promise<void> {
     getView("pageViewer", "WikiViewer", args, tbot, baseHref);
 }
 
+/**
+ *
+ * @param currentPlanel where to show
+ * @param viewerTitle viewer title
+ * @param args post args
+ * @param tbot account
+ * @param baseURI urlbase
+ * @returns task
+ */
 export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: any, tbot: MWBot, baseURI: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     if (typeof (currentPlanel) === "string") {
@@ -136,7 +145,7 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         currentPlanel.webview.html = html;
         currentPlanel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
     }
-    catch (error) {
+    catch (error: any) {
         vscode.window.showErrorMessage(`ErrorCode:${error.code}| ErrorInfo:${error.info}`);
         if (currentPlanel) {
             currentPlanel.webview.html = showHtmlInfo("Error");

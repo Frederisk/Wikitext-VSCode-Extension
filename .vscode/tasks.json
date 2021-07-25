@@ -62,8 +62,8 @@
         {
             "type": "npm",
             "script": "lint",
-            "problemMatcher": "$eslint-stylish",
             "label": "npm: eslint",
+            "problemMatcher": "$eslint-stylish",
             "detail": "eslint"
         }
     ]
