@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 import { getPreview, getPageView } from './export_command/wikimedia_function/view';
 import { login, logout } from './export_command/wikimedia_function/bot';
-import { writePage, readPage } from './export_command/wikimedia_function/core';
+import { postPage, pullPage } from './export_command/wikimedia_function/core';
 import { baseUriProcess } from './export_command/uri_function/uri';
 import { addWebCite } from './export_command/cite_function/web';
 
@@ -21,8 +21,8 @@ export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.login", login));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.logout", logout));
     // Core
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.readPage", readPage));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.writePage", writePage));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.readPage", pullPage));
+    context.subscriptions.push(vscode.commands.registerCommand("wikitext.writePage", postPage));
     // View
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.getPreview", getPreview));
     context.subscriptions.push(vscode.commands.registerCommand("wikitext.viewPage", getPageView));

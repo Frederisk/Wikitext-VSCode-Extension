@@ -11,51 +11,9 @@ import { bot, getBot } from './bot';
 import { TokensConvert, TokensResult } from '../../interface_definition/tokensInteface';
 
 /**
- *
- */
-export enum InfoType {
-    pageTitle = "PageTitle",
-    pageID = "PageID",
-    revisionID = "RevisionID",
-    contentModel = "ContentModel",
-    contentFormat = "ContentFormat"
-}
-
-export interface IPageInfos {
-    [key: string]: string | undefined;
-}
-
-interface IContentInfo {
-    content: string;
-    info?: IPageInfos;
-}
-
-export function getContentInfo(content: string): IContentInfo {
-    const info: string | undefined = content.match(/(?<=\<%\-\-\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*\-\-%\>)/)?.[0];
-
-    let pageInfo: IPageInfos | undefined;
-    if (info) {
-        content = content.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
-        const getInfo = (infoName: string): string | undefined => {
-            const reg = new RegExp(`(?<=${infoName}\\s*=\\s*#).*?(?=#)`);
-            return info.match(reg)?.[0];
-        };
-        pageInfo = {
-            pageTitle: getInfo(InfoType.pageTitle),
-            pageID: getInfo(InfoType.pageID),
-            revisionID: getInfo(InfoType.revisionID),
-            contentModel: getInfo(InfoType.contentModel),
-            contentFormat: getInfo(InfoType.contentFormat)
-        };
-    }
-
-    return { content: content, info: pageInfo };
-}
-
-/**
  * Write/Post Page
  */
-export async function writePage(): Promise<void> {
+export async function postPage(): Promise<void> {
     async function getEditToken(bot: MWBot): Promise<string> {
         console.log("try get token.");
         let args: any;
@@ -156,11 +114,11 @@ export async function writePage(): Promise<void> {
 /**
  * Read/Pull Page
  */
-export async function readPage(): Promise<void> {
+export async function pullPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     // constructing
-    let tbot: MWBot | undefined = await getBot();
+    const tbot: MWBot | undefined = await getBot();
     if (tbot === undefined) { return undefined; }
 
     // get title name
@@ -243,15 +201,46 @@ ${InfoType.contentFormat}=#${content?.contentformat}#
     }
 }
 
+// TODO: uploadFile, deletedPage
 
-// function getCode(args: any) {
+/**
+ *
+ */
+export enum InfoType {
+    pageTitle = "PageTitle",
+    pageID = "PageID",
+    revisionID = "RevisionID",
+    contentModel = "ContentModel",
+    contentFormat = "ContentFormat"
+}
 
-// }
+export interface IPageInfos {
+    [key: string]: string | undefined;
+}
 
-// export function uploadFile(): void {
+interface IContentInfo {
+    content: string;
+    info?: IPageInfos;
+}
 
-// }
+export function getContentInfo(content: string): IContentInfo {
+    const info: string | undefined = content.match(/(?<=\<%\-\-\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*\-\-%\>)/)?.[0];
 
-// export function deletedPage(): void {
+    let pageInfo: IPageInfos | undefined;
+    if (info) {
+        content = content.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
+        const getInfo = (infoName: string): string | undefined => {
+            const reg = new RegExp(`(?<=${infoName}\\s*=\\s*#).*?(?=#)`);
+            return info.match(reg)?.[0];
+        };
+        pageInfo = {
+            pageTitle: getInfo(InfoType.pageTitle),
+            pageID: getInfo(InfoType.pageID),
+            revisionID: getInfo(InfoType.revisionID),
+            contentModel: getInfo(InfoType.contentModel),
+            contentFormat: getInfo(InfoType.contentFormat)
+        };
+    }
 
-// }
+    return { content: content, info: pageInfo };
+}

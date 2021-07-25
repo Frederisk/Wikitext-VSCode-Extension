@@ -58,7 +58,7 @@ class WebCiteInfo {
     constructor(url: string) {
         this.url = url;
         this.accessDate = DateTime.utc().toISODate();
-        this.archiveApiUrl = "https://archive.org/wayback/available?url=" + url;
+        this.archiveApiUrl = `https://archive.org/wayback/available?url=${url}`;
     }
 
     public toString(format: string): string {

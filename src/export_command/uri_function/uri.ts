@@ -4,8 +4,11 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { Action, alterNativeValues, Prop, ContextModel } from '../wikimedia_function/args';
+import { Action, alterNativeValues, Prop, ContextModel, RvProp } from '../wikimedia_function/args';
 import { getView } from '../wikimedia_function/view';
+import { getPageCode } from '../wikimedia_function/core';
+import { getBot } from '../wikimedia_function/bot';
+import { getHost } from '../host_function/host';
 
 export function baseUriProcess(uri: vscode.Uri): void {
     // vscode://rowewilsonfrederiskholme.wikitext/WriteLine?你好，世界！
@@ -14,73 +17,85 @@ export function baseUriProcess(uri: vscode.Uri): void {
         case "/Write":
             write(uri.query);
             break;
+        case "/Edit":
+        case "/EditPage":
+        case "/PullPage":
+        case "/ReadPage":
+            editPage(uri.query);
+            break;
         case "/ViewPage":
             viewPage(uri.query);
-            break;
-        case "/ReadPage":
-            readPage(uri.query);
             break;
         default:
             break;
     }
 }
 
+async function editPage(query: string): Promise<void> {
+    // vscode-insiders://rowewilsonfrederiskholme.wikitext/PullPage?Title=1
+    const pars: IParameters = parseArgs(query);
+
+    const tbot: MWBot | undefined = (!pars['LocalBot'] || pars['SiteHost']) ? new MWBot({
+        apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
+    }) : await getBot();
+
+    const title: string | undefined = pars['Title'];
+
+    if (!title || !tbot) {
+        vscode.window.showErrorMessage(`${!title ? 'title ' : ''}${!tbot ? 'tbot ' : ''}is undefined or empty.`);
+        return undefined;
+    }
+
+    const args: any = {
+        'action': Action.query,
+        'prop': Prop.reVisions,
+        'rvprop': alterNativeValues(RvProp.content, RvProp.ids),
+        'rvslots': "*",
+        'titles': title
+    };
+
+    getPageCode(args, tbot);
+}
+
 function write(query: string): void {
     vscode.window.showInformationMessage(query);
 }
 
-function viewPage(query: string): void {
+async function viewPage(query: string): Promise<void> {
+    function setArgs(par: string, defaultValue: string | undefined = undefined) {
+        args[par.toLowerCase()] = pars[par] ?? defaultValue;
+    }
+
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+    const pars: IParameters = parseArgs(query);
+
+    const tbot: MWBot | undefined = (!pars['LocalBot'] || pars['SiteHost']) ? new MWBot({
+        apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
+    }) : await getBot();
+
+    if (!tbot) {
+        vscode.window.showErrorMessage(`${!tbot ? 'tbot ' : ''}is undefined or empty.`);
+        return undefined;
+    }
+
+    // TODO: getHost()
+    const baseHref: string = (!pars['LocalBot'] || pars['SiteHost']) ? pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"] : config.get("transferProtocol") + (await getHost() || '') + config.get("articlePath");
 
     // default args value
     const args: any = { 'action': Action.parse };
-
-    const pars: IParameters = parseArgs(query);
-
-    args["prop"] = pars["Prop"] ?? alterNativeValues(
+    setArgs('Prop', alterNativeValues(
         Prop.text,
         Prop.displayTitle,
         Prop.categoriesHTML,
         (config.get("getCss") ? Prop.headHTML : undefined)
-    );
-
-    args["text"] = pars["Text"] ?? undefined;
-    args["title"] = pars["Title"] ?? undefined;
-    args["summary"] = pars["Summary"] ?? undefined;
-
-    args["revid"] = pars["RevID"] ?? undefined;
-    args["page"] = pars["Page"] ?? undefined;
-    args["pageid"] = pars["PageID"] ?? undefined;
-    args["oldid"] = pars["OldID"] ?? undefined;
-
-    args["redirects"] = pars["Redirects"] ?? undefined;
-
-    args["pst"] = pars["PST"] ?? "true";
-    args["onlypst"] = pars["OnlyPST"] ?? undefined;
-
-    args["section"] = pars["Section"] ?? undefined;
-    args["sectiontitle"] = pars["SectionTitle"] ?? undefined;
-
-    args["useskin"] = pars["UseSkin"] ?? undefined;
-    args["contentformat"] = pars["ContentFormat"] ?? undefined;
-    args["contentmodel"] = pars["ContentModel"] ?? ContextModel.wikitext;
-
-    let tbot: MWBot = new MWBot(
-        {
-            apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + ["APIPath"]
-        }
-    );
-
-    const baseHref = (pars["TransferProtocol"] ?? "https://") + pars["SiteHost"] + pars["ArticlePath"];
+    ));
+    let undefParNames = ['Text', 'Title', 'Summary', 'RevID', 'Page',
+        'PageID', 'OldID', 'Redirects', 'OnlyPST', 'Section',
+        'SectionTitle', 'UseSkin', 'ContentFormat', 'ContentModel'];
+    undefParNames.forEach((value: string): void => setArgs(value));
+    setArgs("PST", "true");
 
     getView("pageViewer", "WikiViewer", args, tbot, baseHref);
-}
-
-function readPage(query: string): void {
-    const pars: IParameters = parseArgs(query);
-
-
-
 }
 
 interface IParameters {
