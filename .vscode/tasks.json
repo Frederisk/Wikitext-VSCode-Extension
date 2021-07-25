@@ -2,7 +2,6 @@
  *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-
 // See https://go.microsoft.com/fwlink/?LinkId=733558
 // for the documentation about the tasks.json format
 {
@@ -11,7 +10,8 @@
         {
             "type": "npm",
             "script": "watch",
-            "problemMatcher": "$tsc-watch",
+            "label": "webpack: watch",
+            "detail": "convert & webpack --watch",
             "isBackground": true,
             "presentation": {
                 "echo": true,
@@ -28,10 +28,43 @@
         },
         {
             "type": "npm",
+            "script": "package",
+            "label": "vsce: package",
+            "detail": "vsce package --yarn",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "group": "build"
+        },
+        {
+            "type": "npm",
+            "script": "test",
+            "label": "vscode extension: test",
+            "detail": "tsc & lint & run test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "type": "npm",
             "script": "lint",
-            "problemMatcher": [],
-            "label": "npm: lint",
-            "detail": "eslint -c .eslintrc.js --ext .ts ./src"
+            "problemMatcher": "$eslint-stylish",
+            "label": "npm: eslint",
+            "detail": "eslint"
         }
     ]
 }

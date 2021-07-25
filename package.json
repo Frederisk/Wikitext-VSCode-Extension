@@ -247,7 +247,8 @@
         "pretest": "tsc -p ./ && yarn run lint",
         "test": "node ./out/test/runTest.js",
         "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json & js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json & js-yaml language-configuration.yaml > language-configuration.json &",
-        "deploy": "vsce publish --yarn"
+        "deploy": "vsce publish --yarn",
+        "package": "vsce package --yarn"
     },
     "devDependencies": {
         "@types/bluebird": "^3.5.33",
