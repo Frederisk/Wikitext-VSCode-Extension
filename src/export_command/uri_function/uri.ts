@@ -4,6 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
+import * as MWBot from 'mwbot';
 import { Action, alterNativeValues, Prop, ContextModel, RvProp } from '../wikimedia_function/args';
 import { getView } from '../wikimedia_function/view';
 import { getPageCode } from '../wikimedia_function/core';
@@ -35,7 +36,7 @@ async function editPage(query: string): Promise<void> {
     // vscode-insiders://rowewilsonfrederiskholme.wikitext/PullPage?Title=1
     const pars: IParameters = parseArgs(query);
 
-    const tbot: MWBot | undefined = (!pars['LocalBot'] || pars['SiteHost']) ? new MWBot({
+    const tbot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
         apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
     }) : await getBot();
 
@@ -53,7 +54,8 @@ async function editPage(query: string): Promise<void> {
         'rvslots': "*",
         'titles': title
     };
-
+    console.log(args);
+    console.log(tbot);
     getPageCode(args, tbot);
 }
 
@@ -69,7 +71,7 @@ async function viewPage(query: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const pars: IParameters = parseArgs(query);
 
-    const tbot: MWBot | undefined = (!pars['LocalBot'] || pars['SiteHost']) ? new MWBot({
+    const tbot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
         apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
     }) : await getBot();
 
@@ -79,9 +81,9 @@ async function viewPage(query: string): Promise<void> {
     }
 
     // TODO: getHost()
-    const baseHref: string = (!pars['LocalBot'] || pars['SiteHost']) ? pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"] : config.get("transferProtocol") + (await getHost() || '') + config.get("articlePath");
+    const baseHref: string = isRemoteBot(pars) ? pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"] : config.get("transferProtocol") + (await getHost() || '') + config.get("articlePath");
 
-    // default args value
+    // args value
     const args: any = { 'action': Action.parse };
     setArgs('Prop', alterNativeValues(
         Prop.text,
@@ -102,6 +104,10 @@ interface IParameters {
     [Key: string]: string;
 }
 
+function isRemoteBot(pars: IParameters): boolean {
+    return !!(pars['RemoteBot'] || pars['SiteHost']);
+}
+
 export function parseArgs(query: string): IParameters {
     const queries = query.split("&");
     let pars: IParameters = {};
@@ -111,7 +117,7 @@ export function parseArgs(query: string): IParameters {
             pars[item.substring(0, eq)] = item.substring(eq + 1);
         }
         else {
-            pars[item] = "";
+            pars[item] = '';
         }
     }
     return pars;

@@ -4,6 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
+import * as MWBot from 'mwbot';
 import { Action, Prop, RvProp, alterNativeValues } from './args';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
