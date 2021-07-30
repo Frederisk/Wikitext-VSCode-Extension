@@ -4,21 +4,21 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as path from 'path';
-import * as Mocha from 'mocha';
-import * as glob from 'glob';
+import Mocha from 'mocha';
+import glob from 'glob';
 
 export function run(): Promise<void> {
     // Create the mocha test
-    const mocha = new Mocha({
+    const mocha: Mocha = new Mocha({
         ui: 'tdd',
         color: true
     });
     // mocha.useColors(true);
 
-    const testsRoot = path.resolve(__dirname, '..');
+    const testsRoot: string = path.resolve(__dirname, '..');
 
     return new Promise<void>((c, e): void => {
-        glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
+        glob('**/**.test.js', { cwd: testsRoot }, (err: Error | null, files: string[]) => {
             if (err) {
                 return e(err);
             }

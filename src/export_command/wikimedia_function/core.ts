@@ -4,7 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import * as MWBot from 'mwbot';
+import type Bluebird from 'bluebird';
+import type MWBot from 'mwbot';
 import { Action, Prop, RvProp, alterNativeValues } from './args';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
@@ -17,8 +18,8 @@ import { TokensConvert, TokensResult } from '../../interface_definition/tokensIn
 export async function postPage(): Promise<void> {
     async function getEditToken(bot: MWBot): Promise<string> {
         console.log("try get token.");
-        let args: any;
-        let result: any;
+        let args: { [Key: string]: string | undefined };
+        let result: Bluebird<any>;
         let token: string | undefined;
         let errors: any[] = [undefined, undefined];
 
@@ -91,6 +92,7 @@ export async function postPage(): Promise<void> {
         placeHolder: " // Edit via Wikitext Extension for VSCode"
     }) + " // Edit via Wikitext Extension for VSCode";
 
+    const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
     try {
         bot.editToken = await getEditToken(bot);
         await bot.edit(wikiTitle, contentInfo.content, wikiSummary).then(response => {
@@ -109,6 +111,9 @@ export async function postPage(): Promise<void> {
     catch (error: any) {
         console.log(error);
         vscode.window.showErrorMessage(`Error:${error.name}, ${error.message}. Your Token: ${bot?.editToken}`);
+    }
+    finally {
+        barMessage.dispose();
     }
 }
 
@@ -130,7 +135,7 @@ export async function pullPage(): Promise<void> {
     // if title is null or empty, do nothing
     if (!title) { return undefined; }
 
-    const args: any = {
+    const args: { [Key: string]: string | undefined } = {
         'action': Action.query,
         'prop': Prop.reVisions,
         'rvprop': alterNativeValues(RvProp.content, RvProp.ids),
@@ -144,7 +149,8 @@ export async function pullPage(): Promise<void> {
     getPageCode(args, tbot);
 }
 
-export async function getPageCode(args: any, tbot: MWBot) {
+export async function getPageCode(args: { [Key: string]: string | undefined }, tbot: MWBot): Promise<void> {
+    const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting code...");
     try {
         // get request result
         const result = await tbot.request(args);
@@ -173,14 +179,6 @@ export async function getPageCode(args: any, tbot: MWBot) {
 
         const content: Main | Revision | undefined = revision?.slots?.main || revision;
 
-        const normalized: Jump | undefined = re.query?.normalized?.[0];
-        const redirects: Jump | undefined = re.query?.redirects?.[0];
-        vscode.window.showInformationMessage(
-            `Opened page "${page.title}" with Model ${content?.contentmodel}. ` +
-            `Normalized: ${normalized ? `${normalized.from} => ${normalized.to}` : undefined}. ` +
-            `Redirect: ${redirects ? `${redirects.from} => ${redirects.to}` : undefined}`
-        );
-
         const infoHead: string =
             `<%-- [PAGE_INFO]
 Comment=#Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.#
@@ -196,9 +194,21 @@ ${InfoType.contentFormat}=#${content?.contentformat}#
             content: infoHead + "\r\r" + content?.["*"]
         });
         vscode.window.showTextDocument(textDocument);
+
+        const normalized: Jump | undefined = re.query?.normalized?.[0];
+        const redirects: Jump | undefined = re.query?.redirects?.[0];
+
+        vscode.window.showInformationMessage(
+            `Opened page "${page.title}" with Model ${content?.contentmodel}. ` +
+            `Normalized: ${normalized ? `${normalized.from} => ${normalized.to}` : undefined}. ` +
+            `Redirect: ${redirects ? `${redirects.from} => ${redirects.to}` : undefined}`
+        );
     }
     catch (error: any) {
         vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
+    }
+    finally {
+        barMessage.dispose();
     }
 }
 

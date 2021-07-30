@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 // Part of the content comes from https://github.com/jasonwilliams/mediawiki-support/blob/master/src/webCitation.ts under license Apache-2.0
 
-import fetch, { Response } from "node-fetch";
-import * as cheerio from "cheerio";
-import { DateTime } from "luxon";
 import * as vscode from "vscode";
+import * as cheerio from "cheerio";
+import fetch, { Response } from "node-fetch";
+import { DateTime } from "luxon";
 import { ArchiveConvert, ArchiveResult } from "../../interface_definition/archiveInterface";
 
 export async function addWebCite(): Promise<void> {
@@ -20,14 +20,14 @@ export async function addWebCite(): Promise<void> {
     });
     if (!url) { return undefined; }
 
-    const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Parsing the URL...");
+    const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Parsing...");
     try {
         const citeInfo: WebCiteInfo = new WebCiteInfo(url);
         await citeInfo.buildInfo();
         const result: string = citeInfo.toString(config.get("webCiteFormat") ?? "");
 
-        const editor = vscode.window.activeTextEditor;
-        const selection = editor?.selection;
+        const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
+        const selection: vscode.Selection | undefined = editor?.selection;
 
         if (selection) {
             editor?.edit((editorBuilder) => {

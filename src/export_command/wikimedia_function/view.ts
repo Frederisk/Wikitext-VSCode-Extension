@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import * as MWBot from 'mwbot';
+import type MWBot from 'mwbot';
 import { extensionContext } from '../../extension';
 import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConverter } from '../../interface_definition/getViewInterface';
@@ -81,7 +81,7 @@ export async function getPageView(): Promise<void> {
     });
     if (!pageTitle) { return undefined; }
 
-    const args: any = {
+    const args: { [Key: string]: string | undefined } = {
         'action': Action.parse,
         'page': pageTitle,
         'prop': alterNativeValues(
@@ -114,18 +114,10 @@ export async function getPageView(): Promise<void> {
  * @param baseURI urlbase
  * @returns task
  */
-export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: any, tbot: MWBot, baseURI: string): Promise<void> {
+export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: { [Key: string]: string | undefined }, tbot: MWBot, baseURI: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    if (typeof (currentPlanel) === "string") {
-        currentPlanel = vscode.window.createWebviewPanel(currentPlanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript") });
-    }
 
-    function showHtmlInfo(info: string): string {
-        return `<!DOCTYPE html><html><body><h2>${info}</h2></body></html>`;
-    }
-
-    currentPlanel.webview.html = showHtmlInfo("Loading...");
-
+    const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting view...");
     try {
         const result = await tbot.request(args);
         const re: GetViewResult = ViewConverter.getViewResultToJson(result);
@@ -142,13 +134,16 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
 
         const html: string = htmlHead + htmlText + htmlCategories + htmlEnd;
 
+        if (typeof (currentPlanel) === "string") {
+            currentPlanel = vscode.window.createWebviewPanel(currentPlanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript") });
+        }
         currentPlanel.webview.html = html;
         currentPlanel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
     }
     catch (error: any) {
         vscode.window.showErrorMessage(`ErrorCode:${error.code}| ErrorInfo:${error.info}`);
-        if (currentPlanel) {
-            currentPlanel.webview.html = showHtmlInfo("Error");
-        }
+    }
+    finally {
+        barMessage.dispose();
     }
 }
