@@ -14,6 +14,14 @@ Of course, the development of this extension is short, and there may be some err
 
 If you get help with this project, give this project a star or recommend it to others, thanks!😸
 
+## What's New: [Wikitext-Extension-Gadget](https://github.com/Frederisk/Wikitext-Extension-Gadget)!
+
+- Now you can add [Wikitext Extension Gadget](https://github.com/Frederisk/Wikitext-Extension-Gadget) as a user gadget on your wiki site. And you will get a button to open VSCode directly in your browser to edit the page!
+
+    Go to the gadget's repository page to learn more.
+
+    <img alt="Wikitext Extension Gadget" src="https://user-images.githubusercontent.com/29837738/127597149-5f44306a-a9ee-461a-8022-bd39f8ce3852.gif" width="512"/>
+
 ## Features
 
 - Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats.
@@ -44,14 +52,9 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Removed unnecessary assets, The size of the installation file is now ⅒ the original size!
-- Enhanced URI view page function.
-- Added Table caption syntax.
-- Added `<ref>` tag synax.
-- Fixed errors about XML syntax.
-- Turn part of the synax analysis into a built-in language extension that depends on VSCode such as XML and JSON.
-- Changed some of textmate scopes.
-- The extension will be activated when language is set to wikitext to speed up user commands.
+- Added the function of pulling pages through URI.
+- Added the function of displaying the action status through the status bar.
+- Fixed some typos.
 
 ## Usage
 

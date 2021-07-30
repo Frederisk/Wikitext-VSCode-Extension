@@ -4,6 +4,17 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.4.0] - 2021-07-30
+
+### Added
+
+- The function of pulling pages through URI.
+- The function of displaying the action status through the status bar.
+
+### Fixed
+
+- Some typos.
+
 ## [3.3.0] - 2021-05-30
 
 ### Added
