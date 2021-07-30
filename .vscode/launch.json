@@ -2,7 +2,6 @@
  *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-
 // A launch configuration that launches the extension inside a new window
 // Use IntelliSense to learn about possible attributes.
 // Hover to view descriptions of existing attributes.
@@ -12,7 +11,7 @@
     "configurations": [
         {
             "name": "Launch Extension",
-            "type": "extensionHost",
+            "type": "pwa-extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
@@ -25,8 +24,8 @@
             "preLaunchTask": "npm: compile"
         },
         {
-            "name": "Launch Extension With Other Extensions",
-            "type": "extensionHost",
+            "name": "Launch Extension with Other Extensions",
+            "type": "pwa-extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
@@ -38,8 +37,21 @@
             "preLaunchTask": "npm: compile"
         },
         {
+            "name": "Launch Extension of The Last Building",
+            "type": "pwa-extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--disable-extensions",
+                "--extensionDevelopmentPath=${workspaceFolder}"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ],
+        },
+        {
             "name": "Extension Tests",
-            "type": "extensionHost",
+            "type": "pwa-extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
