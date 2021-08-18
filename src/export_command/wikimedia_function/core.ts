@@ -171,7 +171,7 @@ export async function getPageCode(args: { [Key: string]: string | undefined }, t
         if (page.missing !== undefined || page.invalid !== undefined) {
             vscode.window.showWarningMessage(
                 `The page "${page.title}" you are looking for does not exist.` +
-                page.invalidreason || ``);
+                page.invalidreason || "");
             return undefined;
         }
         // first revision
@@ -188,9 +188,9 @@ ${InfoType.revisionID}=#${revision?.revid}#
 ${InfoType.contentModel}=#${content?.contentmodel}#
 ${InfoType.contentFormat}=#${content?.contentformat}#
 [END_PAGE_INFO] --%>`;
-
+        const lang: string | undefined = content?.contentmodel === "flow-board" ? "jsonc" : content?.contentmodel;
         const textDocument = await vscode.workspace.openTextDocument({
-            language: content?.contentmodel,
+            language: lang,
             content: infoHead + "\r\r" + content?.["*"]
         });
         vscode.window.showTextDocument(textDocument);
@@ -199,9 +199,9 @@ ${InfoType.contentFormat}=#${content?.contentformat}#
         const redirects: Jump | undefined = re.query?.redirects?.[0];
 
         vscode.window.showInformationMessage(
-            `Opened page "${page.title}" with Model ${content?.contentmodel}. ` +
-            `Normalized: ${normalized ? `${normalized.from} => ${normalized.to}` : undefined}. ` +
-            `Redirect: ${redirects ? `${redirects.from} => ${redirects.to}` : undefined}`
+            `Opened page "${page.title}" with Model ${content?.contentmodel}.` +
+            (normalized ? ` Normalized: ${normalized.from} => ${normalized.to}` : "") +
+            (redirects ? ` Redirect: ${redirects.from} => ${redirects.to}` : "")
         );
     }
     catch (error: any) {

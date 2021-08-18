@@ -7,7 +7,7 @@ import { IParameters, isRemoteBot, parseArgs } from './uri';
 import { getHost } from '../host_function/host';
 
 export async function viewPage(query: string): Promise<void> {
-    function setArgs(par: string, defaultValue: string | undefined = undefined) {
+    function setArgs(par: string, defaultValue?: string) {
         args[par.toLowerCase()] = pars[par] ?? defaultValue;
     }
 
