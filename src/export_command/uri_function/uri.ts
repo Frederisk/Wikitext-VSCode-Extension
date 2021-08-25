@@ -29,17 +29,13 @@ export function baseUriProcess(uri: vscode.Uri): void {
     }
 }
 
-export interface IParameters {
-    [Key: string]: string;
-}
-
-export function isRemoteBot(pars: IParameters): boolean {
+export function isRemoteBot(pars: Record<string, string>): boolean {
     return !!(pars['RemoteBot'] || pars['SiteHost']);
 }
 
-export function parseArgs(query: string): IParameters {
+export function parseArgs(query: string): Record<string, string> {
     const queries = query.split("&");
-    let pars: IParameters = {};
+    const pars: Record<string, string> = {};
     for (const item of queries) {
         const eq: number = item.indexOf("=");
         if (eq >= 0) {

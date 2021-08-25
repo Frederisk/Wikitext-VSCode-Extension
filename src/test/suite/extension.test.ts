@@ -38,7 +38,7 @@ suite('WikimediaFunction Args TestSuite', () => {
     });
 });
 
-import { getContentInfo, IPageInfos, InfoType } from '../../export_command/wikimedia_function/core';
+import { getContentInfo, InfoType } from '../../export_command/wikimedia_function/core';
 suite('WikimediaFunction Core TestSuite', () => {
     test('GetContentInfo Test', () => {
 

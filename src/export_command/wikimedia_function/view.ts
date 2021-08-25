@@ -81,7 +81,7 @@ export async function getPageView(): Promise<void> {
     });
     if (!pageTitle) { return undefined; }
 
-    const args: { [Key: string]: string | undefined } = {
+    const args: Record<string, string> = {
         'action': Action.parse,
         'page': pageTitle,
         'prop': alterNativeValues(
@@ -114,7 +114,7 @@ export async function getPageView(): Promise<void> {
  * @param baseURI urlbase
  * @returns task
  */
-export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: { [Key: string]: string | undefined }, tbot: MWBot, baseURI: string): Promise<void> {
+export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: Record<string, string>, tbot: MWBot, baseURI: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting view...");

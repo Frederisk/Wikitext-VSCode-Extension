@@ -3,7 +3,7 @@ import MWBot from 'mwbot';
 import { getBot } from '../wikimedia_function/bot';
 import { Action, alterNativeValues, Prop } from '../wikimedia_function/args';
 import { getView } from '../wikimedia_function/view';
-import { IParameters, isRemoteBot, parseArgs } from './uri';
+import { isRemoteBot, parseArgs } from './uri';
 import { getHost } from '../host_function/host';
 
 export async function viewPage(query: string): Promise<void> {
@@ -12,14 +12,14 @@ export async function viewPage(query: string): Promise<void> {
     }
 
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const pars: IParameters = parseArgs(query);
+    const pars: Record<string, string> = parseArgs(query);
 
     const tbot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
         apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
     }) : await getBot();
 
     if (!tbot) {
-        vscode.window.showErrorMessage(`${!tbot ? 'tbot ' : ''}is undefined or empty.`);
+        vscode.window.showErrorMessage("tbot is undefined or empty.");
         return undefined;
     }
 
@@ -27,7 +27,7 @@ export async function viewPage(query: string): Promise<void> {
     const baseHref: string = isRemoteBot(pars) ? pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"] : config.get("transferProtocol") + (await getHost() || '') + config.get("articlePath");
 
     // args value
-    const args: { [Key: string]: string | undefined } = { 'action': Action.parse };
+    const args: Record<string, string> = { 'action': Action.parse };
     setArgs('Prop', alterNativeValues(
         Prop.text,
         Prop.displayTitle,

@@ -3,11 +3,11 @@ import MWBot from 'mwbot';
 import { getBot } from '../wikimedia_function/bot';
 import { Action, alterNativeValues, Prop, RvProp } from '../wikimedia_function/args';
 import { getPageCode } from '../wikimedia_function/core';
-import { IParameters, isRemoteBot, parseArgs } from './uri';
+import { isRemoteBot, parseArgs } from './uri';
 
 export async function editPage(query: string): Promise<void> {
     // vscode-insiders://rowewilsonfrederiskholme.wikitext/PullPage?Title=1
-    const pars: IParameters = parseArgs(query);
+    const pars: Record<string, string> = parseArgs(query);
 
     const tbot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
         apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
@@ -20,7 +20,7 @@ export async function editPage(query: string): Promise<void> {
         return undefined;
     }
 
-    const args: { [Key: string]: string | undefined } = {
+    const args: Record<string, string> = {
         'action': Action.query,
         'prop': Prop.reVisions,
         'rvprop': alterNativeValues(RvProp.content, RvProp.ids),

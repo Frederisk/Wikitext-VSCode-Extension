@@ -18,7 +18,7 @@ import { TokensConvert, TokensResult } from '../../interface_definition/tokensIn
 export async function postPage(): Promise<void> {
     async function getEditToken(bot: MWBot): Promise<string> {
         console.log("try get token.");
-        let args: { [Key: string]: string | undefined };
+        let args: Record<string, string>;
         let result: Bluebird<any>;
         let token: string | undefined;
         let errors: any[] = [undefined, undefined];
@@ -135,7 +135,7 @@ export async function pullPage(): Promise<void> {
     // if title is null or empty, do nothing
     if (!title) { return undefined; }
 
-    const args: { [Key: string]: string | undefined } = {
+    const args: Record<string, string> = {
         'action': Action.query,
         'prop': Prop.reVisions,
         'rvprop': alterNativeValues(RvProp.content, RvProp.ids),
@@ -149,7 +149,7 @@ export async function pullPage(): Promise<void> {
     getPageCode(args, tbot);
 }
 
-export async function getPageCode(args: { [Key: string]: string | undefined }, tbot: MWBot): Promise<void> {
+export async function getPageCode(args: Record<string, string>, tbot: MWBot): Promise<void> {
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting code...");
     try {
         // get request result
@@ -225,19 +225,15 @@ export enum InfoType {
     contentFormat = "ContentFormat"
 }
 
-export interface IPageInfos {
-    [key: string]: string | undefined;
-}
-
 interface IContentInfo {
     content: string;
-    info?: IPageInfos;
+    info?: Record<string, string | undefined>;
 }
 
 export function getContentInfo(content: string): IContentInfo {
     const info: string | undefined = content.match(/(?<=\<%\-\-\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*\-\-%\>)/)?.[0];
 
-    let pageInfo: IPageInfos | undefined;
+    let pageInfo: Record<string, string | undefined> | undefined;
     if (info) {
         content = content.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
         const getInfo = (infoName: string): string | undefined => {
