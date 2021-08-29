@@ -142,20 +142,20 @@ class WebCiteInfo {
 */
 export function getReplacedString(formatStr: string, argStr: string, replaceStr: string | undefined): string {
     // /\{$arg\}/
-    const argRegExp: RegExp = new RegExp(`\\{\\$${argStr}\\}`);
+    const argRegExp: RegExp = new RegExp(`\\{\\$${argStr}\\}`, 'g');
     if (replaceStr) {
         // remove all <!arg> and </!arg>
         // /\<\/?\!arg\>/
-        formatStr = formatStr.split(new RegExp(`\\<\\/?\\!${argStr}\\>`)).join("");
+        formatStr = formatStr.replace(new RegExp(`<\\/?!${argStr}>`, 'g'), '');
         // replace all {$arg}
-        formatStr = formatStr.split(argRegExp).join(replaceStr);
+        formatStr = formatStr.replace(argRegExp, replaceStr);
     }
     else {
         // remove all substring betweem <!arg> and </!arg>
         // /\<\!arg\>[\s\S]*?\<\/\!arg\>/
-        formatStr = formatStr.split(new RegExp(`\\<\\!${argStr}\\>[\\s\\S]*?\\<\\/\\!${argStr}\\>`)).join("");
+        formatStr = formatStr.replace(new RegExp(`<!${argStr}>[\\s\\S]*?<\\/!${argStr}>`, 'g'), '');
         // clear all argument
-        formatStr = formatStr.split(argRegExp).join("");
+        formatStr = formatStr.replace(argRegExp, '');
     }
     return formatStr;
 }
