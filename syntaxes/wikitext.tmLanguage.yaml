@@ -32,20 +32,50 @@ repository:
       - include: "#extensionComments"
     repository:
       extensionComments:
+        name: comment.block.documentation.special.extension.wikitext
+        begin: (<%--)\s*(\[)([A-Z_]*)(\])
+        #      1<%--1   2 [23TYPENAM34] 4
+        end: (\[)([A-Z_]*)(\])\s*(--%>)
+        #    1 [12TYPENAM23 ]3   4--%>4
+        beginCaptures:
+          1:
+            name: punctuation.definition.comment.extension.wikitext
+          2:
+            name: punctuation.definition.tag.extension.wikitext
+          3:
+            name: storage.type.extension.wikitext
+          4:
+            name: punctuation.definition.tag.extension.wikitext
+        endCaptures:
+          1:
+            name: punctuation.definition.tag.extension.wikitext
+          2:
+            name: storage.type.extension.wikitext
+          3:
+            name: punctuation.definition.tag.extension.wikitext
+          4:
+            name: punctuation.definition.comment.extension.wikitext
         patterns:
-          - begin: (<%--)\s*\[[A-Z_]*\]
-            #      1<%--1    [TYPENAME]
-            end: \[[A-Z_]*\]\s*(--%>)
-            name: comment.block.documentation.special.wikitext.extension
+          - match: (\w*)\s*(=)\s*(#)(.*?)(#)
+            #      1key1   2=2   3#34vlu45#5
             captures:
+              0:
+                name: meta.object.member.extension.wikitext
               1:
-                name: punctuation.definition.comment.xml
-      # convert:
+                name: meta.object-literal.key.extension.wikitext
+              2:
+                name: punctuation.separator.dictionary.key-value.extension.wikitext
+              3:
+                name: punctuation.definition.string.begin.extension.wikitext
+              4:
+                name: string.quoted.other.extension.wikitext
+              5:
+                name: punctuation.definition.string.end.extension.wikitext
       convert:
-        begin: (\-\{)([a-zA-Z](\|))?
+        begin: (-\{)([a-zA-Z](\|))?
         #      1 -{ 12     tag3| 32
         #      -{T|
-        end: (\}\-)
+        end: (\}-)
         #    1 }- 1
         # name: meta.
         captures:
@@ -57,8 +87,9 @@ repository:
             name: keyword.operator.wikitext
         patterns:
           - include: $self
-          - match: ([a-zA-Z\-]*)(:)(.*?)(?:(;)|(?=\}\-))
-            #      1    tag-   12:23txt3   4;4     }-
+          - match: (?:([a-zA-Z\-]*)(:))?(.*?)(?:(;)|(?=\}-))
+            # - match: ([a-zA-Z\-]*)(:)(.*?)(?:(;)?|(?=\}-))
+            #          1    tag-   12:23txt3   4;4     }-
             captures:
               1:
                 name: entity.name.tag.language.wikitext
@@ -68,10 +99,8 @@ repository:
                 name: string.unquoted.text.wikitext
               4:
                 name: punctuation.terminator.rule.wikitext
-
-      # break:
       break:
-        match: '^\-{4,}'
+        match: '^-{4,}'
         #      ----
         name: markup.changed.wikitext
       template:
@@ -85,12 +114,12 @@ repository:
             name: punctuation.definition.tag.template.wikitext
           2:
             name: entity.name.tag.localname.wikitext
-          3:
+          # 3:
           4:
             name: punctuation.separator.namespace.wikitext
           5:
             name: entity.name.function.wikitext
-          6:
+          # 6:
           7:
             name: punctuation.separator.namespace.wikitext
           8:
@@ -222,7 +251,7 @@ repository:
               #   "": >-
               #     (?i)(\{\{)(NAMESPACE|SUBJECTSPACE|ARTICLESPACE|TALKSPACE|NAMESPACEE|SUBJECTSPACEE|TALKSPACEE)(\}\})
               # - commons: ""
-              #   "": (\{\{)(\!)(\}\})
+              #   "": (\{\{)(!)(\}\})
               # END_TODO:
               - name: constant.language.variables.isbn.wikitext
                 match: ISBN\s+((9[\-\s]?7[\-\s]?[89][\-\s]?)?([0-9][\-\s]?){10})
@@ -261,10 +290,12 @@ repository:
                 name: keyword.operator.wikitext
       heading:
         name: markup.heading.wikitext
-        match: "^={1,6}.+?={1,6}$"
-        #        === charter ===
-        patterns:
-          - include: $self
+        match: '^(={1,6})\s*(.+?)\s*(={1,6})$'
+        #        1======1   2cha2   3======3
+        captures:
+          2:
+            patterns:
+              - include: $self
       fontStyle:
         patterns:
           - include: "#bold"
@@ -295,7 +326,7 @@ repository:
             name: punctuation.definition.tag.link.internal.wikitext
           2:
             name: entity.name.tag.namespace.wikitext
-          3:
+          # 3:
           4:
             name: entity.other.attribute-name.wikitext
         patterns:
@@ -326,9 +357,8 @@ repository:
               - include: $self
               - include: "#tagStuff"
               - name: meta.tag.block.table-row.wikitext
-                begin: '^\s*(\|\-)\s*'
+                begin: '^\s*(\|-)\s*'
                 #           1 |- 1
-                #             |-
                 end: $
                 beginCaptures:
                   1:
