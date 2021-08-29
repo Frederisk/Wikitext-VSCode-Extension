@@ -10,6 +10,7 @@ import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConverter } from '../../interface_definition/getViewInterface';
 import { getHost } from '../host_function/host';
 import { getBot } from './bot';
+import { getContentInfo } from './core';
 
 /**
  * webview panel
@@ -25,14 +26,12 @@ export async function getPreview(): Promise<void> {
     /** document text */
     let sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
     if (!sourceText) { return undefined; }
-
-    // remove
-    sourceText = sourceText?.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
+    const { content } = getContentInfo(sourceText);
 
     /** arguments */
     const args = {
         'action': Action.parse,
-        'text': sourceText,
+        'text': content,
         'prop': alterNativeValues(
             Prop.text,
             Prop.displayTitle,

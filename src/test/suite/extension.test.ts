@@ -38,7 +38,7 @@ suite('WikimediaFunction Args TestSuite', () => {
     });
 });
 
-import { getContentInfo, InfoType } from '../../export_command/wikimedia_function/core';
+import { getContentInfo } from '../../export_command/wikimedia_function/core';
 suite('WikimediaFunction Core TestSuite', () => {
     test('GetContentInfo Test', () => {
 
@@ -47,7 +47,10 @@ suite('WikimediaFunction Core TestSuite', () => {
         const pageTitle = "Some String";
         const content = "Content here";
         // test set
-        const hasStr = `<%--  [PAGE_INFO] ${InfoType.pageTitle}=  #${pageTitle}#  [END_PAGE_INFO] --%>\r${content}`;
+        const hasStr = `<%--  [PAGE_INFO] PageTitle=  #${pageTitle}#
+        pageID = #1#
+        [END_PAGE_INFO]
+        --%>\r${content}`;
         const noStr = content;
         const mutiStr = `<%-- [PAGE_INFO]
         Comment=#Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.#
@@ -70,7 +73,7 @@ suite('WikimediaFunction Core TestSuite', () => {
         assert.strictEqual(hasInfo.content, content, "hasInfo content faild");
         assert.deepStrictEqual(hasInfo.info, {
             pageTitle: pageTitle,
-            pageID: undefined,
+            pageID: "1",
             revisionID: undefined,
             contentFormat: undefined,
             contentModel: undefined

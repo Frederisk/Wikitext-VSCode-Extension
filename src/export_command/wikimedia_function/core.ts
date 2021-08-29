@@ -25,9 +25,9 @@ export async function postPage(): Promise<void> {
 
         try {
             args = {
-                'action': Action.query,
-                'meta': 'tokens',
-                'type': 'csrf'
+                action: Action.query,
+                meta: 'tokens',
+                type: 'csrf'
             };
             result = await bot.request(args);
             const reNew: TokensResult = TokensConvert.toTokensResult(result);
@@ -43,8 +43,8 @@ export async function postPage(): Promise<void> {
         if (errors[0] !== undefined) {
             try {
                 args = {
-                    'action': "tokens",
-                    'type': "edit"
+                    action: "tokens",
+                    type: "edit"
                 };
                 result = await bot.request(args);
                 const reOld: OldTokensResult = OldTokensConvert.toOldTokensResult(result);
@@ -73,7 +73,7 @@ export async function postPage(): Promise<void> {
         return undefined;
     }
 
-    const contentInfo: IContentInfo = getContentInfo(wikiContent);
+    const contentInfo: ContentInfo = getContentInfo(wikiContent);
     console.log(contentInfo);
 
     const wikiTitle: string | undefined = await vscode.window.showInputBox({
@@ -136,11 +136,11 @@ export async function pullPage(): Promise<void> {
     if (!title) { return undefined; }
 
     const args: Record<string, string> = {
-        'action': Action.query,
-        'prop': Prop.reVisions,
-        'rvprop': alterNativeValues(RvProp.content, RvProp.ids),
-        'rvslots': "*",
-        'titles': title
+        action: Action.query,
+        prop: Prop.reVisions,
+        rvprop: alterNativeValues(RvProp.content, RvProp.ids),
+        rvslots: "*",
+        titles: title
     };
     if (config.get("redirects")) {
         args['redirects'] = "true";
@@ -150,6 +150,26 @@ export async function pullPage(): Promise<void> {
 }
 
 export async function getPageCode(args: Record<string, string>, tbot: MWBot): Promise<void> {
+    function getInfoHead(info: Record<string, string | undefined>, lang?: string): string {
+        const headInfo: Record<string, string> = {
+            comment: "Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits."
+        };
+        const infoLine: string = Object.keys({ ...headInfo, ...info }).
+            map((key: string) => `    ${key} = #${headInfo[key]}#`).
+            join("\r");
+        const commentList: Record<string, [string, string]> = {
+            wikitext: ["", ""],
+            jsonc: ["/*", "*/"],
+            lua: ["--[=[", "--]=]"],
+            javascript: ["/*", "*/"],
+            css: ["/*", "*/"],
+            php: ["/*", "*/"],
+        };
+        return commentList[lang || "wikitext"].join(`<%-- [PAGE_INFO]
+${infoLine}
+[END_PAGE_INFO] --%>`);
+    }
+
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting code...");
     try {
         // get request result
@@ -178,17 +198,16 @@ export async function getPageCode(args: Record<string, string>, tbot: MWBot): Pr
         const revision = page.revisions?.[0];
 
         const content: Main | Revision | undefined = revision?.slots?.main || revision;
-
-        const infoHead: string =
-            `<%-- [PAGE_INFO]
-Comment=#Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.#
-${InfoType.pageTitle}=#${page.title}#
-${InfoType.pageID}=#${page.pageid}#
-${InfoType.revisionID}=#${revision?.revid}#
-${InfoType.contentModel}=#${content?.contentmodel}#
-${InfoType.contentFormat}=#${content?.contentformat}#
-[END_PAGE_INFO] --%>`;
         const lang: string | undefined = content?.contentmodel === "flow-board" ? "jsonc" : content?.contentmodel;
+
+        const info: Record<PageInfo, string | undefined> = {
+            pageTitle: page.title,
+            pageID: page.pageid?.toString(),
+            revisionID: revision?.revid?.toString(),
+            contentModel: content?.contentmodel,
+            contentFormat: content?.contentformat
+        };
+        const infoHead: string = getInfoHead(info, lang);
         const textDocument = await vscode.workspace.openTextDocument({
             language: lang,
             content: infoHead + "\r\r" + content?.["*"]
@@ -214,38 +233,31 @@ ${InfoType.contentFormat}=#${content?.contentformat}#
 
 // TODO: uploadFile, deletedPage
 
-/**
- *
- */
-export enum InfoType {
-    pageTitle = "PageTitle",
-    pageID = "PageID",
-    revisionID = "RevisionID",
-    contentModel = "ContentModel",
-    contentFormat = "ContentFormat"
-}
+type PageInfo = "pageTitle" | "pageID" | "revisionID" | "contentModel" | "contentFormat";
 
-interface IContentInfo {
+interface ContentInfo {
     content: string;
     info?: Record<string, string | undefined>;
 }
 
-export function getContentInfo(content: string): IContentInfo {
-    const info: string | undefined = content.match(/(?<=\<%\-\-\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*\-\-%\>)/)?.[0];
+export function getContentInfo(content: string): ContentInfo {
+    const info: string | undefined = content.match(/(?<=<%--\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*--%>)/)?.[0];
 
     let pageInfo: Record<string, string | undefined> | undefined;
     if (info) {
-        content = content.replace(/\<%\-\-\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*\-\-%\>\s*/, "");
-        const getInfo = (infoName: string): string | undefined => {
-            const reg = new RegExp(`(?<=${infoName}\\s*=\\s*#).*?(?=#)`);
+        content = content.replace(/<%--\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*--%>\s*/, "");
+        const getInfo = (infoName: PageInfo): string | undefined => {
+            const nameFirst: string = infoName[0];
+            const nameRest: string = infoName.substr(1);
+            const reg = new RegExp(`(?<=[${nameFirst.toLowerCase()}${nameFirst.toUpperCase()}]${nameRest}\\s*=\\s*#).*?(?=#)`);
             return info.match(reg)?.[0];
         };
         pageInfo = {
-            pageTitle: getInfo(InfoType.pageTitle),
-            pageID: getInfo(InfoType.pageID),
-            revisionID: getInfo(InfoType.revisionID),
-            contentModel: getInfo(InfoType.contentModel),
-            contentFormat: getInfo(InfoType.contentFormat)
+            pageTitle: getInfo("pageTitle"),
+            pageID: getInfo("pageID"),
+            revisionID: getInfo("revisionID"),
+            contentModel: getInfo("revisionID"),
+            contentFormat: getInfo("contentFormat")
         };
     }
 
