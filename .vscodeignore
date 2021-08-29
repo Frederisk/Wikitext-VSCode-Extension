@@ -20,7 +20,7 @@ appveyor.yml
 # Compiled config
 **/tsconfig.json
 **/tslint.json
-**/.eslintrc.json
+**/.eslintrc.*
 webpack.config.js
 .yarnrc
 

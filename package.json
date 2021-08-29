@@ -242,7 +242,7 @@
     "scripts": {
         "vscode:prepublish": "yarn run compile",
         "compile": "yarn run convert && webpack --config webpack.config.js --mode production",
-        "lint": "eslint -c .eslintrc.js --ext .ts ./src",
+        "lint": "eslint -c .eslintrc.yml --ext .ts ./src",
         "watch": "yarn run convert && webpack --config webpack.config.js --mode development --watch",
         "pretest": "tsc -p ./ && yarn run lint",
         "test": "node ./out/test/runTest.js",
