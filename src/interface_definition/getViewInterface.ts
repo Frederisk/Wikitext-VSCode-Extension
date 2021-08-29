@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { a, u, o, m, r, cast, uncast } from "./convertFunction";
+import { a, u, o, r, cast, uncast } from "./convertFunction";
 
 /*
     GetViewResult {

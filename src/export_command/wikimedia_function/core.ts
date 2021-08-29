@@ -21,7 +21,7 @@ export async function postPage(): Promise<void> {
         let args: Record<string, string>;
         let result: Bluebird<any>;
         let token: string | undefined;
-        let errors: any[] = [undefined, undefined];
+        const errors: any[] = [undefined, undefined];
 
         try {
             args = {

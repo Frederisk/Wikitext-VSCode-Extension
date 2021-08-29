@@ -34,7 +34,7 @@ export async function viewPage(query: string): Promise<void> {
         Prop.categoriesHTML,
         (config.get("getCss") ? Prop.headHTML : undefined)
     ));
-    let undefParNames = ['Text', 'Title', 'Summary', 'RevID', 'Page',
+    const undefParNames = ['Text', 'Title', 'Summary', 'RevID', 'Page',
         'PageID', 'OldID', 'Redirects', 'OnlyPST', 'Section',
         'SectionTitle', 'UseSkin', 'ContentFormat', 'ContentModel'];
     undefParNames.forEach((value: string): void => setArgs(value));

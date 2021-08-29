@@ -24,7 +24,7 @@ export async function getPreview(): Promise<void> {
     if (!host) { return undefined; }
 
     /** document text */
-    let sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
+    const sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
     if (!sourceText) { return undefined; }
     const { content } = getContentInfo(sourceText);
 
@@ -43,7 +43,7 @@ export async function getPreview(): Promise<void> {
         'disableeditsection': "yes"
     };
 
-    const viewerTitle: string = "WikitextPreviewer";
+    const viewerTitle = "WikitextPreviewer";
 
     // if no planel, creat one
     if (!previewCurrentPlanel) {
@@ -129,7 +129,7 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         const htmlHead: string = re.parse.headhtml?.["*"]?.replace("<head>", "<head>" + baseElem + style) ?? `<!DOCTYPE html><html><head>${baseElem + style}</head><body>`;
         const htmlText: string = re.parse.text?.["*"] || "";
         const htmlCategories: string = re.parse.categorieshtml?.["*"] ? "<hr />" + re.parse.categorieshtml?.["*"] : "";
-        const htmlEnd: string = "</body></html>";
+        const htmlEnd = "</body></html>";
 
         const html: string = htmlHead + htmlText + htmlCategories + htmlEnd;
 

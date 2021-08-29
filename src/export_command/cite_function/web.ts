@@ -122,7 +122,7 @@ class WebCiteInfo {
             this.getAttr("meta[property='twitter:site']");
     }
 
-    private getAttr(ioname: string, attrName: string = "content"): string | undefined {
+    private getAttr(ioname: string, attrName = "content"): string | undefined {
         const io: cheerio.Cheerio = this.metaData(ioname);
         if (io.length) {
             return io.attr(attrName) || undefined;
@@ -142,7 +142,7 @@ class WebCiteInfo {
 */
 export function getReplacedString(formatStr: string, argStr: string, replaceStr: string | undefined): string {
     // /\{$arg\}/
-    const argRegExp: RegExp = new RegExp(`\\{\\$${argStr}\\}`, 'g');
+    const argRegExp = new RegExp(`\\{\\$${argStr}\\}`, 'g');
     if (replaceStr) {
         // remove all <!arg> and </!arg>
         // /\<\/?\!arg\>/

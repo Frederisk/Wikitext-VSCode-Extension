@@ -15,7 +15,7 @@ function invalidValue(typ: any, val: any, key: any = ''): never {
 
 function jsonToJSProps(typ: any): any {
     if (typ.jsonToJS === undefined) {
-        const map: any = {};
+        const map: any = { };
         typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
         typ.jsonToJS = map;
     }
@@ -24,7 +24,7 @@ function jsonToJSProps(typ: any): any {
 
 function jsToJSONProps(typ: any): any {
     if (typ.jsToJSON === undefined) {
-        const map: any = {};
+        const map: any = { };
         typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });
         typ.jsToJSON = map;
     }
@@ -75,7 +75,7 @@ function transform(value: any, type: any, getProps: any, key: any, typeMap: any)
         if (val === null || typeof val !== "object" || Array.isArray(val)) {
             return invalidValue("object", val);
         }
-        const result: any = {};
+        const result: any = { };
         Object.getOwnPropertyNames(props).forEach(item => {
             const prop = props[item];
             const v = Object.prototype.hasOwnProperty.call(val, item) ? val[item] : undefined;

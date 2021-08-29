@@ -6,10 +6,10 @@
     "compilerOptions": {
         /* Visit https://aka.ms/tsconfig.json to read more about this file */
         /* Basic Options */
-        "target": "ES2019",
+        "target": "ES6",
         "module": "CommonJS",
         "lib": [
-            "ES2019"
+            "ES6"
         ],
         "sourceMap": true,
         "outDir": "./out/",
