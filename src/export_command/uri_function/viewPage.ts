@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import MWBot from 'mwbot';
+import { MWBot } from 'mwbot';
 import { getBot } from '../wikimedia_function/bot';
 import { Action, alterNativeValues, Prop } from '../wikimedia_function/args';
 import { getView } from '../wikimedia_function/view';

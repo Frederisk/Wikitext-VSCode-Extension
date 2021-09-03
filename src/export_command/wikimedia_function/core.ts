@@ -4,8 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import type Bluebird from 'bluebird';
-import type MWBot from 'mwbot';
+import * as Bluebird from 'bluebird';
+import { MWBot } from 'mwbot';
 import { Action, Prop, RvProp, alterNativeValues } from './args';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';

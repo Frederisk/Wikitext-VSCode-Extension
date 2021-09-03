@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 declare module 'mwbot' {
-  import type BlueBird from 'bluebird';
+  import * as BlueBird from 'bluebird';
 
   interface CounterInterface {
     total: number;
@@ -18,7 +18,7 @@ declare module 'mwbot' {
    *
    * @author Simon Heimler
    */
-  class MWBot {
+  export class MWBot {
 
     //////////////////////////////////////////
     // FIELD                                //
@@ -376,5 +376,5 @@ declare module 'mwbot' {
     static logStatus(status: any, currentCounter: any, totalCounter: any, operation: any, pageName: any, reason: any): void;
   }
 
-  export = MWBot;
+  // export = MWBot;
 }
