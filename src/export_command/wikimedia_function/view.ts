@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { MWBot } from 'mwbot';
+import type MWBot from 'mwbot';
 import { extensionContext } from '../../extension';
 import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConverter } from '../../interface_definition/getViewInterface';

@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { MWBot } from 'mwbot';
+import MWBot from 'mwbot';
 import * as vscode from 'vscode';
 import { getHost } from '../host_function/host';
 
