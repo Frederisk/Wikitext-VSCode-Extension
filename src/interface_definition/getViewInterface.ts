@@ -3,6 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import { MWError, mWErrorTypeMapInline, mWErrorTypeMapOutline, MWWarnings, mWWarningsTypeMapInline, mWWarningsTypeMapOutline } from "./commonInterface";
 import { a, u, o, r, cast, uncast } from "./convertFunction";
 
 /*
@@ -26,24 +27,24 @@ import { a, u, o, r, cast, uncast } from "./convertFunction";
             }
         },
         error?: Error {
-            code?: string,
-            info?: string,
+            code: string,
+            info: string,
             *: string
         },
+        warnings?: MWWarnings {
+            main: WarnMain {
+                *: string
+            }
+        }
         servedby?: string
     }
  */
 
 export interface GetViewResult {
     parse?: Parse;
-    error?: Error;
+    error?: MWError;
+    warnings?: MWWarnings;
     servedby?: string;
-}
-
-export interface Error {
-    code?: string;
-    info?: string;
-    "*"?: string;
 }
 
 export interface Parse {
@@ -80,14 +81,12 @@ export class ViewConverter {
 const getViewTypeMap: any = {
     "GetViewResult": o([
         { json: "parse", js: "parse", typ: u(undefined, r("Parse")) },
-        { json: "error", js: "error", typ: u(undefined, r("Error")) },
+        mWErrorTypeMapInline,
+        mWWarningsTypeMapInline,
         { json: "servedby", js: "servedby", typ: u(undefined, "") },
     ], false),
-    "Error": o([
-        { json: "code", js: "code", typ: u(undefined, "") },
-        { json: "info", js: "info", typ: u(undefined, "") },
-        { json: "*", js: "*", typ: u(undefined, "") },
-    ], false),
+    ...mWErrorTypeMapOutline,
+    ...mWWarningsTypeMapOutline,
     "Parse": o([
         { json: "title", js: "title", typ: u(undefined, "") },
         { json: "pageid", js: "pageid", typ: u(undefined, 0) },

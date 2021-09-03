@@ -8,7 +8,7 @@ export function alterNativeValues(...values: (string | undefined)[]): string {
     return values.join("|");
 }
 
-export enum Action {
+export const enum Action {
     abuseFilterCheckMatch = "abusefiltercheckmatch",
     abuseFilterCheckSyntax = "abusefilterchecksyntax",
     abuseFilterEvalExpression = "abusefilterevalexpression",
@@ -21,6 +21,7 @@ export enum Action {
     centralNoticeChoiceData = "centralnoticechoicedata",
     // ...
     login = "login",
+    logout = "logout",
     // ...
     parse = "parse",
     // ...
@@ -28,7 +29,7 @@ export enum Action {
     // ...
 }
 
-export enum Prop {
+export const enum Prop {
     reVisions = "revisions",
     text = "text",
     langLinks = "langlinks",
@@ -55,7 +56,7 @@ export enum Prop {
     parsetree = "parsetree"
 }
 
-export enum RvProp {
+export const enum RvProp {
     ids = "ids",
     flags = "flags",
     timeStamp = "timestamp",
@@ -74,7 +75,7 @@ export enum RvProp {
     oresscores = "oresscores"
 }
 
-export enum Format {
+export const enum Format {
     jSON = "json",
     jSONFm = "jsonfm",
     none = "none",
@@ -85,7 +86,7 @@ export enum Format {
     xMLFm = "xmlfm"
 }
 
-export enum ContextModel {
+export const enum ContextModel {
     gadgetDefinition = "GadgetDefinition",
     jsonSchema = "JsonSchema",
     massMessageListContent = "MassMessageListContent",
@@ -100,7 +101,7 @@ export enum ContextModel {
     wikitext = "wikitext"
 }
 
-export enum TokenType {
+export const enum TokenType {
     createAccount = "createaccount",
     cSRF = "csrf",
     deleteGlobalAccount = "deleteglobalaccount",

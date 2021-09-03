@@ -3,15 +3,21 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import { MWError, mWErrorTypeMapInline, mWErrorTypeMapOutline, MWWarnings, mWWarningsTypeMapInline, mWWarningsTypeMapOutline } from "./commonInterface";
 import { a, u, o, m, r, uncast, cast } from "./convertFunction";
 
 /*
     ReadPageResult {
-        warnings: Warnings {
+        error?: Error {
+            code: string,
+            info: string,
+            *: string
+        },
+        warnings?: MWWarnings {
             main: WarnMain {
                 *: string
             }
-        },
+        }
         batchcomplete?: string,
         query?: Query {
             normalized?: Jump[] {
@@ -58,17 +64,11 @@ import { a, u, o, m, r, uncast, cast } from "./convertFunction";
  */
 
 export interface ReadPageResult {
-    warnings?: Warnings;
     batchcomplete?: string;
     query?: Query;
-}
+    error?: MWError;
+    warnings?: MWWarnings;
 
-export interface Warnings {
-    main?: WarnMain;
-}
-
-export interface WarnMain {
-    "*"?: string;
 }
 
 export interface Query {
@@ -146,16 +146,13 @@ export class ReadPageConvert {
 /* eslint-disable @typescript-eslint/naming-convention */
 const readPageResultTypeMap: any = {
     "ReadPageResult": o([
-        { json: "warnings", js: "warnings", typ: u(undefined, r("Warnings")) },
+        mWWarningsTypeMapInline,
+        mWErrorTypeMapInline,
         { json: "batchcomplete", js: "batchcomplete", typ: u(undefined, "") },
         { json: "query", js: "query", typ: u(undefined, r("Query")) },
     ], false),
-    "Warnings": o([
-        { json: "main", js: "main", typ: u(undefined, r("WarnMain")) },
-    ], false),
-    "WarnMain": o([
-        { json: "*", js: "*", typ: u(undefined, "") }
-    ], false),
+    ...mWWarningsTypeMapOutline,
+    ...mWErrorTypeMapOutline,
     "Query": o([
         { json: "normalized", js: "normalized", typ: u(undefined, a(r("Jump"))) },
         { json: "redirects", js: "redirects", typ: u(undefined, a(r("Jump"))) },
