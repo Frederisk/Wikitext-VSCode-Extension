@@ -11,6 +11,7 @@ import { GetViewResult, ViewConverter } from '../../interface_definition/getView
 import { getHost } from '../host_function/host';
 import { getBot } from './bot';
 import { getContentInfo } from './core';
+import { showMWErrorMessage } from './errmsg';
 
 /**
  * webview panel
@@ -29,7 +30,7 @@ export async function getPreview(): Promise<void> {
     const { content } = getContentInfo(sourceText);
 
     /** arguments */
-    const args = {
+    const args: Record<string, string> = {
         'action': Action.parse,
         'text': content,
         'prop': alterNativeValues(
@@ -139,8 +140,8 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
         currentPlanel.webview.html = html;
         currentPlanel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
     }
-    catch (error: any) {
-        vscode.window.showErrorMessage(`ErrorCode:${error.code}| ErrorInfo:${error.info}`);
+    catch (error) {
+        showMWErrorMessage('getView', error);
     }
     finally {
         barMessage.dispose();

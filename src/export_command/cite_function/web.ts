@@ -9,6 +9,7 @@ import * as cheerio from "cheerio";
 import fetch, { Response } from "node-fetch";
 import { DateTime } from "luxon";
 import { ArchiveConvert, ArchiveResult } from "../../interface_definition/archiveInterface";
+import { showMWErrorMessage } from "../wikimedia_function/errmsg";
 
 export async function addWebCite(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
@@ -35,8 +36,8 @@ export async function addWebCite(): Promise<void> {
             });
         }
     }
-    catch (error: any) {
-        vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
+    catch (error) {
+        showMWErrorMessage('addWebCite', error);
     }
     finally {
         barMessage.dispose();

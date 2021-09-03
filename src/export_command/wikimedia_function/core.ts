@@ -11,6 +11,7 @@ import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../int
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
 import { bot, getBot } from './bot';
 import { TokensConvert, TokensResult } from '../../interface_definition/tokensInteface';
+import { showMWErrorMessage } from './errmsg';
 
 /**
  * Write/Post Page
@@ -37,7 +38,6 @@ export async function postPage(): Promise<void> {
             }
         }
         catch (error) {
-            console.log(error);
             errors[0] = error;
         }
         if (errors[0] !== undefined) {
@@ -54,7 +54,6 @@ export async function postPage(): Promise<void> {
                 }
             }
             catch (error) {
-                console.log(error);
                 errors[1] = error;
             }
         }
@@ -108,9 +107,8 @@ export async function postPage(): Promise<void> {
             }
         });
     }
-    catch (error: any) {
-        console.log(error);
-        vscode.window.showErrorMessage(`Error:${error.name}, ${error.message}. Your Token: ${bot?.editToken}`);
+    catch (error) {
+        showMWErrorMessage('postPage', error, `Your Token: ${bot?.editToken}`);
     }
     finally {
         barMessage.dispose();
@@ -223,8 +221,8 @@ ${infoLine}
             (redirects ? ` Redirect: ${redirects.from} => ${redirects.to}` : "")
         );
     }
-    catch (error: any) {
-        vscode.window.showErrorMessage(`${error.code}! ${error.info}`);
+    catch (error) {
+        showMWErrorMessage('getPageCode', error);
     }
     finally {
         barMessage.dispose();

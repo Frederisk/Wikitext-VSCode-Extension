@@ -6,6 +6,8 @@
 import MWBot from 'mwbot';
 import * as vscode from 'vscode';
 import { getHost } from '../host_function/host';
+import { Action } from './args';
+import { showMWErrorMessage } from './errmsg';
 
 export let bot: MWBot | undefined;
 
@@ -16,8 +18,8 @@ export async function login(): Promise<void> {
     if (!host) { return undefined; }
 
     const userInfo: { username?: string; password?: string } = {
-        username: config.get("userName"),
-        password: config.get("password")
+        username: config.get('userName'),
+        password: config.get('password')
     };
 
     if (!userInfo.username || !userInfo.password) {
@@ -31,13 +33,11 @@ export async function login(): Promise<void> {
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Login...");
     try {
         const response = await bot?.login(userInfo);
-        console.log(response);
         vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
         );
     }
-    catch (error: any) {
-        console.log(error);
-        vscode.window.showErrorMessage(error.message);
+    catch (error) {
+        showMWErrorMessage('login', error);
     }
     finally {
         barMessage.dispose();
@@ -48,18 +48,17 @@ export async function logout(): Promise<void> {
     await bot?.getEditToken();
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Logout...");
     try {
-        const result = await bot?.request({
-            'action': 'logout',
+        // it will be {} if success
+        await bot?.request({
+            'action': Action.logout,
             'token': bot.editToken
         });
-        // it will be {} if success
-        console.log(result);
         // clear bot
         bot = undefined;
         vscode.window.showInformationMessage('result: "Success"');
     }
-    catch (error: any) {
-        vscode.window.showErrorMessage(error.message);
+    catch (error) {
+        showMWErrorMessage('logout', error);
     }
     finally {
         barMessage.dispose();
