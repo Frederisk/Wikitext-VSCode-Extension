@@ -18,21 +18,16 @@ import { showMWErrorMessage } from './errmsg';
  */
 export async function postPage(): Promise<void> {
     async function getEditToken(bot: MWBot): Promise<string> {
-        console.log("try get token.");
-        let args: Record<string, string>;
-        let result: Bluebird<any>;
-        let token: string | undefined;
-        const errors: any[] = [undefined, undefined];
-
+        const errors: unknown[] = [undefined, undefined];
         try {
-            args = {
+            const args: Record<string, string> = {
                 action: Action.query,
                 meta: 'tokens',
                 type: 'csrf'
             };
-            result = await bot.request(args);
+            const result: Bluebird<unknown> = await bot.request(args);
             const reNew: TokensResult = TokensConvert.toTokensResult(result);
-            token = reNew.query?.tokens?.csrftoken;
+            const token: string | undefined = reNew.query?.tokens?.csrftoken;
             if (token) {
                 return token;
             }
@@ -42,13 +37,13 @@ export async function postPage(): Promise<void> {
         }
         if (errors[0] !== undefined) {
             try {
-                args = {
+                const args: Record<string, string> = {
                     action: "tokens",
                     type: "edit"
                 };
-                result = await bot.request(args);
+                const result = await bot.request(args);
                 const reOld: OldTokensResult = OldTokensConvert.toOldTokensResult(result);
-                token = reOld.tokens?.edittoken;
+                const token: string | undefined = reOld.tokens?.edittoken;
                 if (token) {
                     return token;
                 }
@@ -58,7 +53,10 @@ export async function postPage(): Promise<void> {
             }
         }
 
-        throw new Error(`Could not get edit token: NEW: ${errors[0].name}; OLD: ${errors[1].name}`);
+        const error = Error('Could not get edit token:' +
+            'NEW: ' + ((errors[0] instanceof Error) ? errors[0].message : "") +
+            'OLD:' + ((errors[1] instanceof Error) ? errors[1].message : ""));
+        throw error;
     }
 
     if (bot === undefined) {
@@ -81,14 +79,12 @@ export async function postPage(): Promise<void> {
         prompt: "Enter the page name here."
     });
     if (!wikiTitle) {
-        vscode.window.showWarningMessage("Empty Title, Post failed.");
         return undefined;
     }
     const wikiSummary: string | undefined = await vscode.window.showInputBox({
-        value: "",
         ignoreFocusOut: false,
-        prompt: "Enter the summary of this edit action.",
-        placeHolder: " // Edit via Wikitext Extension for VSCode"
+        prompt: 'Enter the summary of this edit action.',
+        placeHolder: "// Edit via Wikitext Extension for VSCode"
     }) + " // Edit via Wikitext Extension for VSCode";
 
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
@@ -150,9 +146,10 @@ export async function pullPage(): Promise<void> {
 export async function getPageCode(args: Record<string, string>, tbot: MWBot): Promise<void> {
     function getInfoHead(info: Record<string, string | undefined>, lang?: string): string {
         const headInfo: Record<string, string> = {
-            comment: "Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits."
+            comment: "Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.",
+            ...info
         };
-        const infoLine: string = Object.keys({ ...headInfo, ...info }).
+        const infoLine: string = Object.keys(headInfo).
             map((key: string) => `    ${key} = #${headInfo[key]}#`).
             join("\r");
         const commentList: Record<string, [string, string]> = {
@@ -173,7 +170,7 @@ ${infoLine}
         // get request result
         const result = await tbot.request(args);
         console.log(result);
-        // Conver result as class
+        // Convert result as class
         const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
         if (re.query?.interwiki) {
             vscode.window.showWarningMessage(
@@ -188,8 +185,7 @@ ${infoLine}
 
         if (page.missing !== undefined || page.invalid !== undefined) {
             vscode.window.showWarningMessage(
-                `The page "${page.title}" you are looking for does not exist.` +
-                page.invalidreason || "");
+                `The page "${page.title}" you are looking for does not exist. ${page.invalidreason ?? ""}`);
             return undefined;
         }
         // first revision
@@ -246,7 +242,7 @@ export function getContentInfo(content: string): ContentInfo {
         content = content.replace(/<%--\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*--%>\s*/, "");
         const getInfo = (infoName: PageInfo): string | undefined => {
             const nameFirst: string = infoName[0];
-            const nameRest: string = infoName.substr(1);
+            const nameRest: string = infoName.substring(1);
             const reg = new RegExp(`(?<=[${nameFirst.toLowerCase()}${nameFirst.toUpperCase()}]${nameRest}\\s*=\\s*#).*?(?=#)`);
             return info.match(reg)?.[0];
         };
