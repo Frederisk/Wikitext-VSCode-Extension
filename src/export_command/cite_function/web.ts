@@ -9,7 +9,6 @@ import * as cheerio from "cheerio";
 import fetch, { Response } from "node-fetch";
 import { DateTime } from "luxon";
 import { ArchiveConvert, ArchiveResult } from "../../interface_definition/archiveInterface";
-import { showMWErrorMessage } from "../wikimedia_function/errmsg";
 
 export async function addWebCite(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
@@ -37,7 +36,12 @@ export async function addWebCite(): Promise<void> {
         }
     }
     catch (error) {
-        showMWErrorMessage('addWebCite', error);
+        if (error instanceof Error) {
+            vscode.window.showErrorMessage(`ErrorName:${error.name}; ErrorMessage:${error.message}.`);
+        }
+        else {
+            vscode.window.showErrorMessage(`addWebCite ERROR: ${JSON.stringify(error)}.`);
+        }
     }
     finally {
         barMessage.dispose();
@@ -139,7 +143,7 @@ class WebCiteInfo {
 }
 
 /**
-* Repalce all argument.
+* Replace all argument.
 */
 export function getReplacedString(formatStr: string, argStr: string, replaceStr: string | undefined): string {
     // /\{$arg\}/
@@ -152,7 +156,7 @@ export function getReplacedString(formatStr: string, argStr: string, replaceStr:
         formatStr = formatStr.replace(argRegExp, replaceStr);
     }
     else {
-        // remove all substring betweem <!arg> and </!arg>
+        // remove all substring between <!arg> and </!arg>
         // /\<\!arg\>[\s\S]*?\<\/\!arg\>/
         formatStr = formatStr.replace(new RegExp(`<!${argStr}>[\\s\\S]*?<\\/!${argStr}>`, 'g'), '');
         // clear all argument
