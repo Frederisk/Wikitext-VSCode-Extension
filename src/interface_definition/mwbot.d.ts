@@ -145,7 +145,7 @@ declare module 'mwbot' {
     loginGetEditToken(loginOptions: object): BlueBird<any>;
 
     /**
-     * Combines Login  with GetCreateaccountToken
+     * Combines Login  with GetCreateAccountToken
      *
      * @param {object} loginOptions
      *
