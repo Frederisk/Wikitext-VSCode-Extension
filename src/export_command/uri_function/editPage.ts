@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import MWBot from 'mwbot';
 import { getBot } from '../wikimedia_function/bot';
 import { Action, alterNativeValues, Prop, RvProp } from '../wikimedia_function/args';
-import { getPageCode } from '../wikimedia_function/core';
+import { getPageCode } from '../wikimedia_function/page';
 import { isRemoteBot, parseArgs } from './uri';
 
 export async function editPage(query: string): Promise<void> {

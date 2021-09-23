@@ -4,6 +4,22 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.4.1] - 2021-09-24
+
+### Added
+
+- PageInfo support for CSS, JavaScript, Lua, etc.
+
+### Changed
+
+- Enhanced info message of pull page function.
+- Enhanced PageInfo syntax.
+- Clearer error prompts.
+
+### Fixed
+
+- Errors about syntax.
+
 ## [3.4.0] - 2021-07-30
 
 ### Added

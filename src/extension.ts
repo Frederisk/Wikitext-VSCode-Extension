@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 import { getPreview, getPageView } from './export_command/wikimedia_function/view';
 import { login, logout } from './export_command/wikimedia_function/bot';
-import { postPage, pullPage } from './export_command/wikimedia_function/core';
+import { postPage, pullPage } from './export_command/wikimedia_function/page';
 import { baseUriProcess } from './export_command/uri_function/uri';
 import { addWebCite } from './export_command/cite_function/web';
 

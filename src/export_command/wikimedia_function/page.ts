@@ -10,7 +10,7 @@ import { Action, Prop, RvProp, alterNativeValues } from './args';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
 import { bot, getBot } from './bot';
-import { TokensConvert, TokensResult } from '../../interface_definition/tokensInteface';
+import { TokensConvert, TokensResult } from '../../interface_definition/tokensInterface';
 import { showMWErrorMessage } from './errmsg';
 
 /**

@@ -10,7 +10,7 @@ import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConverter } from '../../interface_definition/getViewInterface';
 import { getHost } from '../host_function/host';
 import { getBot } from './bot';
-import { getContentInfo } from './core';
+import { getContentInfo } from './page';
 import { showMWErrorMessage } from './errmsg';
 
 /**
