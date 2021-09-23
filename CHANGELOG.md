@@ -8,12 +8,12 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 ### Added
 
-- PageInfo support for CSS, JavaScript, Lua, etc.
+- PageInfo support for the file of CSS, JavaScript, Lua, etc.
+- Added PageInfo syntax.
 
 ### Changed
 
 - Enhanced info message of pull page function.
-- Enhanced PageInfo syntax.
 - Clearer error prompts.
 
 ### Fixed

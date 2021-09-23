@@ -7,11 +7,16 @@ import * as vscode from 'vscode';
 import type Bluebird from 'bluebird';
 import type MWBot from 'mwbot';
 import { Action, Prop, RvProp, alterNativeValues } from './args';
-import { ReadPageConvert, ReadPageResult, Main, Revision, Jump } from '../../interface_definition/readPageInterface';
+import { ReadPageConvert, ReadPageResult, Main, Revision, Jump, Page } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
 import { bot, getBot } from './bot';
 import { TokensConvert, TokensResult } from '../../interface_definition/tokensInterface';
 import { showMWErrorMessage } from './errmsg';
+
+interface ContentInfo {
+    content: string;
+    info?: Record<string, string | undefined>;
+}
 
 /**
  * Write/Post Page
@@ -55,7 +60,7 @@ export async function postPage(): Promise<void> {
 
         const error = Error('Could not get edit token:' +
             'NEW: ' + ((errors[0] instanceof Error) ? errors[0].message : "") +
-            'OLD:' + ((errors[1] instanceof Error) ? errors[1].message : ""));
+            'OLD: ' + ((errors[1] instanceof Error) ? errors[1].message : ""));
         throw error;
     }
 
@@ -81,11 +86,15 @@ export async function postPage(): Promise<void> {
     if (!wikiTitle) {
         return undefined;
     }
-    const wikiSummary: string | undefined = await vscode.window.showInputBox({
+    let wikiSummary: string | undefined = await vscode.window.showInputBox({
         ignoreFocusOut: false,
         prompt: 'Enter the summary of this edit action.',
-        placeHolder: "// Edit via Wikitext Extension for VSCode"
-    }) + " // Edit via Wikitext Extension for VSCode";
+        placeHolder: '// Edit via Wikitext Extension for VSCode'
+    });
+    if(wikiSummary === undefined){
+        return undefined;
+    }
+    wikiSummary = (wikiSummary + ' // Edit via Wikitext Extension for VSCode').trim();
 
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
     try {
@@ -143,15 +152,10 @@ export async function pullPage(): Promise<void> {
     getPageCode(args, tbot);
 }
 
+type PageInfo = "pageTitle" | "pageID" | "revisionID" | "contentModel" | "contentFormat";
+
 export async function getPageCode(args: Record<string, string>, tbot: MWBot): Promise<void> {
-    function getInfoHead(info: Record<string, string | undefined>, lang?: string): string {
-        const headInfo: Record<string, string> = {
-            comment: "Please do not remove this struct. It's record contains some important informations of edit. This struct will be removed automatically after you push edits.",
-            ...info
-        };
-        const infoLine: string = Object.keys(headInfo).
-            map((key: string) => `    ${key} = #${headInfo[key]}#`).
-            join("\r");
+    function getInfoHead(info: Record<PageInfo, string | undefined>): string {
         const commentList: Record<string, [string, string]> = {
             wikitext: ["", ""],
             jsonc: ["/*", "*/"],
@@ -159,8 +163,16 @@ export async function getPageCode(args: Record<string, string>, tbot: MWBot): Pr
             javascript: ["/*", "*/"],
             css: ["/*", "*/"],
             php: ["/*", "*/"],
+            'flow-board': ["/*", "*/"],
         };
-        return commentList[lang || "wikitext"].join(`<%-- [PAGE_INFO]
+        const headInfo: Record<string, string | undefined> = {
+            comment: "Please do not remove this struct. It's record contains some important information of edit. This struct will be removed automatically after you push edits.",
+            ...info
+        };
+        const infoLine: string = Object.keys(headInfo).
+            map((key: string) => `    ${key} = #${headInfo[key]}#`).
+            join("\r");
+        return commentList[info?.['contentModel'] || "wikitext"].join(`<%-- [PAGE_INFO]
 ${infoLine}
 [END_PAGE_INFO] --%>`);
     }
@@ -169,7 +181,7 @@ ${infoLine}
     try {
         // get request result
         const result = await tbot.request(args);
-        console.log(result);
+        // console.log(result);
         // Convert result as class
         const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
         if (re.query?.interwiki) {
@@ -179,7 +191,7 @@ ${infoLine}
         }
 
         // get first page
-        const page = re.query?.pages?.[Object.keys(re.query.pages)[0]];
+        const page: Page| undefined = re.query?.pages?.[Object.keys(re.query.pages)[0]];
         // need a page elements
         if (!page) { return undefined; }
 
@@ -189,10 +201,9 @@ ${infoLine}
             return undefined;
         }
         // first revision
-        const revision = page.revisions?.[0];
+        const revision: Revision| undefined = page.revisions?.[0];
 
         const content: Main | Revision | undefined = revision?.slots?.main || revision;
-        const lang: string | undefined = content?.contentmodel === "flow-board" ? "jsonc" : content?.contentmodel;
 
         const info: Record<PageInfo, string | undefined> = {
             pageTitle: page.title,
@@ -201,9 +212,9 @@ ${infoLine}
             contentModel: content?.contentmodel,
             contentFormat: content?.contentformat
         };
-        const infoHead: string = getInfoHead(info, lang);
-        const textDocument = await vscode.workspace.openTextDocument({
-            language: lang,
+        const infoHead: string = getInfoHead(info);
+        const textDocument: vscode.TextDocument = await vscode.workspace.openTextDocument({
+            language: (content?.contentmodel === "flow-board") ? "jsonc" : content?.contentmodel,
             content: infoHead + "\r\r" + content?.["*"]
         });
         vscode.window.showTextDocument(textDocument);
@@ -227,19 +238,13 @@ ${infoLine}
 
 // TODO: uploadFile, deletedPage
 
-type PageInfo = "pageTitle" | "pageID" | "revisionID" | "contentModel" | "contentFormat";
-
-interface ContentInfo {
-    content: string;
-    info?: Record<string, string | undefined>;
-}
-
 export function getContentInfo(content: string): ContentInfo {
-    const info: string | undefined = content.match(/(?<=<%--\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*--%>)/)?.[0];
+    const info: string | undefined = content.match(
+        /(?<=<%--\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*--%>)/
+        )?.[0];
 
-    let pageInfo: Record<string, string | undefined> | undefined;
+    let pageInfo: Record<PageInfo, string | undefined> | undefined;
     if (info) {
-        content = content.replace(/<%--\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*--%>\s*/, "");
         const getInfo = (infoName: PageInfo): string | undefined => {
             const nameFirst: string = infoName[0];
             const nameRest: string = infoName.substring(1);
@@ -250,9 +255,11 @@ export function getContentInfo(content: string): ContentInfo {
             pageTitle: getInfo("pageTitle"),
             pageID: getInfo("pageID"),
             revisionID: getInfo("revisionID"),
-            contentModel: getInfo("revisionID"),
+            contentModel: getInfo("contentModel"),
             contentFormat: getInfo("contentFormat")
         };
+
+        content = content.replace(/\s*(?:\/\*|--\[=\[)?<%--\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*--%>\s*(?:\*\/|--\]=\])?/, '');
     }
 
     return { content: content, info: pageInfo };
