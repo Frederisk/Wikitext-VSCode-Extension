@@ -93,8 +93,8 @@ class WebCiteInfo {
         const websiteText: string = await results[0].text();
         this.metaData = cheerio.load(websiteText);
 
-        const archiveJSON: ArchiveResult = await results[1].json();
-        const re = ArchiveConvert.toArchiveResult(archiveJSON);
+        const archiveJSON = await results[1].json();
+        const re: ArchiveResult = ArchiveConvert.toArchiveResult(archiveJSON);
         console.log(archiveJSON);
 
         // Check archive and get the closest
