@@ -7,7 +7,8 @@ version: 3.1.{build}
 image: Visual Studio 2019
 environment:
   matrix:
-    - nodejs_version: "10"
+    # - nodejs_version: "10" # Node.js 10 has been deprecated since May 2020
+    - nodejs_version: "12"
     - nodejs_version: "14"
     - nodejs_version: "15"
 matrix:
