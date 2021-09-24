@@ -6,7 +6,8 @@
 
 import * as vscode from "vscode";
 import * as cheerio from "cheerio";
-import fetch, { Response } from "node-fetch";
+import fetch from "node-fetch";
+import type { Response } from "node-fetch";
 import { DateTime } from "luxon";
 import { ArchiveConvert, ArchiveResult } from "../../interface_definition/archiveInterface";
 
@@ -16,7 +17,7 @@ export async function addWebCite(): Promise<void> {
     const url: string | undefined = await vscode.window.showInputBox({
         prompt: "input the URL that you want to ref.",
         placeHolder: "https://sample.com",
-        ignoreFocusOut: false
+        ignoreFocusOut: true
     });
     if (!url) { return undefined; }
 
@@ -30,14 +31,14 @@ export async function addWebCite(): Promise<void> {
         const selection: vscode.Selection | undefined = editor?.selection;
 
         if (selection) {
-            editor?.edit((editorBuilder) => {
+            editor?.edit((editorBuilder: vscode.TextEditorEdit): void => {
                 editorBuilder.insert(selection.active, result);
             });
         }
     }
     catch (error) {
         if (error instanceof Error) {
-            vscode.window.showErrorMessage(`ErrorName:${error.name}; ErrorMessage:${error.message}.`);
+            vscode.window.showErrorMessage(`ErrorName: ${error.name}; ErrorMessage: ${error.message}.`);
         }
         else {
             vscode.window.showErrorMessage(`addWebCite ERROR: ${JSON.stringify(error)}.`);
@@ -74,7 +75,7 @@ class WebCiteInfo {
         format = getReplacedString(format, "publicationdate", this.publishDate);
         format = getReplacedString(format, "archiveurl", this.archivedUrl);
         format = getReplacedString(format, "archivedate", this.archivedDate);
-        return format;
+        return format.replace(/[\n\r]/g, ' ');
     }
 
     public async buildInfo(): Promise<void> {
@@ -86,8 +87,8 @@ class WebCiteInfo {
 
     private async fetchArchive(): Promise<void> {
         // Fetch content and archive in parallel
-        const websiteResponse = fetch(this.url);
-        const archiveResponse = fetch(this.archiveApiUrl);
+        const websiteResponse: Promise<Response> = fetch(this.url);
+        const archiveResponse: Promise<Response> = fetch(this.archiveApiUrl);
         const results: [Response, Response] = await Promise.all([websiteResponse, archiveResponse]);
 
         const websiteText: string = await results[0].text();
@@ -95,7 +96,6 @@ class WebCiteInfo {
 
         const archiveJSON = await results[1].json();
         const re: ArchiveResult = ArchiveConvert.toArchiveResult(archiveJSON);
-        // console.log(archiveJSON);
 
         // Check archive and get the closest
         if (re.archivedSnapshots.closest) {

@@ -9,7 +9,7 @@ import { u, o, r, cast, uncast } from "./convertFunction";
 
 /*
     ArchiveResult {
-        archived_snapshots: ArchivedSnapshots {
+        archivedSnapshots: ArchivedSnapshots {
             closest?: Closest {
                 available: boolean,
                 url: string,
@@ -17,13 +17,13 @@ import { u, o, r, cast, uncast } from "./convertFunction";
                 status: string
             }
         },
-        url: string
+        url?: string
     }
  */
 
 export interface ArchiveResult {
     archivedSnapshots: ArchivedSnapshots;
-    url: string;
+    url?: string;
 }
 
 export interface ArchivedSnapshots {
@@ -50,8 +50,8 @@ export class ArchiveConvert {
 /* eslint-disable @typescript-eslint/naming-convention */
 const archiveTypeMap: any = {
     "ArchiveResult": o([
-        { json: "archivedSnapshots", js: "archivedSnapshots", typ: r("ArchivedSnapshots") },
-        { json: "url", js: "url", typ: "" },
+        { json: "archived_snapshots", js: "archivedSnapshots", typ: r("ArchivedSnapshots") },
+        { json: "url", js: "url", typ: u(undefined, "") },
     ], false),
     "ArchivedSnapshots": o([
         { json: "closest", js: "closest", typ: u(undefined, r("Closest")) },
