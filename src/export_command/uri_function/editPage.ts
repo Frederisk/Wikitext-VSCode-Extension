@@ -27,7 +27,7 @@ export async function editPage(query: string): Promise<void> {
         'rvslots': "*",
         'titles': title
     };
-    console.log(args);
-    console.log(tbot);
+    // console.log(args);
+    // console.log(tbot);
     getPageCode(args, tbot);
 }

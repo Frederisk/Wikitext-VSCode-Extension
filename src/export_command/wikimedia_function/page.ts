@@ -76,7 +76,7 @@ export async function postPage(): Promise<void> {
     }
 
     const contentInfo: ContentInfo = getContentInfo(wikiContent);
-    console.log(contentInfo);
+    // console.log(contentInfo);
 
     const wikiTitle: string | undefined = await vscode.window.showInputBox({
         value: contentInfo.info?.pageTitle || "",

@@ -95,7 +95,7 @@ class WebCiteInfo {
 
         const archiveJSON = await results[1].json();
         const re: ArchiveResult = ArchiveConvert.toArchiveResult(archiveJSON);
-        console.log(archiveJSON);
+        // console.log(archiveJSON);
 
         // Check archive and get the closest
         if (re.archivedSnapshots.closest) {
