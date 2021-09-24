@@ -4,7 +4,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
-## [3.4.1] - 2021-09-24
+## [3.5.0] - 2021-09-24
 
 ### Added
 
@@ -19,6 +19,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 ### Fixed
 
 - Errors about syntax.
+- Some bugs of web cite method.
 
 ## [3.4.0] - 2021-07-30
 

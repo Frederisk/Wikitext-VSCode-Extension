@@ -52,9 +52,12 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Added the function of pulling pages through URI.
-- Added the function of displaying the action status through the status bar.
-- Fixed some typos.
+- Added PageInfo support for the file of CSS, JavaScript, Lua, etc.
+- Added PageInfo syntax.
+- Enhanced info message of pull page function.
+- Clearer error prompts.
+- Fixed some errors about syntax.
+- Fixed some bugs of web cite method.
 
 ## Usage
 
