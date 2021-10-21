@@ -38,6 +38,7 @@
         "onCommand:wikitext.writePage",
         "onCommand:wikitext.viewPage",
         "onCommand:wikitext.citeWeb",
+        "onCommand:wikitext.closeEditor",
         "onLanguage:wikitext",
         "onUri"
     ],
@@ -82,6 +83,11 @@
                 "command": "wikitext.citeWeb",
                 "title": "Add a web citation",
                 "category": "Wikitext"
+            },
+            {
+                "command": "wikitext.closeEditor",
+                "title": "Close this editor without saving",
+                "category": "Wikitext"
             }
         ],
         "menus": {
@@ -120,6 +126,11 @@
                 },
                 {
                     "command": "wikitext.citeWeb",
+                    "group": "navigation",
+                    "when": "editorLangId == wikitext"
+                },
+                {
+                    "command": "wikitext.closeEditor",
                     "group": "navigation",
                     "when": "editorLangId == wikitext"
                 }

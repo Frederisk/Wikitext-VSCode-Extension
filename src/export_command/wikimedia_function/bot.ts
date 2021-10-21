@@ -7,7 +7,7 @@ import MWBot from 'mwbot';
 import * as vscode from 'vscode';
 import { getHost } from '../host_function/host';
 import { Action } from './args';
-import { showMWErrorMessage } from './errmsg';
+import { showMWErrorMessage } from './errMsg';
 
 export let bot: MWBot | undefined;
 
@@ -67,17 +67,17 @@ export async function logout(): Promise<void> {
 
 export async function getBot(): Promise<MWBot | undefined> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    let tbot: MWBot;
+    let tBot: MWBot;
     if (bot) {
-        tbot = bot;
+        tBot = bot;
     }
     else {
         // get host
         const host: string | undefined = await getHost();
         if (!host) { return undefined; }
-        tbot = new MWBot({
+        tBot = new MWBot({
             apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
         });
     }
-    return tbot;
+    return tBot;
 }

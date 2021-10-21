@@ -34,7 +34,7 @@ export function isRemoteBot(pars: Record<string, string>): boolean {
 }
 
 export function parseArgs(query: string): Record<string, string> {
-    const queries = query.split("&");
+    const queries: string[] = query.split("&");
     const pars: Record<string, string> = {};
     for (const item of queries) {
         const eq: number = item.indexOf("=");

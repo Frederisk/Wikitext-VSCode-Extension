@@ -11,7 +11,7 @@ import { ReadPageConvert, ReadPageResult, Main, Revision, Jump, Page } from '../
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
 import { bot, getBot } from './bot';
 import { TokensConvert, TokensResult } from '../../interface_definition/tokensInterface';
-import { showMWErrorMessage } from './errmsg';
+import { showMWErrorMessage } from './errMsg';
 
 interface ContentInfo {
     content: string;
@@ -91,7 +91,7 @@ export async function postPage(): Promise<void> {
         prompt: 'Enter the summary of this edit action.',
         placeHolder: '// Edit via Wikitext Extension for VSCode'
     });
-    if(wikiSummary === undefined){
+    if (wikiSummary === undefined) {
         return undefined;
     }
     wikiSummary = (wikiSummary + ' // Edit via Wikitext Extension for VSCode').trim();
@@ -127,8 +127,8 @@ export async function pullPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     // constructing
-    const tbot: MWBot | undefined = await getBot();
-    if (tbot === undefined) { return undefined; }
+    const tBot: MWBot | undefined = await getBot();
+    if (tBot === undefined) { return undefined; }
 
     // get title name
     const title: string | undefined = await vscode.window.showInputBox({
@@ -149,12 +149,29 @@ export async function pullPage(): Promise<void> {
         args['redirects'] = "true";
     }
 
-    getPageCode(args, tbot);
+    getPageCode(args, tBot);
+}
+
+export function closeEditor() {
+    const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
+
+    // Delete all text
+    editor?.edit((editBuilder: vscode.TextEditorEdit) =>
+        editBuilder.delete(
+            new vscode.Range( // All
+                new vscode.Position(0, 0), // Start
+                editor.document.lineAt(editor.document.lineCount - 1).rangeIncludingLineBreak.end // End
+            )
+        )
+    ).then(() =>
+        // Close editor
+        vscode.commands.executeCommand('workbench.action.closeActiveEditor')
+    );
 }
 
 type PageInfo = "pageTitle" | "pageID" | "revisionID" | "contentModel" | "contentFormat";
 
-export async function getPageCode(args: Record<string, string>, tbot: MWBot): Promise<void> {
+export async function getPageCode(args: Record<string, string>, tBot: MWBot): Promise<void> {
     function getInfoHead(info: Record<PageInfo, string | undefined>): string {
         const commentList: Record<string, [string, string]> = {
             wikitext: ["", ""],
@@ -180,7 +197,7 @@ ${infoLine}
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting code...");
     try {
         // get request result
-        const result = await tbot.request(args);
+        const result = await tBot.request(args);
         // console.log(result);
         // Convert result as class
         const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
@@ -191,7 +208,7 @@ ${infoLine}
         }
 
         // get first page
-        const page: Page| undefined = re.query?.pages?.[Object.keys(re.query.pages)[0]];
+        const page: Page | undefined = re.query?.pages?.[Object.keys(re.query.pages)[0]];
         // need a page elements
         if (!page) { return undefined; }
 
@@ -201,7 +218,7 @@ ${infoLine}
             return undefined;
         }
         // first revision
-        const revision: Revision| undefined = page.revisions?.[0];
+        const revision: Revision | undefined = page.revisions?.[0];
 
         const content: Main | Revision | undefined = revision?.slots?.main || revision;
 
@@ -241,7 +258,7 @@ ${infoLine}
 export function getContentInfo(content: string): ContentInfo {
     const info: string | undefined = content.match(
         /(?<=<%--\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*--%>)/
-        )?.[0];
+    )?.[0];
 
     let pageInfo: Record<PageInfo, string | undefined> | undefined;
     if (info) {

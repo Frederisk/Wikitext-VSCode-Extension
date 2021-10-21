@@ -127,15 +127,15 @@ class WebCiteInfo {
             this.getAttr("meta[property='twitter:site']");
     }
 
-    private getAttr(ioname: string, attrName = "content"): string | undefined {
-        const io: cheerio.Cheerio = this.metaData(ioname);
+    private getAttr(ioName: string, attrName = "content"): string | undefined {
+        const io: cheerio.Cheerio = this.metaData(ioName);
         if (io.length) {
             return io.attr(attrName) || undefined;
         }
     }
 
-    private getText(ioname: string): string | undefined {
-        const io: cheerio.Cheerio = this.metaData(ioname);
+    private getText(ioName: string): string | undefined {
+        const io: cheerio.Cheerio = this.metaData(ioName);
         if (io.length) {
             return io.text() || undefined;
         }

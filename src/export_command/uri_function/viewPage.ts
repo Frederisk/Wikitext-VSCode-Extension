@@ -14,12 +14,12 @@ export async function viewPage(query: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const pars: Record<string, string> = parseArgs(query);
 
-    const tbot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
+    const tBot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
         apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
     }) : await getBot();
 
-    if (!tbot) {
-        vscode.window.showErrorMessage("tbot is undefined or empty.");
+    if (!tBot) {
+        vscode.window.showErrorMessage("The bot is undefined or empty.");
         return undefined;
     }
 
@@ -40,5 +40,5 @@ export async function viewPage(query: string): Promise<void> {
     undefParNames.forEach((value: string): void => setArgs(value));
     setArgs("PST", "true");
 
-    getView("pageViewer", "WikiViewer", args, tbot, baseHref);
+    getView("pageViewer", "WikiViewer", args, tBot, baseHref);
 }

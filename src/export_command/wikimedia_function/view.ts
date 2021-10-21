@@ -11,12 +11,12 @@ import { GetViewResult, ViewConverter } from '../../interface_definition/getView
 import { getHost } from '../host_function/host';
 import { getBot } from './bot';
 import { getContentInfo } from './page';
-import { showMWErrorMessage } from './errmsg';
+import { showMWErrorMessage } from './errMsg';
 
 /**
  * webview panel
  */
-let previewCurrentPlanel: vscode.WebviewPanel | undefined;
+let previewCurrentPanel: vscode.WebviewPanel | undefined;
 
 export async function getPreview(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
@@ -40,33 +40,33 @@ export async function getPreview(): Promise<void> {
             (config.get("getCss") ? Prop.headHTML : undefined)
         ),
         'contentmodel': ContextModel.wikitext,
-        'pst': "whynot",
+        'pst': "why_not",
         'disableeditsection': "yes"
     };
 
     const viewerTitle = "WikitextPreviewer";
 
-    // if no planel, creat one
-    if (!previewCurrentPlanel) {
+    // if no panel, creat one
+    if (!previewCurrentPanel) {
         // if have not, try to creat new one.
-        previewCurrentPlanel = vscode.window.createWebviewPanel(
+        previewCurrentPanel = vscode.window.createWebviewPanel(
             "previewer", viewerTitle, vscode.ViewColumn.Beside, {
             enableScripts: config.get("enableJavascript"),
         });
         // register for events that release resources.
-        previewCurrentPlanel.onDidDispose(() => {
-            previewCurrentPlanel = undefined;
+        previewCurrentPanel.onDidDispose(() => {
+            previewCurrentPanel = undefined;
         }, null, extensionContext.subscriptions);
     }
 
-    const tbot: MWBot | undefined = await getBot();
-    if (!tbot) {
+    const tBot: MWBot | undefined = await getBot();
+    if (!tBot) {
         return undefined;
     }
 
     const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
 
-    getView(previewCurrentPlanel, viewerTitle, args, tbot, baseHref);
+    getView(previewCurrentPanel, viewerTitle, args, tBot, baseHref);
 }
 
 export async function getPageView(): Promise<void> {
@@ -95,31 +95,31 @@ export async function getPageView(): Promise<void> {
         args['redirects'] = "true";
     }
 
-    const tbot: MWBot | undefined = await getBot();
-    if (!tbot) {
+    const tBot: MWBot | undefined = await getBot();
+    if (!tBot) {
         return undefined;
     }
 
     const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
 
-    getView("pageViewer", "WikiViewer", args, tbot, baseHref);
+    getView("pageViewer", "WikiViewer", args, tBot, baseHref);
 }
 
 /**
  *
- * @param currentPlanel where to show
+ * @param currentPanel where to show
  * @param viewerTitle viewer title
  * @param args post args
- * @param tbot account
- * @param baseURI urlbase
+ * @param tBot account
+ * @param baseURI url base
  * @returns task
  */
-export async function getView(currentPlanel: vscode.WebviewPanel | string, viewerTitle: string, args: Record<string, string>, tbot: MWBot, baseURI: string): Promise<void> {
+export async function getView(currentPanel: vscode.WebviewPanel | string, viewerTitle: string, args: Record<string, string>, tBot: MWBot, baseURI: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting view...");
     try {
-        const result = await tbot.request(args);
+        const result = await tBot.request(args);
         const re: GetViewResult = ViewConverter.getViewResultToJson(result);
         if (!re.parse) { return undefined; }
 
@@ -134,11 +134,11 @@ export async function getView(currentPlanel: vscode.WebviewPanel | string, viewe
 
         const html: string = htmlHead + htmlText + htmlCategories + htmlEnd;
 
-        if (typeof (currentPlanel) === "string") {
-            currentPlanel = vscode.window.createWebviewPanel(currentPlanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript") });
+        if (typeof (currentPanel) === "string") {
+            currentPanel = vscode.window.createWebviewPanel(currentPanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript") });
         }
-        currentPlanel.webview.html = html;
-        currentPlanel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
+        currentPanel.webview.html = html;
+        currentPanel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
     }
     catch (error) {
         showMWErrorMessage('getView', error);
