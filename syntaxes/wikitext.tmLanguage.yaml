@@ -9,7 +9,7 @@ name: Wikitext
 scopeName: source.wikitext
 patterns:
   - include: "#wikitext"
-  - include: text.xml
+  - include: text.html.basic
 repository:
   # wikitext: https://www.mediawiki.org/wiki/Wikitext
   wikitext:
@@ -427,13 +427,13 @@ repository:
       wikixml:
         patterns:
           - include: "#nowiki"
-          - include: "#graph"
           - include: "#ref"
-          - include: "#templatedata"
+          - include: "#jsonin"
+          - include: "#wikitag"
         repository:
           nowiki:
             contentName: meta.embedded.block.plaintext
-            begin: (?i)(<)(nowiki)(\s+[^>\/]+)?\s*(>)
+            begin: (?i)(<)(nowiki)(\s+[^>]+)?\s*(>)
             #          1<12nowiki2    3a="a"34>4
             beginCaptures:
               0:
@@ -465,7 +465,7 @@ repository:
                 name: punctuation.definition.tag.end.wikitext
           ref:
             contentName: meta.block.ref.wikitext
-            begin: (?i)(<)(ref)(\s+[^>\/]+)?\s*(>)
+            begin: (?i)(<)(ref)(\s+[^>]+)?\s*(>)
             beginCaptures:
               0:
                 name: meta.tag.metadata.ref.start.wikitext
@@ -496,11 +496,11 @@ repository:
                 name: punctuation.definition.tag.end.wikitext
             patterns:
               - include: $self
-          graph:
-            begin: (?i)(<)(graph)(\s+[^>\/]+)?\s*(>)
+          jsonin:
+            begin: (?i)(<)(graph|templatedata)(\s+[^>]+)?\s*(>)
             beginCaptures:
               0:
-                name: meta.tag.metadata.graph.start.wikitext
+                name: meta.tag.metadata.start.wikitext
               1:
                 name: punctuation.definition.tag.begin.wikitext
               2:
@@ -516,10 +516,10 @@ repository:
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
-            end: (?i)(</)(graph)\s*(>)
+            end: (?i)(</)(graph|templatedata)\s*(>)
             endCaptures:
               0:
-                name: meta.tag.metadata.graph.end.wikitext
+                name: meta.tag.metadata.end.wikitext
               1:
                 name: punctuation.definition.tag.begin.wikitext
               2:
@@ -529,15 +529,14 @@ repository:
             contentName: meta.embedded.block.json
             patterns:
               - include: source.json
-          templatedata:
-            begin: (?i)(<)(templatedata)(\s+[^>\/]+)?\s*(>)
-            beginCaptures:
-              0:
-                name: meta.tag.metadata.templatedata.start.wikitext
+          wikitag:
+            match: (?i)(<)(templatestyles)(\s+[^>]+)?\s*(/>)
+            #          1<12templatestyles23  h=here3    4/>4
+            captures:
               1:
                 name: punctuation.definition.tag.begin.wikitext
               2:
-                name: entity.name.tag.wikitext.tenplatedata.wikitext
+                name: entity.name.tag.wikitext
               3:
                 patterns:
                   - match: " ([a-zA-Z-]+)"
@@ -548,20 +547,8 @@ repository:
                   - include: "#singlequotedString"
                   - include: $self
               4:
-                name: punctuation.definition.tag.end.wikitext
-            end: (?i)(</)(templatedata)\s*(>)
-            endCaptures:
-              0:
-                name: meta.tag.metadata.templatedata.end.wikitext
-              1:
-                name: punctuation.definition.tag.begin.wikitext
-              2:
-                name: entity.name.tag.wikitext
-              3:
-                name: punctuation.definition.tag.end.wikitext
-            contentName: meta.embedded.block.json
-            patterns:
-              - include: source.json
+                punctuation.definition.tag.end.wikitext
+            name: meta.tag.metedata.void.wikitext
   ## public
   doublequotedString:
     begin: '"'
