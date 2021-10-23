@@ -2,9 +2,11 @@
 
 [![VSMarket: wikitext](https://vsmarketplacebadge.apphb.com/version/RoweWilsonFrederiskHolme.Wikitext.svg?color=blueviolet&logo=visual-studio-code&style=?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
 [![GitHub: wikitext](https://img.shields.io/badge/GitHub-wikitext-yellow)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/25okygmf42atyvi0?svg=true)](https://ci.appveyor.com/project/Frederisk/wikitext-vscode-extension)
 [![GitHub Actions CodeQL](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/codeql-analysis.yml/badge.svg/)](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions?query=workflow%3ACodeQL)
 [![CodeFactor Status](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension/badge)](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension)
+
 [![Twitter: @rwfholme](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
 [![Patreon Donate](https://img.shields.io/badge/donate-patreon-orange)](https://www.patreon.com/rwfholme)
 

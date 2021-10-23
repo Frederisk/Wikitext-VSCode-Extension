@@ -9,7 +9,7 @@ import type MWBot from 'mwbot';
 import { Action, Prop, RvProp, alterNativeValues } from './args';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump, Page } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
-import { bot, getBot } from './bot';
+import { bot, getBotOrDefault, login } from './bot';
 import { TokensConvert, TokensResult } from '../../interface_definition/tokensInterface';
 import { showMWErrorMessage } from './errMsg';
 
@@ -64,8 +64,43 @@ export async function postPage(): Promise<void> {
         throw error;
     }
 
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     if (bot === undefined) {
-        vscode.window.showWarningMessage("You are not logged in. Please log in and try again.");
+        switch (config.get('autoLogin')) {
+            case 'Always':
+                if (!await login()) {
+                    // login failed
+                    return undefined;
+                }
+                break;
+            case 'Never':
+                vscode.window.showWarningMessage('You are not logged in. Please log in and try again.');
+                return undefined;
+            case 'Ask me':
+            default:
+                const result: string | undefined = await vscode.window.showWarningMessage("You are not logged in. Do you want to login now?", 'Yes', 'No', 'Always', 'Never');
+                switch (result) {
+                    case 'Always':
+                        config.update('autoLogin', 'Always', true);
+                    case 'Yes':
+                        if (!await login()) {
+                            // login failed
+                            return undefined;
+                        }
+                        break;
+                    case 'Never':
+                        config.update('autoLogin', 'Never', true);
+                    case 'No':
+                    case undefined:
+                    default:
+                        return undefined;
+                }
+                break;
+        }
+    }
+
+    if (bot === undefined) {
+        vscode.window.showErrorMessage("ERROR: Bot is undefined!");
         return undefined;
     }
 
@@ -94,8 +129,7 @@ export async function postPage(): Promise<void> {
     if (wikiSummary === undefined) {
         return undefined;
     }
-    wikiSummary = (wikiSummary + ' // Edit via Wikitext Extension for VSCode').trim();
-
+    wikiSummary = `{wikiSummary} // Edit via Wikitext Extension for VSCode`.trim();
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
     try {
         bot.editToken = await getEditToken(bot);
@@ -127,7 +161,7 @@ export async function pullPage(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     // constructing
-    const tBot: MWBot | undefined = await getBot();
+    const tBot: MWBot | undefined = await getBotOrDefault();
     if (tBot === undefined) { return undefined; }
 
     // get title name

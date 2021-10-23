@@ -243,9 +243,23 @@
                 },
                 "wikitext.previewCssStyle": {
                     "type": "string",
-                    "multipleOf": 0,
                     "markdownDescription": "CSS attached to Previewer. This content always works, regardless of whether [GetCss](#wikitext.getCss) is enabled or not. To enable CSS for a specific category of themes, you can use the class filter name `vscode-light`, `vscode-dark`, `vscode-high-contrast` etc. See [Extension guides](https://code.visualstudio.com/api/extension-guides/webview#theming-webview-content) to learn more.",
                     "default": ".vscode-dark img[class^=\"mwe-math-fallback-image\"]{filter: invert(85%);} .vscode-light {} .vscode-high-contrast img[class^=\"mwe-math-fallback-image\"]{background-color: white; filter: invert(100%);}"
+                },
+                "wikitext.autoLogin": {
+                    "type": "string",
+                    "default": "Ask me",
+                    "enum": [
+                        "Always",
+                        "Never",
+                        "Ask me"
+                    ],
+                    "enumDescriptions": [
+                        "Always log in automatically when I am not logged in",
+                        "Never log in automatically",
+                        "Ask me if I want to log in when I am not logged in"
+                    ],
+                    "description": "Whether to automatically log in when performing an action that requires an account to be logged in."
                 }
             }
         }

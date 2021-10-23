@@ -11,11 +11,11 @@ import { showMWErrorMessage } from './errMsg';
 
 export let bot: MWBot | undefined;
 
-export async function login(): Promise<void> {
+export async function login(): Promise<boolean> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const host: string | undefined = await getHost();
-    if (!host) { return undefined; }
+    if (!host) { return false; }
 
     const userInfo: { username?: string; password?: string } = {
         username: config.get('userName'),
@@ -24,7 +24,7 @@ export async function login(): Promise<void> {
 
     if (!userInfo.username || !userInfo.password) {
         vscode.window.showWarningMessage("You have not filled in the user name or password, please go to the settings to edit them and try again.");
-        return undefined;
+        return false;
     }
 
     bot = new MWBot({
@@ -32,12 +32,14 @@ export async function login(): Promise<void> {
     });
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Login...");
     try {
-        const response = await bot?.login(userInfo);
+        const response = await bot.login(userInfo);
         vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
         );
+        return true;
     }
     catch (error) {
         showMWErrorMessage('login', error);
+        return false;
     }
     finally {
         barMessage.dispose();
@@ -65,7 +67,7 @@ export async function logout(): Promise<void> {
     }
 }
 
-export async function getBot(): Promise<MWBot | undefined> {
+export async function getBotOrDefault(): Promise<MWBot | undefined> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     let tBot: MWBot;
     if (bot) {

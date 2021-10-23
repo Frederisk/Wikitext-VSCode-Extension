@@ -9,7 +9,7 @@ import { extensionContext } from '../../extension';
 import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConverter } from '../../interface_definition/getViewInterface';
 import { getHost } from '../host_function/host';
-import { getBot } from './bot';
+import { getBotOrDefault } from './bot';
 import { getContentInfo } from './page';
 import { showMWErrorMessage } from './errMsg';
 
@@ -59,7 +59,7 @@ export async function getPreview(): Promise<void> {
         }, null, extensionContext.subscriptions);
     }
 
-    const tBot: MWBot | undefined = await getBot();
+    const tBot: MWBot | undefined = await getBotOrDefault();
     if (!tBot) {
         return undefined;
     }
@@ -95,7 +95,7 @@ export async function getPageView(): Promise<void> {
         args['redirects'] = "true";
     }
 
-    const tBot: MWBot | undefined = await getBot();
+    const tBot: MWBot | undefined = await getBotOrDefault();
     if (!tBot) {
         return undefined;
     }
