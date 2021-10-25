@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import MWBot from 'mwbot';
-import { getBotOrDefault } from '../wikimedia_function/bot';
+import { getDefaultBot } from '../wikimedia_function/bot';
 import { Action, alterNativeValues, Prop, RvProp } from '../wikimedia_function/args';
 import { getPageCode } from '../wikimedia_function/page';
 import { isRemoteBot, parseArgs } from './uri';
@@ -11,7 +11,7 @@ export async function editPage(query: string): Promise<void> {
 
     const tBot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
         apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
-    }) : await getBotOrDefault();
+    }) : await getDefaultBot();
 
     const title: string | undefined = pars['Title'];
 
@@ -27,7 +27,6 @@ export async function editPage(query: string): Promise<void> {
         'rvslots': "*",
         'titles': title
     };
-    // console.log(args);
-    // console.log(tBot);
+
     getPageCode(args, tBot);
 }

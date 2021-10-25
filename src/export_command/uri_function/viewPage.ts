@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import MWBot from 'mwbot';
-import { getBotOrDefault } from '../wikimedia_function/bot';
+import { getDefaultBot } from '../wikimedia_function/bot';
 import { Action, alterNativeValues, Prop } from '../wikimedia_function/args';
 import { getView } from '../wikimedia_function/view';
 import { isRemoteBot, parseArgs } from './uri';
@@ -16,7 +16,7 @@ export async function viewPage(query: string): Promise<void> {
 
     const tBot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
         apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
-    }) : await getBotOrDefault();
+    }) : await getDefaultBot();
 
     if (!tBot) {
         vscode.window.showErrorMessage("The bot is undefined or empty.");

@@ -260,6 +260,11 @@
                         "Ask me if I want to log in when I am not logged in"
                     ],
                     "description": "Whether to automatically log in when performing an action that requires an account to be logged in."
+                },
+                "wikitext.skipEnteringPageTitle":{
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "If `PageTitle` is filled in `PAGE_INFO`, skip entering the title when posting."
                 }
             }
         }

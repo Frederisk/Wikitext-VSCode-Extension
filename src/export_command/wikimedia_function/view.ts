@@ -9,9 +9,9 @@ import { extensionContext } from '../../extension';
 import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConverter } from '../../interface_definition/getViewInterface';
 import { getHost } from '../host_function/host';
-import { getBotOrDefault } from './bot';
+import { getDefaultBot } from './bot';
 import { getContentInfo } from './page';
-import { showMWErrorMessage } from './errMsg';
+import { showMWErrorMessage } from './err_msg';
 
 /**
  * webview panel
@@ -59,7 +59,7 @@ export async function getPreview(): Promise<void> {
         }, null, extensionContext.subscriptions);
     }
 
-    const tBot: MWBot | undefined = await getBotOrDefault();
+    const tBot: MWBot | undefined = await getDefaultBot();
     if (!tBot) {
         return undefined;
     }
@@ -95,7 +95,7 @@ export async function getPageView(): Promise<void> {
         args['redirects'] = "true";
     }
 
-    const tBot: MWBot | undefined = await getBotOrDefault();
+    const tBot: MWBot | undefined = await getDefaultBot();
     if (!tBot) {
         return undefined;
     }
