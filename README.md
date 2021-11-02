@@ -23,29 +23,29 @@ If you get help with this project, give this project a star or recommend it to o
 
     Go to the gadget's repository page to learn more.
 
-    <img alt="Wikitext Extension Gadget" src="https://user-images.githubusercontent.com/29837738/127597149-5f44306a-a9ee-461a-8022-bd39f8ce3852.gif" width="512"/>
+    <img alt="Wikitext Extension Gadget" src="https://user-images.githubusercontent.com/29837738/127597149-5f44306a-a9ee-461a-8022-bd39f8ce3852.gif" width="768"/>
 
 ## Features
 
 - Color and style annotations of Wikitext can make it easier for users to intuitively find problems in writing grammatical formats.
 
-    <img alt="Code main page" src="https://user-images.githubusercontent.com/29837738/120096683-7a217900-c15f-11eb-9f9c-b4d77ecce486.png" width="512"/>
+    <img alt="Code main page" src="https://user-images.githubusercontent.com/29837738/120096683-7a217900-c15f-11eb-9f9c-b4d77ecce486.png" width="768"/>
 
 - Automatic matching and closing of simple parentheses reduces unnecessary double typing.
 
-    <img alt="Code video" src="https://user-images.githubusercontent.com/29837738/120096717-a6d59080-c15f-11eb-9921-e5555de74f29.gif" width="512"/>
+    <img alt="Code video" src="https://user-images.githubusercontent.com/29837738/120096717-a6d59080-c15f-11eb-9921-e5555de74f29.gif" width="768"/>
 
 - The special comment syntax\(`<!--#region-->`&`<!--#endregion-->`\) can folds the code for easy reading.
 
-    <img alt="Code region" src="https://user-images.githubusercontent.com/29837738/120096736-c076d800-c15f-11eb-8f70-7cfdd73a3307.gif" width="512"/>
+    <img alt="Code region" src="https://user-images.githubusercontent.com/29837738/120096736-c076d800-c15f-11eb-8f70-7cfdd73a3307.gif" width="768"/>
 
 - Press `Ctrl + Shift + V` or click the Preview icon in the title menu bar directly in the Wikitext content to get a parsed preview of Wikitext in the currently active text editor.
 
-    <img alt="Code previewer" src="https://user-images.githubusercontent.com/29837738/120096761-ddaba680-c15f-11eb-8d14-f0705f7d39ba.gif" width="512">
+    <img alt="Code previewer" src="https://user-images.githubusercontent.com/29837738/120096761-ddaba680-c15f-11eb-8d14-f0705f7d39ba.gif" width="768">
 
 - Enter `@[name]` to get a snippet of wikitext. Such as `@table`, `@region`, `@title`...
 
-    <img alt="Code snippets" src="https://user-images.githubusercontent.com/29837738/120096799-0af85480-c160-11eb-8a34-f47603a41935.gif" width="512">
+    <img alt="Code snippets" src="https://user-images.githubusercontent.com/29837738/120096799-0af85480-c160-11eb-8a34-f47603a41935.gif" width="768">
 
 - You can modify the website content by logging in directly in VSCode! Enter the settings page, search Wikitext and find the username and password items, and fill in them. Then press `F1` in the text editor, select `Post your page to the website`!
 
@@ -55,12 +55,11 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Added PageInfo support for the file of CSS, JavaScript, Lua, etc.
-- Added PageInfo syntax.
-- Enhanced info message of pull page function.
-- Clearer error prompts.
-- Fixed some errors about syntax.
-- Fixed some bugs of web cite method.
+- Add a command to close editor without saving.
+- Add the option of auto login.
+- Add option to allow skip filling in page title.
+- Change the base syntax from XML(XHTML) to HTML.
+- Remove ansi-regex dependency to potential security vulnerabilities.
 
 ## Usage
 

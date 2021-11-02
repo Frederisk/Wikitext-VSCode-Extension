@@ -4,6 +4,22 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.6.0] - 2021-11-02
+
+### Added
+
+- Add a command to close editor without saving.
+- Add the option of auto login.
+- Add option to allow skip filling in page title.
+
+### Changed
+
+- Change the base syntax from XML(XHTML) to HTML.
+
+### Fixed
+
+- Remove ansi-regex dependency to potential security vulnerabilities.
+
 ## [3.5.0] - 2021-09-24
 
 ### Added
