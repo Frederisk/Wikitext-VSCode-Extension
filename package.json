@@ -288,7 +288,7 @@
         "@types/mocha": "^9.0.0",
         "@types/node": "^16.11.1",
         "@types/node-fetch": "^2.5.12",
-        "@types/vscode": "^1.61.0",
+        "@types/vscode": "^1.43.0",
         "@typescript-eslint/eslint-plugin": "^5.1.0",
         "@typescript-eslint/parser": "^5.1.0",
         "eslint": "^8.0.1",
