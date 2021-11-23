@@ -12,7 +12,7 @@ node_modules/
 .vscode-test/
 
 # Packaged extensions
-*.vsix
+**/*.vsix
 
 # Log file
-*.log
+**/*.log

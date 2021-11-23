@@ -32,7 +32,7 @@ webpack.config.js
 .gitignore
 
 # Packaged extensions
-*.vsix
+**/*.vsix
 
 # Log file
-*.log
+**/*.log

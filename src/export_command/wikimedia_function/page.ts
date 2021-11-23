@@ -153,7 +153,10 @@ export async function pullPage(): Promise<void> {
         args['redirects'] = "true";
     }
 
-    getPageCode(args, tBot);
+    const document: vscode.TextDocument | undefined = await getPageCode(args, tBot);
+    if (document === undefined) { return undefined; }
+
+    vscode.window.showTextDocument(document);
 }
 
 export function closeEditor() {
@@ -175,7 +178,7 @@ export function closeEditor() {
 
 type PageInfo = "pageTitle" | "pageID" | "revisionID" | "contentModel" | "contentFormat";
 
-export async function getPageCode(args: Record<string, string>, tBot: MWBot): Promise<void> {
+export async function getPageCode(args: Record<string, string>, tBot: MWBot): Promise<vscode.TextDocument | undefined> {
     function getInfoHead(info: Record<PageInfo, string | undefined>): string {
         const commentList: Record<string, [string, string]> = {
             wikitext: ["", ""],
@@ -191,7 +194,7 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
             ...info
         };
         const infoLine: string = Object.keys(headInfo).
-            map((key: string) => `    ${key} = #${headInfo[key]}#`).
+            map((key: string) => `    ${key} = #${headInfo[key] ?? ''}#`).
             join("\r");
         return commentList[info?.['contentModel'] || "wikitext"].join(`<%-- [PAGE_INFO]
 ${infoLine}
@@ -216,29 +219,10 @@ ${infoLine}
         // need a page elements
         if (!page) { return undefined; }
 
-        if (page.missing !== undefined || page.invalid !== undefined) {
-            vscode.window.showWarningMessage(
-                `The page "${page.title}" you are looking for does not exist. ${page.invalidreason ?? ""}`);
-            return undefined;
-        }
         // first revision
         const revision: Revision | undefined = page.revisions?.[0];
 
         const content: Main | Revision | undefined = revision?.slots?.main || revision;
-
-        const info: Record<PageInfo, string | undefined> = {
-            pageTitle: page.title,
-            pageID: page.pageid?.toString(),
-            revisionID: revision?.revid?.toString(),
-            contentModel: content?.contentmodel,
-            contentFormat: content?.contentformat
-        };
-        const infoHead: string = getInfoHead(info);
-        const textDocument: vscode.TextDocument = await vscode.workspace.openTextDocument({
-            language: (content?.contentmodel === "flow-board") ? "jsonc" : content?.contentmodel,
-            content: infoHead + "\r\r" + content?.["*"]
-        });
-        vscode.window.showTextDocument(textDocument);
 
         const normalized: Jump | undefined = re.query?.normalized?.[0];
         const redirects: Jump | undefined = re.query?.redirects?.[0];
@@ -248,6 +232,40 @@ ${infoLine}
             (normalized ? ` Normalized: ${normalized.from} => ${normalized.to}` : "") +
             (redirects ? ` Redirect: ${redirects.from} => ${redirects.to}` : "")
         );
+
+        if (page.missing !== undefined || page.invalid !== undefined) {
+            const choice: string | undefined = await vscode.window.showWarningMessage(
+                `The page "${page.title}" you are looking for does not exist. ${page.invalidreason ?? ''}`.trim() + ' Do you want to create one?', 'Yes', 'No');
+            if (choice === 'Yes') {
+                const info: Record<PageInfo, string | undefined> = {
+                    pageTitle: page.title,
+                    pageID: undefined,
+                    revisionID: undefined,
+                    contentModel: undefined,
+                    contentFormat: undefined,
+                };
+                const infoHead: string = getInfoHead(info);
+                const textDocument: vscode.TextDocument = await vscode.workspace.openTextDocument({
+                    language: info.contentModel ?? 'wikitext',
+                    content: infoHead + "\r\r"
+                });
+                return textDocument;
+            } else { return undefined; }
+        } else {
+            const info: Record<PageInfo, string | undefined> = {
+                pageTitle: page.title,
+                pageID: page.pageid?.toString(),
+                revisionID: revision?.revid?.toString(),
+                contentModel: content?.contentmodel,
+                contentFormat: content?.contentformat
+            };
+            const infoHead: string = getInfoHead(info);
+            const textDocument: vscode.TextDocument = await vscode.workspace.openTextDocument({
+                language: (content?.contentmodel === "flow-board") ? "jsonc" : info.contentModel,
+                content: infoHead + "\r\r" + content?.["*"]
+            });
+            return textDocument;
+        }
     }
     catch (error) {
         showMWErrorMessage('getPageCode', error);

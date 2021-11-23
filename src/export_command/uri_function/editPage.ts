@@ -28,5 +28,8 @@ export async function editPage(query: string): Promise<void> {
         'titles': title
     };
 
-    getPageCode(args, tBot);
+    const document: vscode.TextDocument | undefined = await getPageCode(args, tBot);
+    if (document === undefined) { return undefined; }
+
+    vscode.window.showTextDocument(document);
 }
