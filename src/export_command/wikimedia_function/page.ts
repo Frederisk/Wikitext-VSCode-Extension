@@ -100,6 +100,7 @@ export async function postPage(): Promise<void> {
         return undefined;
     }
     wikiSummary = `{wikiSummary} // Edit via Wikitext Extension for VSCode`.trim();
+    wikiSummary = `${wikiSummary} // Edit via Wikitext Extension for VSCode`.trim();
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
     try {
         tBot.editToken = await getEditToken(tBot);
