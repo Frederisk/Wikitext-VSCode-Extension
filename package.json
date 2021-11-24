@@ -200,7 +200,7 @@
                 },
                 "wikitext.redirects": {
                     "type": "boolean",
-                    "description": "When the input page is a redirect page, jump automatically.",
+                    "description": "When the input page is a redirect page, jump automatically. Note that posting command will **not** be redirected.",
                     "default": true
                 },
                 "wikitext.apiPath": {
@@ -261,7 +261,7 @@
                     ],
                     "description": "Whether to automatically log in when performing an action that requires an account to be logged in."
                 },
-                "wikitext.skipEnteringPageTitle":{
+                "wikitext.skipEnteringPageTitle": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "If `PageTitle` is filled in `PAGE_INFO`, skip entering the title when posting."

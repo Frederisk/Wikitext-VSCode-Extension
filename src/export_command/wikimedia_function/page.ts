@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 import type Bluebird from 'bluebird';
 import type MWBot from 'mwbot';
-import { Action, Prop, RvProp, alterNativeValues } from './args';
+import { Action, Prop, RvProp, alterNativeValues, List } from './args';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump, Page } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
 import { getDefaultBot, getLoggedInBot } from './bot';
@@ -59,11 +59,12 @@ export async function postPage(): Promise<void> {
         }
 
         const error = Error('Could not get edit token:' +
-            'NEW: ' + ((errors[0] instanceof Error) ? errors[0].message : "") +
-            'OLD: ' + ((errors[1] instanceof Error) ? errors[1].message : ""));
+            ' NEW: ' + ((errors[0] instanceof Error) ? errors[0].message : '') +
+            ' OLD: ' + ((errors[1] instanceof Error) ? errors[1].message : ''));
         throw error;
     }
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('wikitext');
     const tBot: MWBot | undefined = await getLoggedInBot();
 
     if (tBot === undefined) {
@@ -78,7 +79,6 @@ export async function postPage(): Promise<void> {
     }
 
     const contentInfo: ContentInfo = getContentInfo(wikiContent);
-    // console.log(contentInfo);
 
     const skip: boolean = config.get("skipEnteringPageTitle") as boolean;
 
@@ -99,26 +99,41 @@ export async function postPage(): Promise<void> {
     if (wikiSummary === undefined) {
         return undefined;
     }
-    wikiSummary = `{wikiSummary} // Edit via Wikitext Extension for VSCode`.trim();
     wikiSummary = `${wikiSummary} // Edit via Wikitext Extension for VSCode`.trim();
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
     try {
-        tBot.editToken = await getEditToken(tBot);
-        await tBot.edit(wikiTitle, contentInfo.content, wikiSummary).then(response => {
-            if (response.edit.nochange !== undefined) {
-                vscode.window.showWarningMessage(
-                    `No changes have occurred: "${response.edit.nochange}", Edit page "${response.edit.title}" (Page ID: "${response.edit.pageid}") action status is "${response.edit.result}" with Content Model "${response.edit.contentmodel}". Watched by: "${response.edit.watched}".`
-                );
-            }
-            else {
-                vscode.window.showInformationMessage(
-                    `Edit page "${response.edit.title}" (Page ID: "${response.edit.pageid}") action status is "${response.edit.result}" with Content Model "${response.edit.contentmodel}" (Version: "${response.edit.oldrevid}" => "${response.edit.newrevid}", Time: "${response.edit.newtimestamp}"). Watched by: "${response.edit.watched}".`
-                );
-            }
-        });
+
+        const args: Record<string, string> = {
+            action: Action.edit,
+            title: wikiTitle,
+            text: contentInfo.content,
+            summary: wikiSummary,
+            // tags: 'WikitextExtensionForVSCode',
+            token: await getEditToken(tBot)
+        };
+        const wikitextTag: string = 'AWB';
+        const tagList: string[] = await getValidTagList(tBot);
+        if (tagList.includes(wikitextTag)) {
+            args['tags'] = wikitextTag;
+        }
+
+        // if (config.get("redirect")) {
+        //     args['redirect'] = "true";
+        // }
+        const result: any = await tBot.request(args);
+        // TODO: Convert
+        if (result.edit.nochange !== undefined) {
+            vscode.window.showWarningMessage(
+                `No changes have occurred: "${result.edit.nochange}", Edit page "${result.edit.title}" (Page ID: "${result.edit.pageid}") action status is "${result.edit.result}" with Content Model "${result.edit.contentmodel}". Watched by: "${result.edit.watched}".`
+            );
+        } else {
+            vscode.window.showInformationMessage(
+                `Edit page "${result.edit.title}" (Page ID: "${result.edit.pageid}") action status is "${result.edit.result}" with Content Model "${result.edit.contentmodel}" (Version: "${result.edit.oldrevid}" => "${result.edit.newrevid}", Time: "${result.edit.newtimestamp}"). Watched by: "${result.edit.watched}".`
+            );
+        }
     }
     catch (error) {
-        showMWErrorMessage('postPage', error, `Your Token: ${tBot?.editToken}`);
+        showMWErrorMessage('postPage', error, `Your Token: ${tBot?.editToken}.`);
     }
     finally {
         barMessage.dispose();
@@ -276,8 +291,6 @@ ${infoLine}
     }
 }
 
-// TODO: uploadFile, deletedPage
-
 export function getContentInfo(content: string): ContentInfo {
     const info: string | undefined = content.match(
         /(?<=<%--\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*--%>)/
@@ -303,4 +316,30 @@ export function getContentInfo(content: string): ContentInfo {
     }
 
     return { content: content, info: pageInfo };
+}
+
+async function getValidTagList(tBot: MWBot): Promise<string[]> {
+    const args: Record<string, string> = {
+        action: Action.query,
+        list: List.tags,
+        tglimit: 'max',
+        tgprop: alterNativeValues('active', 'defined')
+    };
+
+    const tagList: string[] = [];
+    // TODO: interface
+    do {
+        const result = await tBot.request(args);
+        const tags: any[] = result.query.tags;
+        tagList.push(
+            ...tags.filter(tag =>
+                tag.active !== undefined && tag.defined !== undefined
+            ).map(tag => tag.name as string));
+        if (result.continue !== undefined) {
+            Object.keys(result.continue)
+                .forEach(key => args[key] = result.continue[key]);
+        } else { break; }
+    } while (true);
+
+    return tagList;
 }

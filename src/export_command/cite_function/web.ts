@@ -39,8 +39,7 @@ export async function addWebCite(): Promise<void> {
     catch (error) {
         if (error instanceof Error) {
             vscode.window.showErrorMessage(`ErrorName: ${error.name}; ErrorMessage: ${error.message}.`);
-        }
-        else {
+        } else {
             vscode.window.showErrorMessage(`addWebCite ERROR: ${JSON.stringify(error)}.`);
         }
     }
@@ -154,8 +153,7 @@ export function getReplacedString(formatStr: string, argStr: string, replaceStr:
         formatStr = formatStr.replace(new RegExp(`<\\/?!${argStr}>`, 'g'), '');
         // replace all {$arg}
         formatStr = formatStr.replace(argRegExp, replaceStr);
-    }
-    else {
+    } else {
         // remove all substring between <!arg> and </!arg>
         // /\<\!arg\>[\s\S]*?\<\/\!arg\>/
         formatStr = formatStr.replace(new RegExp(`<!${argStr}>[\\s\\S]*?<\\/!${argStr}>`, 'g'), '');

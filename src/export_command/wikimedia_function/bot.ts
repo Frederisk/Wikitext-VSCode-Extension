@@ -73,8 +73,7 @@ export async function getDefaultBot(): Promise<MWBot | undefined> {
     let tBot: MWBot;
     if (bot) {
         tBot = bot;
-    }
-    else {
+    } else {
         // get host
         const host: string | undefined = await getHost();
         if (!host) { return undefined; }

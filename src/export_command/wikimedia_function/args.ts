@@ -20,6 +20,8 @@ export const enum Action {
     centralNoticeCdnCacheUpdateBanner = "centralnoticecdncacheupdatebanner",
     centralNoticeChoiceData = "centralnoticechoicedata",
     // ...
+    edit = "edit",
+    // ...
     login = "login",
     logout = "logout",
     // ...
@@ -54,6 +56,12 @@ export const enum Prop {
     limitReportData = "limitreportdata",
     limitReportHTML = "limitreporthtml",
     parsetree = "parsetree"
+}
+
+export const enum List {
+    // ...
+    tags = "tags",
+    // ...
 }
 
 export const enum RvProp {

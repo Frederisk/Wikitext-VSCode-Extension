@@ -40,8 +40,7 @@ export function parseArgs(query: string): Record<string, string> {
         const eq: number = item.indexOf("=");
         if (eq >= 0) {
             pars[item.substring(0, eq)] = item.substring(eq + 1);
-        }
-        else {
+        } else {
             pars[item] = '';
         }
     }
