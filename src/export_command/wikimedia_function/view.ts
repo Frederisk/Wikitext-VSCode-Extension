@@ -66,7 +66,7 @@ export async function getPreview(): Promise<void> {
 
     const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
 
-    getView(previewCurrentPanel, viewerTitle, args, tBot, baseHref);
+    showViewer(previewCurrentPanel, viewerTitle, args, tBot, baseHref);
 }
 
 export async function getPageView(): Promise<void> {
@@ -82,9 +82,9 @@ export async function getPageView(): Promise<void> {
     if (!pageTitle) { return undefined; }
 
     const args: Record<string, string> = {
-        'action': Action.parse,
-        'page': pageTitle,
-        'prop': alterNativeValues(
+        action: Action.parse,
+        page: pageTitle,
+        prop: alterNativeValues(
             Prop.text,
             Prop.displayTitle,
             Prop.categoriesHTML,
@@ -102,7 +102,7 @@ export async function getPageView(): Promise<void> {
 
     const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
 
-    getView("pageViewer", "WikiViewer", args, tBot, baseHref);
+    showViewer("pageViewer", "WikiViewer", args, tBot, baseHref);
 }
 
 /**
@@ -114,13 +114,13 @@ export async function getPageView(): Promise<void> {
  * @param baseURI url base
  * @returns task
  */
-export async function getView(currentPanel: vscode.WebviewPanel | string, viewerTitle: string, args: Record<string, string>, tBot: MWBot, baseURI: string): Promise<void> {
+export async function showViewer(currentPanel: vscode.WebviewPanel | string, viewerTitle: string, args: Record<string, string>, tBot: MWBot, baseURI: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting view...");
     try {
-        const result = await tBot.request(args);
-        const re: GetViewResult = ViewConverter.getViewResultToJson(result);
+        const result: unknown = await tBot.request(args);
+        const re: GetViewResult = ViewConverter.toGetViewResult(result);
         if (!re.parse) { return undefined; }
 
         const baseElem = `<base href="${baseURI}" />"`;
@@ -128,7 +128,7 @@ export async function getView(currentPanel: vscode.WebviewPanel | string, viewer
         const style = `<style>${config.get("previewCssStyle")}</style>`;
 
         const htmlHead: string = re.parse.headhtml?.["*"]?.replace("<head>", "<head>" + baseElem + style) ?? `<!DOCTYPE html><html><head>${baseElem + style}</head><body>`;
-        const htmlText: string = re.parse.text?.["*"] || "";
+        const htmlText: string = re.parse.text?.["*"] ?? '';
         const htmlCategories: string = re.parse.categorieshtml?.["*"] ? "<hr />" + re.parse.categorieshtml?.["*"] : "";
         const htmlEnd = "</body></html>";
 

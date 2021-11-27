@@ -1,4 +1,4 @@
-import { u, o, r } from "./convertFunction";
+import { u, o, r, TypeMap } from "./convertFunction";
 //#region Error
 export interface MWError {
     code: string;
@@ -11,7 +11,7 @@ export const mWErrorTypeMapInline: { json: string; js: string; typ: any; } = {
 };
 
 /* eslint-disable @typescript-eslint/naming-convention */
-export const mWErrorTypeMapOutline: any = {
+export const mWErrorTypeMapOutline: TypeMap = {
     "MWError": o([
         { json: "code", js: "code", typ: "" },
         { json: "info", js: "info", typ: "" },
@@ -20,7 +20,7 @@ export const mWErrorTypeMapOutline: any = {
 };
 
 export function instanceOfMWError(o: any): o is MWError {
-    return ('code ' in o) && ('info ' in o) && ('*' in o);
+    return ('code' in o) && ('info' in o) && ('*' in o);
 }
 
 //#endregion Error

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { instanceOfMWError } from '../../interface_definition/commonInterface';
 
-export function showMWErrorMessage(name: string, error: unknown, moreInfo: string = ''): void {
+export function showMWErrorMessage(name: string, error: unknown, moreInfo = ''): void {
     if (instanceOfMWError(error)) {
         vscode.window.showErrorMessage(`ErrorCode: ${error.code}; ErrorInfo: ${error.info}; ${moreInfo}`.trim());
     } else if (error instanceof Error) {

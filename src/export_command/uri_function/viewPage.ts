@@ -2,12 +2,12 @@ import * as vscode from 'vscode';
 import MWBot from 'mwbot';
 import { getDefaultBot } from '../wikimedia_function/bot';
 import { Action, alterNativeValues, Prop } from '../wikimedia_function/args';
-import { getView } from '../wikimedia_function/view';
+import { showViewer } from '../wikimedia_function/view';
 import { isRemoteBot, parseArgs } from './uri';
 import { getHost } from '../host_function/host';
 
 export async function viewPage(query: string): Promise<void> {
-    function setArgs(par: string, defaultValue?: string) {
+    function setArgs(par: string, defaultValue?: string): void {
         args[par.toLowerCase()] = pars[par] ?? defaultValue;
     }
 
@@ -24,7 +24,9 @@ export async function viewPage(query: string): Promise<void> {
     }
 
     // TODO: getHost()
-    const baseHref: string = isRemoteBot(pars) ? pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"] : config.get("transferProtocol") + (await getHost() || '') + config.get("articlePath");
+    const baseHref: string = isRemoteBot(pars)
+        ? pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
+        : config.get("transferProtocol") + (await getHost() || '') + config.get("articlePath");
 
     // args value
     const args: Record<string, string> = { 'action': Action.parse };
@@ -34,11 +36,11 @@ export async function viewPage(query: string): Promise<void> {
         Prop.categoriesHTML,
         (config.get("getCss") ? Prop.headHTML : undefined)
     ));
-    const undefParNames = ['Text', 'Title', 'Summary', 'RevID', 'Page',
+    const undefParNames: string[] = ['Text', 'Title', 'Summary', 'RevID', 'Page',
         'PageID', 'OldID', 'Redirects', 'OnlyPST', 'Section',
         'SectionTitle', 'UseSkin', 'ContentFormat', 'ContentModel'];
     undefParNames.forEach((value: string): void => setArgs(value));
     setArgs("PST", "true");
 
-    getView("pageViewer", "WikiViewer", args, tBot, baseHref);
+    showViewer("pageViewer", "WikiViewer", args, tBot, baseHref);
 }

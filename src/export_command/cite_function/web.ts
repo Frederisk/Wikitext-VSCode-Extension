@@ -112,7 +112,7 @@ class WebCiteInfo {
     }
 
     private setPublishedDate(): void {
-        const date =
+        const date: string | undefined =
             this.getAttr("meta[property='article:published_time']") ||
             this.getAttr("time", "datetime");
         if (date) {
@@ -126,7 +126,7 @@ class WebCiteInfo {
             this.getAttr("meta[property='twitter:site']");
     }
 
-    private getAttr(ioName: string, attrName = "content"): string | undefined {
+    private getAttr(ioName: string, attrName = 'content'): string | undefined {
         const io: cheerio.Cheerio = this.metaData(ioName);
         if (io.length) {
             return io.attr(attrName) || undefined;

@@ -4,7 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import type Bluebird from 'bluebird';
 import type MWBot from 'mwbot';
 import { Action, Prop, RvProp, alterNativeValues, List } from './args';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump, Page } from '../../interface_definition/readPageInterface';
@@ -30,7 +29,7 @@ export async function postPage(): Promise<void> {
                 meta: 'tokens',
                 type: 'csrf'
             };
-            const result: Bluebird<unknown> = await bot.request(args);
+            const result: unknown = await bot.request(args);
             const reNew: TokensResult = TokensConvert.toTokensResult(result);
             const token: string | undefined = reNew.query?.tokens?.csrftoken;
             if (token) {
@@ -46,7 +45,7 @@ export async function postPage(): Promise<void> {
                     action: "tokens",
                     type: "edit"
                 };
-                const result = await bot.request(args);
+                const result: unknown = await bot.request(args);
                 const reOld: OldTokensResult = OldTokensConvert.toOldTokensResult(result);
                 const token: string | undefined = reOld.tokens?.edittoken;
                 if (token) {
@@ -58,7 +57,7 @@ export async function postPage(): Promise<void> {
             }
         }
 
-        const error = Error('Could not get edit token:' +
+        const error: Error = new Error('Could not get edit token:' +
             ' NEW: ' + ((errors[0] instanceof Error) ? errors[0].message : '') +
             ' OLD: ' + ((errors[1] instanceof Error) ? errors[1].message : ''));
         throw error;
@@ -111,7 +110,7 @@ export async function postPage(): Promise<void> {
             // tags: 'WikitextExtensionForVSCode',
             token: await getEditToken(tBot)
         };
-        const wikitextTag: string = 'AWB';
+        const wikitextTag = 'WikitextExtensionForVSCode';
         const tagList: string[] = await getValidTagList(tBot);
         if (tagList.includes(wikitextTag)) {
             args['tags'] = wikitextTag;
@@ -175,19 +174,19 @@ export async function pullPage(): Promise<void> {
     vscode.window.showTextDocument(document);
 }
 
-export function closeEditor() {
+export function closeEditor(): Thenable<void | undefined> | undefined {
     const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
 
-    // Delete all text
-    editor?.edit((editBuilder: vscode.TextEditorEdit) =>
+    return editor?.edit((editBuilder: vscode.TextEditorEdit): void =>
+        // delete all text
         editBuilder.delete(
-            new vscode.Range( // All
-                new vscode.Position(0, 0), // Start
-                editor.document.lineAt(editor.document.lineCount - 1).rangeIncludingLineBreak.end // End
+            new vscode.Range( // the range of all document: from the beginning to the end
+                new vscode.Position(0, 0), // beginning
+                editor.document.lineAt(editor.document.lineCount - 1).rangeIncludingLineBreak.end // end
             )
         )
-    ).then(() =>
-        // Close editor
+    ).then((): Thenable<void | undefined> =>
+        // close the activate editor
         vscode.commands.executeCommand('workbench.action.closeActiveEditor')
     );
 }
@@ -220,7 +219,7 @@ ${infoLine}
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting code...");
     try {
         // get request result
-        const result = await tBot.request(args);
+        const result: unknown = await tBot.request(args);
         // console.log(result);
         // Convert result as class
         const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
@@ -328,8 +327,8 @@ async function getValidTagList(tBot: MWBot): Promise<string[]> {
 
     const tagList: string[] = [];
     // TODO: interface
-    do {
-        const result = await tBot.request(args);
+    for (; ;) {
+        const result: any = await tBot.request(args);
         const tags: any[] = result.query.tags;
         tagList.push(
             ...tags.filter(tag =>
@@ -339,7 +338,7 @@ async function getValidTagList(tBot: MWBot): Promise<string[]> {
             Object.keys(result.continue)
                 .forEach(key => args[key] = result.continue[key]);
         } else { break; }
-    } while (true);
+    }
 
     return tagList;
 }

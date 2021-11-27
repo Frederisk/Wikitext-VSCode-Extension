@@ -4,7 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 
 export function alterNativeValues(...values: (string | undefined)[]): string {
-    values = values.filter(item => { return item !== undefined; });
+    values = values.filter(
+        (item: string | undefined): boolean => item !== undefined
+    );
     return values.join("|");
 }
 

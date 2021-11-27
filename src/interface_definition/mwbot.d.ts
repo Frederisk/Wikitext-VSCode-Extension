@@ -92,7 +92,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    rawRequest(requestOptions: object): BlueBird<any>;
+    rawRequest(requestOptions: object): BlueBird<unknown>;
 
     /**
      *Executes a request with the ability to use custom parameters and custom request options
@@ -102,7 +102,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    request(params: object, customRequestOptions?: object): BlueBird<any>;
+    request(params: object, customRequestOptions?: object): BlueBird<unknown>;
 
     //////////////////////////////////////////
     // CORE FUNCTIONS                       //
@@ -117,7 +117,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    login(loginOptions?: object): BlueBird<any>;
+    login(loginOptions?: object): BlueBird<unknown>;
 
     /**
      * Gets an edit token
@@ -125,7 +125,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    getEditToken(): BlueBird<any>;
+    getEditToken(): BlueBird<unknown>;
 
     /**
      * Gets an edit token
@@ -133,7 +133,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    getCreateaccountToken(): BlueBird<any>;
+    getCreateaccountToken(): BlueBird<unknown>;
 
     /**
      * Combines Login  with GetEditToken
@@ -142,7 +142,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    loginGetEditToken(loginOptions: object): BlueBird<any>;
+    loginGetEditToken(loginOptions: object): BlueBird<unknown>;
 
     /**
      * Combines Login  with GetCreateAccountToken
@@ -151,7 +151,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    loginGetCreateaccountToken(loginOptions: object): BlueBird<any>;
+    loginGetCreateaccountToken(loginOptions: object): BlueBird<unknown>;
 
     //////////////////////////////////////////
     // CRUD OPERATIONS                      //
@@ -167,7 +167,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    create(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<any>;
+    create(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<unknown>;
 
     /**
      * Reads the content / and meta-data of one (or many) wikipages
@@ -179,7 +179,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    read(title: string,/*redirect?: boolean, */ customRequestOptions?: object): BlueBird<any>;
+    read(title: string,/*redirect?: boolean, */ customRequestOptions?: object): BlueBird<unknown>;
 
     // /**
     //  * Reads the content / and meta-data of one (or many) wikipages
@@ -228,7 +228,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    edit(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<any>;
+    edit(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<unknown>;
 
     /**
      * Updates existing wiki pages. Does not create new ones.
@@ -240,7 +240,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    update(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<any>;
+    update(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<unknown>;
 
     /**
      * Updates existing wiki pages. Does not create new ones.
@@ -252,7 +252,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    updateFromID(pageid: number, content: string, summary?: string, customRequestOptions?: object): BlueBird<any>;
+    updateFromID(pageid: number, content: string, summary?: string, customRequestOptions?: object): BlueBird<unknown>;
 
     /**
      * Deletes a new wiki page
@@ -275,7 +275,7 @@ declare module 'mwbot' {
     *
     * @returns {BlueBird}
     */
-    move(oldTitle: string, newTitle: string, reason?: string, customRequestOptions?: object): BlueBird<any>;
+    move(oldTitle: string, newTitle: string, reason?: string, customRequestOptions?: object): BlueBird<unknown>;
 
     /**
      * Uploads a file
@@ -288,7 +288,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    upload(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): BlueBird<any>;
+    upload(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): BlueBird<unknown>;
 
     /**
      * Uploads a file and overwrites existing ones
@@ -301,7 +301,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    uploadOverwrite(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): BlueBird<any>;
+    uploadOverwrite(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): BlueBird<unknown>;
 
 
     //////////////////////////////////////////
@@ -323,7 +323,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    batch(jobs: object | any[], summary?: string, concurrency?: number, customRequestOptions?: object): BlueBird<any>;
+    batch(jobs: object | any[], summary?: string, concurrency?: number, customRequestOptions?: object): BlueBird<unknown>;
 
     /**
      * Execute an ASK Query
@@ -334,7 +334,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    askQuery(query: string, apiUrl?: string, customRequestOptions?: object): BlueBird<any>;
+    askQuery(query: string, apiUrl?: string, customRequestOptions?: object): BlueBird<unknown>;
 
     /**
      * Executes a SPARQL Query
@@ -346,7 +346,7 @@ declare module 'mwbot' {
      *
      * @returns {BlueBird}
      */
-    sparqlQuery(query: string, endpointUrl?: string, customRequestOptions?: object): BlueBird<any>;
+    sparqlQuery(query: string, endpointUrl?: string, customRequestOptions?: object): BlueBird<unknown>;
 
     //////////////////////////////////////////
     // HELPER FUNCTIONS                     //

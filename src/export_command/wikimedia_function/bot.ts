@@ -32,7 +32,8 @@ export async function login(): Promise<boolean> {
     });
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Login...");
     try {
-        const response = await bot.login(userInfo);
+        const response: any = await bot.login(userInfo);
+        // TODO:
         vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
         );
         return true;
@@ -58,7 +59,7 @@ export async function logout(): Promise<void> {
         });
         // clear bot
         bot = undefined;
-        vscode.window.showInformationMessage('result: "Success"');
+        vscode.window.showInformationMessage('result: Success');
     }
     catch (error) {
         showMWErrorMessage('logout', error);
@@ -89,34 +90,26 @@ export async function getLoggedInBot(): Promise<MWBot | undefined> {
     if (bot === undefined) {
         switch (config.get('autoLogin')) {
             case 'Always':
-                if (!await login()) {
-                    // login failed
-                    return undefined;
-                }
-                break;
+                return await login() ? bot : undefined;
             case 'Never':
                 vscode.window.showWarningMessage('You are not logged in. Please log in and try again.');
                 return undefined;
             case 'Ask me':
             default:
-                const result: string | undefined = await vscode.window.showWarningMessage("You are not logged in. Do you want to login now?", 'Yes', 'No', 'Always', 'Never');
-                switch (result) {
+                switch (await vscode.window.showWarningMessage("You are not logged in. Do you want to login now?", 'Yes', 'No', 'Always', 'Never')) {
                     case 'Always':
                         config.update('autoLogin', 'Always', true);
+                        return await login() ? bot : undefined;
                     case 'Yes':
-                        if (!await login()) {
-                            // login failed
-                            return undefined;
-                        }
-                        break;
+                        return await login() ? bot : undefined;
                     case 'Never':
                         config.update('autoLogin', 'Never', true);
+                        return undefined;
                     case 'No':
                     case undefined:
                     default:
                         return undefined;
                 }
-                break;
         }
     }
     return bot;

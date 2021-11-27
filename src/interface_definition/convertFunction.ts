@@ -3,10 +3,12 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import { type } from "os";
+
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-function invalidValue(typ: any, val: any, key: any = ''): never {
+function invalidValue(typ: any, val: unknown, key: any = ''): never {
     if (key) {
         throw Error(`Invalid value for key "${key}". Expected type ${JSON.stringify(typ)} but got ${JSON.stringify(val)}`);
     }
@@ -15,7 +17,7 @@ function invalidValue(typ: any, val: any, key: any = ''): never {
 
 function jsonToJSProps(typ: any): any {
     if (typ.jsonToJS === undefined) {
-        const map: any = { };
+        const map: any = {};
         typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
         typ.jsonToJS = map;
     }
@@ -24,14 +26,14 @@ function jsonToJSProps(typ: any): any {
 
 function jsToJSONProps(typ: any): any {
     if (typ.jsToJSON === undefined) {
-        const map: any = { };
+        const map: any = {};
         typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });
         typ.jsToJSON = map;
     }
     return typ.jsToJSON;
 }
 
-function transform(value: any, type: any, getProps: any, key: any, typeMap: any): any {
+function transform(value: unknown, type: Typ, getProps: any, key: any, typeMap: TypeMap): unknown {
     function transformPrimitive(typ: string, val: any): any {
         if (typeof typ === typeof val) { return val; }
         return invalidValue(typ, val, key);
@@ -44,7 +46,9 @@ function transform(value: any, type: any, getProps: any, key: any, typeMap: any)
             const typ = typs[i];
             try {
                 return transform(val, typ, getProps, "", typeMap);
-            } catch (_) { }
+            } catch {
+                continue;
+            }
         }
         return invalidValue(typs, val);
     }
@@ -75,7 +79,7 @@ function transform(value: any, type: any, getProps: any, key: any, typeMap: any)
         if (val === null || typeof val !== "object" || Array.isArray(val)) {
             return invalidValue("object", val);
         }
-        const result: any = { };
+        const result: any = {};
         Object.getOwnPropertyNames(props).forEach(item => {
             const prop = props[item];
             const v = Object.prototype.hasOwnProperty.call(val, item) ? val[item] : undefined;
@@ -89,19 +93,26 @@ function transform(value: any, type: any, getProps: any, key: any, typeMap: any)
         return result;
     }
 
+    function instanceOfR(o: any): o is R {
+        return o.ref !== undefined;
+    }
+
     if (type === "any") { return value; }
     if (type === null) {
         if (value === null) { return value; }
         return invalidValue(type, value);
     }
     if (type === false) { return invalidValue(type, value); }
-    while (typeof type === "object" && type.ref !== undefined) {
+    while (typeof type === "object" && instanceOfR(type)) {
         type = typeMap[type.ref];
     }
     if (Array.isArray(type)) { return transformEnum(type, value); }
     if (typeof type === "object") {
+        // eslint-disable-next-line no-prototype-builtins
         return type.hasOwnProperty("unionMembers") ? transformUnion(type.unionMembers, value)
+            // eslint-disable-next-line no-prototype-builtins
             : type.hasOwnProperty("arrayItems") ? transformArray(type.arrayItems, value)
+                // eslint-disable-next-line no-prototype-builtins
                 : type.hasOwnProperty("props") ? transformObject(getProps(type), type.additional, value)
                     : invalidValue(type, value);
     }
@@ -110,30 +121,41 @@ function transform(value: any, type: any, getProps: any, key: any, typeMap: any)
     return transformPrimitive(type, value);
 }
 
-export function cast<T>(val: any, typ: any, typeMap: any): T {
-    return transform(val, typ, jsonToJSProps, "", typeMap);
+export function cast<T>(val: unknown, typ: Typ, typeMap: TypeMap): T {
+    return transform(val, typ, jsonToJSProps, "", typeMap) as T;
 }
 
-export function uncast<T>(val: T, typ: any, typeMap: any): any {
+export function uncast<T>(val: T, typ: Typ, typeMap: TypeMap): unknown {
     return transform(val, typ, jsToJSONProps, "", typeMap);
 }
 
-export function a(typ: any) {
+export function a(typ: unknown): A {
     return { arrayItems: typ };
 }
 
-export function u(...typs: any[]) {
+export function u(...typs: unknown[]): U {
     return { unionMembers: typs };
 }
 
-export function o(props: any[], additional: any) {
+export function o(props: Prop[], additional: unknown): MO {
     return { props, additional };
 }
 
-export function m(additional: any) {
+export function m(additional: unknown): MO {
     return { props: [], additional };
 }
 
-export function r(name: string) {
+export function r(name: string): R {
     return { ref: name };
 }
+
+type A = { arrayItems: unknown };
+type U = { unionMembers: unknown[] };
+type MO = { props: Prop[], additional: unknown };
+type R = { ref: string };
+
+type Prop = { json: string, js: string, typ: unknown };
+export type TypeMap = any;
+
+// type Typ = R | 'any' | false | null;
+type Typ = any;
