@@ -4,6 +4,17 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.6.1] - 2021-11-27
+
+### Added
+
+- When page is not exist, the extension will ask if still open document to create new page.
+- The post function will try to add `WikitextExtensionForVSCode` tag in the edit history.
+
+### Fixed
+
+- Fixed the bug that user edit summary cannot be posted.
+
 ## [3.6.0] - 2021-11-02
 
 ### Added

@@ -55,11 +55,9 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Add a command to close editor without saving.
-- Add the option of auto login.
-- Add option to allow skip filling in page title.
-- Change the base syntax from XML(XHTML) to HTML.
-- Remove ansi-regex dependency to potential security vulnerabilities.
+- When page is not exist, the extension will ask if still open document to create new page.
+- The post function will try to add `WikitextExtensionForVSCode` tag in the edit history.
+- Fixed the bug that user edit summary cannot be posted.
 
 ## Usage
 
