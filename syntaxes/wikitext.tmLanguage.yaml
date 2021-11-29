@@ -430,6 +430,7 @@ repository:
           - include: "#wikitag"
           - include: "#ref"
           - include: "#jsonin"
+          - include: "#math"
         repository:
           nowiki:
             contentName: meta.embedded.block.plaintext
@@ -548,6 +549,39 @@ repository:
             contentName: meta.embedded.block.json
             patterns:
               - include: source.json
+          math:
+            begin: (?i)(<)(math)(\s+[^>]+)?\s*(>)
+            beginCaptures:
+              0:
+                name: meta.tag.metadata.start.wikitext
+              1:
+                name: punctuation.definition.tag.begin.wikitext
+              2:
+                name: entity.name.tag.wikitext
+              3:
+                patterns:
+                  - match: " ([a-zA-Z-]+)"
+                    captures:
+                      1:
+                        name: entity.other.attribute-name.wikitext
+                  - include: "#doublequotedString"
+                  - include: "#singlequotedString"
+                  - include: $self
+              4:
+                name: punctuation.definition.tag.end.wikitext
+            end: (?i)(</)(math)\s*(>)
+            endCaptures:
+              0:
+                name: meta.tag.metadata.end.wikitext
+              1:
+                name: punctuation.definition.tag.begin.wikitext
+              2:
+                name: entity.name.tag.wikitext
+              3:
+                name: punctuation.definition.tag.end.wikitext
+            contentName: meta.embedded.block.latex
+            patterns:
+              - include: text.tex.latex
   ## public
   doublequotedString:
     begin: '"'

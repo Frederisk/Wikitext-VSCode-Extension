@@ -172,7 +172,7 @@
                 "embeddedLanguages": {
                     "source.json": "json",
                     "text.html.basic": "html",
-                    "text.xml": "xml"
+                    "text.tex.latex": "latex"
                 }
             }
         ],
