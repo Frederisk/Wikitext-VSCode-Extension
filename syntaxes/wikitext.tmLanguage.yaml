@@ -100,7 +100,7 @@ repository:
               4:
                 name: punctuation.terminator.rule.wikitext
       break:
-        match: '^-{4,}'
+        match: "^-{4,}"
         #      ----
         name: markup.changed.wikitext
       template:
@@ -427,9 +427,9 @@ repository:
       wikixml:
         patterns:
           - include: "#nowiki"
+          - include: "#wikitag"
           - include: "#ref"
           - include: "#jsonin"
-          - include: "#wikitag"
         repository:
           nowiki:
             contentName: meta.embedded.block.plaintext
@@ -463,6 +463,25 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 name: punctuation.definition.tag.end.wikitext
+          wikitag:
+            match: (?i)(<)(templatestyles|ref)(\s+[^>]+)?\s*(/>)
+            #          1<12templatestyles23  h=here3    4/>4
+            captures:
+              1:
+                name: punctuation.definition.tag.begin.wikitext
+              2:
+                name: entity.name.tag.wikitext
+              3:
+                patterns:
+                  - match: " ([a-zA-Z-]+)"
+                    captures:
+                      1:
+                        name: entity.other.attribute-name.wikitext
+                  - include: "#doublequotedString"
+                  - include: "#singlequotedString"
+                  - include: $self
+              4: punctuation.definition.tag.end.wikitext
+            name: meta.tag.metedata.void.wikitext
           ref:
             contentName: meta.block.ref.wikitext
             begin: (?i)(<)(ref)(\s+[^>]+)?\s*(>)
@@ -529,26 +548,6 @@ repository:
             contentName: meta.embedded.block.json
             patterns:
               - include: source.json
-          wikitag:
-            match: (?i)(<)(templatestyles)(\s+[^>]+)?\s*(/>)
-            #          1<12templatestyles23  h=here3    4/>4
-            captures:
-              1:
-                name: punctuation.definition.tag.begin.wikitext
-              2:
-                name: entity.name.tag.wikitext
-              3:
-                patterns:
-                  - match: " ([a-zA-Z-]+)"
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: "#doublequotedString"
-                  - include: "#singlequotedString"
-                  - include: $self
-              4:
-                punctuation.definition.tag.end.wikitext
-            name: meta.tag.metedata.void.wikitext
   ## public
   doublequotedString:
     begin: '"'
