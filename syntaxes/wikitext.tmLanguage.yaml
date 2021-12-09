@@ -434,7 +434,7 @@ repository:
         repository:
           nowiki:
             contentName: meta.embedded.block.plaintext
-            begin: (?i)(<)(nowiki)(\s+[^>]+)?\s*(>)
+            begin: (?i)(<)(nowiki)(\s+[^>\/]+)?\s*(>)
             #          1<12nowiki2    3a="a"34>4
             beginCaptures:
               0:
@@ -465,7 +465,7 @@ repository:
               3:
                 name: punctuation.definition.tag.end.wikitext
           wikitag:
-            match: (?i)(<)(templatestyles|ref)(\s+[^>]+)?\s*(/>)
+            match: (?i)(<)(templatestyles|ref|nowiki)(\s+[^>]+)?\s*(/>)
             #          1<12templatestyles23  h=here3    4/>4
             captures:
               1:
