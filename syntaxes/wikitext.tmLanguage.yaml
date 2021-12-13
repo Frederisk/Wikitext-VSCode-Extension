@@ -426,15 +426,15 @@ repository:
                     name: keyword.operator.wikitext
       wikixml:
         patterns:
-          - include: "#nowiki"
           - include: "#wikitag"
+          - include: "#nowiki"
           - include: "#ref"
           - include: "#jsonin"
           - include: "#math"
         repository:
           nowiki:
             contentName: meta.embedded.block.plaintext
-            begin: (?i)(<)(nowiki)(\s+[^>\/]+)?\s*(>)
+            begin: (?i)(<)(nowiki)(\s+[^>]+)?\s*(>)
             #          1<12nowiki2    3a="a"34>4
             beginCaptures:
               0:
