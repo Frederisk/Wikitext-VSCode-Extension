@@ -426,8 +426,8 @@ repository:
                     name: keyword.operator.wikitext
       wikixml:
         patterns:
-          - include: "#nowiki"
           - include: "#wikitag"
+          - include: "#nowiki"
           - include: "#ref"
           - include: "#jsonin"
           - include: "#math"
@@ -465,7 +465,7 @@ repository:
               3:
                 name: punctuation.definition.tag.end.wikitext
           wikitag:
-            match: (?i)(<)(templatestyles|ref)(\s+[^>]+)?\s*(/>)
+            match: (?i)(<)(templatestyles|ref|nowiki)(\s+[^>]+)?\s*(/>)
             #          1<12templatestyles23  h=here3    4/>4
             captures:
               1:
