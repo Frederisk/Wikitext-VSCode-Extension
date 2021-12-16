@@ -3,19 +3,17 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { type } from "os";
-
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-function invalidValue(typ: any, val: unknown, key: any = ''): never {
+function invalidValue(typ: Typ, val: unknown, key: any = ''): never {
     if (key) {
         throw Error(`Invalid value for key "${key}". Expected type ${JSON.stringify(typ)} but got ${JSON.stringify(val)}`);
     }
     throw Error(`Invalid value ${JSON.stringify(val)} for type ${JSON.stringify(typ)}`,);
 }
 
-function jsonToJSProps(typ: any): any {
+function jsonToJSProps(typ: Typ): any {
     if (typ.jsonToJS === undefined) {
         const map: any = {};
         typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
@@ -24,7 +22,7 @@ function jsonToJSProps(typ: any): any {
     return typ.jsonToJS;
 }
 
-function jsToJSONProps(typ: any): any {
+function jsToJSONProps(typ: Typ): any {
     if (typ.jsToJSON === undefined) {
         const map: any = {};
         typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });

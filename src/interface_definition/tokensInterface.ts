@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { u, o, r, cast, uncast } from "./convertFunction";
+import { u, o, r, cast, uncast, TypeMap } from "./convertFunction";
 
 /*
     TokensResult {
@@ -30,17 +30,17 @@ export interface Tokens {
 }
 
 export class TokensConvert {
-    public static toTokensResult(json: any): TokensResult {
+    public static toTokensResult(json: unknown): TokensResult {
         return cast(json, r("TokensResult"), tokensTypeMap);
     }
 
-    public static tokensResultToJson(value: TokensResult): any {
+    public static tokensResultToJson(value: TokensResult): unknown {
         return uncast(value, r("TokensResult"), tokensTypeMap);
     }
 }
 
 /* eslint-disable @typescript-eslint/naming-convention */
-const tokensTypeMap: any = {
+const tokensTypeMap: TypeMap = {
     "TokensResult": o([
         { json: "batchcomplete", js: "batchcomplete", typ: u(undefined, "") },
         { json: "query", js: "query", typ: u(undefined, r("Query")) },

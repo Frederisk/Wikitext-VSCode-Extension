@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { MWError, mWErrorTypeMapInline, mWErrorTypeMapOutline, MWWarnings, mWWarningsTypeMapInline, mWWarningsTypeMapOutline } from "./commonInterface";
-import { a, u, o, r, cast, uncast } from "./convertFunction";
+import { a, u, o, r, cast, uncast, TypeMap } from "./convertFunction";
 
 /*
     GetViewResult {
@@ -69,16 +69,16 @@ export interface Redirect {
 // Converts JSON types to/from your types
 // and asserts the results at runtime
 export class ViewConverter {
-    public static toGetViewResult(json: any): GetViewResult {
+    public static toGetViewResult(json: unknown): GetViewResult {
         return cast(json, r("GetViewResult"), getViewTypeMap);
     }
-    public static getViewResultToJson(value: GetViewResult): any {
+    public static getViewResultToJson(value: GetViewResult): unknown {
         return uncast(value, r("GetViewResult"), getViewTypeMap);
     }
 }
 
 /* eslint-disable @typescript-eslint/naming-convention */
-const getViewTypeMap: any = {
+const getViewTypeMap: TypeMap = {
     "GetViewResult": o([
         { json: "parse", js: "parse", typ: u(undefined, r("Parse")) },
         mWErrorTypeMapInline,

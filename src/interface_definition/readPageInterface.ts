@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { MWError, mWErrorTypeMapInline, mWErrorTypeMapOutline, MWWarnings, mWWarningsTypeMapInline, mWWarningsTypeMapOutline } from "./commonInterface";
-import { a, u, o, m, r, uncast, cast } from "./convertFunction";
+import { a, u, o, m, r, uncast, cast, TypeMap } from "./convertFunction";
 
 /*
     ReadPageResult {
@@ -134,17 +134,17 @@ export interface Main {
 
 /** ReadPageResultConvert */
 export class ReadPageConvert {
-    public static toReadPageResult(json: any): ReadPageResult {
+    public static toReadPageResult(json: unknown): ReadPageResult {
         return cast(json, r("ReadPageResult"), readPageResultTypeMap);
     }
 
-    public static readPageResultToJson(value: ReadPageResult): any {
+    public static readPageResultToJson(value: ReadPageResult): unknown {
         return uncast(value, r("ReadPageResult"), readPageResultTypeMap);
     }
 }
 
 /* eslint-disable @typescript-eslint/naming-convention */
-const readPageResultTypeMap: any = {
+const readPageResultTypeMap: TypeMap = {
     "ReadPageResult": o([
         mWWarningsTypeMapInline,
         mWErrorTypeMapInline,

@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { u, o, r, cast, uncast } from "./convertFunction";
+import { u, o, r, cast, uncast, TypeMap } from "./convertFunction";
 
 // https://archive.org/help/wayback_api.php
 
@@ -38,17 +38,17 @@ export interface Closest {
 }
 
 export class ArchiveConvert {
-    public static toArchiveResult(json: any): ArchiveResult {
+    public static toArchiveResult(json: unknown): ArchiveResult {
         return cast(json, r("ArchiveResult"), archiveTypeMap);
     }
 
-    public static archiveResultToJson(value: ArchiveResult): any {
+    public static archiveResultToJson(value: ArchiveResult): unknown {
         return uncast(value, r("ArchiveResult"), archiveTypeMap);
     }
 }
 
 /* eslint-disable @typescript-eslint/naming-convention */
-const archiveTypeMap: any = {
+const archiveTypeMap: TypeMap = {
     "ArchiveResult": o([
         { json: "archived_snapshots", js: "archivedSnapshots", typ: r("ArchivedSnapshots") },
         { json: "url", js: "url", typ: u(undefined, "") },
