@@ -55,9 +55,8 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- When page is not exist, the extension will ask if still open document to create new page.
-- The post function will try to add `WikitextExtensionForVSCode` tag in the edit history.
-- Fixed the bug that user edit summary cannot be posted.
+- Added LaTeX syntax support for `<math>` tags.
+- Fixed the syntax error that caused `<ref />` and `<nowiki />` to fail to close.
 
 ## Usage
 

@@ -4,6 +4,16 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.6.2] - 2021-12-16
+
+### Added
+
+- LaTeX syntax support for `<math>` tags.
+
+### Fixed
+
+- The syntax error that caused `<ref />` and `<nowiki />` to fail to close.
+
 ## [3.6.1] - 2021-11-27
 
 ### Added
