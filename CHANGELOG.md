@@ -4,6 +4,11 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+
+### Fixed
+
+- Bracket identification: wikitext templates (`{{ }}`), template parameters (`{{{ }}}`) are separatly identified from `{ }`, so when `editor.bracketPairColorization.enabled` is used highlights show correctly
+
 ## [3.6.2] - 2021-12-16
 
 ### Added
