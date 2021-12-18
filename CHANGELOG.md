@@ -99,7 +99,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 ### Added
 
-- Optional for transfer poypcol.
+- Optional for transfer protocol.
 - Support of pull function for old version mediawiki.
 
 ### Changed
