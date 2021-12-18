@@ -72,8 +72,8 @@ repository:
               5:
                 name: punctuation.definition.string.end.extension.wikitext
       convert:
-        begin: (-\{)([a-zA-Z](\|))?
-        #      1 -{ 12     tag3| 32
+        begin: (-\{(?!\{))([a-zA-Z](\|))?
+        #      1 -{      12     tag3| 32
         #      -{T|
         end: (\}-)
         #    1 }- 1
@@ -104,6 +104,7 @@ repository:
         #      ----
         name: markup.changed.wikitext
       template:
+        name: meta.paragraph.template.wikitext
         begin: >-
           (\{\{)\s*(([\w\-\s\(\)\.]*(:))*)\s*((#[\w\-\s\(\)\.]+(:))*)([\w\-\s\(\)\.]*)
         # 1 {{ 1   23  namespace    4:43 2   56#   function    7:76 58     name      8
