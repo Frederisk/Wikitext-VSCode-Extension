@@ -14,11 +14,13 @@ repository:
   # wikitext: https://www.mediawiki.org/wiki/Wikitext
   wikitext:
     patterns:
-      - include: "#argument"
       - include: "#entity"
       - include: "#signature"
       - include: "#redirect"
       - include: "#magicWords"
+      # TODO: include: "#function" {{#foo:}}
+      - include: "#argument"
+      - include: "#template"
       - include: "#convert"
       - include: "#list"
       - include: "#table"
@@ -97,6 +99,8 @@ repository:
                 name: punctuation.separator.key-value.wikitext
               3:
                 name: string.unquoted.text.wikitext
+                patterns:
+                  - include: $self
               4:
                 name: punctuation.terminator.rule.wikitext
       break:
