@@ -27,7 +27,6 @@ repository:
       - include: "#fontStyle"
       - include: "#externalLink"
       - include: "#internalLink"
-      - include: "#template"
       - include: "#heading"
       - include: "#break"
       - include: "#wikixml"
