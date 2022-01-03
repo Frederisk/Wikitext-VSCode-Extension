@@ -194,6 +194,18 @@ export function closeEditor(): Thenable<void | undefined> | undefined {
 type PageInfo = "pageTitle" | "pageID" | "revisionID" | "contentModel" | "contentFormat";
 
 export async function getPageCode(args: Record<string, string>, tBot: MWBot): Promise<vscode.TextDocument | undefined> {
+    function modelNameToLanguage(modelName: string | undefined): string {
+        switch (modelName) {
+            case undefined:
+                return 'wikitext';
+            case 'flow-board':
+                return 'jsonc';
+            case 'sanitized-css':
+                return 'css';
+            default:
+                return modelName;
+        }
+    }
     function getInfoHead(info: Record<PageInfo, string | undefined>): string {
         const commentList: Record<string, [string, string]> = {
             wikitext: ["", ""],
@@ -202,7 +214,8 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
             javascript: ["/*", "*/"],
             css: ["/*", "*/"],
             php: ["/*", "*/"],
-            'flow-board': ["/*", "*/"],
+            // 'flow-board': ["/*", "*/"],
+            // 'sanitized-css': ["/*", "*/"],
         };
         const headInfo: Record<string, string | undefined> = {
             comment: "Please do not remove this struct. It's record contains some important information of edit. This struct will be removed automatically after you push edits.",
@@ -211,7 +224,8 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
         const infoLine: string = Object.keys(headInfo).
             map((key: string) => `    ${key} = #${headInfo[key] ?? ''}#`).
             join("\r");
-        return commentList[info?.['contentModel'] || "wikitext"].join(`<%-- [PAGE_INFO]
+        console.log(info?.['contentModel']);
+        return commentList[modelNameToLanguage(info?.['contentModel'])].join(`<%-- [PAGE_INFO]
 ${infoLine}
 [END_PAGE_INFO] --%>`);
     }
@@ -276,7 +290,7 @@ ${infoLine}
             };
             const infoHead: string = getInfoHead(info);
             const textDocument: vscode.TextDocument = await vscode.workspace.openTextDocument({
-                language: (content?.contentmodel === "flow-board") ? "jsonc" : info.contentModel,
+                language: modelNameToLanguage(info.contentModel),
                 content: infoHead + "\r\r" + content?.["*"]
             });
             return textDocument;
