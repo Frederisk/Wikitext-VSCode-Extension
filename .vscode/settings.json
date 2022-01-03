@@ -23,6 +23,13 @@
     "cSpell.words": [
         "luxon",
         "mimetypes",
-        "mwbot"
-    ]
+        "mwbot",
+        "wikixml"
+    ],
+    "files.associations": {
+        "*.tmLanguage.json": "json-tmlanguage",
+        "*.tmLanguage.yaml": "yaml-tmlanguage"
+    },
+    "jshint.packageManager": "yarn",
+    "eslint.packageManager": "yarn",
 }

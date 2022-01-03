@@ -35,9 +35,9 @@ repository:
       extensionComments:
         name: comment.block.documentation.special.extension.wikitext
         begin: (<%--)\s*(\[)([A-Z_]*)(\])
-        #      1<%--1   2 [23TYPENAM34] 4
+        #      1<%--1   2 [23TYPE___34] 4
         end: (\[)([A-Z_]*)(\])\s*(--%>)
-        #    1 [12TYPENAM23 ]3   4--%>4
+        #    1 [12TYPE___23 ]3   4--%>4
         beginCaptures:
           1:
             name: punctuation.definition.comment.extension.wikitext
@@ -89,8 +89,7 @@ repository:
         patterns:
           - include: $self
           - match: (?:([a-zA-Z\-]*)(:))?(.*?)(?:(;)|(?=\}-))
-            # - match: ([a-zA-Z\-]*)(:)(.*?)(?:(;)?|(?=\}-))
-            #          1    tag-   12:23txt3   4;4     }-
+            #         1 tag-name  12:2  3   3   4;4     }-
             captures:
               1:
                 name: entity.name.tag.language.wikitext
@@ -104,7 +103,7 @@ repository:
                 name: punctuation.terminator.rule.wikitext
       break:
         match: "^-{4,}"
-        #      ----
+        #        ----
         name: markup.changed.wikitext
       template:
         begin: >-
@@ -116,7 +115,7 @@ repository:
           1:
             name: punctuation.definition.tag.template.wikitext
           2:
-            name: entity.name.tag.localname.wikitext
+            name: entity.name.tag.local-name.wikitext
           # 3:
           4:
             name: punctuation.separator.namespace.wikitext
@@ -126,7 +125,7 @@ repository:
           7:
             name: punctuation.separator.namespace.wikitext
           8:
-            name: entity.name.tag.localname.wikitext
+            name: entity.name.tag.local-name.wikitext
         # name:
         patterns:
           - include: $self
@@ -141,13 +140,14 @@ repository:
               2:
                 name: punctuation.separator.namespace.wikitext
               3:
-                name: entity.other.attribute-name.localname.wikitext
+                name: entity.other.attribute-name.local-name.wikitext
               4:
                 name: keyword.operator.equal.wikitext
       externalLink:
         patterns:
           - name: meta.link.external.wikitext
             match: (\[)((?:(?:(?:http(?:s)?)|(?:ftp(?:s)?)):\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#%@!\$&'\(\)\*\+,;=.]+)\s*?([^\]]*)(\])
+            #      1 [12         http   s       ftp   s    : / /  a-.b      .  x-.y      /path#where?arg=1+2&other;           3      34 ]4
             captures:
               1:
                 name: punctuation.definition.tag.link.external.wikitext
@@ -160,7 +160,8 @@ repository:
               4:
                 name: punctuation.definition.tag.link.external.wikitext
           - name: invalid.illegal.bad-url.wikitext
-            match: (\[)([\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#%@!\$&''\(\)\*\+,;=.]+)\s*?([^\]]*)(\])
+            match: (\[)([\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#%@!\$&'\(\)\*\+,;=.]+)\s*?([^\]]*)(\])
+            #      1 [12 a-.b      .  x-.y      /path#where?arg=1+2&other;           3      34 ]4
             captures:
               1:
                 name: punctuation.definition.tag.link.external.wikitext
@@ -175,8 +176,8 @@ repository:
       redirect:
         patterns:
           - match: >-
-              (?i)(^\s*?#REDIRECT)\s*?(\[\[)(([\w\-\s\(\)\.]*?:)*)?([^\|\[\]]*)?(\|[^\[\]]*?)?(\]\])
-            #     1     #REDIRECT1    2 [[ 234  namespace     :4 3 5  name    5 6 | other   6 7 ]] 7
+              (?i)(^\s*?#REDIRECT)\s*(\[\[)(([\w\-\s\(\)\.]*?:)*)?([^\|\[\]]*)?(\|[^\[\]]*?)?(\]\])
+            #     1     #REDIRECT1   2 [[ 234  namespace     :4 3 5  name    5 6 | other   6 7 ]] 7
             captures:
               1:
                 name: keyword.control.redirect.wikitext
@@ -198,68 +199,93 @@ repository:
           - include: "#variables"
         repository:
           behaviorSwitches:
-            name: constant.language.behaviorswitches.wikitext
+            name: constant.language.behavior-switcher.wikitext
             match: |-
-              (?x)      # turn on extended mode
-                (?i)    # ignore case
-                  (__)  # start: __
-                    (
-                      NOTOC|FORCETOC|TOC|NOEDITSECTION|NEWSECTIONLINK|NOGALLERY|HIDDENCAT|EXPECTUNUSEDCATEGORY|NOCONTENTCONVERT|NOCC|NOTITLECONVERT|NOTC|INDEX|NOINDEX|STATICREDIRECT|NOGLOBAL|DISAMBIG
-                    )
-                  (__)
+              (?x)    # turn on extended mode
+              (?i)    # ignore case
+                (__)  # start: __
+                  (
+                    NOTOC|FORCETOC|TOC|NOEDITSECTION|NEWSECTIONLINK|NOGALLERY|
+                    HIDDENCAT|EXPECTUNUSEDCATEGORY|NOCONTENTCONVERT|NOCC|
+                    NOTITLECONVERT|NOTC|INDEX|NOINDEX|STATICREDIRECT|NOGLOBAL|
+                    DISAMBIG
+                  )
+                (__)
           outdatedBehaviorSwitches:
-            name: invalid.deprecated.behaviorswitches.wikitext
+            name: invalid.deprecated.behavior-switcher.wikitext
             match: |-
               (?x)
-                (?i)
-                  (__)
-                    (
-                      START|END
-                    )
-                  (__)
+              (?i)
+                (__)
+                  (
+                    START|END
+                  )
+                (__)
           variables:
             patterns:
               - name: constant.language.variables.time.wikitext
                 match: |-
                   (?x)
-                    (?i)
-                      (\{\{)
-                        (
-                          CURRENTYEAR|CURRENTMONTH|CURRENTMONTH1|CURRENTMONTHNAME|CURRENTMONTHNAMEGEN|CURRENTMONTHABBREV|CURRENTDAY|CURRENTDAY2|CURRENTDOW|CURRENTDAYNAME|CURRENTTIME|CURRENTHOUR|CURRENTWEEK|CURRENTTIMESTAMP|LOCALYEAR|LOCALMONTH|LOCALMONTH1|LOCALMONTHNAME|LOCALMONTHNAMEGEN|LOCALMONTHABBREV|LOCALDAY|LOCALDAY2|LOCALDOW|LOCALDAYNAME|LOCALTIME|LOCALHOUR|LOCALWEEK|LOCALTIMESTAMP
-                        )
-                      (\}\})
+                  (?i)
+                    (\{\{)
+                      (
+                        CURRENTYEAR|CURRENTMONTH|CURRENTMONTH1|CURRENTMONTHNAME|
+                        CURRENTMONTHNAMEGEN|CURRENTMONTHABBREV|CURRENTDAY|
+                        CURRENTDAY2|CURRENTDOW|CURRENTDAYNAME|CURRENTTIME|
+                        CURRENTHOUR|CURRENTWEEK|CURRENTTIMESTAMP|LOCALYEAR|
+                        LOCALMONTH|LOCALMONTH1|LOCALMONTHNAME|LOCALMONTHNAMEGEN|
+                        LOCALMONTHABBREV|LOCALDAY|LOCALDAY2|LOCALDOW|
+                        LOCALDAYNAME|LOCALTIME|LOCALHOUR|LOCALWEEK|
+                        LOCALTIMESTAMP
+                      )
+                    (\}\})
               - name: constant.language.variables.metadata.wikitext
                 match: |-
                   (?x)
-                    (?i)
-                      (\{\{)
-                        (
-                          SITENAME|SERVER|SERVERNAME|DIRMARK|DIRECTIONMARK|SCRIPTPATH|STYLEPATH|CURRENTVERSION|CONTENTLANGUAGE|CONTENTLANG|PAGEID|PAGELANGUAGE|CASCADINGSOURCES|REVISIONID|REVISIONDAY|REVISIONDAY2|REVISIONMONTH|REVISIONMONTH1|REVISIONYEAR|REVISIONTIMESTAMP|REVISIONUSER|REVISIONSIZE
-                        )
-                      (\}\})
-              # TODO:
+                  (?i)
+                    (\{\{)
+                      (
+                        SITENAME|SERVER|SERVERNAME|DIRMARK|DIRECTIONMARK|
+                        SCRIPTPATH|STYLEPATH|CURRENTVERSION|CONTENTLANGUAGE|
+                        CONTENTLANG|PAGEID|PAGELANGUAGE|CASCADINGSOURCES|
+                        REVISIONID|REVISIONDAY|REVISIONDAY2|REVISIONMONTH|
+                        REVISIONMONTH1|REVISIONYEAR|REVISIONTIMESTAMP|
+                        REVISIONUSER|REVISIONSIZE
+                      )
+                    (\}\})
+              #region:
+              #TODO
               # - commonsname: constant.language.variables.metadata.wikitext
               #   commonsmatch: |-
-              #     (?i)(\{\{)(PROTECTIONLEVEL|PROTECTIONEXPIRY|DISPLAYTITLE|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)(:[\w\-\s\(\)\.\|]*)?(\}\})
+              #     (?i)(\{\{)(PROTECTIONLEVEL|PROTECTIONEXPIRY|DISPLAYTITLE|
+              #     DEFAULTSORTKEY|DEFAULTCATEGORYSORT)(:[\w\-\s\(\)\.\|]*)?(\}\})
               # - commonsname: constant.language.variables.statistical.wikitext
               #   commonsmatch: |
-              #     (?i)(\{\{)(NUMBEROFPAGES|NUMBEROFARTICLES|NUMBEROFFILES|NUMBEROFEDITS|NUMBEROFVIEWS|NUMBEROFUSERS|NUMBEROFADMINS|NUMBEROFACTIVEUSERS(?:(:R)?))(\}\})
+              #     (?i)(\{\{)(NUMBEROFPAGES|NUMBEROFARTICLES|NUMBEROFFILES|
+              #     NUMBEROFEDITS|NUMBEROFVIEWS|NUMBEROFUSERS|NUMBEROFADMINS|
+              #     NUMBEROFACTIVEUSERS(?:(:R)?))(\}\})
               # - commonsname: constant.language.variables.statistical.wikitext
               #   commonsmatch: |-
-              #     (?i)(\{\{)(PAGESINCATEGORY|PAGESINCAT|PAGESINCATEGORY|NUMBERINGROUP|NUMINGROUP|PAGESINNS|PAGESINNAMESPACE)(:[\w\-\s\(\)\.\|]*)?(\}\})
+              #     (?i)(\{\{)(PAGESINCATEGORY|PAGESINCAT|PAGESINCATEGORY|
+              #     NUMBERINGROUP|NUMINGROUP|PAGESINNS|PAGESINNAMESPACE)
+              #     (:[\w\-\s\(\)\.\|]*)?(\}\})
               # - commons: ""
               #   "": >-
-              #     (?i)(\{\{)(FULLPAGENAME|PAGENAME|BASEPAGENAME|ROOTPAGENAME|SUBPAGENAME|SUBJECTPAGENAME|ARTICLEPAGENAME|TALKPAGENAME|FULLPAGENAMEE|PAGENAMEE|BASEPAGENAMEE|SUBPAGENAMEE|SUBJECTPAGENAMEE|TALKPAGENAMEE)(:[\w\-\s\(\)\.\|]*)?(\}\})
+              #     (?i)(\{\{)(FULLPAGENAME|PAGENAME|BASEPAGENAME|ROOTPAGENAME|
+              #     SUBPAGENAME|SUBJECTPAGENAME|ARTICLEPAGENAME|TALKPAGENAME|
+              #     FULLPAGENAMEE|PAGENAMEE|BASEPAGENAMEE|SUBPAGENAMEE|
+              #     SUBJECTPAGENAMEE|TALKPAGENAMEE)(:[\w\-\s\(\)\.\|]*)?(\}\})
               # - commons: ""
               #   "": >-
-              #     (?i)(\{\{)(NAMESPACE|SUBJECTSPACE|ARTICLESPACE|TALKSPACE|NAMESPACEE|SUBJECTSPACEE|TALKSPACEE)(\}\})
+              #     (?i)(\{\{)(NAMESPACE|SUBJECTSPACE|ARTICLESPACE|TALKSPACE|
+              #     NAMESPACEE|SUBJECTSPACEE|TALKSPACEE)(\}\})
               # - commons: ""
               #   "": (\{\{)(!)(\}\})
               # END_TODO:
               - name: constant.language.variables.isbn.wikitext
                 match: ISBN\s+((9[\-\s]?7[\-\s]?[89][\-\s]?)?([0-9][\-\s]?){10})
-                #       ISBN   129  -    7   -    8     -   2 3  0     -   3    1
-                #       ISBN     978-12345-6789-0
+                #      ISBN   129  -    7   -    8     -   2 3  0     -   3    1
+                #      ISBN     978-12345-6789-0
               - name: constant.language.variables.rfc.wikitext
                 match: RFC\s+[0-9]+
                 #       RFC     0
@@ -285,7 +311,7 @@ repository:
         patterns:
           - include: $self
           - match: ([\w\-\s\(\)\.]*)(\|)?
-            #         1    string     12 |2
+            #      1    string     12 |2
             captures:
               1:
                 name: variable.other.wikitext
@@ -585,7 +611,7 @@ repository:
             contentName: meta.embedded.block.latex
             patterns:
               - include: text.tex.latex
-  ## public
+  # public
   doublequotedString:
     begin: '"'
     beginCaptures:
