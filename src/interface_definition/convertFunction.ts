@@ -1,10 +1,12 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
+*  Licensed under the MIT License. See License.txt in the project root for license information.
+*--------------------------------------------------------------------------------------------*/
 
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 function invalidValue(typ: Typ, val: unknown, key: any = ''): never {
     if (key) {
