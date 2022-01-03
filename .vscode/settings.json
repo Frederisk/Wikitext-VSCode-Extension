@@ -21,6 +21,7 @@
     "typescript.tsdk": "./node_modules/typescript/lib",
     "cmake.configureOnOpen": false,
     "cSpell.words": [
+        "eqeqeq",
         "luxon",
         "mimetypes",
         "mwbot",
