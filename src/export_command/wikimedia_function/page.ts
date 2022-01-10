@@ -11,7 +11,7 @@ import { OldTokensConvert, OldTokensResult } from '../../interface_definition/ol
 import { getDefaultBot, getLoggedInBot } from './bot';
 import { TokensConvert, TokensResult } from '../../interface_definition/tokensInterface';
 import { showMWErrorMessage } from './err_msg';
-import { Tag, TagsConvert, TagsResult } from '../../interface_definition/tagsInterface';
+import { TagsConvert, TagsResult } from '../../interface_definition/tagsInterface';
 
 interface ContentInfo {
     content: string;
@@ -344,17 +344,13 @@ async function getValidTagList(tBot: MWBot): Promise<string[]> {
     for (; ;) {
         const result: unknown = await tBot.request(args);
         const re: TagsResult = TagsConvert.toTagsResult(result);
-        const tags: Tag[] = re.query.tags;
+
         tagList.push(
-            ...tags.filter(tag =>
+            ...re.query.tags.filter(tag =>
                 tag.active !== undefined && tag.defined !== undefined
-            ).map(tag => tag.name as string));
-        if (re.continue !== undefined) {
-            Object.assign(args, re.continue);
-            // args = { ...args, ...re.continue };
-            // Object.keys(re.continue)
-            //     .forEach(key => args[key] = re.continue[key]);
-        } else { break; }
+            ).map(tag => tag.name));
+        if (re.continue !== undefined) { Object.assign(args, re.continue); }
+        else { break; }
     }
 
     return tagList;

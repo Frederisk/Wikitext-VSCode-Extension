@@ -9,7 +9,7 @@ region:
   body: |
     <!--#region ${1:chapter}-->
     ${2:}
-    <!--#endregion-->
+    <!--#endregion ${1:chapter}-->
   description: Region
   scope: markup.list.unnumbered.wikitext
 redirect:
@@ -46,7 +46,7 @@ table:
   scope: ""
 codeBlock:
   prefix: "@codeblock"
-  body: |-
+  body: |
     <syntaxhighlight lang="${1:c#}" line="${2:1}" start="${3:1}">
 
     </syntaxhighlight>
@@ -64,32 +64,32 @@ todo:
   scope: ""
 title:
   prefix: "@title"
-  body: "== ${1:title} =="
+  body: "== ${1:title} ==\n"
   description: Title<2>
   scope: ""
 subtitle1:
   prefix: "@subt1"
-  body: "=== ${1:title} ==="
+  body: "=== ${1:title} ===\n"
   description: Subtitle1<3>
   scope: ""
 subtitle2:
   prefix: "@subt2"
-  body: "==== ${1:title} ===="
+  body: "==== ${1:title} ====\n"
   description: Subtitle2<4>
   scope: ""
 subtitle3:
   prefix: "@subt3"
-  body: "===== ${1:title} ====="
+  body: "===== ${1:title} =====\n"
   description: Subtitle3<5>
   scope: ""
 subtitle4:
   prefix: "@subt4"
-  body: "====== ${1:title} ======"
+  body: "====== ${1:title} ======\n"
   description: Subtitle4<6>
   scope: ""
 pageTitle:
   prefix: "@pagetitle"
-  body: "= ${1:title} ="
+  body: "= ${1:title} =\n"
   description: PageTitle<1>
   scope: ""
 pageInfo:
@@ -104,4 +104,14 @@ pageInfo:
     ContentFormat=#${6:}#
     [END_PAGE_INFO] --%>
   description: Page Info Struct
+  scope: ""
+refName:
+  prefix: "@refname"
+  body: <ref name="${1:name}"/>
+  description: Reference tag with name
+  scope: ""
+refDefine:
+  prefix: "@refdefine"
+  body: <ref name="${1:name}" >${2:definition}</ref>
+  description: Reference tag with name and definition
   scope: ""
