@@ -73,8 +73,8 @@ repository:
               5:
                 name: punctuation.definition.string.end.extension.wikitext
       convert:
-        begin: (-\{)([a-zA-Z](\|))?
-        #      1 -{ 12     tag3| 32
+        begin: (-\{(?!\{))([a-zA-Z](\|))?
+        #      1 -{      12     tag3| 32
         #      -{T|
         end: (\}-)
         #    1 }- 1
