@@ -21,11 +21,14 @@
     "typescript.tsdk": "./node_modules/typescript/lib",
     "cmake.configureOnOpen": false,
     "cSpell.words": [
+        "caltaojihun",
         "eqeqeq",
         "luxon",
         "mimetypes",
         "mwbot",
-        "wikixml"
+        "vsix",
+        "wikixml",
+        "Xvfb"
     ],
     "files.associations": {
         "*.tmLanguage.json": "json-tmlanguage",
