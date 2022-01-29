@@ -123,7 +123,7 @@ export async function showViewer(currentPanel: vscode.WebviewPanel | string, vie
         const re: GetViewResult = ViewConverter.toGetViewResult(result);
         if (!re.parse) { return undefined; }
 
-        const baseElem = `<base href="${baseURI}" />"`;
+        const baseElem = `<base href="${baseURI}" />`;
 
         const style = `<style>${config.get("previewCssStyle")}</style>`;
 

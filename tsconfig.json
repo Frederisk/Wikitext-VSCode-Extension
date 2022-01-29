@@ -22,7 +22,8 @@
         // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
         // "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
-        "importHelpers": true
+        "importHelpers": true,
+        "forceConsistentCasingInFileNames": true,
     },
     "exclude": [
         "./.vscode-test/*"
