@@ -37,9 +37,13 @@ jobs:
       - name: Test
         run: xvfb-run -a yarn test
 
-      - name: Publish
+      - name: Publish to VSCE
         if: ${{ success() }}
-        run: yarn run deploy
+        run: vsce publish --yarn
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      - name: Publish to OVSX
+        if: ${{ success() }}
+        run: ovsx publish --yarn
+        env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
