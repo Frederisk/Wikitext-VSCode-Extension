@@ -4,6 +4,23 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.6.3] - 2022-02-05
+
+### Added
+
+- Now Wikitext Extension is available in Open VSX.
+- Added `sanitized-css` support.
+- Added more snippets.
+
+### Changed
+
+- Adjusted the syntax priority.
+- Enhanced bracket matching
+
+### Fixed
+
+- Fixed some security issues
+
 ## [3.6.2] - 2021-12-16
 
 ### Added

@@ -1,6 +1,7 @@
 # Wikitext Markup Language Support Extension for Visual Studio Code
 
 [![VSMarket: wikitext extension](https://vsmarketplacebadge.apphb.com/version/RoweWilsonFrederiskHolme.Wikitext.svg?color=blueviolet&logo=visual-studio-code&style=?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
+[![Open VSX: wikitext extension](https://img.shields.io/open-vsx/v/RoweWilsonFrederiskHolme/Wikitext?color=purple&label=Open%20VSX)](https://open-vsx.org/extension/RoweWilsonFrederiskHolme/wikitext)
 [![GitHub: wikitext extension](https://img.shields.io/badge/GitHub-wikitext-yellow)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 [![Toolhub: wikitext extension](https://img.shields.io/badge/Toolhub-wikitext_extension-36C)](https://toolhub.wikimedia.org/tools/wikitext-vscode-extension)
 
@@ -55,8 +56,12 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Added LaTeX syntax support for `<math>` tags.
-- Fixed the syntax error that caused `<ref />` and `<nowiki />` to fail to close.
+- Now Wikitext Extension is available in Open VSX.
+- Added `sanitized-css` support.
+- Added more snippets.
+- Adjusted the syntax priority.
+- Enhanced bracket matching
+- Fixed some security issues
 
 ## Usage
 
@@ -70,18 +75,18 @@ Generally speaking, make sure that your VSCode is always the latest version.
 
 ### Development Requirements
 
-- [Node.js](https://nodejs.org) (with npm) at least 10.x.x
+- [Node.js](https://nodejs.org) (with npm) at least v10.x.x
 
 ### How to build this extension yourself
 
 Firstly, clone this repository and change directory to the repository, then install VS Code Extension Manager and other packages:
 
 ```bash
-npm install yarn vsce -g # VS Code Extension Manager
+npm install -g yarn vsce # VS Code Extension Manager
 yarn install # Install devDependencies
 ```
 
-Package this project and you will get a .vsix file:
+Package this project and you will get a `.vsix` file:
 
 ```bash
 vsce package --yarn # Package Extension with yarn
