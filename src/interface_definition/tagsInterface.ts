@@ -14,7 +14,7 @@ import { a, cast, o, r, TypeMap, u, uncast } from "./convertFunction";
         },
         query: Query {
             tags: Tag[] {
-                name: string,
+                name: number | string,
                 defined?: string,
                 active?: string
             }
@@ -46,7 +46,7 @@ export interface Query {
 }
 
 export interface Tag {
-    name: string;
+    name: number | string;
     defined?: string;
     active?: string;
 }
@@ -80,7 +80,7 @@ const tagsTypeMap: TypeMap = {
         { json: "tags", js: "tags", typ: a(r("Tag")) },
     ], false),
     "Tag": o([
-        { json: "name", js: "name", typ: "" },
+        { json: "name", js: "name", typ: u(0, "") },
         { json: "defined", js: "defined", typ: u(undefined, "") },
         { json: "active", js: "active", typ: u(undefined, "") },
     ], false),

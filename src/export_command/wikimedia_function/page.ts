@@ -112,7 +112,7 @@ export async function postPage(): Promise<void> {
             token: await getEditToken(tBot)
         };
         const wikitextTag = 'WikitextExtensionForVSCode';
-        const tagList: string[] = await getValidTagList(tBot);
+        const tagList: (number | string)[] = await getValidTagList(tBot);
         if (tagList.includes(wikitextTag)) {
             args['tags'] = wikitextTag;
         }
@@ -332,7 +332,7 @@ export function getContentInfo(content: string): ContentInfo {
     return { content: content, info: pageInfo };
 }
 
-async function getValidTagList(tBot: MWBot): Promise<string[]> {
+async function getValidTagList(tBot: MWBot): Promise<(number | string)[]> {
     const args: Record<string, string> = {
         action: Action.query,
         list: List.tags,
@@ -340,7 +340,7 @@ async function getValidTagList(tBot: MWBot): Promise<string[]> {
         tgprop: alterNativeValues('active', 'defined')
     };
 
-    const tagList: string[] = [];
+    const tagList: (number | string)[] = [];
     for (; ;) {
         const result: unknown = await tBot.request(args);
         const re: TagsResult = TagsConvert.toTagsResult(result);
