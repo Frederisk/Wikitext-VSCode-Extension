@@ -92,7 +92,7 @@ export async function postPage(): Promise<void> {
         return undefined;
     }
     let wikiSummary: string | undefined = await vscode.window.showInputBox({
-        ignoreFocusOut: false,
+        ignoreFocusOut: true,
         prompt: 'Enter the summary of this edit action.',
         placeHolder: '// Edit via Wikitext Extension for VSCode'
     });
