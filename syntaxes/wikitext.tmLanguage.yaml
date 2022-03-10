@@ -25,8 +25,8 @@ repository:
       - include: "#list"
       - include: "#table"
       - include: "#fontStyle"
-      - include: "#externalLink"
       - include: "#internalLink"
+      - include: "#externalLink"
       - include: "#heading"
       - include: "#break"
       - include: "#wikixml"
@@ -107,8 +107,8 @@ repository:
         name: markup.changed.wikitext
       template:
         begin: >-
-          (\{\{)\s*(([\w\-\s\(\)\.]*(:))*)\s*((#[\w\-\s\(\)\.]+(:))*)([\w\-\s\(\)\.]*)
-        # 1 {{ 1   23  namespace    4:43 2   56#   function    7:76 58     name      8
+          (\{\{)\s*(([^#:\|\[\]\{\}]*(:))*)\s*((#[^#:\|\[\]\{\}]+(:))*)([^#:\|\[\]\{\}]*)
+        # 1 {{ 1   23   namespace    4:43 2   56#    function    7:76 58      name      8
         end: (\}\})
         #    1 }} 1
         captures:
@@ -159,14 +159,14 @@ repository:
                   - include: $self
               4:
                 name: punctuation.definition.tag.link.external.wikitext
-          - name: invalid.illegal.bad-url.wikitext
+          - name: invalid.illegal.bad-link.wikitext
             match: (\[)([\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#%@!\$&'\(\)\*\+,;=.]+)\s*?([^\]]*)(\])
             #      1 [12 a-.b      .  x-.y      /path#where?arg=1+2&other;           3      34 ]4
             captures:
               1:
                 name: punctuation.definition.tag.link.external.wikitext
               2:
-                name: entity.name.tag.url.wikitext
+                name: invalid.illegal.bad-url.wikitext
               3:
                 name: string.other.link.external.title.wikitext
                 patterns:
@@ -176,8 +176,8 @@ repository:
       redirect:
         patterns:
           - match: >-
-              (?i)(^\s*?#REDIRECT)\s*(\[\[)(([\w\-\s\(\)\.]*?:)*)?([^\|\[\]]*)?(\|[^\[\]]*?)?(\]\])
-            #     1     #REDIRECT1   2 [[ 234  namespace     :4 3 5  name    5 6 | other   6 7 ]] 7
+              (?i)(^\s*?#REDIRECT)\s*(\[\[)(([^#:\|\[\]\{\}]*?:)*)?([^\|\[\]]*)?(\|[^\[\]]*?)?(\]\])
+            #     1     #REDIRECT1   2 [[ 234   namespace     :4 3 5  name    5 6 | other   6 7 ]] 7
             captures:
               1:
                 name: keyword.control.redirect.wikitext
@@ -310,7 +310,7 @@ repository:
         end: (}}})
         patterns:
           - include: $self
-          - match: ([\w\-\s\(\)\.]*)(\|)?
+          - match: ([^#:\|\[\]\{\}]*)(\|)?
             #      1    string     12 |2
             captures:
               1:
@@ -347,12 +347,14 @@ repository:
       internalLink:
         TODO: SINGLE LINE
         name: string.quoted.wikitext
-        begin: (\[\[)(([\w\-\s\(\)\.]*:)*)?([^\|\[\]]*)?
-        #      1 [[ 123  namespace    :3 2 4   name   4
+        begin: (\[\[)(([^#:\|\[\]\{\}]*:)*)?([^\|\[\]]*)?
+        #      1 [[ 123   namespace    :3 2 4   name   4
         end: (\]\])
         captures:
           1:
             name: punctuation.definition.tag.link.internal.wikitext
+            # patterns: # Not Working
+            #   - include: $self
           2:
             name: entity.name.tag.namespace.wikitext
           # 3:
