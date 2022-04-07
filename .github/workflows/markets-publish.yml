@@ -31,7 +31,7 @@ jobs:
 
       - name: Build
         run: |
-          npm install -g yarn vsce ovsx
+          npm install -g yarn semver vsce ovsx
           yarn install
 
       - name: Test
