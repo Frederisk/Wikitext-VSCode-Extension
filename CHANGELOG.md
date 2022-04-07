@@ -1,8 +1,20 @@
+<!-- markdownlint-disable MD024 -->
 # Change Log
 
 All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
+
+## [3.6.4] - 2022-04-07
+
+### Changed
+
+- Modified how some input boxes interacts.
+
+### Fixed
+
+- Error with pushing changes when there is a number in the tags.
+- Some errors in Wikitext syntax.
 
 ## [3.6.3] - 2022-02-05
 
