@@ -290,6 +290,7 @@
         "@types/vscode": "^1.43.0",
         "@typescript-eslint/eslint-plugin": "^5.4.0",
         "@typescript-eslint/parser": "^5.4.0",
+        "@vscode/test-electron": "^1.4.1",
         "eslint": "^8.3.0",
         "glob": "^7.2.0",
         "js-yaml": "^4.1.0",
@@ -297,7 +298,6 @@
         "mwbot": "^2.0.0",
         "ts-loader": "^9.2.3",
         "typescript": "^4.5.2",
-        "vscode-test": "^1.4.1",
         "webpack": "^5.64.2",
         "webpack-cli": "^4.9.1"
     },

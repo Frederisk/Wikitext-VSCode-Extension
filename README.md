@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD033 -->
 # Wikitext Markup Language Support Extension for Visual Studio Code
 
 [![VSMarket: wikitext extension](https://vsmarketplacebadge.apphb.com/version/RoweWilsonFrederiskHolme.Wikitext.svg?color=blueviolet&logo=visual-studio-code&style=?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
@@ -18,7 +19,7 @@ Of course, the development of this extension is short, and there may be some err
 
 If you get help with this project, give this project a star or recommend it to others, thanks!😸
 
-## What's New: [Wikitext-Extension-Gadget](https://github.com/Frederisk/Wikitext-Extension-Gadget)!
+## Enhancement Tool: [Wikitext-Extension-Gadget](https://github.com/Frederisk/Wikitext-Extension-Gadget)
 
 - Now you can add [Wikitext Extension Gadget](https://github.com/Frederisk/Wikitext-Extension-Gadget) as a user gadget on your wiki site. And you will get a button to open VSCode directly in your browser to edit the page!
 
