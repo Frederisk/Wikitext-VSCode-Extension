@@ -60,6 +60,14 @@ export const enum Prop {
     parsetree = "parsetree"
 }
 
+export const enum Meta {
+    allMessages = "allmessages",
+    // ...
+    siteInfo = "siteinfo",
+    // ...
+}
+
+
 export const enum List {
     // ...
     tags = "tags",

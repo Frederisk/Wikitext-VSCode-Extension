@@ -6,7 +6,7 @@
 import MWBot from 'mwbot';
 import * as vscode from 'vscode';
 import { getHost } from '../host_function/host';
-import { Action } from './args';
+import { Action, Meta } from './args';
 import { showMWErrorMessage } from './err_msg';
 
 let bot: MWBot | undefined;
@@ -113,4 +113,44 @@ export async function getLoggedInBot(): Promise<MWBot | undefined> {
         }
     }
     return bot;
+}
+
+export async function compareVersion(tBot: MWBot, major: number, minor: number, revision: number): Promise<boolean | undefined> {
+    // if (bot === undefined) {
+    //     return undefined;
+    // }
+    const args: Record<string, string> = {
+        action: Action.query,
+        meta: Meta.siteInfo,
+    };
+
+    const result: unknown = await tBot.request(args);
+    const re: any = result as any;
+    // TODO: cast
+
+    const generator: string = re.query.general.generator;
+
+    const generatorInfo: RegExpMatchArray | null = generator.match(/^MediaWiki ([0-9]+)\.([0-9]+)\.([0-9]+)(.*)$/);
+    if (generatorInfo === null) {
+        return undefined;
+    }
+
+    const siteMajor: number = parseInt(generatorInfo[1]);
+    const siteMinor: number = parseInt(generatorInfo[2]);
+    const siteRevision: number = parseInt(generatorInfo[3]);
+
+    if (isNaN(siteMajor + siteMinor + siteRevision)) {
+        return undefined;
+    }
+
+    if (siteMajor < major) {
+        return false;
+    }
+    if (siteMinor < minor) {
+        return false;
+    }
+    if (siteRevision < revision) {
+        return false;
+    }
+    return true;
 }
