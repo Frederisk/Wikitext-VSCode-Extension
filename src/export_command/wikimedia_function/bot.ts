@@ -143,14 +143,12 @@ export async function compareVersion(tBot: MWBot, major: number, minor: number, 
         return undefined;
     }
 
-    if (siteMajor < major) {
-        return false;
+    if (siteMajor !== major) {
+        return siteMajor > major;
     }
-    if (siteMinor < minor) {
-        return false;
+    if (siteMinor !== minor) {
+        return siteMinor > minor;
     }
-    if (siteRevision < revision) {
-        return false;
-    }
-    return true;
+    return siteRevision >= revision;
+
 }
