@@ -203,6 +203,8 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
                 return 'jsonc';
             case 'sanitized-css':
                 return 'css';
+            case 'Scribunto':
+                return 'lua';
             default:
                 return modelName;
         }
