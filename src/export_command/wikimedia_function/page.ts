@@ -210,12 +210,14 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
                 return 'jsonc';
             case 'sanitized-css':
                 return 'css';
+            case 'Scribunto':
+                return 'lua';
             default:
                 return modelName;
         }
     }
     function getInfoHead(info: Record<PageInfo, string | undefined>): string {
-        const commentList: Record<string, [string, string]> = {
+        const commentList: Record<string, [string, string] | undefined> = {
             wikitext: ["", ""],
             jsonc: ["/*", "*/"],
             lua: ["--[=[", "--]=]"],
@@ -224,6 +226,7 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
             php: ["/*", "*/"],
             // 'flow-board': ["/*", "*/"],
             // 'sanitized-css': ["/*", "*/"],
+            // 'Scribunto' : ["--[=[", "--]=]"],
         };
         const headInfo: Record<string, string | undefined> = {
             comment: "Please do not remove this struct. It's record contains some important information of edit. This struct will be removed automatically after you push edits.",
@@ -232,8 +235,12 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
         const infoLine: string = Object.keys(headInfo).
             map((key: string) => `    ${key} = #${headInfo[key] ?? ''}#`).
             join("\r");
-        console.log(info?.['contentModel']);
-        return commentList[modelNameToLanguage(info?.['contentModel'])].join(`<%-- [PAGE_INFO]
+        console.log(info?.contentModel);
+        const comment: [string, string] | undefined = commentList[modelNameToLanguage(info?.contentModel)];
+        if (comment === undefined) {
+            throw new Error(`Unsupported content model: ${info?.contentModel}. Please report this issue to the author of this extension.`);
+        }
+        return comment.join(`<%-- [PAGE_INFO]
 ${infoLine}
 [END_PAGE_INFO] --%>`);
     }

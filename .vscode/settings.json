@@ -26,6 +26,7 @@
         "luxon",
         "mimetypes",
         "mwbot",
+        "Scribunto",
         "vsix",
         "wikixml",
         "Xvfb"
