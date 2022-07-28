@@ -400,8 +400,9 @@ repository:
                   - name: invalid.illegal.bad-table-context.wikitext
                     match: '\|.*'
               - name: meta.tag.block.th.heading
-                begin: ^\s*(!)((.*?)(\|))?(.*?)(?=(!!)|$)
+                begin: ^\s*(!)(([^\[]*?)(\|))?(.*?)(?=(!!)|$)
                 #          1!123any34 |42 5bdy5    !!
+                # TODO: Fix `| [[name|display]]`
                 end: $
                 beginCaptures:
                   1:
@@ -417,7 +418,7 @@ repository:
                     name: markup.bold.style.wikitext
                 patterns:
                   - name: meta.tag.block.th.inline.wikitext
-                    match: (!!)((.*?)(\|))?(.*?)(?=(!!)|$)
+                    match: (!!)(([^\[]*?)(\|))?(.*?)(?=(!!)|$)
                     captures:
                       1:
                         name: punctuation.definition.tag.begin.wikitext
