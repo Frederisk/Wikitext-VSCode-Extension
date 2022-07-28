@@ -8,7 +8,7 @@ import type MWBot from 'mwbot';
 import { Action, Prop, RvProp, alterNativeValues, List } from './args';
 import { ReadPageConvert, ReadPageResult, Main, Revision, Jump, Page } from '../../interface_definition/readPageInterface';
 import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
-import { getDefaultBot, getLoggedInBot } from './bot';
+import { compareVersion, getDefaultBot, getLoggedInBot } from './bot';
 import { TokensConvert, TokensResult } from '../../interface_definition/tokensInterface';
 import { showMWErrorMessage } from './err_msg';
 import { TagsConvert, TagsResult } from '../../interface_definition/tagsInterface';
@@ -157,6 +157,13 @@ export async function pullPage(): Promise<void> {
     });
     // if title is null or empty, do nothing
     if (!title) { return undefined; }
+
+    const newVer = await compareVersion(tBot, 1, 32, 0);
+
+    if (!newVer) {
+        vscode.window.showWarningMessage("Your MediaWiki version may be too old. This may cause some compatibility issues. Please update to the v1.32.0 or later.");
+        // return undefined;
+    }
 
     const args: Record<string, string> = {
         action: Action.query,
