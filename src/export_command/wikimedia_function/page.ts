@@ -229,7 +229,7 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
             map((key: string) => `    ${key} = #${headInfo[key] ?? ''}#`).
             join("\r");
         console.log(info?.contentModel);
-        const comment: [string, string] | undefined = commentList[modelNameToLanguage(info?.contentModel)]
+        const comment: [string, string] | undefined = commentList[modelNameToLanguage(info?.contentModel)];
         if (comment === undefined) {
             throw new Error(`Unsupported content model: ${info?.contentModel}. Please report this issue to the author of this extension.`);
         }
