@@ -57,9 +57,9 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Modified how some input boxes interacts.
-- Fixed an error with pushing changes when there is a number in the tags.
-- Fixed some errors in Wikitext syntax.
+- Added MediaWiki version checking in pullPage
+- Added Scribunto to lua mapping
+- Enhanced table syntaxes
 
 ## Usage
 

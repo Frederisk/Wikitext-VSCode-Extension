@@ -5,6 +5,17 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.6.5] - 2022-07-29
+
+### Added
+
+- Added MediaWiki version checking in pullPage
+- Added Scribunto to lua mapping
+
+### Changed
+
+- Enhanced table syntaxes
+
 ## [3.6.4] - 2022-04-07
 
 ### Changed
