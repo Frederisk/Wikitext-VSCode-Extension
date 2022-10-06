@@ -3,34 +3,35 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 {
-    "compilerOptions": {
-        /* Visit https://aka.ms/tsconfig.json to read more about this file */
-        /* Basic Options */
-        "target": "ES6",
-        "module": "CommonJS",
-        "lib": [
-            "ES6"
-        ],
-        "sourceMap": true,
-        "outDir": "./out/",
-        "rootDir": "./src/",
-        /* Strict Type-Checking Options */
-        "strict": true, /* enable all strict type-checking options */
-        /* Additional Checks */
-        // "noUnusedParameters": true,  /* Report errors on unused parameters. */
-        // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-        // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-        // "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "importHelpers": true,
-        "forceConsistentCasingInFileNames": true,
-    },
-    "exclude": [
-        "./.vscode-test/*"
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+    /* Basic Options */
+    "target": "ES6",
+    "module": "CommonJS",
+    "lib": [
+      "ES6"
     ],
-    "include": [
-        "./src/**/*.ts",
-        "./node_modules/vscode/vscode.d.ts",
-        "./node_modules/vscode/lib/*"
-    ]
+    "sourceMap": true,
+    "outDir": "./out/",
+    "rootDir": "./src/",
+    /* Strict Type-Checking Options */
+    "strict": true, /* enable all strict type-checking options */
+    /* Additional Checks */
+    // "noUnusedParameters": true,  /* Report errors on unused parameters. */
+    // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+    // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
+    // "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+  },
+  "exclude": [
+    "./.vscode-test/*"
+  ],
+  "include": [
+    "./src/**/*.ts",
+    "./node_modules/vscode/vscode.d.ts",
+    "./node_modules/vscode/lib/*"
+  ]
 }

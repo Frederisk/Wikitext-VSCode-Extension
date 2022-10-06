@@ -1,309 +1,309 @@
 {
-    "name": "wikitext",
-    "displayName": "Wikitext",
-    "description": "Wikitext is a document written in a wiki markup language. This extension provides functional support for the Wikitext language with MediaWiki such as Wikipedia.",
-    "version": "3.6.5",
-    "publisher": "RoweWilsonFrederiskHolme",
-    "license": "SEE LICENSE IN LICENSE.txt",
-    "author": {
-        "name": "Rowe Wilson Frederisk Holme",
-        "email": "frederisk@outlook.com",
-        "url": "https://twitter.com/rwfholme"
-    },
-    "homepage": "https://github.com/Frederisk/Wikitext-VSCode-Extension/blob/master/README.md",
-    "icon": "media/wikitext-icon.png",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Frederisk/Wikitext-VSCode-Extension.git"
-    },
-    "bugs": {
-        "url": "https://github.com/Frederisk/Wikitext-VSCode-Extension/issues",
-        "email": "frederisk@outlook.com"
-    },
-    "qna": "https://github.com/Frederisk/Wikitext-VSCode-Extension/discussions/categories/q-a",
-    "engines": {
-        "vscode": "^1.43.0"
-    },
-    "categories": [
-        "Programming Languages",
-        "Snippets",
-        "Visualization",
-        "Other"
-    ],
-    "activationEvents": [
-        "onCommand:wikitext.getPreview",
-        "onCommand:wikitext.login",
-        "onCommand:wikitext.logout",
-        "onCommand:wikitext.readPage",
-        "onCommand:wikitext.writePage",
-        "onCommand:wikitext.viewPage",
-        "onCommand:wikitext.citeWeb",
-        "onCommand:wikitext.closeEditor",
-        "onLanguage:wikitext",
-        "onUri"
-    ],
-    "main": "./dist/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "wikitext.getPreview",
-                "title": "Get preview",
-                "category": "Wikitext",
-                "icon": {
-                    "light": "./media/preview-light.svg",
-                    "dark": "./media/preview-dark.svg"
-                }
-            },
-            {
-                "command": "wikitext.login",
-                "title": "Login with your account",
-                "category": "Wikitext"
-            },
-            {
-                "command": "wikitext.logout",
-                "title": "Logout, if you are already logged in",
-                "category": "Wikitext"
-            },
-            {
-                "command": "wikitext.readPage",
-                "title": "Pull page to edit",
-                "category": "Wikitext"
-            },
-            {
-                "command": "wikitext.writePage",
-                "title": "Post your edit to the website",
-                "category": "Wikitext"
-            },
-            {
-                "command": "wikitext.viewPage",
-                "title": "View the page",
-                "category": "Wikitext"
-            },
-            {
-                "command": "wikitext.citeWeb",
-                "title": "Add a web citation",
-                "category": "Wikitext"
-            },
-            {
-                "command": "wikitext.closeEditor",
-                "title": "Close this editor without saving",
-                "category": "Wikitext"
-            }
-        ],
-        "menus": {
-            "editor/title": [
-                {
-                    "command": "wikitext.getPreview",
-                    "when": "editorLangId == wikitext",
-                    "group": "navigation"
-                }
-            ],
-            "commandPalette": [
-                {
-                    "command": "wikitext.getPreview",
-                    "when": "editorLangId == wikitext",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.login",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.logout",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.readPage",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.writePage",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.viewPage",
-                    "group": "navigation"
-                },
-                {
-                    "command": "wikitext.citeWeb",
-                    "group": "navigation",
-                    "when": "editorLangId == wikitext"
-                },
-                {
-                    "command": "wikitext.closeEditor",
-                    "group": "navigation",
-                    "when": "editorLangId == wikitext"
-                }
-            ]
-        },
-        "keybindings": [
-            {
-                "command": "wikitext.getPreview",
-                "key": "shift+ctrl+v",
-                "mac": "shift+cmd+v",
-                "when": "editorLangId == wikitext"
-            }
-        ],
-        "languages": [
-            {
-                "id": "wikitext",
-                "extensions": [
-                    ".wikitext",
-                    ".wt",
-                    ".mediawiki",
-                    ".mw",
-                    ".wiki"
-                ],
-                "aliases": [
-                    "Wikitext",
-                    "WikiText"
-                ],
-                "mimetypes": [
-                    "text/x-wiki"
-                ],
-                "configuration": "./language-configuration.json"
-            }
-        ],
-        "grammars": [
-            {
-                "language": "wikitext",
-                "scopeName": "source.wikitext",
-                "path": "./syntaxes/wikitext.tmLanguage.json",
-                "embeddedLanguages": {
-                    "source.json": "json",
-                    "text.html.basic": "html",
-                    "text.tex.latex": "latex"
-                }
-            }
-        ],
-        "snippets": [
-            {
-                "language": "wikitext",
-                "path": "./snippets/snippets.json"
-            }
-        ],
-        "configuration": {
-            "type": "object",
-            "title": "Wikitext",
-            "properties": {
-                "wikitext.host": {
-                    "type": "string",
-                    "description": "The host that provides the API, such as 'en.wikipedia.org'."
-                },
-                "wikitext.userName": {
-                    "type": "string",
-                    "description": "The user name of wikimedia site."
-                },
-                "wikitext.password": {
-                    "type": "string",
-                    "description": "The password of user. It will be fixed in the software settings, please do not fill in the device in public places."
-                },
-                "wikitext.redirects": {
-                    "type": "boolean",
-                    "description": "When the input page is a redirect page, jump automatically. Note that posting command will **not** be redirected.",
-                    "default": true
-                },
-                "wikitext.apiPath": {
-                    "type": "string",
-                    "markdownDescription": "Set the basic path to obtain the API. If you are not sure, please check the `Special:Version` page of your site.",
-                    "default": "/w/api.php"
-                },
-                "wikitext.getCss": {
-                    "type": "boolean",
-                    "description": "Get CSS when previewing the page. Please note that this feature will greatly increase the extended workload, and some rendering effects may conflict with VSCode. To get the correct display, you may need to enable Previewer's JS support.",
-                    "default": false
-                },
-                "wikitext.enableJavascript": {
-                    "type": "boolean",
-                    "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks.",
-                    "default": false
-                },
-                "wikitext.articlePath": {
-                    "type": "string",
-                    "markdownDescription": "Set the basic path to obtain the article. please check the `Special:Version` page of your site (No need for `$1`).",
-                    "default": "/wiki/"
-                },
-                "wikitext.webCiteFormat": {
-                    "type": "string",
-                    "markdownDescription": "Setting the generation of web reference tags. The configuration of this option is similar to the code section of MakeRef in meta wikimedia. The available fields: `url`, `title`, `accessdate`, `website`, `archiveurl` ,and `archivedate`.\n\n**This function is only a preview function, it may change or become a separate new extension in the future. Please pay attention to the changelog of this function every time you update this extension.**",
-                    "default": "{{cite web<!url> |url={$url}</!url><!title> |title={$title}</!title><!accessdate> |access-date={$accessdate}</!accessdate><!website> |website={$website}</!website><!publicationdate> |publication-date={$publicationdate}</!publicationdate><!archiveurl> |archive-url={$archiveurl}</!archiveurl><!archivedate> |archive-date={$archivedate}</!archivedate>}}"
-                },
-                "wikitext.transferProtocol": {
-                    "type": "string",
-                    "default": "https://",
-                    "enum": [
-                        "http://",
-                        "https://"
-                    ],
-                    "enumDescriptions": [
-                        "HyperText Transfer Protocol",
-                        "HyperText Transfer Protocol Secure"
-                    ],
-                    "description": "Select the transfer protocol used when accessing the API."
-                },
-                "wikitext.previewCssStyle": {
-                    "type": "string",
-                    "markdownDescription": "CSS attached to Previewer. This content always works, regardless of whether [GetCss](#wikitext.getCss) is enabled or not. To enable CSS for a specific category of themes, you can use the class filter name `vscode-light`, `vscode-dark`, `vscode-high-contrast` etc. See [Extension guides](https://code.visualstudio.com/api/extension-guides/webview#theming-webview-content) to learn more.",
-                    "default": ".vscode-dark img[class^=\"mwe-math-fallback-image\"]{filter: invert(85%);} .vscode-light {} .vscode-high-contrast img[class^=\"mwe-math-fallback-image\"]{background-color: white; filter: invert(100%);}"
-                },
-                "wikitext.autoLogin": {
-                    "type": "string",
-                    "default": "Ask me",
-                    "enum": [
-                        "Always",
-                        "Never",
-                        "Ask me"
-                    ],
-                    "enumDescriptions": [
-                        "Always log in automatically when I am not logged in",
-                        "Never log in automatically",
-                        "Ask me if I want to log in when I am not logged in"
-                    ],
-                    "description": "Whether to automatically log in when performing an action that requires an account to be logged in."
-                },
-                "wikitext.skipEnteringPageTitle": {
-                    "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "If `PageTitle` is filled in `PAGE_INFO`, skip entering the title when posting."
-                }
-            }
+  "name": "wikitext",
+  "displayName": "Wikitext",
+  "description": "Wikitext is a document written in a wiki markup language. This extension provides functional support for the Wikitext language with MediaWiki such as Wikipedia.",
+  "version": "3.6.5",
+  "publisher": "RoweWilsonFrederiskHolme",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "author": {
+    "name": "Rowe Wilson Frederisk Holme",
+    "email": "frederisk@outlook.com",
+    "url": "https://twitter.com/rwfholme"
+  },
+  "homepage": "https://github.com/Frederisk/Wikitext-VSCode-Extension/blob/master/README.md",
+  "icon": "media/wikitext-icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Frederisk/Wikitext-VSCode-Extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Frederisk/Wikitext-VSCode-Extension/issues",
+    "email": "frederisk@outlook.com"
+  },
+  "qna": "https://github.com/Frederisk/Wikitext-VSCode-Extension/discussions/categories/q-a",
+  "engines": {
+    "vscode": "^1.43.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Visualization",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:wikitext.getPreview",
+    "onCommand:wikitext.login",
+    "onCommand:wikitext.logout",
+    "onCommand:wikitext.readPage",
+    "onCommand:wikitext.writePage",
+    "onCommand:wikitext.viewPage",
+    "onCommand:wikitext.citeWeb",
+    "onCommand:wikitext.closeEditor",
+    "onLanguage:wikitext",
+    "onUri"
+  ],
+  "main": "./dist/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "wikitext.getPreview",
+        "title": "Get preview",
+        "category": "Wikitext",
+        "icon": {
+          "light": "./media/preview-light.svg",
+          "dark": "./media/preview-dark.svg"
         }
+      },
+      {
+        "command": "wikitext.login",
+        "title": "Login with your account",
+        "category": "Wikitext"
+      },
+      {
+        "command": "wikitext.logout",
+        "title": "Logout, if you are already logged in",
+        "category": "Wikitext"
+      },
+      {
+        "command": "wikitext.readPage",
+        "title": "Pull page to edit",
+        "category": "Wikitext"
+      },
+      {
+        "command": "wikitext.writePage",
+        "title": "Post your edit to the website",
+        "category": "Wikitext"
+      },
+      {
+        "command": "wikitext.viewPage",
+        "title": "View the page",
+        "category": "Wikitext"
+      },
+      {
+        "command": "wikitext.citeWeb",
+        "title": "Add a web citation",
+        "category": "Wikitext"
+      },
+      {
+        "command": "wikitext.closeEditor",
+        "title": "Close this editor without saving",
+        "category": "Wikitext"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "wikitext.getPreview",
+          "when": "editorLangId == wikitext",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "wikitext.getPreview",
+          "when": "editorLangId == wikitext",
+          "group": "navigation"
+        },
+        {
+          "command": "wikitext.login",
+          "group": "navigation"
+        },
+        {
+          "command": "wikitext.logout",
+          "group": "navigation"
+        },
+        {
+          "command": "wikitext.readPage",
+          "group": "navigation"
+        },
+        {
+          "command": "wikitext.writePage",
+          "group": "navigation"
+        },
+        {
+          "command": "wikitext.viewPage",
+          "group": "navigation"
+        },
+        {
+          "command": "wikitext.citeWeb",
+          "group": "navigation",
+          "when": "editorLangId == wikitext"
+        },
+        {
+          "command": "wikitext.closeEditor",
+          "group": "navigation",
+          "when": "editorLangId == wikitext"
+        }
+      ]
     },
-    "scripts": {
-        "vscode:prepublish": "yarn run compile",
-        "compile": "yarn run convert && webpack --config webpack.config.js --mode production",
-        "lint": "eslint -c .eslintrc.yml --ext .ts ./src",
-        "watch": "yarn run convert && webpack --config webpack.config.js --mode development --watch",
-        "pretest": "tsc -p ./ && yarn run lint",
-        "test": "node ./out/test/runTest.js",
-        "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json & js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json & js-yaml language-configuration.yaml > language-configuration.json &",
-        "package": "vsce package --yarn"
-    },
-    "devDependencies": {
-        "@types/bluebird": "^3.5.33",
-        "@types/cheerio": "^0.22.28",
-        "@types/glob": "^7.2.0",
-        "@types/luxon": "^2.0.7",
-        "@types/mocha": "^9.0.0",
-        "@types/node": "^16.11.10",
-        "@types/node-fetch": "^2.5.12",
-        "@types/vscode": "^1.43.0",
-        "@typescript-eslint/eslint-plugin": "^5.4.0",
-        "@typescript-eslint/parser": "^5.4.0",
-        "@vscode/test-electron": "^1.4.1",
-        "eslint": "^8.3.0",
-        "glob": "^7.2.0",
-        "js-yaml": "^4.1.0",
-        "mocha": "^9.1.3",
-        "mwbot": "^2.0.0",
-        "ts-loader": "^9.2.3",
-        "typescript": "^4.5.2",
-        "webpack": "^5.64.2",
-        "webpack-cli": "^4.9.1"
-    },
-    "dependencies": {
-        "cheerio": "^1.0.0-rc.9",
-        "luxon": "^2.1.1",
-        "node-fetch": "^2.6.5"
+    "keybindings": [
+      {
+        "command": "wikitext.getPreview",
+        "key": "shift+ctrl+v",
+        "mac": "shift+cmd+v",
+        "when": "editorLangId == wikitext"
+      }
+    ],
+    "languages": [
+      {
+        "id": "wikitext",
+        "extensions": [
+          ".wikitext",
+          ".wt",
+          ".mediawiki",
+          ".mw",
+          ".wiki"
+        ],
+        "aliases": [
+          "Wikitext",
+          "WikiText"
+        ],
+        "mimetypes": [
+          "text/x-wiki"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "wikitext",
+        "scopeName": "source.wikitext",
+        "path": "./syntaxes/wikitext.tmLanguage.json",
+        "embeddedLanguages": {
+          "source.json": "json",
+          "text.html.basic": "html",
+          "text.tex.latex": "latex"
+        }
+      }
+    ],
+    "snippets": [
+      {
+        "language": "wikitext",
+        "path": "./snippets/snippets.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Wikitext",
+      "properties": {
+        "wikitext.host": {
+          "type": "string",
+          "description": "The host that provides the API, such as 'en.wikipedia.org'."
+        },
+        "wikitext.userName": {
+          "type": "string",
+          "description": "The user name of wikimedia site."
+        },
+        "wikitext.password": {
+          "type": "string",
+          "description": "The password of user. It will be fixed in the software settings, please do not fill in the device in public places."
+        },
+        "wikitext.redirects": {
+          "type": "boolean",
+          "description": "When the input page is a redirect page, jump automatically. Note that posting command will **not** be redirected.",
+          "default": true
+        },
+        "wikitext.apiPath": {
+          "type": "string",
+          "markdownDescription": "Set the basic path to obtain the API. If you are not sure, please check the `Special:Version` page of your site.",
+          "default": "/w/api.php"
+        },
+        "wikitext.getCss": {
+          "type": "boolean",
+          "description": "Get CSS when previewing the page. Please note that this feature will greatly increase the extended workload, and some rendering effects may conflict with VSCode. To get the correct display, you may need to enable Previewer's JS support.",
+          "default": false
+        },
+        "wikitext.enableJavascript": {
+          "type": "boolean",
+          "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks.",
+          "default": false
+        },
+        "wikitext.articlePath": {
+          "type": "string",
+          "markdownDescription": "Set the basic path to obtain the article. please check the `Special:Version` page of your site (No need for `$1`).",
+          "default": "/wiki/"
+        },
+        "wikitext.webCiteFormat": {
+          "type": "string",
+          "markdownDescription": "Setting the generation of web reference tags. The configuration of this option is similar to the code section of MakeRef in meta wikimedia. The available fields: `url`, `title`, `accessdate`, `website`, `archiveurl` ,and `archivedate`.\n\n**This function is only a preview function, it may change or become a separate new extension in the future. Please pay attention to the changelog of this function every time you update this extension.**",
+          "default": "{{cite web<!url> |url={$url}</!url><!title> |title={$title}</!title><!accessdate> |access-date={$accessdate}</!accessdate><!website> |website={$website}</!website><!publicationdate> |publication-date={$publicationdate}</!publicationdate><!archiveurl> |archive-url={$archiveurl}</!archiveurl><!archivedate> |archive-date={$archivedate}</!archivedate>}}"
+        },
+        "wikitext.transferProtocol": {
+          "type": "string",
+          "default": "https://",
+          "enum": [
+            "http://",
+            "https://"
+          ],
+          "enumDescriptions": [
+            "HyperText Transfer Protocol",
+            "HyperText Transfer Protocol Secure"
+          ],
+          "description": "Select the transfer protocol used when accessing the API."
+        },
+        "wikitext.previewCssStyle": {
+          "type": "string",
+          "markdownDescription": "CSS attached to Previewer. This content always works, regardless of whether [GetCss](#wikitext.getCss) is enabled or not. To enable CSS for a specific category of themes, you can use the class filter name `vscode-light`, `vscode-dark`, `vscode-high-contrast` etc. See [Extension guides](https://code.visualstudio.com/api/extension-guides/webview#theming-webview-content) to learn more.",
+          "default": ".vscode-dark img[class^=\"mwe-math-fallback-image\"]{filter: invert(85%);} .vscode-light {} .vscode-high-contrast img[class^=\"mwe-math-fallback-image\"]{background-color: white; filter: invert(100%);}"
+        },
+        "wikitext.autoLogin": {
+          "type": "string",
+          "default": "Ask me",
+          "enum": [
+            "Always",
+            "Never",
+            "Ask me"
+          ],
+          "enumDescriptions": [
+            "Always log in automatically when I am not logged in",
+            "Never log in automatically",
+            "Ask me if I want to log in when I am not logged in"
+          ],
+          "description": "Whether to automatically log in when performing an action that requires an account to be logged in."
+        },
+        "wikitext.skipEnteringPageTitle": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "If `PageTitle` is filled in `PAGE_INFO`, skip entering the title when posting."
+        }
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "yarn run convert && webpack --config webpack.config.js --mode production",
+    "lint": "eslint -c .eslintrc.yml --ext .ts ./src",
+    "watch": "yarn run convert && webpack --config webpack.config.js --mode development --watch",
+    "pretest": "tsc -p ./ && yarn run lint",
+    "test": "node ./out/test/runTest.js",
+    "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json & js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json & js-yaml language-configuration.yaml > language-configuration.json &",
+    "package": "vsce package --yarn"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.33",
+    "@types/cheerio": "^0.22.28",
+    "@types/glob": "^7.2.0",
+    "@types/luxon": "^2.0.7",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.11.10",
+    "@types/node-fetch": "^2.5.12",
+    "@types/vscode": "^1.43.0",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "@vscode/test-electron": "^1.4.1",
+    "eslint": "^8.3.0",
+    "glob": "^7.2.0",
+    "js-yaml": "^4.1.0",
+    "mocha": "^9.1.3",
+    "mwbot": "^2.0.0",
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.5.2",
+    "webpack": "^5.64.2",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.9",
+    "luxon": "^2.1.1",
+    "node-fetch": "^2.6.5"
+  }
 }
