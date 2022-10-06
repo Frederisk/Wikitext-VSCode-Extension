@@ -340,7 +340,7 @@ export function getContentInfo(content: string): ContentInfo {
             contentFormat: getInfo("contentFormat")
         };
 
-        content = content.replace(/\s*(?:\/\*|--\[=\[)?<%--\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*--%>\s*(?:\*\/|--\]=\])?/, '');
+        content = content.replace(/\s*(?:\/\*|--\[=\[)?\s*<%--\s*\[PAGE_INFO\][\s\S]*?\[END_PAGE_INFO\]\s*--%>\s*(?:\*\/|--\]=\])?\s*/, '');
     }
 
     return { content: content, info: pageInfo };
