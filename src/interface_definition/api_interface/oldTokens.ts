@@ -3,7 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { u, o, r, cast, uncast, TypeMap } from "./convertFunction";
+import { u, o, r, cast, uncast, TypeMap } from "../convertFunction";
+import { staticObjectConverter } from "../IObjectConverter";
 
 /*
     OldTokensResult {
@@ -21,12 +22,13 @@ export interface Tokens {
     edittoken?: string;
 }
 
+@staticObjectConverter<OldTokensConvert>()
 export class OldTokensConvert {
-    public static toOldTokensResult(json: unknown): OldTokensResult {
+    public static toResult(json: unknown): OldTokensResult {
         return cast(json, r("OldTokensResult"), oldTokensTypeMap);
     }
 
-    public static oldTokensResultToJson(value: OldTokensResult): unknown {
+    public static resultToJson(value: OldTokensResult): unknown {
         return uncast(value, r("OldTokensResult"), oldTokensTypeMap);
     }
 }

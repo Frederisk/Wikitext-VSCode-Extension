@@ -3,7 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { a, cast, o, r, TypeMap, u, uncast } from "./convertFunction";
+import { a, cast, o, r, TypeMap, u, uncast } from "../convertFunction";
+import { staticObjectConverter } from "../IObjectConverter";
 
 /*
     TagsResult {
@@ -51,12 +52,13 @@ export interface Tag {
     active?: string;
 }
 
+@staticObjectConverter<TagsConvert>()
 export class TagsConvert {
-    public static toTagsResult(json: unknown): TagsResult {
+    public static toResult(json: unknown): TagsResult {
         return cast(json, r("TagsResult"), tagsTypeMap);
     }
 
-    public static tagsResultToJson(value: TagsResult): unknown {
+    public static resultToJson(value: TagsResult): unknown {
         return uncast(value, r("TagsResult"), tagsTypeMap);
     }
 }

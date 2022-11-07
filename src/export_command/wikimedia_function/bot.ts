@@ -5,7 +5,7 @@
 
 import MWBot from 'mwbot';
 import * as vscode from 'vscode';
-import { getHost } from '../host_function/host';
+import { getHost } from '../vscode_function/host';
 import { Action, Meta } from './args';
 import { showMWErrorMessage } from './err_msg';
 

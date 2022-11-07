@@ -3,7 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { u, o, r, cast, uncast, TypeMap } from "./convertFunction";
+import { u, o, r, cast, uncast, TypeMap } from "../convertFunction";
+import { staticObjectConverter } from "../IObjectConverter";
 
 // https://archive.org/help/wayback_api.php
 
@@ -37,12 +38,13 @@ export interface Closest {
     status: string;
 }
 
+@staticObjectConverter<ArchiveResult>()
 export class ArchiveConvert {
-    public static toArchiveResult(json: unknown): ArchiveResult {
+    public static toResult(json: unknown): ArchiveResult {
         return cast(json, r("ArchiveResult"), archiveTypeMap);
     }
 
-    public static archiveResultToJson(value: ArchiveResult): unknown {
+    public static resultToJson(value: ArchiveResult): unknown {
         return uncast(value, r("ArchiveResult"), archiveTypeMap);
     }
 }

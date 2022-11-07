@@ -6,12 +6,12 @@
 import * as vscode from 'vscode';
 import type MWBot from 'mwbot';
 import { Action, Prop, RvProp, alterNativeValues, List } from './args';
-import { ReadPageConvert, ReadPageResult, Main, Revision, Jump, Page } from '../../interface_definition/readPageInterface';
-import { OldTokensConvert, OldTokensResult } from '../../interface_definition/oldTokensInterface';
+import { ReadPageConvert, ReadPageResult, Main, Revision, Jump, Page } from '../../interface_definition/api_interface/readPage';
+import { OldTokensConvert, OldTokensResult } from '../../interface_definition/api_interface/oldTokens';
 import { compareVersion, getDefaultBot, getLoggedInBot } from './bot';
-import { TokensConvert, TokensResult } from '../../interface_definition/tokensInterface';
+import { TokensConvert, TokensResult } from '../../interface_definition/api_interface/tokens';
 import { showMWErrorMessage } from './err_msg';
-import { TagsConvert, TagsResult } from '../../interface_definition/tagsInterface';
+import { TagsConvert, TagsResult } from '../../interface_definition/api_interface/tags';
 
 interface ContentInfo {
     content: string;
@@ -31,7 +31,7 @@ export async function postPage(): Promise<void> {
                 type: 'csrf'
             };
             const result: unknown = await bot.request(args);
-            const reNew: TokensResult = TokensConvert.toTokensResult(result);
+            const reNew: TokensResult = TokensConvert.toResult(result);
             const token: string | undefined = reNew.query?.tokens?.csrftoken;
             if (token) {
                 return token;
@@ -47,7 +47,7 @@ export async function postPage(): Promise<void> {
                     type: "edit"
                 };
                 const result: unknown = await bot.request(args);
-                const reOld: OldTokensResult = OldTokensConvert.toOldTokensResult(result);
+                const reOld: OldTokensResult = OldTokensConvert.toResult(result);
                 const token: string | undefined = reOld.tokens?.edittoken;
                 if (token) {
                     return token;
@@ -251,7 +251,7 @@ ${infoLine}
         const result: unknown = await tBot.request(args);
         // console.log(result);
         // Convert result as class
-        const re: ReadPageResult = ReadPageConvert.toReadPageResult(result);
+        const re: ReadPageResult = ReadPageConvert.toResult(result);
         if (re.query?.interwiki) {
             vscode.window.showWarningMessage(
                 `Interwiki page "${re.query.interwiki[0].title}" in space "${re.query.interwiki[0].iw}" are currently not supported. Please try to modify host.`
@@ -357,7 +357,7 @@ async function getValidTagList(tBot: MWBot): Promise<(number | string)[]> {
     const tagList: (number | string)[] = [];
     for (; ;) {
         const result: unknown = await tBot.request(args);
-        const re: TagsResult = TagsConvert.toTagsResult(result);
+        const re: TagsResult = TagsConvert.toResult(result);
 
         tagList.push(
             ...re.query.tags.filter(tag =>

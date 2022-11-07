@@ -7,8 +7,8 @@ import * as vscode from 'vscode';
 import type MWBot from 'mwbot';
 import { extensionContext } from '../../extension';
 import { Action, ContextModel, alterNativeValues, Prop } from './args';
-import { GetViewResult, ViewConverter } from '../../interface_definition/getViewInterface';
-import { getHost } from '../host_function/host';
+import { GetViewResult, ViewConvert } from '../../interface_definition/api_interface/getView';
+import { getHost } from '../vscode_function/host';
 import { getDefaultBot } from './bot';
 import { getContentInfo } from './page';
 import { showMWErrorMessage } from './err_msg';
@@ -120,7 +120,7 @@ export async function showViewer(currentPanel: vscode.WebviewPanel | string, vie
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting view...");
     try {
         const result: unknown = await tBot.request(args);
-        const re: GetViewResult = ViewConverter.toGetViewResult(result);
+        const re: GetViewResult = ViewConvert.toResult(result);
         if (!re.parse) { return undefined; }
 
         const baseElem = `<base href="${baseURI}" />`;

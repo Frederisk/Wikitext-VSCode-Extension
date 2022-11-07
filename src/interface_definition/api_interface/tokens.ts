@@ -3,7 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { u, o, r, cast, uncast, TypeMap } from "./convertFunction";
+import { u, o, r, cast, uncast, TypeMap } from "../convertFunction";
+import { staticObjectConverter } from "../IObjectConverter";
 
 /*
     TokensResult {
@@ -29,12 +30,13 @@ export interface Tokens {
     csrftoken?: string;
 }
 
+@staticObjectConverter<TokensConvert>()
 export class TokensConvert {
-    public static toTokensResult(json: unknown): TokensResult {
+    public static toResult(json: unknown): TokensResult {
         return cast(json, r("TokensResult"), tokensTypeMap);
     }
 
-    public static tokensResultToJson(value: TokensResult): unknown {
+    public static resultToJson(value: TokensResult): unknown {
         return uncast(value, r("TokensResult"), tokensTypeMap);
     }
 }

@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { instanceOfMWError } from '../../interface_definition/commonInterface';
+import { instanceOfMWError } from '../../interface_definition/api_interface/commonInterface';
 
 export function showMWErrorMessage(name: string, error: unknown, moreInfo = ''): void {
     if (instanceOfMWError(error)) {

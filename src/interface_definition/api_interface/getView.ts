@@ -4,7 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { MWError, mWErrorTypeMapInline, mWErrorTypeMapOutline, MWWarnings, mWWarningsTypeMapInline, mWWarningsTypeMapOutline } from "./commonInterface";
-import { a, u, o, r, cast, uncast, TypeMap } from "./convertFunction";
+import { a, u, o, r, cast, uncast, TypeMap } from "../convertFunction";
+import { staticObjectConverter } from "../IObjectConverter";
+
 
 /*
     GetViewResult {
@@ -68,11 +70,12 @@ export interface Redirect {
 
 // Converts JSON types to/from your types
 // and asserts the results at runtime
-export class ViewConverter {
-    public static toGetViewResult(json: unknown): GetViewResult {
+@staticObjectConverter<ViewConvert>()
+export class ViewConvert {
+    public static toResult(json: unknown): GetViewResult {
         return cast(json, r("GetViewResult"), getViewTypeMap);
     }
-    public static getViewResultToJson(value: GetViewResult): unknown {
+    public static resultToJson(value: GetViewResult): unknown {
         return uncast(value, r("GetViewResult"), getViewTypeMap);
     }
 }

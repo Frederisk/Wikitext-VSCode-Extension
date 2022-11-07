@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { u, o, r, TypeMap } from "./convertFunction";
+import { u, o, r, TypeMap } from "../convertFunction";
 
 //#region Error
 

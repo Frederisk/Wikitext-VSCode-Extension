@@ -9,7 +9,7 @@ import * as cheerio from "cheerio";
 import fetch from "node-fetch";
 import type { Response } from "node-fetch";
 import { DateTime } from "luxon";
-import { ArchiveConvert, ArchiveResult } from "../../interface_definition/archiveInterface";
+import { ArchiveConvert, ArchiveResult } from "../../interface_definition/api_interface/archive";
 
 export async function addWebCite(): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
@@ -94,7 +94,7 @@ class WebCiteInfo {
         this.metaData = cheerio.load(websiteText);
 
         const archiveJSON = await results[1].json();
-        const re: ArchiveResult = ArchiveConvert.toArchiveResult(archiveJSON);
+        const re: ArchiveResult = ArchiveConvert.toResult(archiveJSON);
 
         // Check archive and get the closest
         if (re.archivedSnapshots.closest) {

@@ -4,7 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { MWError, mWErrorTypeMapInline, mWErrorTypeMapOutline, MWWarnings, mWWarningsTypeMapInline, mWWarningsTypeMapOutline } from "./commonInterface";
-import { a, u, o, m, r, uncast, cast, TypeMap } from "./convertFunction";
+import { a, u, o, m, r, uncast, cast, TypeMap } from "../convertFunction";
+import { staticObjectConverter } from "../IObjectConverter";
 
 /*
     ReadPageResult {
@@ -133,12 +134,13 @@ export interface Main {
 }
 
 /** ReadPageResultConvert */
+@staticObjectConverter<ReadPageConvert>()
 export class ReadPageConvert {
-    public static toReadPageResult(json: unknown): ReadPageResult {
+    public static toResult(json: unknown): ReadPageResult {
         return cast(json, r("ReadPageResult"), readPageResultTypeMap);
     }
 
-    public static readPageResultToJson(value: ReadPageResult): unknown {
+    public static resultToJson(value: ReadPageResult): unknown {
         return uncast(value, r("ReadPageResult"), readPageResultTypeMap);
     }
 }
