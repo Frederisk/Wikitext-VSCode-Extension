@@ -4,7 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { u, o, r, TypeMap } from "./convertFunction";
+
 //#region Error
+
 export interface MWError {
     code: string;
     info: string;
@@ -56,4 +58,5 @@ export const mWWarningsTypeMapOutline: any = {
 export function instanceOfMWWarnings(o: any): o is MWWarnings {
     return 'main' in o;
 }
+
 //#endregion Warnings
