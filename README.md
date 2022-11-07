@@ -57,23 +57,24 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Added MediaWiki version checking in pullPage
-- Added Scribunto to lua mapping
-- Enhanced table syntaxes
+- Added apostrophe surrounding pairs.
+- VSCode minimum version requirements are now changed to 1.64.0 and above.
+- Fixed extra line breaks when posting pages.
+- Temporarily fixed incorrect bracket highlighting issue.
 
 ## Usage
 
 ### Usage Requirements
 
-Please ensure that your VSCode version is higher than 1.43.0, this version requirements may change in the future.
+Please ensure that your VSCode version is higher than 1.64.0, this version requirements may change in the future.
 
-Generally speaking, make sure that your VSCode is always the latest version.
+Generally, make sure that your VSCode is always the latest version.
 
 ## Development
 
 ### Development Requirements
 
-- [Node.js](https://nodejs.org) (with npm) at least v10.x.x
+- [Node.js](https://nodejs.org) (with npm) at least v16.
 
 ### How to build this extension yourself
 

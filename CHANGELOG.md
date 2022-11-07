@@ -5,16 +5,31 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.7.0] - 2022-11-07
+
+### Added
+
+- Added apostrophe surrounding pairs.
+
+### Changed
+
+- VSCode minimum version requirements are now changed to 1.64.0 and above.
+
+### Fixed
+
+- Fixed extra line breaks when posting pages.
+- Temporarily fixed incorrect bracket highlighting issue.
+
 ## [3.6.5] - 2022-07-29
 
 ### Added
 
-- Added MediaWiki version checking in pullPage
-- Added Scribunto to lua mapping
+- Added MediaWiki version checking in pullPage.
+- Added Scribunto to lua mapping.
 
 ### Changed
 
-- Enhanced table syntaxes
+- Enhanced table syntaxes.
 
 ## [3.6.4] - 2022-04-07
 
@@ -38,11 +53,11 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 ### Changed
 
 - Adjusted the syntax priority.
-- Enhanced bracket matching
+- Enhanced bracket matching.
 
 ### Fixed
 
-- Fixed some security issues
+- Fixed some security issues.
 
 ## [3.6.2] - 2021-12-16
 
@@ -488,7 +503,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 ### Added
 
-- Built for Visual Studio Code ^1.41.0
+- Built for Visual Studio Code ^1.41.0.
 - Establish basic language support.
 
 <!--

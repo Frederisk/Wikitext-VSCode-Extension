@@ -2,7 +2,7 @@
   "name": "wikitext",
   "displayName": "Wikitext",
   "description": "Wikitext is a document written in a wiki markup language. This extension provides functional support for the Wikitext language with MediaWiki such as Wikipedia.",
-  "version": "3.6.5",
+  "version": "3.7.0",
   "publisher": "RoweWilsonFrederiskHolme",
   "license": "SEE LICENSE IN LICENSE.txt",
   "author": {
@@ -22,7 +22,7 @@
   },
   "qna": "https://github.com/Frederisk/Wikitext-VSCode-Extension/discussions/categories/q-a",
   "engines": {
-    "vscode": "^1.43.0"
+    "vscode": "^1.64.0"
   },
   "categories": [
     "Programming Languages",
@@ -287,7 +287,7 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.11.10",
     "@types/node-fetch": "^2.5.12",
-    "@types/vscode": "^1.43.0",
+    "@types/vscode": "^1.64.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vscode/test-electron": "^1.4.1",
