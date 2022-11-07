@@ -2,7 +2,9 @@
 .vs/
 .vscode/
 .vscode-test/
+.vscode-test-web/
 .github/
+.git/
 
 # Source code
 out/

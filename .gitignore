@@ -10,6 +10,7 @@ language-configuration.json
 # Dependencies
 node_modules/
 .vscode-test/
+.vscode-test-web/
 
 # Packaged extensions
 **/*.vsix
