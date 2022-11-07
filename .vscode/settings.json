@@ -6,6 +6,7 @@
 {
     "files.exclude": {
         "out": false,
+        "dist":false,
         "**/.classpath": false,
         "**/.project": false,
         "**/.settings": false,
@@ -14,7 +15,9 @@
     "search.exclude": {
         "**/node_modules": true,
         "out": true, // set this to false to include "out" folder in search results
-        "dist": true
+        "dist": true,
+        ".vscode-test": true,
+        ".vscode-test-web": true
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",

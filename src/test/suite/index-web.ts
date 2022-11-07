@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Rowe Wilson Frederisk Holme. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 require('mocha/mocha'); // import the mocha web build
 
 export function run(): Promise<void> {

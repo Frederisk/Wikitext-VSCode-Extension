@@ -5,7 +5,7 @@
 
 import * as vscode from 'vscode';
 import type MWBot from 'mwbot';
-import { extensionContext } from '../../extension';
+import { extensionContext } from '../../extension-node';
 import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConvert } from '../../interface_definition/api_interface/getView';
 import { getHost } from '../vscode_function/host';
