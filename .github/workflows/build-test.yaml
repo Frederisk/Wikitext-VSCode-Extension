@@ -1,0 +1,50 @@
+name: Build
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: "35 23 * * 5"
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # Node.js 10 has been deprecated since May 2020
+        # Node.js 12 has been deprecated since Oct 2020
+        # Node.js 14 has been deprecated since Oct 2021
+        # Node.js 15 has been deprecated since Apr 2021
+        nodejs_version: [16, 18]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.nodejs_version }}
+          cache: 'yarn'
+
+
+      - name: Initialize
+        shell: bash
+        # export DISPLAY=':99.0'
+        # usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        run: yarn
+
+      - name: Test for Linux
+        if: runner.os == 'Linux'
+        shell: bash
+        run: xvfb-run -a yarn run test
+
+      - name: Test for else
+        if: runner.os != 'Linux'
+        shell: bash
+        run: yarn run test
