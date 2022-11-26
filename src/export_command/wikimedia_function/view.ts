@@ -46,7 +46,7 @@ export async function getPreview(): Promise<void> {
 
     const viewerTitle = "WikitextPreviewer";
 
-    // if no panel, creat one
+    // if no panel, create one
     if (!previewCurrentPanel) {
         // if have not, try to creat new one.
         previewCurrentPanel = vscode.window.createWebviewPanel(

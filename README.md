@@ -6,7 +6,7 @@
 [![GitHub: wikitext extension](https://img.shields.io/badge/GitHub-wikitext-yellow)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 [![Toolhub: wikitext extension](https://img.shields.io/badge/Toolhub-wikitext_extension-36C)](https://toolhub.wikimedia.org/tools/wikitext-vscode-extension)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/25okygmf42atyvi0?svg=true)](https://ci.appveyor.com/project/Frederisk/wikitext-vscode-extension)
+[![Build](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/build-test.yaml/badge.svg)](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/build-test.yaml)
 [![GitHub Actions CodeQL](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/codeql-analysis.yml/badge.svg/)](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions?query=workflow%3ACodeQL)
 [![CodeFactor Status](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension/badge)](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension)
 
