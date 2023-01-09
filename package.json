@@ -326,7 +326,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.9",
-    "luxon": "^2.1.1",
+    "luxon": "^2.5.2",
     "node-fetch": "^2.6.5"
   }
 }
