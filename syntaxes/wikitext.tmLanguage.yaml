@@ -10,6 +10,7 @@ scopeName: source.wikitext
 patterns:
   - include: "#wikitext"
   - include: text.html.basic
+  # - include: text.html.derivative
 repository:
   # wikitext: https://www.mediawiki.org/wiki/Wikitext
   wikitext:
@@ -582,7 +583,7 @@ repository:
             patterns:
               - include: source.json
           math:
-            begin: (?i)(<)(math)(\s+[^>]+)?\s*(>)
+            begin: (?i)(<)(math|chem|ce)(\s+[^>]+)?\s*(>)
             beginCaptures:
               0:
                 name: meta.tag.metadata.start.wikitext
@@ -601,7 +602,7 @@ repository:
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
-            end: (?i)(</)(math)\s*(>)
+            end: (?i)(</)(math|chem|ce)\s*(>)
             endCaptures:
               0:
                 name: meta.tag.metadata.end.wikitext
@@ -613,7 +614,7 @@ repository:
                 name: punctuation.definition.tag.end.wikitext
             contentName: meta.embedded.block.latex
             patterns:
-              - include: text.tex.latex
+              - include: text.html.markdown.math#math
   # public
   doublequotedString:
     begin: '"'
