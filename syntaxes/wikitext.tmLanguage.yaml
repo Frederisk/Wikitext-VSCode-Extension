@@ -311,13 +311,11 @@ repository:
         end: (}}})
         patterns:
           - include: $self
-          - match: ([^#:\|\[\]\{\}]*)(\|)?
-            #      1    string     12 |2
-            captures:
-              1:
-                name: variable.other.wikitext
-              2:
-                name: keyword.operator.wikitext
+          - match: ([^#:\|\[\]\{\}\|])
+            #      1       string       12 |2
+            name: variable.other.wikitext
+          - match: (\|)
+            name: keyword.operator.wikitext
       heading:
         name: markup.heading.wikitext
         match: '^(={1,6})\s*(.+?)\s*(={1,6})$'
@@ -347,7 +345,7 @@ repository:
               - include: $self
       internalLink:
         TODO: SINGLE LINE
-        name: string.quoted.wikitext
+        # name: string.quoted.internal-link.wikitext
         begin: (\[\[)(([^#:\|\[\]\{\}]*:)*)?([^\|\[\]]*)?
         #      1 [[ 123   namespace    :3 2 4   name   4
         end: (\]\])
