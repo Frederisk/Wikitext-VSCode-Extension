@@ -18,22 +18,22 @@ repository:
       - include: "#entity"
       - include: "#signature"
       - include: "#redirect"
-      - include: "#magicWords"
+      - include: "#magic-words"
       # TODO: include: "#function" {{#foo:}}
       - include: "#argument"
       - include: "#template"
       - include: "#convert"
       - include: "#list"
       - include: "#table"
-      - include: "#fontStyle"
-      - include: "#internalLink"
-      - include: "#externalLink"
+      - include: "#font-style"
+      - include: "#internal-link"
+      - include: "#external-link"
       - include: "#heading"
       - include: "#break"
       - include: "#wikixml"
-      - include: "#extensionComments"
+      - include: "#extension-comments"
     repository:
-      extensionComments:
+      extension-comments:
         name: comment.block.documentation.special.extension.wikitext
         begin: (<%--)\s*(\[)([A-Z_]*)(\])
         #      1<%--1   2 [23TYPE___34] 4
@@ -144,7 +144,7 @@ repository:
                 name: entity.other.attribute-name.local-name.wikitext
               4:
                 name: keyword.operator.equal.wikitext
-      externalLink:
+      external-link:
         patterns:
           - name: meta.link.external.wikitext
             match: (\[)((?:(?:(?:http(?:s)?)|(?:ftp(?:s)?)):\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\.~:\/?#%@!\$&'\(\)\*\+,;=.]+)\s*?([^\]]*)(\])
@@ -193,13 +193,13 @@ repository:
                 name: invalid.deprecated.ineffective.wikitext
               7:
                 name: punctuation.definition.tag.link.internal.end.wikitext
-      magicWords:
+      magic-words:
         patterns:
-          - include: "#behaviorSwitches"
-          - include: "#outdatedBehaviorSwitches"
+          - include: "#behavior-switches"
+          - include: "#outdated-behavior-switches"
           - include: "#variables"
         repository:
-          behaviorSwitches:
+          behavior-switches:
             name: constant.language.behavior-switcher.wikitext
             match: |-
               (?x)    # turn on extended mode
@@ -212,7 +212,7 @@ repository:
                     DISAMBIG
                   )
                 (__)
-          outdatedBehaviorSwitches:
+          outdated-behavior-switches:
             name: invalid.deprecated.behavior-switcher.wikitext
             match: |-
               (?x)
@@ -324,7 +324,7 @@ repository:
           2:
             patterns:
               - include: $self
-      fontStyle:
+      font-style:
         patterns:
           - include: "#bold"
           - include: "#italic"
@@ -343,7 +343,7 @@ repository:
             patterns:
               - include: "#bold"
               - include: $self
-      internalLink:
+      internal-link:
         TODO: SINGLE LINE
         # name: string.quoted.internal-link.wikitext
         begin: (\[\[)(([^#:\|\[\]\{\}]*:)*)?([^\|\[\]]*)?
@@ -382,10 +382,10 @@ repository:
                 name: punctuation.definition.tag.table.wikitext
               2:
                 patterns:
-                  - include: "#tagStuff"
+                  - include: "#tag-stuff"
             patterns:
               - include: $self
-              - include: "#tagStuff"
+              - include: "#tag-stuff"
               - name: meta.tag.block.table-row.wikitext
                 begin: '^\s*(\|-)\s*'
                 #           1 |- 1
@@ -395,7 +395,7 @@ repository:
                     name: punctuation.definition.tag.begin.wikitext
                 patterns:
                   - include: $self
-                  - include: "#tagStuff"
+                  - include: "#tag-stuff"
                   - name: invalid.illegal.bad-table-context.wikitext
                     match: '\|.*'
               - name: meta.tag.block.th.heading
@@ -410,7 +410,7 @@ repository:
                   3:
                     patterns:
                       - include: $self
-                      - include: "#tagStuff"
+                      - include: "#tag-stuff"
                   4:
                     name: punctuation.definition.tag.wikitext
                   5:
@@ -423,7 +423,7 @@ repository:
                         name: punctuation.definition.tag.begin.wikitext
                       3:
                         patterns:
-                          - include: "#tagStuff"
+                          - include: "#tag-stuff"
                           - include: $self
                       4:
                         name: punctuation.definition.tag.wikitext
@@ -448,7 +448,7 @@ repository:
                     name: punctuation.definition.tag.wikitext
                   2:
                     patterns:
-                      - include: "#tagStuff"
+                      - include: "#tag-stuff"
                   3:
                     name: punctuation.definition.tag.wikitext
                 patterns:
@@ -480,8 +480,8 @@ repository:
                     captures:
                       1:
                         name: entity.other.attribute-name.wikitext
-                  - include: "#doublequotedString"
-                  - include: "#singlequotedString"
+                  - include: "#double-quoted-string"
+                  - include: "#single-quoted-string"
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -509,8 +509,8 @@ repository:
                     captures:
                       1:
                         name: entity.other.attribute-name.wikitext
-                  - include: "#doublequotedString"
-                  - include: "#singlequotedString"
+                  - include: "#double-quoted-string"
+                  - include: "#single-quoted-string"
                   - include: $self
               4: punctuation.definition.tag.end.wikitext
             name: meta.tag.metedata.void.wikitext
@@ -530,8 +530,8 @@ repository:
                     captures:
                       1:
                         name: entity.other.attribute-name.wikitext
-                  - include: "#doublequotedString"
-                  - include: "#singlequotedString"
+                  - include: "#double-quoted-string"
+                  - include: "#single-quoted-string"
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -562,8 +562,8 @@ repository:
                     captures:
                       1:
                         name: entity.other.attribute-name.wikitext
-                  - include: "#doublequotedString"
-                  - include: "#singlequotedString"
+                  - include: "#double-quoted-string"
+                  - include: "#single-quoted-string"
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -595,8 +595,8 @@ repository:
                     captures:
                       1:
                         name: entity.other.attribute-name.wikitext
-                  - include: "#doublequotedString"
-                  - include: "#singlequotedString"
+                  - include: "#double-quoted-string"
+                  - include: "#single-quoted-string"
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -614,7 +614,7 @@ repository:
             patterns:
               - include: text.html.markdown.math#math
   # public
-  doublequotedString:
+  double-quoted-string:
     begin: '"'
     beginCaptures:
       0:
@@ -627,7 +627,7 @@ repository:
     patterns:
       - include: "#entity"
       - include: "#bare-ampersand"
-  tagStuff:
+  tag-stuff:
     patterns:
       - match: (?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)
         #       1 space 123:321 4  name  4   5=5
@@ -642,9 +642,9 @@ repository:
             name: entity.other.attribute-name.localname.wikitext
           5:
             name: keyword.operator.equal.wikitext
-      - include: "#doublequotedString"
-      - include: "#singlequotedString"
-  singlequotedString:
+      - include: "#double-quoted-string"
+      - include: "#single-quoted-string"
+  single-quoted-string:
     begin: "'"
     beginCaptures:
       0:
