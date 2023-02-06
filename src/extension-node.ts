@@ -32,12 +32,18 @@ export function activate(context: vscode.ExtensionContext): void {
     // Cite
     commandRegistrar.register('citeWeb', addWebCiteFactory);
 
-    configureLuaLibrary("Scribunto", true);
+    configureLuaLibrary(
+        "Scribunto",
+        vscode.workspace.getConfiguration("wikitext").get<string>("scopedLuaIntegration") !== "disabled"
+    );
 }
 
 export function deactivate(): void {
     console.log("Extension is inactive.");
-    configureLuaLibrary("Scribunto", false);
+
+    if (vscode.workspace.getConfiguration("wikitext").get<string>("scopedLuaIntegration") !== "enabled") {
+        configureLuaLibrary("Scribunto", false);
+    }
 }
 
 export function configureLuaLibrary(folder: string, enable: boolean) {
@@ -47,7 +53,6 @@ export function configureLuaLibrary(folder: string, enable: boolean) {
         return;
     }
 
-    // Use path.join to ensure the proper path seperators are used.
     const folderPath = path.join(extensionPath, "EmmyLua", folder);
     const config = vscode.workspace.getConfiguration("Lua");
     const library: string[] | undefined = config.get("workspace.library");
@@ -57,7 +62,7 @@ export function configureLuaLibrary(folder: string, enable: boolean) {
 
     if (library && extensionPath) {
         // remove any older versions of our path
-        for (let i = library.length-1; i >= 0; i--) {
+        for (let i = library.length - 1; i >= 0; i--) {
             const item = library[i];
             const isSelfExtension = item.indexOf(extensionId) > -1;
             const isCurrentVersion = item.indexOf(extensionPath) > -1;
@@ -77,6 +82,6 @@ export function configureLuaLibrary(folder: string, enable: boolean) {
                 library.splice(index, 1);
             }
         }
-        config.update("workspace.library", library, true);
+        config.update("workspace.library", library, false);
     }
 }
