@@ -345,7 +345,7 @@ repository:
               - include: $self
       internal-link:
         TODO: SINGLE LINE
-        # name: string.quoted.internal-link.wikitext
+        name: string.quoted.internal-link.wikitext
         begin: (\[\[)(([^#:\|\[\]\{\}]*:)*)?([^\|\[\]]*)?
         #      1 [[ 123   namespace    :3 2 4   name   4
         end: (\]\])

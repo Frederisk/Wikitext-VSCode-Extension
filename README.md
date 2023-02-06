@@ -1,16 +1,16 @@
 <!-- markdownlint-disable MD033 -->
 # Wikitext Markup Language Support Extension for Visual Studio Code
 
-[![VSMarket: wikitext extension](https://vsmarketplacebadge.apphb.com/version/RoweWilsonFrederiskHolme.Wikitext.svg?color=blueviolet&logo=visual-studio-code&style=?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
+[![VSMarket: wikitext extension](https://vsmarketplacebadges.dev/version-short/rowewilsonfrederiskholme.wikitext.svg?color=blueviolet)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
 [![Open VSX: wikitext extension](https://img.shields.io/open-vsx/v/RoweWilsonFrederiskHolme/Wikitext?color=purple&label=Open%20VSX)](https://open-vsx.org/extension/RoweWilsonFrederiskHolme/wikitext)
-[![GitHub: wikitext extension](https://img.shields.io/badge/GitHub-wikitext-yellow)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
+[![GitHub: wikitext extension](https://img.shields.io/badge/GitHub-wikitext-lightgray)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 [![Toolhub: wikitext extension](https://img.shields.io/badge/Toolhub-wikitext_extension-36C)](https://toolhub.wikimedia.org/tools/wikitext-vscode-extension)
 
 [![Build](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/build-test.yaml/badge.svg)](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/build-test.yaml)
 [![GitHub Actions CodeQL](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions/workflows/codeql-analysis.yml/badge.svg/)](https://github.com/Frederisk/Wikitext-VSCode-Extension/actions?query=workflow%3ACodeQL)
 [![CodeFactor Status](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension/badge)](https://www.codefactor.io/repository/github/frederisk/wikitext-vscode-extension)
 
-[![Twitter: @rwfholme](https://img.shields.io/badge/twitter-%40rwfholme-blue)](https://twitter.com/rwfholme)
+[![@mastodon.social@rwfholme](https://img.shields.io/badge/mastodon-%40mastodon.social%40rwfholme-66F)](https://mastodon.social/@rwfholme)
 [![Patreon Donate](https://img.shields.io/badge/donate-patreon-orange)](https://www.patreon.com/rwfholme)
 
 This Visual Studio Code Extension provides support of Wikitext Markup language. With this extension, you can more easily discover your grammatical problems through the marked and styled text. The plugin is based on MediaWiki's Wikitext standard, but the rules are somewhat stricter, which helps users write text that is easier to read and maintain.
