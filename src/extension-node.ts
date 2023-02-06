@@ -55,32 +55,25 @@ export function configureLuaLibrary(folder: string, enable: boolean) {
 
     const folderPath = path.join(extensionPath, "EmmyLua", folder);
     const config = vscode.workspace.getConfiguration("Lua");
-    const library: string[] | undefined = config.get("workspace.library");
+    let library: string[] | undefined = config.get("workspace.library");
     if (library === undefined) {
         return;
     }
 
     if (library && extensionPath) {
         // remove any older versions of our path
-        for (let i = library.length - 1; i >= 0; i--) {
-            const item = library[i];
-            const isSelfExtension = item.indexOf(extensionId) > -1;
-            const isCurrentVersion = item.indexOf(extensionPath) > -1;
-            if (isSelfExtension && !isCurrentVersion) {
-                library.splice(i, 1);
-            }
-        }
+        library = library.filter(path =>
+            !path.includes(extensionId) ||
+            path.includes(extensionPath));
 
         const index = library.indexOf(folderPath);
         if (enable) {
-            if (index === -1) {
+            if (index < 0) {
                 library.push(folderPath);
             }
         }
-        else {
-            if (index > -1) {
-                library.splice(index, 1);
-            }
+        else if (index >= 0) {
+            library.splice(index, 1);
         }
         config.update("workspace.library", library, false);
     }
