@@ -18,185 +18,191 @@ interface ContentInfo {
     info?: Record<string, string | undefined>;
 }
 
-/**
- * Write/Post Page
- */
-export async function postPage(): Promise<void> {
-    async function getEditToken(bot: MWBot): Promise<string> {
-        const errors: unknown[] = [undefined, undefined];
-        try {
-            const args: Record<string, string> = {
-                action: Action.query,
-                meta: 'tokens',
-                type: 'csrf'
-            };
-            const result: unknown = await bot.request(args);
-            const reNew: TokensResult = TokensConvert.toResult(result);
-            const token: string | undefined = reNew.query?.tokens?.csrftoken;
-            if (token) {
-                return token;
-            }
-        }
-        catch (error) {
-            errors[0] = error;
-        }
-        if (errors[0] !== undefined) {
+export function postPageFactory() {
+    /**
+     * Write/Post Page
+     */
+    return async function postPage(): Promise<void> {
+        async function getEditToken(bot: MWBot): Promise<string> {
+            const errors: unknown[] = [undefined, undefined];
             try {
                 const args: Record<string, string> = {
-                    action: "tokens",
-                    type: "edit"
+                    action: Action.query,
+                    meta: 'tokens',
+                    type: 'csrf'
                 };
                 const result: unknown = await bot.request(args);
-                const reOld: OldTokensResult = OldTokensConvert.toResult(result);
-                const token: string | undefined = reOld.tokens?.edittoken;
+                const reNew: TokensResult = TokensConvert.toResult(result);
+                const token: string | undefined = reNew.query?.tokens?.csrftoken;
                 if (token) {
                     return token;
                 }
             }
             catch (error) {
-                errors[1] = error;
+                errors[0] = error;
+            }
+            if (errors[0] !== undefined) {
+                try {
+                    const args: Record<string, string> = {
+                        action: "tokens",
+                        type: "edit"
+                    };
+                    const result: unknown = await bot.request(args);
+                    const reOld: OldTokensResult = OldTokensConvert.toResult(result);
+                    const token: string | undefined = reOld.tokens?.edittoken;
+                    if (token) {
+                        return token;
+                    }
+                }
+                catch (error) {
+                    errors[1] = error;
+                }
+            }
+
+            const error: Error = new Error('Could not get edit token:' +
+                ' NEW: ' + ((errors[0] instanceof Error) ? errors[0].message : '') +
+                ' OLD: ' + ((errors[1] instanceof Error) ? errors[1].message : ''));
+            throw error;
+        }
+
+        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('wikitext');
+        const tBot: MWBot | undefined = await getLoggedInBot();
+
+        if (tBot === undefined) {
+            vscode.window.showErrorMessage("Bot is undefined! You may be not logged in.");
+            return undefined;
+        }
+
+        const wikiContent: string | undefined = vscode.window.activeTextEditor?.document.getText();
+        if (wikiContent === undefined) {
+            vscode.window.showWarningMessage("There is no active text editor.");
+            return undefined;
+        }
+
+        const contentInfo: ContentInfo = getContentInfo(wikiContent);
+
+        const skip: boolean = config.get("skipEnteringPageTitle") as boolean;
+
+        const wikiTitle: string | undefined = skip && contentInfo.info?.pageTitle || await vscode.window.showInputBox({
+            value: contentInfo.info?.pageTitle || "",
+            ignoreFocusOut: true,
+            prompt: "Enter the page name here."
+        });
+
+        if (!wikiTitle) {
+            return undefined;
+        }
+        let wikiSummary: string | undefined = await vscode.window.showInputBox({
+            ignoreFocusOut: true,
+            prompt: 'Enter the summary of this edit action.',
+            placeHolder: '// Edit via Wikitext Extension for VSCode'
+        });
+        if (wikiSummary === undefined) {
+            return undefined;
+        }
+        wikiSummary = `${wikiSummary} // Edit via Wikitext Extension for VSCode`.trim();
+        const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
+        try {
+
+            const args: Record<string, string> = {
+                action: Action.edit,
+                title: wikiTitle,
+                text: contentInfo.content,
+                summary: wikiSummary,
+                // tags: 'WikitextExtensionForVSCode',
+                token: await getEditToken(tBot)
+            };
+            const wikitextTag = 'WikitextExtensionForVSCode';
+            const tagList: (number | string)[] = await getValidTagList(tBot);
+            if (tagList.includes(wikitextTag)) {
+                args['tags'] = wikitextTag;
+            }
+
+            // if (config.get("redirect")) {
+            //     args['redirect'] = "true";
+            // }
+            const result: any = await tBot.request(args);
+            // TODO: Convert
+            if (result.edit.nochange !== undefined) {
+                vscode.window.showWarningMessage(
+                    `No changes have occurred: "${result.edit.nochange}", Edit page "${result.edit.title}" (Page ID: "${result.edit.pageid}") action status is "${result.edit.result}" with Content Model "${result.edit.contentmodel}". Watched by: "${result.edit.watched}".`
+                );
+            } else {
+                vscode.window.showInformationMessage(
+                    `Edit page "${result.edit.title}" (Page ID: "${result.edit.pageid}") action status is "${result.edit.result}" with Content Model "${result.edit.contentmodel}" (Version: "${result.edit.oldrevid}" => "${result.edit.newrevid}", Time: "${result.edit.newtimestamp}"). Watched by: "${result.edit.watched}".`
+                );
             }
         }
+        catch (error) {
+            showMWErrorMessage('postPage', error, `Your Token: ${tBot?.editToken}.`);
+        }
+        finally {
+            barMessage.dispose();
+        }
+    };
+}
 
-        const error: Error = new Error('Could not get edit token:' +
-            ' NEW: ' + ((errors[0] instanceof Error) ? errors[0].message : '') +
-            ' OLD: ' + ((errors[1] instanceof Error) ? errors[1].message : ''));
-        throw error;
-    }
+export function pullPageFactory() {
+    /**
+     * Read/Pull Page
+     */
+    return async function pullPage(): Promise<void> {
+        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('wikitext');
-    const tBot: MWBot | undefined = await getLoggedInBot();
+        // constructing
+        const tBot: MWBot | undefined = await getDefaultBot();
+        if (tBot === undefined) { return undefined; }
 
-    if (tBot === undefined) {
-        vscode.window.showErrorMessage("Bot is undefined! You may be not logged in.");
-        return undefined;
-    }
+        // get title name
+        const title: string | undefined = await vscode.window.showInputBox({
+            prompt: "Enter the page name here.",
+            ignoreFocusOut: true
+        });
+        // if title is null or empty, do nothing
+        if (!title) { return undefined; }
 
-    const wikiContent: string | undefined = vscode.window.activeTextEditor?.document.getText();
-    if (wikiContent === undefined) {
-        vscode.window.showWarningMessage("There is no active text editor.");
-        return undefined;
-    }
+        const newVer = await compareVersion(tBot, 1, 32, 0);
 
-    const contentInfo: ContentInfo = getContentInfo(wikiContent);
-
-    const skip: boolean = config.get("skipEnteringPageTitle") as boolean;
-
-    const wikiTitle: string | undefined = skip && contentInfo.info?.pageTitle || await vscode.window.showInputBox({
-        value: contentInfo.info?.pageTitle || "",
-        ignoreFocusOut: true,
-        prompt: "Enter the page name here."
-    });
-
-    if (!wikiTitle) {
-        return undefined;
-    }
-    let wikiSummary: string | undefined = await vscode.window.showInputBox({
-        ignoreFocusOut: true,
-        prompt: 'Enter the summary of this edit action.',
-        placeHolder: '// Edit via Wikitext Extension for VSCode'
-    });
-    if (wikiSummary === undefined) {
-        return undefined;
-    }
-    wikiSummary = `${wikiSummary} // Edit via Wikitext Extension for VSCode`.trim();
-    const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
-    try {
+        if (!newVer) {
+            vscode.window.showWarningMessage("Your MediaWiki version may be too old. This may cause some compatibility issues. Please update to the v1.32.0 or later.");
+            // return undefined;
+        }
 
         const args: Record<string, string> = {
-            action: Action.edit,
-            title: wikiTitle,
-            text: contentInfo.content,
-            summary: wikiSummary,
-            // tags: 'WikitextExtensionForVSCode',
-            token: await getEditToken(tBot)
+            action: Action.query,
+            prop: Prop.reVisions,
+            rvprop: alterNativeValues(RvProp.content, RvProp.ids),
+            rvslots: "*",
+            titles: title
         };
-        const wikitextTag = 'WikitextExtensionForVSCode';
-        const tagList: (number | string)[] = await getValidTagList(tBot);
-        if (tagList.includes(wikitextTag)) {
-            args['tags'] = wikitextTag;
+        if (config.get("redirects")) {
+            args['redirects'] = "true";
         }
 
-        // if (config.get("redirect")) {
-        //     args['redirect'] = "true";
-        // }
-        const result: any = await tBot.request(args);
-        // TODO: Convert
-        if (result.edit.nochange !== undefined) {
-            vscode.window.showWarningMessage(
-                `No changes have occurred: "${result.edit.nochange}", Edit page "${result.edit.title}" (Page ID: "${result.edit.pageid}") action status is "${result.edit.result}" with Content Model "${result.edit.contentmodel}". Watched by: "${result.edit.watched}".`
-            );
-        } else {
-            vscode.window.showInformationMessage(
-                `Edit page "${result.edit.title}" (Page ID: "${result.edit.pageid}") action status is "${result.edit.result}" with Content Model "${result.edit.contentmodel}" (Version: "${result.edit.oldrevid}" => "${result.edit.newrevid}", Time: "${result.edit.newtimestamp}"). Watched by: "${result.edit.watched}".`
-            );
-        }
-    }
-    catch (error) {
-        showMWErrorMessage('postPage', error, `Your Token: ${tBot?.editToken}.`);
-    }
-    finally {
-        barMessage.dispose();
-    }
-}
+        const document: vscode.TextDocument | undefined = await getPageCode(args, tBot);
+        if (document === undefined) { return undefined; }
 
-/**
- * Read/Pull Page
- */
-export async function pullPage(): Promise<void> {
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-
-    // constructing
-    const tBot: MWBot | undefined = await getDefaultBot();
-    if (tBot === undefined) { return undefined; }
-
-    // get title name
-    const title: string | undefined = await vscode.window.showInputBox({
-        prompt: "Enter the page name here.",
-        ignoreFocusOut: true
-    });
-    // if title is null or empty, do nothing
-    if (!title) { return undefined; }
-
-    const newVer = await compareVersion(tBot, 1, 32, 0);
-
-    if (!newVer) {
-        vscode.window.showWarningMessage("Your MediaWiki version may be too old. This may cause some compatibility issues. Please update to the v1.32.0 or later.");
-        // return undefined;
-    }
-
-    const args: Record<string, string> = {
-        action: Action.query,
-        prop: Prop.reVisions,
-        rvprop: alterNativeValues(RvProp.content, RvProp.ids),
-        rvslots: "*",
-        titles: title
+        vscode.window.showTextDocument(document);
     };
-    if (config.get("redirects")) {
-        args['redirects'] = "true";
-    }
-
-    const document: vscode.TextDocument | undefined = await getPageCode(args, tBot);
-    if (document === undefined) { return undefined; }
-
-    vscode.window.showTextDocument(document);
 }
 
-export function closeEditor(): Thenable<void | undefined> | undefined {
-    const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
+export function closeEditorFactory() {
+    return async function closeEditor(): Promise<void> {
+        const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
 
-    return editor?.edit((editBuilder: vscode.TextEditorEdit): void =>
-        // delete all text
-        editBuilder.delete(
-            new vscode.Range( // the range of all document: from the beginning to the end
-                new vscode.Position(0, 0), // beginning
-                editor.document.lineAt(editor.document.lineCount - 1).rangeIncludingLineBreak.end // end
+        await editor?.edit((editBuilder: vscode.TextEditorEdit): void =>
+            // delete all text
+            editBuilder.delete(
+                new vscode.Range( // the range of all document: from the beginning to the end
+                    new vscode.Position(0, 0), // beginning
+                    editor.document.lineAt(editor.document.lineCount - 1).rangeIncludingLineBreak.end // end
+                )
             )
-        )
-    ).then((): Thenable<void | undefined> =>
-        // close the activate editor
-        vscode.commands.executeCommand('workbench.action.closeActiveEditor')
-    );
+        ).then(() =>
+            // close the activate editor
+            vscode.commands.executeCommand('workbench.action.closeActiveEditor')
+        );
+    };
 }
 
 type PageInfo = "pageTitle" | "pageID" | "revisionID" | "contentModel" | "contentFormat";

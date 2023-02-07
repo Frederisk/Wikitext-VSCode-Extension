@@ -4,30 +4,31 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { closeEditor } from './export_command/wikimedia_function/page';
-
-
+import { closeEditorFactory } from './export_command/wikimedia_function/page';
+import { WikitextCommandRegistrar } from './export_command/commadRegistrar';
 
 export function activate(context: vscode.ExtensionContext): void {
-    function subscriptUnsupportedMessage(command: string) {
-        context.subscriptions.push(
-            vscode.commands.registerCommand(
-                command, () => {
-                    vscode.window.showErrorMessage('Web extension does not support this function.');
-                }
-            )
-        );
+    function showUnsupportedMessageFactory() {
+        return  () => {
+            vscode.window.showErrorMessage('Web extension does not support this function.');
+        };
     }
 
     console.log("Extension is active.");
-    subscriptUnsupportedMessage("wikitext.login");
-    subscriptUnsupportedMessage("wikitext.logout",);
-    subscriptUnsupportedMessage("wikitext.readPage");
-    subscriptUnsupportedMessage("wikitext.writePage");
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.closeEditor", closeEditor));
-    subscriptUnsupportedMessage("wikitext.getPreview");
-    subscriptUnsupportedMessage("wikitext.viewPage");
-    subscriptUnsupportedMessage("wikitext.citeWeb");
+
+    const commandRegister = new WikitextCommandRegistrar(context);
+    // Bot
+    commandRegister.register('login', showUnsupportedMessageFactory);
+    commandRegister.register('logout', showUnsupportedMessageFactory);
+    // Core
+    commandRegister.register('readPage', showUnsupportedMessageFactory);
+    commandRegister.register('writePage', showUnsupportedMessageFactory);
+    commandRegister.register('closeEditor', closeEditorFactory);
+    // View
+    commandRegister.register('getPreview', showUnsupportedMessageFactory);
+    commandRegister.register('viewPage', showUnsupportedMessageFactory);
+    // Cite
+    commandRegister.register('citeWeb', showUnsupportedMessageFactory);
 }
 
 export function deactivate(): void {

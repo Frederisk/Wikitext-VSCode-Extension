@@ -11,41 +11,43 @@ import type { Response } from "node-fetch";
 import { DateTime } from "luxon";
 import { ArchiveConvert, ArchiveResult } from "../../interface_definition/api_interface/archive";
 
-export async function addWebCite(): Promise<void> {
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+export function addWebCiteFactory(){
+    return async function addWebCite(): Promise<void> {
+        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
-    const url: string | undefined = await vscode.window.showInputBox({
-        prompt: "input the URL that you want to ref.",
-        placeHolder: "https://sample.com",
-        ignoreFocusOut: true
-    });
-    if (!url) { return undefined; }
+        const url: string | undefined = await vscode.window.showInputBox({
+            prompt: "input the URL that you want to ref.",
+            placeHolder: "https://sample.com",
+            ignoreFocusOut: true
+        });
+        if (!url) { return undefined; }
 
-    const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Parsing...");
-    try {
-        const citeInfo: WebCiteInfo = new WebCiteInfo(url);
-        await citeInfo.buildInfo();
-        const result: string = citeInfo.toString(config.get("webCiteFormat") ?? "");
+        const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Parsing...");
+        try {
+            const citeInfo: WebCiteInfo = new WebCiteInfo(url);
+            await citeInfo.buildInfo();
+            const result: string = citeInfo.toString(config.get("webCiteFormat") ?? "");
 
-        const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
-        const selection: vscode.Selection | undefined = editor?.selection;
+            const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
+            const selection: vscode.Selection | undefined = editor?.selection;
 
-        if (selection) {
-            editor?.edit((editorBuilder: vscode.TextEditorEdit): void => {
-                editorBuilder.insert(selection.active, result);
-            });
+            if (selection) {
+                editor?.edit((editorBuilder: vscode.TextEditorEdit): void => {
+                    editorBuilder.insert(selection.active, result);
+                });
+            }
         }
-    }
-    catch (error) {
-        if (error instanceof Error) {
-            vscode.window.showErrorMessage(`ErrorName: ${error.name}; ErrorMessage: ${error.message}.`);
-        } else {
-            vscode.window.showErrorMessage(`addWebCite ERROR: ${JSON.stringify(error)}.`);
+        catch (error) {
+            if (error instanceof Error) {
+                vscode.window.showErrorMessage(`ErrorName: ${error.name}; ErrorMessage: ${error.message}.`);
+            } else {
+                vscode.window.showErrorMessage(`addWebCite ERROR: ${JSON.stringify(error)}.`);
+            }
         }
-    }
-    finally {
-        barMessage.dispose();
-    }
+        finally {
+            barMessage.dispose();
+        }
+    };
 }
 
 class WebCiteInfo {

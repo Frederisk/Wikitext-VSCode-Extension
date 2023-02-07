@@ -5,7 +5,7 @@
 
 import * as vscode from 'vscode';
 import type MWBot from 'mwbot';
-import { extensionContext } from '../../extension-node';
+import { } from '../../extension-node';
 import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConvert } from '../../interface_definition/api_interface/getView';
 import { getHost } from '../vscode_function/host';
@@ -18,91 +18,95 @@ import { showMWErrorMessage } from './err_msg';
  */
 let previewCurrentPanel: vscode.WebviewPanel | undefined;
 
-export async function getPreview(): Promise<void> {
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+export function getPageViewFactory(){
+    return async function getPageView(): Promise<void> {
+        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
-    const host: string | undefined = await getHost();
-    if (!host) { return undefined; }
+        const host: string | undefined = await getHost();
+        if (!host) { return undefined; }
 
-    /** document text */
-    const sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
-    if (!sourceText) { return undefined; }
-    const { content } = getContentInfo(sourceText);
-
-    /** arguments */
-    const args: Record<string, string> = {
-        'action': Action.parse,
-        'text': content,
-        'prop': alterNativeValues(
-            Prop.text,
-            Prop.displayTitle,
-            Prop.categoriesHTML,
-            (config.get("getCss") ? Prop.headHTML : undefined)
-        ),
-        'contentmodel': ContextModel.wikitext,
-        'pst': "why_not",
-        'disableeditsection': "yes"
-    };
-
-    const viewerTitle = "WikitextPreviewer";
-
-    // if no panel, create one
-    if (!previewCurrentPanel) {
-        // if have not, try to creat new one.
-        previewCurrentPanel = vscode.window.createWebviewPanel(
-            "previewer", viewerTitle, vscode.ViewColumn.Beside, {
-            enableScripts: config.get("enableJavascript"),
+        const pageTitle: string | undefined = await vscode.window.showInputBox({
+            prompt: "Enter the page name here.",
+            ignoreFocusOut: true
         });
-        // register for events that release resources.
-        previewCurrentPanel.onDidDispose(() => {
-            previewCurrentPanel = undefined;
-        }, null, extensionContext.subscriptions);
-    }
+        if (!pageTitle) { return undefined; }
 
-    const tBot: MWBot | undefined = await getDefaultBot();
-    if (!tBot) {
-        return undefined;
-    }
+        const args: Record<string, string> = {
+            action: Action.parse,
+            page: pageTitle,
+            prop: alterNativeValues(
+                Prop.text,
+                Prop.displayTitle,
+                Prop.categoriesHTML,
+                (config.get("getCss") ? Prop.headHTML : undefined)
+            ),
+        };
+        if (config.get("redirects")) {
+            args['redirects'] = "true";
+        }
 
-    const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
+        const tBot: MWBot | undefined = await getDefaultBot();
+        if (!tBot) {
+            return undefined;
+        }
 
-    showViewer(previewCurrentPanel, viewerTitle, args, tBot, baseHref);
+        const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
+
+        showViewer("pageViewer", "WikiViewer", args, tBot, baseHref);
+    };
 }
 
-export async function getPageView(): Promise<void> {
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+export function getPreviewFactory(extension: vscode.ExtensionContext) {
+    return async function getPreview(): Promise<void> {
+        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
-    const host: string | undefined = await getHost();
-    if (!host) { return undefined; }
+        const host: string | undefined = await getHost();
+        if (!host) { return undefined; }
 
-    const pageTitle: string | undefined = await vscode.window.showInputBox({
-        prompt: "Enter the page name here.",
-        ignoreFocusOut: true
-    });
-    if (!pageTitle) { return undefined; }
+        /** document text */
+        const sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
+        if (!sourceText) { return undefined; }
+        const { content } = getContentInfo(sourceText);
 
-    const args: Record<string, string> = {
-        action: Action.parse,
-        page: pageTitle,
-        prop: alterNativeValues(
-            Prop.text,
-            Prop.displayTitle,
-            Prop.categoriesHTML,
-            (config.get("getCss") ? Prop.headHTML : undefined)
-        ),
+        /** arguments */
+        const args: Record<string, string> = {
+            'action': Action.parse,
+            'text': content,
+            'prop': alterNativeValues(
+                Prop.text,
+                Prop.displayTitle,
+                Prop.categoriesHTML,
+                (config.get("getCss") ? Prop.headHTML : undefined)
+            ),
+            'contentmodel': ContextModel.wikitext,
+            'pst': "why_not",
+            'disableeditsection': "yes"
+        };
+
+        const viewerTitle = "WikitextPreviewer";
+
+        // if no panel, create one
+        if (!previewCurrentPanel) {
+            // if have not, try to creat new one.
+            previewCurrentPanel = vscode.window.createWebviewPanel(
+                "previewer", viewerTitle, vscode.ViewColumn.Beside, {
+                enableScripts: config.get("enableJavascript"),
+            });
+            // register for events that release resources.
+            previewCurrentPanel.onDidDispose(() => {
+                previewCurrentPanel = undefined;
+            }, null, extension.subscriptions);
+        }
+
+        const tBot: MWBot | undefined = await getDefaultBot();
+        if (!tBot) {
+            return undefined;
+        }
+
+        const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
+
+        showViewer(previewCurrentPanel, viewerTitle, args, tBot, baseHref);
     };
-    if (config.get("redirects")) {
-        args['redirects'] = "true";
-    }
-
-    const tBot: MWBot | undefined = await getDefaultBot();
-    if (!tBot) {
-        return undefined;
-    }
-
-    const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
-
-    showViewer("pageViewer", "WikiViewer", args, tBot, baseHref);
 }
 
 /**

@@ -11,7 +11,34 @@ import { showMWErrorMessage } from './err_msg';
 
 let bot: MWBot | undefined;
 
-export async function login(): Promise<boolean> {
+export function loginFactory(){
+    return login;
+}
+
+export function logoutFactory(){
+    return async function logout(): Promise<void> {
+        await bot?.getEditToken();
+        const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Logout...");
+        try {
+            // it will be {} if success
+            await bot?.request({
+                'action': Action.logout,
+                'token': bot.editToken
+            });
+            // clear bot
+            bot = undefined;
+            vscode.window.showInformationMessage('result: Success');
+        }
+        catch (error) {
+            showMWErrorMessage('logout', error);
+        }
+        finally {
+            barMessage.dispose();
+        }
+    };
+}
+
+async function login(): Promise<boolean> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const host: string | undefined = await getHost();
@@ -42,27 +69,6 @@ export async function login(): Promise<boolean> {
         bot = undefined;
         showMWErrorMessage('login', error);
         return false;
-    }
-    finally {
-        barMessage.dispose();
-    }
-}
-
-export async function logout(): Promise<void> {
-    await bot?.getEditToken();
-    const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Logout...");
-    try {
-        // it will be {} if success
-        await bot?.request({
-            'action': Action.logout,
-            'token': bot.editToken
-        });
-        // clear bot
-        bot = undefined;
-        vscode.window.showInformationMessage('result: Success');
-    }
-    catch (error) {
-        showMWErrorMessage('logout', error);
     }
     finally {
         barMessage.dispose();

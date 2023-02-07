@@ -4,31 +4,32 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { getPreview, getPageView } from './export_command/wikimedia_function/view';
-import { login, logout } from './export_command/wikimedia_function/bot';
-import { postPage, pullPage, closeEditor } from './export_command/wikimedia_function/page';
+import { getPageViewFactory, getPreviewFactory } from './export_command/wikimedia_function/view';
+import { loginFactory, logoutFactory } from './export_command/wikimedia_function/bot';
+import { closeEditorFactory, postPageFactory, pullPageFactory } from './export_command/wikimedia_function/page';
 import { baseUriProcess } from './export_command/uri_function/uri';
-import { addWebCite } from './export_command/cite_function/web';
-
-export let extensionContext: vscode.ExtensionContext;
+import { addWebCiteFactory } from './export_command/cite_function/web';
+import { WikitextCommandRegistrar } from './export_command/commadRegistrar';
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Extension is active.");
-    extensionContext = context;
+    // extensionContext = context;
     // URI
     context.subscriptions.push(vscode.window.registerUriHandler({ handleUri: baseUriProcess }));
+
+    const commandRegistrar = new WikitextCommandRegistrar(context);
     // Bot
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.login", login));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.logout", logout));
+    commandRegistrar.register('login', loginFactory);
+    commandRegistrar.register('logout', logoutFactory);
     // Core
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.readPage", pullPage));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.writePage", postPage));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.closeEditor", closeEditor));
+    commandRegistrar.register('readPage', pullPageFactory);
+    commandRegistrar.register('writePage', postPageFactory);
+    commandRegistrar.register('closeEditor', closeEditorFactory);
     // View
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.getPreview", getPreview));
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.viewPage", getPageView));
+    commandRegistrar.register('getPreview', getPreviewFactory);
+    commandRegistrar.register('viewPage', getPageViewFactory);
     // Cite
-    context.subscriptions.push(vscode.commands.registerCommand("wikitext.citeWeb", addWebCite));
+    commandRegistrar.register('citeWeb', addWebCiteFactory);
 }
 
 export function deactivate(): void {
