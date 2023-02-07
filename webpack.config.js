@@ -43,7 +43,6 @@ const webConfig = {
             querystring: require.resolve('querystring-es3'),
             path: require.resolve('path-browserify'),
             os: require.resolve('os-browserify/browser'),
-            //
             // request: require.resolve('browser-request'),
             tls: require.resolve('tls-browserify'),
             net: require.resolve('net'),

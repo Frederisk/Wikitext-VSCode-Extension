@@ -1,10 +1,13 @@
 # Workspace config
 .vs/
 .vscode/
-.vscode-test/
-.vscode-test-web/
 .github/
 .git/
+
+# Test
+.vscode-test/
+.vscode-test-web/
+**/test/
 
 # Source code
 out/
@@ -17,7 +20,6 @@ node_modules/
 snippets/*.yaml
 syntaxes/*.yaml
 language-configuration.yaml
-appveyor.yml
 
 # Compiled config
 **/tsconfig.json
