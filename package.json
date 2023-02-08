@@ -31,15 +31,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:wikitext.getPreview",
-    "onCommand:wikitext.login",
-    "onCommand:wikitext.logout",
-    "onCommand:wikitext.readPage",
-    "onCommand:wikitext.writePage",
-    "onCommand:wikitext.viewPage",
-    "onCommand:wikitext.citeWeb",
-    "onCommand:wikitext.closeEditor",
-    "onLanguage:wikitext",
     "onUri"
   ],
   "main": "./dist/extension-node",
@@ -280,7 +271,7 @@
     "test": "yarn run test-node && yarn run test-web",
     "test-node": "node ./dist/test/runTest.js",
     "test-web": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=./dist/test/suite/index-web.js",
-    "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json & js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json & js-yaml language-configuration.yaml > language-configuration.json &",
+    "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json && js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json && js-yaml language-configuration.yaml > language-configuration.json",
     "package": "vsce package --yarn"
   },
   "devDependencies": {

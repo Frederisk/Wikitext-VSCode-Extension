@@ -8,100 +8,50 @@ comments:
   # symbol used for single line comment. Remove this entry if your language does not support line comments
   # lineComment: "//"
   # symbols used for start and end a block comment. Remove this entry if your language does not support block comments
-  blockComment:
-    - "<!--"
-    - "-->"
+  blockComment: ['<!--', '-->']
 # symbols used as brackets
 brackets:
-  - - "<!--"
-    - "-->"
-  - - "<"
-    - ">"
-  - - "{{{"
-    - "}}}"
-  - - "{{"
-    - "}}"
-  - - "{|"
-    - "|}"
-  - - "-{"
-    - "}-"
-  - - "["
-    - "]"
+  - ['[', ']']
+  - ['-{', '}-']
+  - ['{|', '|}']
+  - ['{{', '}}']
+  - ['{{{', '}}}']
 # symbols that are auto closed when typing
 autoClosingPairs:
-  - - "{"
-    - "}"
-  - - "["
-    - "]"
-  - - "-{"
-    - "}-"
-  - - "<!--"
-    - "-->"
+  - ['{', '}']
+  - ['[', ']']
+  - ['<', '>']
+  - ['-{', '}-']
+  - ['<!--', '-->']
   # more tags: https://www.mediawiki.org/wiki/Parser_extension_tags
-  - - <>
-    - </>
-  - - <b>
-    - </b>
-  - - <br /
-    - ">"
-  - - <blockquote>
-    - </blockquote>
-  - - <ce>
-    - </ce>
-  - - <chem>
-    - </chem>
-  - - <code>
-    - </code>
-  - - <div>
-    - </div>
-  - - <graph>
-    - </graph>
-  - - <hiero>
-    - </hiero>
-  - - <hr /
-    - ">"
-  - - <i>
-    - </i>
-  - - <includeonly>
-    - </includeonly>
-  - - <mapframe /
-    - ">"
-  - - <math>
-    - </math>
-  - - <noinclude>
-    - </noinclude>
-  - - <nowiki>
-    - </nowiki>
-  - - <onlyinclude>
-    - </onlyinclude>
-  - - <pre>
-    - </pre>
-  - - <ref>
-    - </ref>
-  - - <s>
-    - </s>
-  - - <score>
-    - </score>
-  - - <span>
-    - </span>
-  - - <syntaxhighlight>
-    - </syntaxhighlight>
-  - - <templatedata>
-    - </templatedata>
+  - [<b>, </b>]
+  - [<blockquote>, </blockquote>]
+  - [<ce>, </ce>]
+  - [<chem>, </chem>]
+  - [<code>, </code>]
+  - [<div>, </div>]
+  - [<graph>, </graph>]
+  - [<hiero>, </hiero>]
+  - [<i>, </i>]
+  - [<includeonly>, </includeonly>]
+  - [<math>, </math>]
+  - [<noinclude>, </noinclude>]
+  - [<nowiki>, </nowiki>]
+  - [<onlyinclude>, </onlyinclude>]
+  - [<pre>, </pre>]
+  - [<ref>, </ref>]
+  - [<s>, </s>]
+  - [<score>, </score>]
+  - [<span>, </span>]
+  - [<syntaxhighlight>, </syntaxhighlight>]
+  - [<templatedata>, </templatedata>]
 # symbols that that can be used to surround a selection
 surroundingPairs:
-  - - "{"
-    - "}"
-  - - "["
-    - "]"
-  - - (
-    - )
-  - - <!--
-    - "-->"
-  - - <
-    - ">"
-  - - "'"
-    - "'"
+  - ['{', '}']
+  - ['[', ']']
+  - ['(', ')']
+  - ["'", "'"]
+
 folding:
   markers:
     start: ^\s*<!--\s*#region\b.*-->

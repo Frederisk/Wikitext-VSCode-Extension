@@ -12,6 +12,7 @@
 # Source code
 out/
 src/
+scripts/
 
 # Modules
 node_modules/

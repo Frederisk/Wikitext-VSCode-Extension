@@ -24,13 +24,16 @@
     "typescript.tsdk": "./node_modules/typescript/lib",
     "cmake.configureOnOpen": false,
     "cSpell.words": [
+        "bibtex",
         "caltaojihun",
         "eqeqeq",
         "luxon",
         "mimetypes",
         "mwbot",
         "Scribunto",
+        "syntaxhighlight",
         "vsix",
+        "wikitable",
         "wikixml",
         "Xvfb"
     ],

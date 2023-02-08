@@ -14,7 +14,7 @@ region:
   scope: markup.list.unnumbered.wikitext
 redirect:
   prefix: "@redirect"
-  body: "#REDIRECT [[${1:Pagename}]]"
+  body: "#REDIRECT [[${1:PageName}]]"
   description: Redirection
   scope: ""
 table:
@@ -43,7 +43,6 @@ table:
     |
     |}
   description: Table
-  scope: ""
 codeBlock:
   prefix: "@codeblock"
   body: |
@@ -56,42 +55,34 @@ comments:
   prefix: "@comments"
   body: "<!--${1:comments}-->"
   description: Comments
-  scope: ""
 todo:
   prefix: "@todo"
   body: "<!--TODO:${1:Task}-->"
   description: Todo Task
-  scope: ""
 title:
   prefix: "@title"
   body: "== ${1:title} ==\n"
   description: Title<2>
-  scope: ""
 subtitle1:
   prefix: "@subt1"
   body: "=== ${1:title} ===\n"
   description: Subtitle1<3>
-  scope: ""
 subtitle2:
   prefix: "@subt2"
   body: "==== ${1:title} ====\n"
   description: Subtitle2<4>
-  scope: ""
 subtitle3:
   prefix: "@subt3"
   body: "===== ${1:title} =====\n"
   description: Subtitle3<5>
-  scope: ""
 subtitle4:
   prefix: "@subt4"
   body: "====== ${1:title} ======\n"
   description: Subtitle4<6>
-  scope: ""
 pageTitle:
   prefix: "@pagetitle"
   body: "= ${1:title} =\n"
   description: PageTitle<1>
-  scope: ""
 pageInfo:
   prefix: "@pageinfo"
   body: |
@@ -104,14 +95,11 @@ pageInfo:
     ContentFormat=#${6:}#
     [END_PAGE_INFO] --%>
   description: Page Info Struct
-  scope: ""
 refName:
   prefix: "@refname"
   body: <ref name="${1:name}"/>
   description: Reference tag with name
-  scope: ""
 refDefine:
   prefix: "@refdefine"
   body: <ref name="${1:name}" >${2:definition}</ref>
   description: Reference tag with name and definition
-  scope: ""
