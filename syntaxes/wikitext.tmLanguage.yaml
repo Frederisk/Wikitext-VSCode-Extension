@@ -310,18 +310,21 @@ repository:
         begin: ({{{)
         end: (}}})
         patterns:
+          - match: (?:^|\G)([^#:\|\[\]\{\}\|]*)(\|)
+            #              1    string       12 |2
+            captures:
+              1:
+                name: variable.other.wikitext
+              2:
+                name: keyword.operator.wikitext
           - include: $self
-          - match: ([^#:\|\[\]\{\}\|])
-            #      1       string       12 |2
-            name: variable.other.wikitext
-          - match: (\|)
-            name: keyword.operator.wikitext
       heading:
         name: markup.heading.wikitext
-        match: '^(={1,6})\s*(.+?)\s*(={1,6})$'
+        match: '^(={1,6})\s*(.+?)\s*(\1)$'
         #        1======1   2cha2   3======3
         captures:
           2:
+            name: string.quoted.other.heading.wikitext
             patterns:
               - include: $self
       font-style:
@@ -362,7 +365,7 @@ repository:
         patterns:
           - include: $self
           - match: (\|)|(?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)
-            #       1 |1           2 space 234:432 5  word  5   6=6
+            #      1 |1           2 space 234:432 5  word  5   6=6
             # TODO:
             captures:
               1:
@@ -399,7 +402,7 @@ repository:
                     match: '\|.*'
               - name: meta.tag.block.th.heading
                 begin: ^\s*(!)(([^\[]*?)(\|))?(.*?)(?=(!!)|$)
-                #          1!123any34 |42 5bdy5    !!
+                #          1!123 any   34 |42 5bdy5    !!
                 # TODO: Fix `| [[name|display]]`
                 end: $
                 beginCaptures:
@@ -454,7 +457,7 @@ repository:
                   - include: $self
                   - match: \|\|
                     name: keyword.operator.wikitext
-              - include: text.html.basic#attribute
+              # - include: text.html.basic#attribute
       wikixml:
         patterns:
           - include: '#wikitag'
