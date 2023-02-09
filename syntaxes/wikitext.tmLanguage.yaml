@@ -373,7 +373,7 @@ repository:
       table:
         patterns:
           - name: meta.tag.block.table.wikitext
-            begin: '^\s*(\{\|)(.*?)$'
+            begin: '^\s*(\{\|)(.*)$'
             #           1 {| 12tag2
             end: '^\s*(\|\})'
             #         1 |} 2
@@ -382,10 +382,9 @@ repository:
                 name: punctuation.definition.tag.table.wikitext
               2:
                 patterns:
-                  - include: '#tag-stuff'
+                  - include: text.html.basic#attribute
             patterns:
               - include: $self
-              - include: '#tag-stuff'
               - name: meta.tag.block.table-row.wikitext
                 begin: '^\s*(\|-)\s*'
                 #           1 |- 1
@@ -395,7 +394,7 @@ repository:
                     name: punctuation.definition.tag.begin.wikitext
                 patterns:
                   - include: $self
-                  - include: '#tag-stuff'
+                  - include: text.html.basic#attribute
                   - name: invalid.illegal.bad-table-context.wikitext
                     match: '\|.*'
               - name: meta.tag.block.th.heading
@@ -410,7 +409,7 @@ repository:
                   3:
                     patterns:
                       - include: $self
-                      - include: '#tag-stuff'
+                      - include: text.html.basic#attribute
                   4:
                     name: punctuation.definition.tag.wikitext
                   5:
@@ -423,7 +422,7 @@ repository:
                         name: punctuation.definition.tag.begin.wikitext
                       3:
                         patterns:
-                          - include: '#tag-stuff'
+                          - include: text.html.basic#attribute
                           - include: $self
                       4:
                         name: punctuation.definition.tag.wikitext
@@ -440,21 +439,22 @@ repository:
                 end: $
                 patterns:
                   - include: $self
-              - name: string.quoted.wikitext
-                begin: ^\s*(\|)
+              - begin: ^\s*(\|)
+                # name: string.quoted.wikitext
                 end: $
                 beginCaptures:
                   1:
                     name: punctuation.definition.tag.wikitext
-                  2:
-                    patterns:
-                      - include: '#tag-stuff'
-                  3:
-                    name: punctuation.definition.tag.wikitext
+                  # 2:
+                  #   patterns:
+                  #     - include: text.html.basic#attribute
+                  # 3:
+                  #   name: punctuation.definition.tag.wikitext
                 patterns:
                   - include: $self
                   - match: \|\|
                     name: keyword.operator.wikitext
+              - include: text.html.basic#attribute
       wikixml:
         patterns:
           - include: '#wikitag'
@@ -527,12 +527,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -564,12 +559,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -601,12 +591,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -638,12 +623,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -675,12 +655,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -712,12 +687,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -749,12 +719,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -786,12 +751,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -823,12 +783,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -860,12 +815,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -897,12 +847,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -934,12 +879,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -971,12 +911,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1008,12 +943,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1045,12 +975,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1082,12 +1007,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1119,12 +1039,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1156,12 +1071,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1193,12 +1103,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1230,12 +1135,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1267,12 +1167,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1304,12 +1199,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1409,12 +1299,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1446,12 +1331,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1483,12 +1363,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1520,12 +1395,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1592,12 +1462,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1629,12 +1494,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1666,12 +1526,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1703,12 +1558,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1740,12 +1590,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1777,12 +1622,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1814,12 +1654,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1851,12 +1686,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1888,12 +1718,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1959,12 +1784,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -1996,12 +1816,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2033,12 +1848,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2070,12 +1880,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2141,12 +1946,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2179,12 +1979,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2216,12 +2011,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2253,12 +2043,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2290,12 +2075,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2361,12 +2141,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2398,12 +2173,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2435,12 +2205,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2472,12 +2237,7 @@ repository:
                     name: entity.name.tag.wikitext
                   3:
                     patterns:
-                      - match: ' ([a-zA-Z-]+)'
-                        captures:
-                          1:
-                            name: entity.other.attribute-name.wikitext
-                      - include: '#double-quoted-string'
-                      - include: '#single-quoted-string'
+                      - include: text.html.basic#attribute
                       - include: $self
                   4:
                     name: punctuation.definition.tag.end.wikitext
@@ -2510,12 +2270,7 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: ' ([a-zA-Z-]+)'
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: '#double-quoted-string'
-                  - include: '#single-quoted-string'
+                  - include: text.html.basic#attribute
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -2539,12 +2294,7 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: ' ([a-zA-Z-]+)'
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: '#double-quoted-string'
-                  - include: '#single-quoted-string'
+                  - include: text.html.basic#attribute
                   - include: $self
               4: punctuation.definition.tag.end.wikitext
             name: meta.tag.metedata.void.wikitext
@@ -2560,12 +2310,7 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: ' ([a-zA-Z-]+)'
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: '#double-quoted-string'
-                  - include: '#single-quoted-string'
+                  - include: text.html.basic#attribute
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -2592,12 +2337,7 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: ' ([a-zA-Z-]+)'
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: '#double-quoted-string'
-                  - include: '#single-quoted-string'
+                  - include: text.html.basic#attribute
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -2625,12 +2365,7 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: ' ([a-zA-Z-]+)'
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: '#double-quoted-string'
-                  - include: '#single-quoted-string'
+                  - include: text.html.basic#attribute
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -2647,52 +2382,3 @@ repository:
             contentName: meta.embedded.block.latex
             patterns:
               - include: text.html.markdown.math#math
-  # public
-  double-quoted-string:
-    begin: '"'
-    beginCaptures:
-      0:
-        name: punctuation.definition.string.begin.wikitext
-    end: '"'
-    endCaptures:
-      0:
-        name: punctuation.definition.string.end.wikitext
-    name: string.quoted.double.wikitext
-    patterns:
-      - include: text.html.basic#entities
-      - include: '#bare-ampersand'
-  tag-stuff:
-    patterns:
-      - include: text.html.basic#attribute
-    # patterns:
-    #   - match: (?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)
-    #     #                 1space 123:321 4  name  4   5=5
-    #     captures:
-    #       1:
-    #         name: entity.other.attribute-name.namespace.wikitext
-    #       2:
-    #         name: entity.other.attribute-name.wikitext
-    #       3:
-    #         name: punctuation.separator.namespace.wikitext
-    #       4:
-    #         name: entity.other.attribute-name.localname.wikitext
-    #       5:
-    #         name: keyword.operator.equal.wikitext
-    #   - include: '#double-quoted-string'
-    #   - include: '#single-quoted-string'
-  single-quoted-string:
-    begin: "'"
-    beginCaptures:
-      0:
-        name: punctuation.definition.string.begin.wikitext
-    end: "'"
-    endCaptures:
-      0:
-        name: punctuation.definition.string.end.wikitext
-    name: string.quoted.single.wikitext
-    patterns:
-      - include: text.html.basic#entities
-      - include: '#bare-ampersand'
-  bare-ampersand:
-    match: '&'
-    name: invalid.illegal.bad-ampersand.wikitext
