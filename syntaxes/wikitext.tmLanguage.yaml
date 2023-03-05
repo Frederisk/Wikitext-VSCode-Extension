@@ -519,8 +519,10 @@ repository:
               - include: '#hl-bibtex'
             repository:
               hl-css:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"css"|'css'))(?:\s+[^>]+)?)\s*(>)
-                #
+                # (["']?)css\4
+                # 4     4
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)css\4))(?:\s+[^>]+)?)\s*(>)
+                #          1<12syntaxhighlight23   @1any_-         lang=   4     4     3                 5>5
                 beginCaptures:
                   0:
                     name: meta.tag.metadata.start.wikitext
@@ -532,7 +534,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -551,7 +553,7 @@ repository:
                     patterns:
                       - include: source.css
               hl-html:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"html"|'html'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)html\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -564,7 +566,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -583,7 +585,7 @@ repository:
                     patterns:
                       - include: text.html.basic
               hl-ini:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"ini"|'ini'|"cfg"|'cfg'|"dosini"|'dosini'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:ini|cfg|dosini)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -596,7 +598,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -615,7 +617,7 @@ repository:
                     patterns:
                       - include: source.ini
               hl-java:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"java"|'java'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)java\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -628,7 +630,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -647,7 +649,7 @@ repository:
                     patterns:
                       - include: source.java
               hl-lua:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"lua"|'lua'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)lua\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -660,7 +662,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -679,7 +681,7 @@ repository:
                     patterns:
                       - include: source.lua
               hl-makefile:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"make"|'make'|"makefile"|'makefile'|"mf"|'mf'|"bsdmake"|'bsdmake'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:make|makefile|mf|bsdmake)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -692,7 +694,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -711,7 +713,7 @@ repository:
                     patterns:
                       - include: source.makefile
               hl-perl:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"perl"|'perl'|"ple"|'ple'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:perl|ple)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -724,7 +726,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -743,7 +745,7 @@ repository:
                     patterns:
                       - include: source.perl
               hl-r:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"splus"|'splus'|"s"|'s'|"r"|'r'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:splus|s|r)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -756,7 +758,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -775,7 +777,7 @@ repository:
                     patterns:
                       - include: source.r
               hl-ruby:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"ruby"|'ruby'|"rb"|'rb'|"duby"|'duby'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:ruby|rb|duby)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -788,7 +790,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -807,7 +809,7 @@ repository:
                     patterns:
                       - include: source.ruby
               hl-php:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"php"|'php'|"php3"|'php3'|"php4"|'php4'|"php5"|'php5'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:php|php3|php4|php5)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -820,7 +822,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -839,7 +841,7 @@ repository:
                     patterns:
                       - include: source.php
               hl-sql:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"sql"|'sql'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)sql\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -852,7 +854,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -871,7 +873,7 @@ repository:
                     patterns:
                       - include: source.sql
               hl-vb-net:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"vb.net"|'vb.net'|"vbnet"|'vbnet'|"lobas"|'lobas'|"oobas"|'oobas'|"sobas"|'sobas'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:vb\.net|vbnet|lobas|oobas|sobas)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -884,7 +886,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -903,7 +905,7 @@ repository:
                     patterns:
                       - include: source.asp.vb.net
               hl-xml:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"xml"|'xml'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)xml\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -916,7 +918,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -935,7 +937,7 @@ repository:
                     patterns:
                       - include: text.xml
               hl-xslt:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"xslt"|'xslt'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)xslt\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -948,7 +950,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -967,7 +969,7 @@ repository:
                     patterns:
                       - include: text.xml.xsl
               hl-yaml:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"yaml"|'yaml'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)yaml\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -980,7 +982,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -999,7 +1001,7 @@ repository:
                     patterns:
                       - include: source.yaml
               hl-bat:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"batch"|'batch'|"bat"|'bat'|"dosbatch"|'dosbatch'|"winbatch"|'winbatch'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(['"]?)(?:batch|bat|dosbatch|winbatch)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1012,7 +1014,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1031,7 +1033,7 @@ repository:
                     patterns:
                       - include: source.batchfile
               hl-clojure:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"clojure"|'clojure'|"clj"|'clj'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:clojure|clj)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1044,7 +1046,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1063,7 +1065,7 @@ repository:
                     patterns:
                       - include: source.clojure
               hl-coffee:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"coffeescript"|'coffeescript'|"coffee-script"|'coffee-script'|"coffee"|'coffee'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:coffeescript|coffee-script|coffee)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1076,7 +1078,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1095,7 +1097,7 @@ repository:
                     patterns:
                       - include: source.coffee
               hl-c:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"c"|'c'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)c\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1108,7 +1110,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1127,7 +1129,7 @@ repository:
                     patterns:
                       - include: source.c
               hl-cpp:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"cpp"|'cpp'|"c\+\+"|'c\+\+'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:cpp|c\+\+)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1140,7 +1142,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1159,7 +1161,7 @@ repository:
                     patterns:
                       - include: source.cpp
               hl-diff:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"diff"|'diff'|"udiff"|'udiff'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:diff|udiff)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1172,7 +1174,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1191,7 +1193,7 @@ repository:
                     patterns:
                       - include: source.diff
               hl-dockerfile:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"docker"|'docker'|"dockerfile"|'dockerfile'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:docker|dockerfile)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1204,7 +1206,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1291,7 +1293,7 @@ repository:
               #   patterns:
               #     - include: text.git-rebase
               hl-go:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"go"|'go'|"golang"|'golang'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:go|golang)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1304,7 +1306,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1323,7 +1325,7 @@ repository:
                     patterns:
                       - include: source.go
               hl-groovy:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"groovy"|'groovy'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)groovy\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1336,7 +1338,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1355,7 +1357,7 @@ repository:
                     patterns:
                       - include: source.groovy
               hl-pug:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"pug"|'pug'|"jade"|'jade'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:pug|jade)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1368,7 +1370,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1387,7 +1389,7 @@ repository:
                     patterns:
                       - include: text.pug
               hl-js:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"javascript"|'javascript'|"js"|'js'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:javascript|js)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1400,7 +1402,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1938,7 +1940,7 @@ repository:
               #   patterns:
               #     - include: source.tsx
               hl-csharp:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"csharp"|'csharp'|"c#"|'c#'|"cs"|'cs'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:csharp|c#|cs)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1951,7 +1953,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -1971,7 +1973,7 @@ repository:
                     patterns:
                       - include: source.cs
               hl-fsharp:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"fsharp"|'fsharp'|"f#"|'f#'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:fsharp|f#)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -1984,7 +1986,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -2003,7 +2005,7 @@ repository:
                     patterns:
                       - include: source.fsharp
               hl-dart:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"dart"|'dart'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)dart\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -2016,7 +2018,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -2035,7 +2037,7 @@ repository:
                     patterns:
                       - include: source.dart
               hl-handlebars:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"handlebars"|'handlebars'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)handlebars\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -2048,7 +2050,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -2067,7 +2069,7 @@ repository:
                     patterns:
                       - include: text.html.handlebars
               hl-markdown:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"markdown"|'markdown'|"md"|'md'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:markdown|md)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -2080,7 +2082,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -2133,7 +2135,7 @@ repository:
               #   patterns:
               #     - include: text.log
               hl-erlang:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"erlang"|'erlang'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)erlang\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -2146,7 +2148,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -2165,7 +2167,7 @@ repository:
                     patterns:
                       - include: source.erlang
               hl-elixir:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"elixir"|'elixir'|"ex"|'ex'|"exs"|'exs'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:elixir|ex|exs)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -2178,7 +2180,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -2197,7 +2199,7 @@ repository:
                     patterns:
                       - include: source.elixir
               hl-latex:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"tex"|'tex'|"latex"|'latex'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:tex|latex)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -2210,7 +2212,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
@@ -2229,7 +2231,7 @@ repository:
                     patterns:
                       - include: text.tex.latex
               hl-bibtex:
-                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"bibtex"|'bibtex'|"bib"|'bib'))(?:\s+[^>]+)?)\s*(>)
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:bibtex|bib)\4))(?:\s+[^>]+)?)\s*(>)
                 #
                 beginCaptures:
                   0:
@@ -2242,7 +2244,7 @@ repository:
                     patterns:
                       - include: text.html.basic#attribute
                       - include: $self
-                  4:
+                  5:
                     name: punctuation.definition.tag.end.wikitext
                 end: (?i)(</)(syntaxhighlight)\s*(>)
                 endCaptures:
