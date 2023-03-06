@@ -4,34 +4,34 @@
 ################################################################################################
 
 ---
-$schema: "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
+$schema: 'https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json'
 name: Wikitext
 scopeName: source.wikitext
 patterns:
-  - include: "#wikitext"
+  - include: '#wikitext'
   - include: text.html.basic
   # - include: text.html.derivative
 repository:
   # wikitext: https://www.mediawiki.org/wiki/Wikitext
   wikitext:
     patterns:
-      - include: "#entity"
-      - include: "#signature"
-      - include: "#redirect"
-      - include: "#magic-words"
+      # - include: '#entity'
+      - include: '#signature'
+      - include: '#redirect'
+      - include: '#magic-words'
       # TODO: include: "#function" {{#foo:}}
-      - include: "#argument"
-      - include: "#template"
-      - include: "#convert"
-      - include: "#list"
-      - include: "#table"
-      - include: "#font-style"
-      - include: "#internal-link"
-      - include: "#external-link"
-      - include: "#heading"
-      - include: "#break"
-      - include: "#wikixml"
-      - include: "#extension-comments"
+      - include: '#argument'
+      - include: '#template'
+      - include: '#convert'
+      - include: '#list'
+      - include: '#table'
+      - include: '#font-style'
+      - include: '#internal-link'
+      - include: '#external-link'
+      - include: '#heading'
+      - include: '#break'
+      - include: '#wikixml'
+      - include: '#extension-comments'
     repository:
       extension-comments:
         name: comment.block.documentation.special.extension.wikitext
@@ -103,7 +103,7 @@ repository:
               4:
                 name: punctuation.terminator.rule.wikitext
       break:
-        match: "^-{4,}"
+        match: '^-{4,}'
         #        ----
         name: markup.changed.wikitext
       template:
@@ -195,9 +195,9 @@ repository:
                 name: punctuation.definition.tag.link.internal.end.wikitext
       magic-words:
         patterns:
-          - include: "#behavior-switches"
-          - include: "#outdated-behavior-switches"
-          - include: "#variables"
+          - include: '#behavior-switches'
+          - include: '#outdated-behavior-switches'
+          - include: '#variables'
         repository:
           behavior-switches:
             name: constant.language.behavior-switcher.wikitext
@@ -296,12 +296,12 @@ repository:
       signature:
         patterns:
           - name: keyword.other.signature.wikitext
-            match: "~{3,5}"
+            match: '~{3,5}'
             #       ~~~~
       list:
         name: markup.list.wikitext
         patterns:
-          - match: "^([#*;:]+)"
+          - match: '^([#*;:]+)'
             captures:
               1:
                 name: punctuation.definition.list.begin.markdown.wikitext
@@ -310,38 +310,41 @@ repository:
         begin: ({{{)
         end: (}}})
         patterns:
+          - match: (?:^|\G)([^#:\|\[\]\{\}\|]*)(\|)
+            #              1    string       12 |2
+            captures:
+              1:
+                name: variable.other.wikitext
+              2:
+                name: keyword.operator.wikitext
           - include: $self
-          - match: ([^#:\|\[\]\{\}\|])
-            #      1       string       12 |2
-            name: variable.other.wikitext
-          - match: (\|)
-            name: keyword.operator.wikitext
       heading:
         name: markup.heading.wikitext
-        match: '^(={1,6})\s*(.+?)\s*(={1,6})$'
+        match: '^(={1,6})\s*(.+?)\s*(\1)$'
         #        1======1   2cha2   3======3
         captures:
           2:
+            name: string.quoted.other.heading.wikitext
             patterns:
               - include: $self
       font-style:
         patterns:
-          - include: "#bold"
-          - include: "#italic"
+          - include: '#bold'
+          - include: '#italic'
         repository:
           bold:
             begin: (''')
             end: (''')|$
             name: markup.bold.wikitext
             patterns:
-              - include: "#italic"
+              - include: '#italic'
               - include: $self
           italic:
             begin: ('')
             end: ((?=[^'])|(?=''))''((?=[^'])|(?=''))|$
             name: markup.italic.wikitext
             patterns:
-              - include: "#bold"
+              - include: '#bold'
               - include: $self
       internal-link:
         TODO: SINGLE LINE
@@ -362,7 +365,7 @@ repository:
         patterns:
           - include: $self
           - match: (\|)|(?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)
-            #       1 |1           2 space 234:432 5  word  5   6=6
+            #      1 |1           2 space 234:432 5  word  5   6=6
             # TODO:
             captures:
               1:
@@ -373,7 +376,7 @@ repository:
       table:
         patterns:
           - name: meta.tag.block.table.wikitext
-            begin: '^\s*(\{\|)(.*?)$'
+            begin: '^\s*(\{\|)(.*)$'
             #           1 {| 12tag2
             end: '^\s*(\|\})'
             #         1 |} 2
@@ -382,10 +385,9 @@ repository:
                 name: punctuation.definition.tag.table.wikitext
               2:
                 patterns:
-                  - include: "#tag-stuff"
+                  - include: text.html.basic#attribute
             patterns:
               - include: $self
-              - include: "#tag-stuff"
               - name: meta.tag.block.table-row.wikitext
                 begin: '^\s*(\|-)\s*'
                 #           1 |- 1
@@ -395,12 +397,12 @@ repository:
                     name: punctuation.definition.tag.begin.wikitext
                 patterns:
                   - include: $self
-                  - include: "#tag-stuff"
+                  - include: text.html.basic#attribute
                   - name: invalid.illegal.bad-table-context.wikitext
                     match: '\|.*'
               - name: meta.tag.block.th.heading
                 begin: ^\s*(!)(([^\[]*?)(\|))?(.*?)(?=(!!)|$)
-                #          1!123any34 |42 5bdy5    !!
+                #          1!123 any   34 |42 5bdy5    !!
                 # TODO: Fix `| [[name|display]]`
                 end: $
                 beginCaptures:
@@ -410,7 +412,7 @@ repository:
                   3:
                     patterns:
                       - include: $self
-                      - include: "#tag-stuff"
+                      - include: text.html.basic#attribute
                   4:
                     name: punctuation.definition.tag.wikitext
                   5:
@@ -423,7 +425,7 @@ repository:
                         name: punctuation.definition.tag.begin.wikitext
                       3:
                         patterns:
-                          - include: "#tag-stuff"
+                          - include: text.html.basic#attribute
                           - include: $self
                       4:
                         name: punctuation.definition.tag.wikitext
@@ -440,29 +442,1826 @@ repository:
                 end: $
                 patterns:
                   - include: $self
-              - name: string.quoted.wikitext
-                begin: ^\s*(\|)
+              - begin: ^\s*(\|)
+                # name: string.quoted.wikitext
                 end: $
                 beginCaptures:
                   1:
                     name: punctuation.definition.tag.wikitext
-                  2:
-                    patterns:
-                      - include: "#tag-stuff"
-                  3:
-                    name: punctuation.definition.tag.wikitext
+                  # 2:
+                  #   patterns:
+                  #     - include: text.html.basic#attribute
+                  # 3:
+                  #   name: punctuation.definition.tag.wikitext
                 patterns:
                   - include: $self
                   - match: \|\|
                     name: keyword.operator.wikitext
+              # - include: text.html.basic#attribute
       wikixml:
         patterns:
-          - include: "#wikitag"
-          - include: "#nowiki"
-          - include: "#ref"
-          - include: "#jsonin"
-          - include: "#math"
+          - include: '#wikitag'
+          - include: '#nowiki'
+          - include: '#ref'
+          - include: '#jsonin'
+          - include: '#math'
+          - include: '#syntax-highlight'
         repository:
+          syntax-highlight:
+            patterns:
+              - include: '#hl-css'
+              - include: '#hl-html'
+              - include: '#hl-ini'
+              - include: '#hl-java'
+              - include: '#hl-lua'
+              - include: '#hl-makefile'
+              - include: '#hl-perl'
+              - include: '#hl-r'
+              - include: '#hl-ruby'
+              - include: '#hl-php'
+              - include: '#hl-sql'
+              - include: '#hl-vb-net'
+              - include: '#hl-xml'
+              - include: '#hl-xslt'
+              - include: '#hl-yaml'
+              - include: '#hl-bat'
+              - include: '#hl-clojure'
+              - include: '#hl-coffee'
+              - include: '#hl-c'
+              - include: '#hl-cpp'
+              - include: '#hl-diff'
+              - include: '#hl-dockerfile'
+              - include: '#hl-go'
+              - include: '#hl-groovy'
+              - include: '#hl-pug'
+              - include: '#hl-js'
+              - include: '#hl-json'
+              - include: '#hl-less'
+              - include: '#hl-objc'
+              - include: '#hl-swift'
+              - include: '#hl-scss'
+              - include: '#hl-perl6'
+              - include: '#hl-powershell'
+              - include: '#hl-python'
+              - include: '#hl-julia'
+              - include: '#hl-rust'
+              - include: '#hl-scala'
+              - include: '#hl-shell'
+              - include: '#hl-ts'
+              - include: '#hl-csharp'
+              - include: '#hl-fsharp'
+              - include: '#hl-dart'
+              - include: '#hl-handlebars'
+              - include: '#hl-markdown'
+              - include: '#hl-erlang'
+              - include: '#hl-elixir'
+              - include: '#hl-latex'
+              - include: '#hl-bibtex'
+            repository:
+              hl-css:
+                # (["']?)css\4
+                # 4     4
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)css\4))(?:\s+[^>]+)?)\s*(>)
+                #          1<12syntaxhighlight23   @1any_-         lang=   4     4     3                 5>5
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.css
+                    patterns:
+                      - include: source.css
+              hl-html:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)html\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.html
+                    patterns:
+                      - include: text.html.basic
+              hl-ini:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:ini|cfg|dosini)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.ini
+                    patterns:
+                      - include: source.ini
+              hl-java:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)java\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.java
+                    patterns:
+                      - include: source.java
+              hl-lua:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)lua\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.lua
+                    patterns:
+                      - include: source.lua
+              hl-makefile:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:make|makefile|mf|bsdmake)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.makefile
+                    patterns:
+                      - include: source.makefile
+              hl-perl:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:perl|ple)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.perl
+                    patterns:
+                      - include: source.perl
+              hl-r:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:splus|s|r)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.r
+                    patterns:
+                      - include: source.r
+              hl-ruby:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:ruby|rb|duby)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.ruby
+                    patterns:
+                      - include: source.ruby
+              hl-php:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:php|php3|php4|php5)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.php
+                    patterns:
+                      - include: source.php
+              hl-sql:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)sql\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.sql
+                    patterns:
+                      - include: source.sql
+              hl-vb-net:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:vb\.net|vbnet|lobas|oobas|sobas)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.vb-net
+                    patterns:
+                      - include: source.asp.vb.net
+              hl-xml:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)xml\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.xml
+                    patterns:
+                      - include: text.xml
+              hl-xslt:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)xslt\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.xslt
+                    patterns:
+                      - include: text.xml.xsl
+              hl-yaml:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)yaml\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.yaml
+                    patterns:
+                      - include: source.yaml
+              hl-bat:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(['"]?)(?:batch|bat|dosbatch|winbatch)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.bat
+                    patterns:
+                      - include: source.batchfile
+              hl-clojure:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:clojure|clj)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.clojure
+                    patterns:
+                      - include: source.clojure
+              hl-coffee:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:coffeescript|coffee-script|coffee)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.coffee
+                    patterns:
+                      - include: source.coffee
+              hl-c:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)c\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.c
+                    patterns:
+                      - include: source.c
+              hl-cpp:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:cpp|c\+\+)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.cpp
+                    patterns:
+                      - include: source.cpp
+              hl-diff:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:diff|udiff)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.diff
+                    patterns:
+                      - include: source.diff
+              hl-dockerfile:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:docker|dockerfile)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.dockerfile
+                    patterns:
+                      - include: source.dockerfile
+              # hl-git-commit:
+              #   begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"N/A"|'N/A'))(?:\s+[^>]+)?)\s*(>)
+              #   #
+              #   beginCaptures:
+              #     0:
+              #       name: meta.tag.metadata.start.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       patterns:
+              #         - match: " ([a-zA-Z-]+)"
+              #           captures:
+              #             1:
+              #               name: entity.other.attribute-name.wikitext
+              #         - include: "#double-quoted-string"
+              #         - include: "#single-quoted-string"
+              #         - include: $self
+              #     4:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   end: (?i)(</)(syntaxhighlight)\s*(>)
+              #   endCaptures:
+              #     0:
+              #       name: meta.tag.metadata.end.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   contentName: meta.embedded.block.git-commit
+              #   patterns:
+              #     - include: text.git-rebase
+              # hl-git-rebase:
+              #   begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"N/A"|'N/A'))(?:\s+[^>]+)?)\s*(>)
+              #   #
+              #   beginCaptures:
+              #     0:
+              #       name: meta.tag.metadata.start.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       patterns:
+              #         - match: " ([a-zA-Z-]+)"
+              #           captures:
+              #             1:
+              #               name: entity.other.attribute-name.wikitext
+              #         - include: "#double-quoted-string"
+              #         - include: "#single-quoted-string"
+              #         - include: $self
+              #     4:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   end: (?i)(</)(syntaxhighlight)\s*(>)
+              #   endCaptures:
+              #     0:
+              #       name: meta.tag.metadata.end.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   contentName: meta.embedded.block.git-rebase
+              #   patterns:
+              #     - include: text.git-rebase
+              hl-go:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:go|golang)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.go
+                    patterns:
+                      - include: source.go
+              hl-groovy:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)groovy\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.groovy
+                    patterns:
+                      - include: source.groovy
+              hl-pug:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:pug|jade)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.pug
+                    patterns:
+                      - include: text.pug
+              hl-js:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:javascript|js)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.js
+                    patterns:
+                      - include: source.js
+              # hl-regexp-js:
+              #   begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"N/A"|'N/A'))(?:\s+[^>]+)?)\s*(>)
+              #   #
+              #   beginCaptures:
+              #     0:
+              #       name: meta.tag.metadata.start.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       patterns:
+              #         - match: " ([a-zA-Z-]+)"
+              #           captures:
+              #             1:
+              #               name: entity.other.attribute-name.wikitext
+              #         - include: "#double-quoted-string"
+              #         - include: "#single-quoted-string"
+              #         - include: $self
+              #     4:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   end: (?i)(</)(syntaxhighlight)\s*(>)
+              #   endCaptures:
+              #     0:
+              #       name: meta.tag.metadata.end.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   contentName: meta.embedded.block.regexp
+              #   patterns:
+              #     - include: source.js.regexp
+              # support comment
+              hl-json:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"json"|'json'|"json-object"|'json-object'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.json
+                    patterns:
+                      - include: source.json.comments
+              hl-less:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"less"|'less'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.less
+                    patterns:
+                      - include: source.css.less
+              hl-objc:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"objective-c"|'objective-c'|"objectivec"|'objectivec'|"obj-c"|'obj-c'|"objc"|'objc'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.objc
+                    patterns:
+                      - include: source.objc
+              hl-swift:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"swift"|'swift'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.swift
+                    patterns:
+                      - include: source.swift
+              hl-scss:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"scss"|'scss'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.scss
+                    patterns:
+                      - include: source.css.scss
+              hl-perl6:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"perl6"|'perl6'|"pl6"|'pl6'|"raku"|'raku'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.perl6
+                    patterns:
+                      - include: source.perl.6
+              hl-powershell:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"powershell"|'powershell'|"pwsh"|'pwsh'|"posh"|'posh'|"ps1"|'ps1'|"psm1"|'psm1'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.powershell
+                    patterns:
+                      - include: source.powershell
+              hl-python:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"python"|'python'|"py"|'py'|"sage"|'sage'|"python3"|'python3'|"py3"|'py3'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.python
+                    patterns:
+                      - include: source.python
+              hl-julia:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"julia"|'julia'|"jl"|'jl'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.julia
+                    patterns:
+                      - include: source.julia
+              # hl-regexp-python:
+              #   begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"N/A"|'N/A'))(?:\s+[^>]+)?)\s*(>)
+              #   #
+              #   beginCaptures:
+              #     0:
+              #       name: meta.tag.metadata.start.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       patterns:
+              #         - match: " ([a-zA-Z-]+)"
+              #           captures:
+              #             1:
+              #               name: entity.other.attribute-name.wikitext
+              #         - include: "#double-quoted-string"
+              #         - include: "#single-quoted-string"
+              #         - include: $self
+              #     4:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   end: (?i)(</)(syntaxhighlight)\s*(>)
+              #   endCaptures:
+              #     0:
+              #       name: meta.tag.metadata.end.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   contentName: meta.embedded.block.regexp-python
+              #   patterns:
+              #     - include: source.regexp.python
+              hl-rust:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"rust"|'rust'|"rs"|'rs'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName:
+                    patterns:
+                      - include: source.rust
+              hl-scala:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"scala"|'scala'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.scala
+                    patterns:
+                      - include: source.scala
+              hl-shell:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"bash"|'bash'|"sh"|'sh'|"ksh"|'ksh'|"zsh"|'zsh'|"shell"|'shell'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.shell
+                    patterns:
+                      - include: source.shell
+              hl-ts:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"typescript"|'typescript'|"ts"|'ts'))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  4:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.ts
+                    patterns:
+                      - include: source.ts
+              # hl-tsx:
+              #   begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"N/A"|'N/A'))(?:\s+[^>]+)?)\s*(>)
+              #   #
+              #   beginCaptures:
+              #     0:
+              #       name: meta.tag.metadata.start.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       patterns:
+              #         - match: " ([a-zA-Z-]+)"
+              #           captures:
+              #             1:
+              #               name: entity.other.attribute-name.wikitext
+              #         - include: "#double-quoted-string"
+              #         - include: "#single-quoted-string"
+              #         - include: $self
+              #     4:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   end: (?i)(</)(syntaxhighlight)\s*(>)
+              #   endCaptures:
+              #     0:
+              #       name: meta.tag.metadata.end.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   contentName: meta.embedded.block.tsx
+              #   patterns:
+              #     - include: source.tsx
+              hl-csharp:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:csharp|c#|cs)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    # while: (^|\G)(?!</syntaxhighlight\s*>)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.csharp
+                    patterns:
+                      - include: source.cs
+              hl-fsharp:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:fsharp|f#)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.fsharp
+                    patterns:
+                      - include: source.fsharp
+              hl-dart:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)dart\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.dart
+                    patterns:
+                      - include: source.dart
+              hl-handlebars:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)handlebars\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.handlebars
+                    patterns:
+                      - include: text.html.handlebars
+              hl-markdown:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:markdown|md)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.markdown
+                    patterns:
+                      - include: text.html.markdown
+              # hl-log:
+              #   begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:"N/A"|'N/A'))(?:\s+[^>]+)?)\s*(>)
+              #   #
+              #   beginCaptures:
+              #     0:
+              #       name: meta.tag.metadata.start.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       patterns:
+              #         - match: " ([a-zA-Z-]+)"
+              #           captures:
+              #             1:
+              #               name: entity.other.attribute-name.wikitext
+              #         - include: "#double-quoted-string"
+              #         - include: "#single-quoted-string"
+              #         - include: $self
+              #     4:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   end: (?i)(</)(syntaxhighlight)\s*(>)
+              #   endCaptures:
+              #     0:
+              #       name: meta.tag.metadata.end.wikitext
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #     2:
+              #       name: entity.name.tag.wikitext
+              #     3:
+              #       name: punctuation.definition.tag.end.wikitext
+              #   contentName: meta.embedded.block.log
+              #   patterns:
+              #     - include: text.log
+              hl-erlang:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)erlang\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.erlang
+                    patterns:
+                      - include: source.erlang
+              hl-elixir:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:elixir|ex|exs)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.elixir
+                    patterns:
+                      - include: source.elixir
+              hl-latex:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:tex|latex)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.latex
+                    patterns:
+                      - include: text.tex.latex
+              hl-bibtex:
+                begin: (?i)(<)(syntaxhighlight)((?:\s+[^>]+)?(?:\s+lang=(?:(['"]?)(?:bibtex|bib)\4))(?:\s+[^>]+)?)\s*(>)
+                #
+                beginCaptures:
+                  0:
+                    name: meta.tag.metadata.start.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    patterns:
+                      - include: text.html.basic#attribute
+                      - include: $self
+                  5:
+                    name: punctuation.definition.tag.end.wikitext
+                end: (?i)(</)(syntaxhighlight)\s*(>)
+                endCaptures:
+                  0:
+                    name: meta.tag.metadata.end.wikitext
+                  1:
+                    name: punctuation.definition.tag.begin.wikitext
+                  2:
+                    name: entity.name.tag.wikitext
+                  3:
+                    name: punctuation.definition.tag.end.wikitext
+                patterns:
+                  - begin: (^|\G)
+                    end: (?i)(?=</syntaxhighlight\s*>)
+                    contentName: meta.embedded.block.bibtex
+                    patterns:
+                      - include: text.bibtex
           nowiki:
             contentName: meta.embedded.block.plaintext
             begin: (?i)(<)(nowiki)(\s+[^>]+)?\s*(>)
@@ -476,12 +2275,7 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: " ([a-zA-Z-]+)"
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: "#double-quoted-string"
-                  - include: "#single-quoted-string"
+                  - include: text.html.basic#attribute
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -497,7 +2291,7 @@ repository:
                 name: punctuation.definition.tag.end.wikitext
           wikitag:
             match: (?i)(<)(templatestyles|ref|nowiki)(\s+[^>]+)?\s*(/>)
-            #          1<12templatestyles23  h=here3    4/>4
+            #          1<12     templatestyles      23  h=here3    4/>4
             captures:
               1:
                 name: punctuation.definition.tag.begin.wikitext
@@ -505,12 +2299,7 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: " ([a-zA-Z-]+)"
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: "#double-quoted-string"
-                  - include: "#single-quoted-string"
+                  - include: text.html.basic#attribute
                   - include: $self
               4: punctuation.definition.tag.end.wikitext
             name: meta.tag.metedata.void.wikitext
@@ -526,12 +2315,7 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: " ([a-zA-Z-]+)"
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: "#double-quoted-string"
-                  - include: "#single-quoted-string"
+                  - include: text.html.basic#attribute
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
@@ -558,16 +2342,11 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: " ([a-zA-Z-]+)"
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: "#double-quoted-string"
-                  - include: "#single-quoted-string"
+                  - include: text.html.basic#attribute
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
-            end: (?i)(</)(graph|templatedata)\s*(>)
+            end: (?i)(</)(\2)\s*(>)
             endCaptures:
               0:
                 name: meta.tag.metadata.end.wikitext
@@ -591,16 +2370,11 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 patterns:
-                  - match: " ([a-zA-Z-]+)"
-                    captures:
-                      1:
-                        name: entity.other.attribute-name.wikitext
-                  - include: "#double-quoted-string"
-                  - include: "#single-quoted-string"
+                  - include: text.html.basic#attribute
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
-            end: (?i)(</)(math|chem|ce)\s*(>)
+            end: (?i)(</)(\2)\s*(>)
             endCaptures:
               0:
                 name: meta.tag.metadata.end.wikitext
@@ -613,60 +2387,3 @@ repository:
             contentName: meta.embedded.block.latex
             patterns:
               - include: text.html.markdown.math#math
-  # public
-  double-quoted-string:
-    begin: '"'
-    beginCaptures:
-      0:
-        name: punctuation.definition.string.begin.wikitext
-    end: '"'
-    endCaptures:
-      0:
-        name: punctuation.definition.string.end.wikitext
-    name: string.quoted.double.wikitext
-    patterns:
-      - include: "#entity"
-      - include: "#bare-ampersand"
-  tag-stuff:
-    patterns:
-      - match: (?:\s*)(?:([-\w.]+)((:)))?([-\w.:]+)\s*(=)
-        #       1 space 123:321 4  name  4   5=5
-        captures:
-          1:
-            name: entity.other.attribute-name.namespace.wikitext
-          2:
-            name: entity.other.attribute-name.wikitext
-          3:
-            name: punctuation.separator.namespace.wikitext
-          4:
-            name: entity.other.attribute-name.localname.wikitext
-          5:
-            name: keyword.operator.equal.wikitext
-      - include: "#double-quoted-string"
-      - include: "#single-quoted-string"
-  single-quoted-string:
-    begin: "'"
-    beginCaptures:
-      0:
-        name: punctuation.definition.string.begin.wikitext
-    end: "'"
-    endCaptures:
-      0:
-        name: punctuation.definition.string.end.wikitext
-    name: string.quoted.single.wikitext
-    patterns:
-      - include: "#entity"
-      - include: "#bare-ampersand"
-  bare-ampersand:
-    match: "&"
-    name: invalid.illegal.bad-ampersand.wikitext
-  #
-  entity:
-    name: constant.character.entity.wikitext
-    match: "(&)([:a-zA-Z_][:a-zA-Z0-9_.-]*|#[0-9]+|#x[0-9a-fA-F]+)(;)"
-    #       1&12     :       str           #  0    #x    Hex     23;3
-    captures:
-      1:
-        name: punctuation.definition.constant.wikitext
-      3:
-        name: punctuation.definition.constant.wikitext

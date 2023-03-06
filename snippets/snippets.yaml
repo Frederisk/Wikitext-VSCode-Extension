@@ -5,7 +5,7 @@
 
 ---
 region:
-  prefix: "@region"
+  prefix: '@region'
   body: |
     <!--#region ${1:chapter}-->
     ${2:}
@@ -13,12 +13,12 @@ region:
   description: Region
   scope: markup.list.unnumbered.wikitext
 redirect:
-  prefix: "@redirect"
-  body: "#REDIRECT [[${1:PageName}]]"
+  prefix: '@redirect'
+  body: '#REDIRECT [[${1:PageName}]]'
   description: Redirection
-  scope: ""
+  scope: ''
 table:
-  prefix: "@table"
+  prefix: '@table'
   body: |
     {| ${1:class="wikitable"}
     |+Title
@@ -44,47 +44,47 @@ table:
     |}
   description: Table
 codeBlock:
-  prefix: "@codeblock"
+  prefix: '@codeblock'
   body: |
     <syntaxhighlight lang="${1:c#}" line="${2:1}" start="${3:1}">
 
     </syntaxhighlight>
   description: Code Block
-  scope: ""
+  scope: ''
 comments:
-  prefix: "@comments"
-  body: "<!--${1:comments}-->"
+  prefix: '@comments'
+  body: '<!--${1:comments}-->'
   description: Comments
 todo:
-  prefix: "@todo"
-  body: "<!--TODO:${1:Task}-->"
+  prefix: '@todo'
+  body: '<!--TODO:${1:Task}-->'
   description: Todo Task
 title:
-  prefix: "@title"
+  prefix: '@title'
   body: "== ${1:title} ==\n"
   description: Title<2>
 subtitle1:
-  prefix: "@subt1"
+  prefix: '@subt1'
   body: "=== ${1:title} ===\n"
   description: Subtitle1<3>
 subtitle2:
-  prefix: "@subt2"
+  prefix: '@subt2'
   body: "==== ${1:title} ====\n"
   description: Subtitle2<4>
 subtitle3:
-  prefix: "@subt3"
+  prefix: '@subt3'
   body: "===== ${1:title} =====\n"
   description: Subtitle3<5>
 subtitle4:
-  prefix: "@subt4"
+  prefix: '@subt4'
   body: "====== ${1:title} ======\n"
   description: Subtitle4<6>
 pageTitle:
-  prefix: "@pagetitle"
+  prefix: '@pagetitle'
   body: "= ${1:title} =\n"
   description: PageTitle<1>
 pageInfo:
-  prefix: "@pageinfo"
+  prefix: '@pageinfo'
   body: |
     <%-- [PAGE_INFO]
     Comment=#${1:}#
@@ -96,10 +96,10 @@ pageInfo:
     [END_PAGE_INFO] --%>
   description: Page Info Struct
 refName:
-  prefix: "@refname"
+  prefix: '@refname'
   body: <ref name="${1:name}"/>
   description: Reference tag with name
 refDefine:
-  prefix: "@refdefine"
+  prefix: '@refdefine'
   body: <ref name="${1:name}" >${2:definition}</ref>
   description: Reference tag with name and definition
