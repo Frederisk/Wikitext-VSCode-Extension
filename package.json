@@ -264,7 +264,7 @@
   "scripts": {
     "vscode:prepublish": "yarn run compile",
     "compile": "yarn run convert && webpack --config webpack.config.js --mode production",
-    "compile-debug" : "yarn run convert && webpack --config webpack.config.js --mode development",
+    "compile-debug": "yarn run convert && webpack --config webpack.config.js --mode development",
     "lint": "eslint -c .eslintrc.yml --ext .ts ./src",
     "watch": "yarn run convert && webpack --config webpack.config.js --mode development --watch",
     "pretest": "yarn run compile-debug && yarn run lint",
