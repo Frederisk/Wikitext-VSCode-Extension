@@ -57,10 +57,11 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Added apostrophe surrounding pairs.
-- VSCode minimum version requirements are now changed to 1.64.0 and above.
-- Fixed extra line breaks when posting pages.
-- Temporarily fixed incorrect bracket highlighting issue.
+- Added web extension support.
+- Added syntaxhighlight tag support.
+- Revert removing incorrect bracket highlighting.
+- Improved partial syntax highlighting.
+- Fixed some syntax errors.
 
 ## Usage
 

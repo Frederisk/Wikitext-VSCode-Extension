@@ -5,6 +5,22 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.8.0] - 2023-04-20
+
+### Added
+
+- Added web extension support.
+- Added syntaxhighlight tag support.
+
+### Changed
+
+- Revert removing incorrect bracket highlighting.
+- Improved partial syntax highlighting.
+
+### Fixed
+
+- Fixed some syntax errors.
+
 ## [3.7.0] - 2022-11-07
 
 ### Added

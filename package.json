@@ -2,7 +2,7 @@
   "name": "wikitext",
   "displayName": "Wikitext",
   "description": "Wikitext is a document written in a wiki markup language. This extension provides functional support for the Wikitext language with MediaWiki such as Wikipedia.",
-  "version": "3.7.0",
+  "version": "3.8.0",
   "publisher": "RoweWilsonFrederiskHolme",
   "license": "SEE LICENSE IN LICENSE.txt",
   "author": {
