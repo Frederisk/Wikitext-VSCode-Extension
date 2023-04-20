@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD033 -->
 # Wikitext Markup Language Support Extension for Visual Studio Code
 
-[![VSMarket: wikitext extension](https://vsmarketplacebadges.dev/version-short/rowewilsonfrederiskholme.wikitext.svg?color=blueviolet&logo=visual-studio-code&style=?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
+[![VSMarket: wikitext extension](https://vsmarketplacebadges.dev/version-short/rowewilsonfrederiskholme.wikitext.webp?color=blueviolet&logo=visual-studio-code&style=?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=RoweWilsonFrederiskHolme.wikitext)
 [![Open VSX: wikitext extension](https://img.shields.io/open-vsx/v/RoweWilsonFrederiskHolme/Wikitext?color=purple&label=Open%20VSX)](https://open-vsx.org/extension/RoweWilsonFrederiskHolme/wikitext)
 [![GitHub: wikitext extension](https://img.shields.io/badge/GitHub-wikitext-lightgray)](https://github.com/Frederisk/Wikitext-VSCode-Extension)
 [![Toolhub: wikitext extension](https://img.shields.io/badge/Toolhub-wikitext_extension-36C)](https://toolhub.wikimedia.org/tools/wikitext-vscode-extension)
