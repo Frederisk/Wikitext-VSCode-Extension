@@ -4,7 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 
 declare module 'mwbot' {
-  import type BlueBird from 'bluebird';
 
   interface CounterInterface {
     total: number;
@@ -90,9 +89,9 @@ declare module 'mwbot' {
      *
      * @param {object} requestOptions
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    rawRequest(requestOptions: object): BlueBird<unknown>;
+    rawRequest(requestOptions: object): PromiseLike<unknown>;
 
     /**
      *Executes a request with the ability to use custom parameters and custom request options
@@ -100,9 +99,9 @@ declare module 'mwbot' {
      * @param {object} params               Request Parameters
      * @param {object} customRequestOptions Custom request options
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    request(params: object, customRequestOptions?: object): BlueBird<unknown>;
+    request(params: object, customRequestOptions?: object): PromiseLike<unknown>;
 
     //////////////////////////////////////////
     // CORE FUNCTIONS                       //
@@ -115,43 +114,43 @@ declare module 'mwbot' {
      *
      * @param {object} [loginOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    login(loginOptions?: object): BlueBird<unknown>;
+    login(loginOptions?: object): PromiseLike<unknown>;
 
     /**
      * Gets an edit token
      * This is currently only compatible with MW >= 1.24
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    getEditToken(): BlueBird<unknown>;
+    getEditToken(): PromiseLike<unknown>;
 
     /**
      * Gets an edit token
      * Requires MW 1.27+
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    getCreateaccountToken(): BlueBird<unknown>;
+    getCreateaccountToken(): PromiseLike<unknown>;
 
     /**
      * Combines Login  with GetEditToken
      *
      * @param {object} loginOptions
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    loginGetEditToken(loginOptions: object): BlueBird<unknown>;
+    loginGetEditToken(loginOptions: object): PromiseLike<unknown>;
 
     /**
      * Combines Login  with GetCreateAccountToken
      *
      * @param {object} loginOptions
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    loginGetCreateaccountToken(loginOptions: object): BlueBird<unknown>;
+    loginGetCreateaccountToken(loginOptions: object): PromiseLike<unknown>;
 
     //////////////////////////////////////////
     // CRUD OPERATIONS                      //
@@ -165,9 +164,9 @@ declare module 'mwbot' {
      * @param {string}  [summary]
      * @param {object}  [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    create(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<unknown>;
+    create(title: string, content: string, summary?: string, customRequestOptions?: object): PromiseLike<unknown>;
 
     /**
      * Reads the content / and meta-data of one (or many) wikipages
@@ -177,9 +176,9 @@ declare module 'mwbot' {
      * @param {string}  title    For multiple Pages use: PageA|PageB|PageC
      * @param {object}      [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    read(title: string,/*redirect?: boolean, */ customRequestOptions?: object): BlueBird<unknown>;
+    read(title: string,/*redirect?: boolean, */ customRequestOptions?: object): PromiseLike<unknown>;
 
     // /**
     //  * Reads the content / and meta-data of one (or many) wikipages
@@ -190,9 +189,9 @@ declare module 'mwbot' {
     //  * @param {boolean} redirect    If the page is a redirection, follow it or stay in the page
     //  * @param {object}      [customRequestOptions]
     //  *
-    //  * @returns {bluebird}
+    //  * @returns {PromiseLike}
     //  */
-    // readFromID(pageid: number, redirect: boolean, customRequestOptions?: object): bluebird<any>;
+    // readFromID(pageid: number, redirect: boolean, customRequestOptions?: object): PromiseLike<any>;
 
     // /**
     //  * Reads the content / and meta-data of one (or many) wikipages based on specific parameters
@@ -202,9 +201,9 @@ declare module 'mwbot' {
     //  * @param {boolean} redirect    If the page is a redirection, follow it or stay in the page
     //  * @param {object}      [customRequestOptions]
     //  *
-    //  * @returns {bluebird}
+    //  * @returns {PromiseLike}
     //  */
-    // readWithProps(title: string, props: string, redirect: boolean, customRequestOptions?: object): bluebird<any>;
+    // readWithProps(title: string, props: string, redirect: boolean, customRequestOptions?: object): PromiseLike<any>;
 
     // /**
     //  * Reads the content / and meta-data of one (or many) wikipages based on specific parameters
@@ -214,9 +213,9 @@ declare module 'mwbot' {
     //  * @param {boolean} redirect    If the page is a redirection, follow it or stay in the page
     //  * @param {object}      [customRequestOptions]
     //  *
-    //  * @returns {bluebird}
+    //  * @returns {PromiseLike}
     //  */
-    // readWithPropsFromID(pageid: number, props: string, redirect: boolean, customRequestOptions?: object): bluebird<any>;
+    // readWithPropsFromID(pageid: number, props: string, redirect: boolean, customRequestOptions?: object): PromiseLike<any>;
 
     /**
      * Edits a new wiki pages. Creates a new page if it does not exist yet.
@@ -226,9 +225,9 @@ declare module 'mwbot' {
      * @param {string}  [summary]
      * @param {object}      [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    edit(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<unknown>;
+    edit(title: string, content: string, summary?: string, customRequestOptions?: object): PromiseLike<unknown>;
 
     /**
      * Updates existing wiki pages. Does not create new ones.
@@ -238,9 +237,9 @@ declare module 'mwbot' {
      * @param {string}  [summary]
      * @param {object}  [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    update(title: string, content: string, summary?: string, customRequestOptions?: object): BlueBird<unknown>;
+    update(title: string, content: string, summary?: string, customRequestOptions?: object): PromiseLike<unknown>;
 
     /**
      * Updates existing wiki pages. Does not create new ones.
@@ -250,9 +249,9 @@ declare module 'mwbot' {
      * @param {string}  [summary]
      * @param {object}      [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    updateFromID(pageid: number, content: string, summary?: string, customRequestOptions?: object): BlueBird<unknown>;
+    updateFromID(pageid: number, content: string, summary?: string, customRequestOptions?: object): PromiseLike<unknown>;
 
     /**
      * Deletes a new wiki page
@@ -261,9 +260,9 @@ declare module 'mwbot' {
      * @param {string}  [reason]
      * @param {object}      [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    delete(title: string, reason?: string, customRequestOptions?: object): BlueBird<any>;
+    delete(title: string, reason?: string, customRequestOptions?: object): PromiseLike<any>;
 
     /**
     * Moves a wiki page
@@ -273,9 +272,9 @@ declare module 'mwbot' {
     * @param {string}  [reason]
     * @param {object}      [customRequestOptions]
     *
-    * @returns {BlueBird}
+    * @returns {PromiseLike}
     */
-    move(oldTitle: string, newTitle: string, reason?: string, customRequestOptions?: object): BlueBird<unknown>;
+    move(oldTitle: string, newTitle: string, reason?: string, customRequestOptions?: object): PromiseLike<unknown>;
 
     /**
      * Uploads a file
@@ -286,9 +285,9 @@ declare module 'mwbot' {
      * @param {object}  [customParams]
      * @param {object}  [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    upload(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): BlueBird<unknown>;
+    upload(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): PromiseLike<unknown>;
 
     /**
      * Uploads a file and overwrites existing ones
@@ -299,9 +298,9 @@ declare module 'mwbot' {
      * @param {object}  [customParams]
      * @param {object}  [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    uploadOverwrite(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): BlueBird<unknown>;
+    uploadOverwrite(title: string, pathToFile: string, comment?: string, customParams?: object, customRequestOptions?: object): PromiseLike<unknown>;
 
 
     //////////////////////////////////////////
@@ -321,9 +320,9 @@ declare module 'mwbot' {
      * @param {number}  [concurrency]
      * @param {object}  [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    batch(jobs: object | any[], summary?: string, concurrency?: number, customRequestOptions?: object): BlueBird<unknown>;
+    batch(jobs: object | any[], summary?: string, concurrency?: number, customRequestOptions?: object): PromiseLike<unknown>;
 
     /**
      * Execute an ASK Query
@@ -332,9 +331,9 @@ declare module 'mwbot' {
      * @param {string} [apiUrl]
      * @param {object} [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    askQuery(query: string, apiUrl?: string, customRequestOptions?: object): BlueBird<unknown>;
+    askQuery(query: string, apiUrl?: string, customRequestOptions?: object): PromiseLike<unknown>;
 
     /**
      * Executes a SPARQL Query
@@ -344,9 +343,9 @@ declare module 'mwbot' {
      * @param {string} [endpointUrl]
      * @param {object} [customRequestOptions]
      *
-     * @returns {BlueBird}
+     * @returns {PromiseLike}
      */
-    sparqlQuery(query: string, endpointUrl?: string, customRequestOptions?: object): BlueBird<unknown>;
+    sparqlQuery(query: string, endpointUrl?: string, customRequestOptions?: object): PromiseLike<unknown>;
 
     //////////////////////////////////////////
     // HELPER FUNCTIONS                     //

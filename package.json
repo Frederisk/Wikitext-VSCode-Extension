@@ -275,7 +275,6 @@
     "package": "vsce package --yarn"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.33",
     "@types/cheerio": "^0.22.28",
     "@types/glob": "^7.2.0",
     "@types/luxon": "^2.0.7",
