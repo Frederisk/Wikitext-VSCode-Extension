@@ -460,7 +460,8 @@ repository:
               # - include: text.html.basic#attribute
       wikixml:
         patterns:
-          - include: '#wikitag'
+          - include: '#wiki-self-closed-tags'
+          - include: '#normal-wiki-tags'
           - include: '#nowiki'
           - include: '#ref'
           - include: '#jsonin'
@@ -2289,9 +2290,9 @@ repository:
                 name: entity.name.tag.wikitext
               3:
                 name: punctuation.definition.tag.end.wikitext
-          wikitag:
-            match: (?i)(<)(templatestyles|ref|nowiki)(\s+[^>]+)?\s*(/>)
-            #          1<12     templatestyles      23  h=here3    4/>4
+          wiki-self-closed-tags:
+            match: (?i)(<)(templatestyles|ref|nowiki|onlyinclude|includeonly)(\s+[^>]+)?\s*(/>)
+            #          1<12                  templatestyles                 23  h=here3    4/>4
             captures:
               1:
                 name: punctuation.definition.tag.begin.wikitext
@@ -2301,7 +2302,24 @@ repository:
                 patterns:
                   - include: text.html.basic#attribute
                   - include: $self
-              4: punctuation.definition.tag.end.wikitext
+              4:
+                name: punctuation.definition.tag.end.wikitext
+            name: meta.tag.metedata.void.wikitext
+          normal-wiki-tags:
+            match: (?i)(</?)(includeonly|onlyinclude)(\s+[^>]+)?\s*(>)
+            #          1</ 12     includeonly       23   x=y  3    4>4
+            #
+            captures:
+              1:
+                name: punctuation.definition.tag.begin.wikitext
+              2:
+                name: entity.name.tag.wikitext
+              3:
+                patterns:
+                  - include: text.html.basic#attribute
+                  - include: $self
+              4:
+                name: punctuation.definition.tag.end.wikitext
             name: meta.tag.metedata.void.wikitext
           ref:
             contentName: meta.block.ref.wikitext

@@ -103,7 +103,6 @@ export function postPageFactory() {
         wikiSummary = `${wikiSummary} // Edit via Wikitext Extension for VSCode`.trim();
         const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
         try {
-
             const args: Record<string, string> = {
                 action: Action.edit,
                 title: wikiTitle,
