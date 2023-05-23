@@ -2320,7 +2320,7 @@ repository:
                   - include: $self
               4:
                 name: punctuation.definition.tag.end.wikitext
-            name: meta.tag.metedata.void.wikitext
+            name: meta.tag.metedata.normal.wikitext
           ref:
             contentName: meta.block.ref.wikitext
             begin: (?i)(<)(ref)(\s+[^>]+)?\s*(>)
