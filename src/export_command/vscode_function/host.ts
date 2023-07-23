@@ -12,8 +12,8 @@ export async function getHost(): Promise<string | undefined> {
     if (host) { return host; }
     // else ask to edit
     const selection: string | undefined = await vscode.window.showWarningMessage(
-        `No Host Be Defined!
-You haven't defined the host of previewer yet, please input host value in the dialog box (or in settings) and try again.`
+        `No host defined!
+You haven't defined the host for the previewer yet; please input a host value in the dialog box (or in settings) and try again.`
         , "Edit", "Cancel");
     // edit
     if (selection === 'Edit') {
