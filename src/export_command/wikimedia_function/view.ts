@@ -87,7 +87,7 @@ export function getPreviewFactory(extension: vscode.ExtensionContext) {
 
         // if no panel, create one
         if (!previewCurrentPanel) {
-            // if have not, try to creat new one.
+            // if there is no panel, try to create new one.
             previewCurrentPanel = vscode.window.createWebviewPanel(
                 "previewer", viewerTitle, vscode.ViewColumn.Beside, {
                 enableScripts: config.get("enableJavascript"),

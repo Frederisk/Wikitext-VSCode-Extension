@@ -70,19 +70,19 @@ suite('WikimediaFunction Core TestSuite', () => {
 
         // Assert
         // hasInfo
-        assert.strictEqual(hasInfo.content, content, "hasInfo content faild");
+        assert.strictEqual(hasInfo.content, content, "hasInfo content failed");
         assert.deepStrictEqual(hasInfo.info, {
             pageTitle: pageTitle,
             pageID: "1",
             revisionID: undefined,
             contentFormat: undefined,
             contentModel: undefined
-        }, "hasInfo info faild");
+        }, "hasInfo info failed");
         // noInfo
-        assert.strictEqual(noInfo.content, content, "noInfo content faild");
-        assert.deepStrictEqual(noInfo.info, undefined, "noInfo info faild");
+        assert.strictEqual(noInfo.content, content, "noInfo content failed");
+        assert.deepStrictEqual(noInfo.info, undefined, "noInfo info failed");
         // mutiInfo
-        assert.notStrictEqual(mutiInfo.info, undefined, "mutiInfo info faild");
+        assert.notStrictEqual(mutiInfo.info, undefined, "mutiInfo info failed");
     });
 });
 
@@ -156,16 +156,16 @@ suite('CiteFunction Web TestSuite', () => {
 
         // Assert
         // title
-        assert.strictEqual(tOnlyContentStr, content + content, "title only content faild");
-        assert.strictEqual(tOnlyTagStr, content + content, "title only tag faild");
-        assert.strictEqual(tOnlyArgStr, content + title + content, "title only arg faild");
-        assert.strictEqual(tBothInStr, content + title + content, "title both in faild");
-        assert.strictEqual(tBothOutStr, content + content + title, "title both out faild");
+        assert.strictEqual(tOnlyContentStr, content + content, "title only content failed");
+        assert.strictEqual(tOnlyTagStr, content + content, "title only tag failed");
+        assert.strictEqual(tOnlyArgStr, content + title + content, "title only arg failed");
+        assert.strictEqual(tBothInStr, content + title + content, "title both in failed");
+        assert.strictEqual(tBothOutStr, content + content + title, "title both out failed");
         // notitle
-        assert.strictEqual(nOnlyContentStr, content + content, "no only content faild");
-        assert.strictEqual(nOnlyTagStr, content, "no only tag faild");
-        assert.strictEqual(nOnlyArgStr, content + content, "no only arg faild");
+        assert.strictEqual(nOnlyContentStr, content + content, "no only content failed");
+        assert.strictEqual(nOnlyTagStr, content, "no only tag failed");
+        assert.strictEqual(nOnlyArgStr, content + content, "no only arg failed");
         assert.strictEqual(nBothInStr, "", "no both in falid");
-        assert.strictEqual(nBothOutStr, content, "no both out faild");
+        assert.strictEqual(nBothOutStr, content, "no both out failed");
     });
 });

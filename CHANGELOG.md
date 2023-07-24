@@ -145,7 +145,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 ### Added
 
 - Table caption syntax.
-- `<ref>` tag synax.
+- `<ref>` tag syntax.
 
 ### Changed
 
@@ -452,7 +452,7 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 ### Added
 
-- Special support for chinese charcters.
+- Special support for chinese characters.
 
 ## [0.4.0]\* - 2020-02-02
 
