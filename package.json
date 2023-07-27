@@ -41,10 +41,7 @@
         "command": "wikitext.getPreview",
         "title": "Get preview",
         "category": "Wikitext",
-        "icon": {
-          "light": "./media/preview-light.svg",
-          "dark": "./media/preview-dark.svg"
-        }
+        "icon": "$(open-preview)"
       },
       {
         "command": "wikitext.login",
