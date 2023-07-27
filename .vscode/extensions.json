@@ -9,6 +9,7 @@
         "dbaeumer.vscode-eslint",
         // "pedro-w.tmlanguage",
         "redhat.vscode-yaml",
-        "gamunu.vscode-yarn"
+        "gamunu.vscode-yarn",
+        "editorconfig.editorconfig"
     ]
 }
