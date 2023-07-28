@@ -2306,8 +2306,8 @@ repository:
                 name: punctuation.definition.tag.end.wikitext
             name: meta.tag.metedata.void.wikitext
           normal-wiki-tags:
-            match: (?i)(</?)(includeonly|onlyinclude)(\s+[^>]+)?\s*(>)
-            #          1</ 12     includeonly       23   x=y  3    4>4
+            match: (?i)(</?)(includeonly|onlyinclude|noinclude)(\s+[^>]+)?\s*(>)
+            #          1</ 12          includeonly            23   x=y  3    4>4
             #
             captures:
               1:
