@@ -20,7 +20,6 @@ brackets:
 autoClosingPairs:
   - ['{', '}']
   - ['[', ']']
-  - ['<', '>']
   - ['-{', '}-']
   - ['<!--', '-->']
   # more tags: https://www.mediawiki.org/wiki/Parser_extension_tags
