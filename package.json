@@ -41,10 +41,7 @@
         "command": "wikitext.getPreview",
         "title": "Get preview",
         "category": "Wikitext",
-        "icon": {
-          "light": "./media/preview-light.svg",
-          "dark": "./media/preview-dark.svg"
-        }
+        "icon": "$(open-preview)"
       },
       {
         "command": "wikitext.login",
@@ -153,7 +150,7 @@
         "mimetypes": [
           "text/x-wiki"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./languages/language-configuration.json"
       }
     ],
     "grammars": [
@@ -271,7 +268,7 @@
     "test": "yarn run test-node && yarn run test-web",
     "test-node": "node ./dist/test/runTest.js",
     "test-web": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=./dist/test/suite/index-web.js",
-    "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json && js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json && js-yaml language-configuration.yaml > language-configuration.json",
+    "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json && js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json && js-yaml languages/language-configuration.yaml > languages/language-configuration.json",
     "package": "vsce package --yarn"
   },
   "devDependencies": {
