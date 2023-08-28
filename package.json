@@ -314,6 +314,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.9",
     "luxon": "^2.5.2",
+    "mwn": "^1.11.5",
     "node-fetch": "^2.6.5"
   }
 }
