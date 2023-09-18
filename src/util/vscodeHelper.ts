@@ -1,7 +1,7 @@
 import { MwnError } from 'mwn/build/error';
 import * as vscode from 'vscode';
 
-import type { TextEditor, TextEditorEdit } from 'vscode';
+import type { TextEditor, TextEditorEdit, WebviewPanel, WorkspaceConfiguration } from 'vscode';
 
 /**
  * Get `wikitext` workspace configuration object.
@@ -11,7 +11,7 @@ import type { TextEditor, TextEditorEdit } from 'vscode';
  * @returns The value `section` denotes.
  */
 export function getConfig<T>(section: string): T | never {
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('wikitext');
+    const config: WorkspaceConfiguration = vscode.workspace.getConfiguration('wikitext');
     const value: T | undefined = config.get(section);
     if (value === undefined ||
         value === null ||
@@ -106,6 +106,6 @@ export function createStatusBarMessage(msg: string): vscode.Disposable {
  * @param enableJavascript Controls whether scripts are enabled in the webview content or not.
  */
 export function showWebviewPanel(viewType: string, title: string, html: string, enableJavascript: boolean) {
-    const panel = vscode.window.createWebviewPanel(viewType, title, vscode.ViewColumn.Active, { enableScripts: enableJavascript });
+    const panel: WebviewPanel = vscode.window.createWebviewPanel(viewType, title, vscode.ViewColumn.Active, { enableScripts: enableJavascript });
     panel.webview.html = html;
 }
