@@ -1,7 +1,7 @@
 import { mwn as Mwn } from 'mwn';
 import { createStatusBarMessage, showErrorMessageFromErrorAsync, showInfoMessageAsync, showWarningMessageAsync } from './vscodeHelper';
 
-import type { ApiEditResponse, ApiPage, ApiParams, ApiParseResponse, ApiResponse } from 'mwn';
+import type { ApiEditResponse, ApiPage, ApiResponse, ApiRevision } from 'mwn';
 import type { Disposable } from 'vscode';
 import type { PageInfo } from './editorHelper';
 
@@ -83,21 +83,21 @@ export async function readAsync(bot: Mwn, page: string | number, redirects = tru
             rvslots: '*',
             redirects: redirects
         });
-        if (response.missing === true || response.revisions === undefined || response.revisions.length === 0) {
+        const revision: ApiRevision | undefined = response.revisions?.[0];
+        if (response.missing === true || revision === undefined) {
             throw new Error('The page no found. Please check your page name/id and try again.');
             // TODO: If the page do not exist, ask user if they want to create one.
         }
-        // FIXME: internal wiki not support.
-        // FIXME: Show info message.
+        // FIXME: internal wiki not support: TypeError: Cannot read properties of undefined (reading 'forEach')
+        showInfoMessageAsync(`Opened page "${response.title}" with Model ${revision.contentmodel}.`);
         return {
             pageTitle: response.title,
             pageID: response.pageid.toString(),
-            // FIXME: no revid
-            revisionID: response.revisions[0].revid?.toString(),
-            // timestamp: response.revisions[0].timestamp,
-            contentModel: response.revisions[0].contentmodel,
-            contentFormat: response.revisions[0].contentformat,
-            content: response.revisions[0].content
+            revisionID: revision.revid?.toString(),
+            // timestamp: revision.timestamp,
+            contentModel: revision.contentmodel,
+            contentFormat: revision.contentformat,
+            content: revision.content
         };
     } catch (error: unknown) {
         await showErrorMessageFromErrorAsync(error);
@@ -107,22 +107,18 @@ export async function readAsync(bot: Mwn, page: string | number, redirects = tru
     }
 }
 
-export async function parseWikitextAsync(bot: Mwn, sourceText: string, config: { baseHref: string, style: string }): Promise<string | undefined> {
+export async function parseWikitextAsync(bot: Mwn, sourceText: string, config: { baseHref: string, style: string, getHeadHtml: boolean }): Promise<string | undefined> {
     const statusBar: Disposable = createStatusBarMessage('Parsing wikitext preview...');
     try {
-        // FIXME: config support. such as: css, js
-        const response = await parseWikitextEnhancedAsync(bot, sourceText) as any;
+        const response = await parseWikitextEnhancedAsync(bot, sourceText, config.getHeadHtml);
 
         const baseElem = `<base href="${config.baseHref}" />`;
         const styleElem = `<style>${config.style}</style>`;
 
         const htmlHead: string = response.headhtml?.replace('<head>', '<head>' + baseElem + styleElem) ?? `<!DOCTYPE html><html><head>${baseElem + styleElem}</head><body>`;
-
-        const htmlText: string = response.text ?? '';
-
-        const htmlCategories: string = response.categorieshtml ? '<hr />' + response.categorieshtml : '';
-
-        const htmlEnd = '</body></html>'
+        const htmlText: string = response.text;
+        const htmlCategories: string = '<hr />' + response.categorieshtml;
+        const htmlEnd = '</body></html>';
 
         const html: string = htmlHead + htmlText + htmlCategories + htmlEnd;
 
@@ -135,7 +131,7 @@ export async function parseWikitextAsync(bot: Mwn, sourceText: string, config: {
     }
 }
 
-async function parseWikitextEnhancedAsync(bot: Mwn, content: string, additionalParams?: ApiParams
+async function parseWikitextEnhancedAsync(bot: Mwn, content: string, getHeadHtml: boolean
 ) {
     return bot.request({
         action: 'parse',
@@ -143,14 +139,18 @@ async function parseWikitextEnhancedAsync(bot: Mwn, content: string, additionalP
         contentmodel: 'wikitext',
         formatversion: 2,
         pst: true,
-        // FIXME: css
         disableeditsection: true,
-        prop: 'text|displaytitle|categorieshtml'
-    }).then((data: ApiResponse) => data.parse as ApiParseResponse
-        // FIXME: ensure the type of response
-    );
+        prop: alterNativeValues('text', 'displaytitle', 'categorieshtml', getHeadHtml ? 'headhtml' : undefined)
+    }).then((data: ApiResponse) => data.parse as {
+        // FIXME: ensure the type of response: ApiParseResponse
+        text: string,
+        headhtml: string | undefined,
+        categorieshtml: string,
+        displaytitle: string,
+        pageid: number,
+        title: string
+    });
 }
-
 
 async function getValidTagListAsync(bot: Mwn): Promise<string[]> {
     const tagList: string[] = [];

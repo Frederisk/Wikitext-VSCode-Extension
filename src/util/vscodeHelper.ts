@@ -96,3 +96,16 @@ export async function showErrorMessageFromErrorAsync(error: unknown, moreInfo = 
 export function createStatusBarMessage(msg: string): vscode.Disposable {
     return vscode.window.setStatusBarMessage('Wikitext: ' + msg);
 }
+
+/**
+ * Create and show a new webview panel on the activated column.
+ *
+ * @param viewType Identifies the type of the webview panel.
+ * @param title Title of the panel.
+ * @param html HTML contents of the webview.
+ * @param enableJavascript Controls whether scripts are enabled in the webview content or not.
+ */
+export function showWebviewPanel(viewType: string, title: string, html: string, enableJavascript: boolean) {
+    const panel = vscode.window.createWebviewPanel(viewType, title, vscode.ViewColumn.Active, { enableScripts: enableJavascript });
+    panel.webview.html = html;
+}
