@@ -1,7 +1,7 @@
 import { mwn as Mwn } from 'mwn';
 import { createStatusBarMessage, showErrorMessageFromErrorAsync, showInfoMessageAsync, showWarningMessageAsync } from './vscodeHelper';
 
-import type { ApiEditResponse, ApiPage, ApiResponse } from 'mwn';
+import type { ApiEditResponse, ApiPage, ApiParams, ApiParseResponse, ApiResponse } from 'mwn';
 import type { Disposable } from 'vscode';
 import type { PageInfo } from './editorHelper';
 
@@ -106,6 +106,51 @@ export async function readAsync(bot: Mwn, page: string | number, redirects = tru
         statusBar.dispose();
     }
 }
+
+export async function parseWikitextAsync(bot: Mwn, sourceText: string, config: { baseHref: string, style: string }): Promise<string | undefined> {
+    const statusBar: Disposable = createStatusBarMessage('Parsing wikitext preview...');
+    try {
+        // FIXME: config support. such as: css, js
+        const response = await parseWikitextEnhancedAsync(bot, sourceText) as any;
+
+        const baseElem = `<base href="${config.baseHref}" />`;
+        const styleElem = `<style>${config.style}</style>`;
+
+        const htmlHead: string = response.headhtml?.replace('<head>', '<head>' + baseElem + styleElem) ?? `<!DOCTYPE html><html><head>${baseElem + styleElem}</head><body>`;
+
+        const htmlText: string = response.text ?? '';
+
+        const htmlCategories: string = response.categorieshtml ? '<hr />' + response.categorieshtml : '';
+
+        const htmlEnd = '</body></html>'
+
+        const html: string = htmlHead + htmlText + htmlCategories + htmlEnd;
+
+        return html;
+    } catch (error: unknown) {
+        await showErrorMessageFromErrorAsync(error);
+        return undefined;
+    } finally {
+        statusBar.dispose();
+    }
+}
+
+async function parseWikitextEnhancedAsync(bot: Mwn, content: string, additionalParams?: ApiParams
+) {
+    return bot.request({
+        action: 'parse',
+        text: String(content),
+        contentmodel: 'wikitext',
+        formatversion: 2,
+        pst: true,
+        // FIXME: css
+        disableeditsection: true,
+        prop: 'text|displaytitle|categorieshtml'
+    }).then((data: ApiResponse) => data.parse as ApiParseResponse
+        // FIXME: ensure the type of response
+    );
+}
+
 
 async function getValidTagListAsync(bot: Mwn): Promise<string[]> {
     const tagList: string[] = [];
