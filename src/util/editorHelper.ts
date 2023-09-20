@@ -13,6 +13,7 @@ export function getContentInfo(rawContent: string): PageInfo {
             , 'i'))?.[0];
     }
 
+    ////////////////////////////////////
     const infoBlock: string | undefined = rawContent.match(
         /(?<=<%--\s*\[PAGE_INFO\])[\s\S]*?(?=\[END_PAGE_INFO\]\s*--%>)/
         //   <%--    [PAGE_INFO]  (any thing) [END_PAGE_INFO]    --%>

@@ -155,7 +155,7 @@ async function parseWikitextEnhancedAsync(bot: Mwn, content: string, getHeadHtml
 async function getValidTagListAsync(bot: Mwn): Promise<string[]> {
     const tagList: string[] = [];
 
-    const tagsRepose = await bot.continuedQuery({
+    const tagsRepose: ApiResponse = await bot.continuedQuery({
         action: 'query',
         list: 'tags',
         tglimit: 'max',
@@ -187,5 +187,5 @@ function alterNativeValues(...values: (string | undefined)[]): string {
     values = values.filter(
         (item: string | undefined): boolean => item !== undefined
     );
-    return values.join("|");
+    return values.join('|');
 }

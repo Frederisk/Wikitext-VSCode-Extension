@@ -1,5 +1,5 @@
-import { MwnError } from 'mwn/build/error';
 import * as vscode from 'vscode';
+import { MwnError } from 'mwn/build/error';
 
 import type { TextEditor, TextEditorEdit, WebviewPanel, WorkspaceConfiguration } from 'vscode';
 
@@ -108,4 +108,10 @@ export function createStatusBarMessage(msg: string): vscode.Disposable {
 export function showWebviewPanel(viewType: string, title: string, html: string, enableJavascript: boolean) {
     const panel: WebviewPanel = vscode.window.createWebviewPanel(viewType, title, vscode.ViewColumn.Active, { enableScripts: enableJavascript });
     panel.webview.html = html;
+}
+export async function showTextDocumentAsync(conetnt: string, lang: string): Promise<void> {
+    await vscode.workspace.openTextDocument({
+        language: lang,
+        content: conetnt
+    });
 }
