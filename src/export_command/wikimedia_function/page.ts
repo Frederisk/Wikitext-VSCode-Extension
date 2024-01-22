@@ -95,12 +95,12 @@ export function postPageFactory() {
         let wikiSummary: string | undefined = await vscode.window.showInputBox({
             ignoreFocusOut: true,
             prompt: 'Enter the summary of this edit action.',
-            placeHolder: '// Edit via Wikitext Extension for VSCode'
+            placeHolder: '// via Wikitext Extension for VSCode'
         });
         if (wikiSummary === undefined) {
             return undefined;
         }
-        wikiSummary = `${wikiSummary} // Edit via Wikitext Extension for VSCode`.trim();
+        wikiSummary = `${wikiSummary} // via Wikitext Extension for VSCode`.trim();
         const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Posting...");
         try {
             const args: Record<string, string> = {
