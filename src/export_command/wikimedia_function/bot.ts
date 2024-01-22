@@ -11,11 +11,11 @@ import { showMWErrorMessage } from './err_msg';
 
 let bot: MWBot | undefined;
 
-export function loginFactory(){
+export function loginFactory() {
     return login;
 }
 
-export function logoutFactory(){
+export function logoutFactory() {
     return async function logout(): Promise<void> {
         await bot?.getEditToken();
         const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Logout...");
@@ -54,16 +54,23 @@ async function login(): Promise<boolean> {
         return false;
     }
 
-    bot = new MWBot({
-        apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
-    });
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Login...");
     try {
-        const response: any = await bot.login(userInfo);
+        bot = new MWBot({
+            apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
+        });
         // TODO:
-        vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
-        );
-        return true;
+        const response: any = await bot.login(userInfo);
+        if (response.result === 'Success') {
+            vscode.window.showInformationMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
+            );
+            return true;
+        }
+        else {
+            vscode.window.showErrorMessage(`User "${response.lgusername}"(UserID:"${response.lguserid}") Login Result is "${response.result}". Login Token is "${response.token}".`
+            );
+            return false;
+        }
     }
     catch (error) {
         bot = undefined;
