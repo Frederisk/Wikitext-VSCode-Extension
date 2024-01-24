@@ -100,7 +100,8 @@ export async function getDefaultBot(): Promise<MWBot | undefined> {
 
 export async function getLoggedInBot(): Promise<MWBot | undefined> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    if (bot === undefined) {
+    // if bot is not be created or not logged in
+    if (bot === undefined || !bot.loggedIn) {
         switch (config.get('autoLogin')) {
             case 'Always':
                 return await login() ? bot : undefined;
