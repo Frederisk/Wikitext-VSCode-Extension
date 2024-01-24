@@ -5,6 +5,21 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.8.1] - 2024-01-24
+
+### Added
+
+- Added more syntaxes of wikitext tags.
+
+### Changed
+
+- Removed '<>' pairs.
+- Made summary shorter.
+
+### Fixed
+
+- Alleviated the issue of the extension posting edits without logging in.
+
 ## [3.8.0] - 2023-04-20
 
 ### Added

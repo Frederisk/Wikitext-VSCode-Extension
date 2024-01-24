@@ -57,11 +57,10 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Added web extension support.
-- Added syntaxhighlight tag support.
-- Revert removing incorrect bracket highlighting.
-- Improved partial syntax highlighting.
-- Fixed some syntax errors.
+- Added more syntaxes of wikitext tags.
+- Removed '<>' pairs.
+- Made summary shorter.
+- Alleviated the issue of the extension posting edits without logging in.
 
 ## Usage
 
