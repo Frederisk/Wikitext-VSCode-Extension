@@ -33,29 +33,29 @@ export function activate(context: vscode.ExtensionContext): void {
     commandRegistrar.register('citeWeb', addWebCiteFactory);
 
     configureLuaLibrary(
-        "Scribunto",
-        vscode.workspace.getConfiguration("wikitext").get<string>("scopedLuaIntegration") !== "disabled"
+        'Scribunto',
+        vscode.workspace.getConfiguration('wikitext').get<string>('scopedLuaIntegration') !== 'disabled'
     );
 }
 
 export function deactivate(): void {
     console.log("Extension is inactive.");
 
-    if (vscode.workspace.getConfiguration("wikitext").get<string>("scopedLuaIntegration") !== "enabled") {
-        configureLuaLibrary("Scribunto", false);
+    if (vscode.workspace.getConfiguration('wikitext').get<string>('scopedLuaIntegration') !== 'enabled') {
+        configureLuaLibrary('Scribunto', false);
     }
 }
 
 export function configureLuaLibrary(folder: string, enable: boolean) {
-    const extensionId = "rowewilsonfrederiskholme.wikitext";
+    const extensionId = 'rowewilsonfrederiskholme.wikitext';
     const extensionPath = vscode.extensions.getExtension(extensionId)?.extensionPath;
     if (extensionPath === undefined) {
         return;
     }
 
-    const folderPath = path.join(extensionPath, "EmmyLua", folder);
-    const config = vscode.workspace.getConfiguration("Lua");
-    let library: string[] | undefined = config.get("workspace.library");
+    const folderPath = path.join(extensionPath, 'EmmyLua', folder);
+    const config = vscode.workspace.getConfiguration('Lua');
+    let library: string[] | undefined = config.get('workspace.library');
     if (library === undefined) {
         return;
     }
@@ -75,6 +75,6 @@ export function configureLuaLibrary(folder: string, enable: boolean) {
         else if (index >= 0) {
             library.splice(index, 1);
         }
-        config.update("workspace.library", library, false);
+        config.update('workspace.library', library, false);
     }
 }
