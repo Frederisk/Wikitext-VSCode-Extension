@@ -316,5 +316,8 @@
     "cheerio": "^1.0.0-rc.9",
     "luxon": "^2.5.2",
     "node-fetch": "^2.6.5"
+  },
+  "resolutions": {
+    "strip-ansi": "6.0.1"
   }
 }
