@@ -1,0 +1,3 @@
+[submodule "EmmyLua"]
+	path = EmmyLua
+	url = https://github.com/davidxuang/EmmyMediawiki.git
