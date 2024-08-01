@@ -43,7 +43,7 @@ declare module 'mwbot' {
      * @param {{}} [customOptions]        Custom options
      * @param {{}} [customRequestOptions] Custom request options
      */
-    constructor(customOptions?: {}, customRequestOptions?: {});
+    constructor(customOptions?: object, customRequestOptions?: object);
 
     //////////////////////////////////////////
     // GETTER & SETTER                      //
@@ -61,7 +61,7 @@ declare module 'mwbot' {
      *
      * @param {Object} customOptions
      */
-    public setOptions(customOptions: Object): void;
+    public setOptions(customOptions: object): void;
 
     /**
      * Sets and overwrites the raw request options, used by the "request" library
@@ -69,7 +69,7 @@ declare module 'mwbot' {
      *
      * @param {{}} customRequestOptions
      */
-    setGlobalRequestOptions(customRequestOptions: {}): void;
+    setGlobalRequestOptions(customRequestOptions: object): void;
 
     /**
      * Sets the API URL for MediaWiki requests
