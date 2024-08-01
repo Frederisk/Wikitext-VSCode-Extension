@@ -318,6 +318,6 @@
     "node-fetch": "^2.6.5"
   },
   "resolutions": {
-    "strip-ansi": "6.0.1"
+    "eslint/**/strip-ansi": "6.0.1"
   }
 }
