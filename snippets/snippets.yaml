@@ -91,8 +91,8 @@ pageInfo:
     PageTitle=#${2:}#
     PageID=#${3:}#
     RevisionID=#${4:}#
-    ContentModel=#${5:}#
-    ContentFormat=#${6:}#
+    ContentModel=#${5:wikitext}#
+    ContentFormat=#${6:text/x-wiki}#
     [END_PAGE_INFO] --%>
   description: Page Info Struct
 refName:

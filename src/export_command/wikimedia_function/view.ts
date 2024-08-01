@@ -17,7 +17,7 @@ import { showMWErrorMessage } from './err_msg';
  */
 let previewCurrentPanel: vscode.WebviewPanel | undefined;
 
-export function getPageViewFactory(){
+export function getPageViewFactory() {
     return async function getPageView(): Promise<void> {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
@@ -65,19 +65,20 @@ export function getPreviewFactory(extension: vscode.ExtensionContext) {
         /** document text */
         const sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
         if (!sourceText) { return undefined; }
-        const { content } = getContentInfo(sourceText);
+        const contentInfo = getContentInfo(sourceText);
 
         /** arguments */
-        const args: Record<string, string> = {
+        const args: Record<string, string | undefined> = {
             'action': Action.parse,
-            'text': content,
+            'text': contentInfo.content,
+            'title': !(contentInfo.info?.pageTitle) ? undefined : contentInfo.info.pageTitle,
             'prop': alterNativeValues(
                 Prop.text,
                 Prop.displayTitle,
                 Prop.categoriesHTML,
                 (config.get("getCss") ? Prop.headHTML : undefined)
             ),
-            'contentmodel': ContextModel.wikitext,
+            'contentmodel': !(contentInfo.info?.contentModel) ? ContextModel.wikitext : contentInfo.info.contentModel,
             'pst': "why_not",
             'disableeditsection': "yes"
         };
@@ -117,7 +118,7 @@ export function getPreviewFactory(extension: vscode.ExtensionContext) {
  * @param baseURI url base
  * @returns task
  */
-export async function showViewer(currentPanel: vscode.WebviewPanel | string, viewerTitle: string, args: Record<string, string>, tBot: MWBot, baseURI: string): Promise<void> {
+export async function showViewer(currentPanel: vscode.WebviewPanel | string, viewerTitle: string, args: Record<string, string | undefined>, tBot: MWBot, baseURI: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting view...");
