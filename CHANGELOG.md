@@ -5,6 +5,12 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [3.8.2] - 2024-08-02
+
+### Added
+
+- When getting the page preview, the API request will refer to `PageTitle` and `ContentModel` in the `PAGE_INFO` part.
+
 ## [3.8.1] - 2024-01-24
 
 ### Added
