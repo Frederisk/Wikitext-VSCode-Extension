@@ -5,7 +5,7 @@
 
 import * as vscode from 'vscode';
 import { closeEditorFactory } from './export_command/wikimedia_function/page';
-import { WikitextCommandRegistrar } from './export_command/commadRegistrar';
+import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
 
 export function activate(context: vscode.ExtensionContext): void {
     function showUnsupportedMessageFactory() {

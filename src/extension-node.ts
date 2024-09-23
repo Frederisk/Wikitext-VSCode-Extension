@@ -9,7 +9,7 @@ import { loginFactory, logoutFactory } from './export_command/wikimedia_function
 import { closeEditorFactory, postPageFactory, pullPageFactory } from './export_command/wikimedia_function/page';
 import { baseUriProcess } from './export_command/uri_function/uri';
 import { addWebCiteFactory } from './export_command/cite_function/web';
-import { WikitextCommandRegistrar } from './export_command/commadRegistrar';
+import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Extension is active.");
