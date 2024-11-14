@@ -57,7 +57,7 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- When getting the page preview, the API request will refer to `PageTitle` and `ContentModel` in the `PAGE_INFO` part.
+- The syntax of the table has been improved.
 
 ## Usage
 
@@ -89,13 +89,6 @@ vsce package --yarn # Package Extension with yarn
 ```
 
 This is it!
-
-## Special Thanks
-
-- [caltaojihun](https://github.com/caltaojihun)
-- [Jason Williams](https://github.com/jasonwilliams)
-- [quicktype](https://github.com/quicktype)
-- [dj radon](https://github.com/djradon)
 
 <!-- ## Extension Settings
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.

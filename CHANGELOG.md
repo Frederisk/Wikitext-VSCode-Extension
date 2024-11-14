@@ -3,7 +3,13 @@
 
 All notable changes to the "Wikitext" extension will be documented in this file.
 
-(The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
+(The version marked with an asterisk(\*) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
+
+## [3.8.3] - 2024-11-14
+
+### Changed
+
+- The syntax of the table has been improved.
 
 ## [3.8.2] - 2024-08-02
 
