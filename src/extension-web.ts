@@ -6,6 +6,7 @@
 import * as vscode from 'vscode';
 import { closeEditorFactory } from './export_command/wikimedia_function/page';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
+import { restartLsp } from './export_command/vscode_function/host';
 
 export function activate(context: vscode.ExtensionContext): void {
     function showUnsupportedMessageFactory() {
@@ -29,6 +30,8 @@ export function activate(context: vscode.ExtensionContext): void {
     commandRegister.register('viewPage', showUnsupportedMessageFactory);
     // Cite
     commandRegister.register('citeWeb', showUnsupportedMessageFactory);
+
+    restartLsp(true);
 }
 
 export function deactivate(): void {

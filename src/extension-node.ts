@@ -10,6 +10,7 @@ import { closeEditorFactory, postPageFactory, pullPageFactory } from './export_c
 import { baseUriProcess } from './export_command/uri_function/uri';
 import { addWebCiteFactory } from './export_command/cite_function/web';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
+import { restartLsp } from './export_command/vscode_function/host';
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Extension is active.");
@@ -30,6 +31,8 @@ export function activate(context: vscode.ExtensionContext): void {
     commandRegistrar.register('viewPage', getPageViewFactory);
     // Cite
     commandRegistrar.register('citeWeb', addWebCiteFactory);
+
+    restartLsp(false);
 }
 
 export function deactivate(): void {

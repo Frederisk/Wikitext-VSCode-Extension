@@ -4,7 +4,11 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-
+import * as path from 'path';
+import { LanguageClient as BrowserLanguageClient } from 'vscode-languageclient/browser';
+import { LanguageClient as NodeLanguageClient, ServerOptions } from 'vscode-languageclient/node';
+import { BaseLanguageClient, LanguageClientOptions } from 'vscode-languageclient';
+import { Worker } from 'worker_threads';
 export async function getHost(): Promise<string | undefined> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const host: string | undefined = config.get("host");
@@ -32,4 +36,52 @@ You haven't defined the host for the previewer yet; please input a host value in
     }
     // or else return undefined
     return undefined;
+}
+
+let client: BaseLanguageClient | undefined = undefined;
+
+export async function restartLsp(isBrowser: boolean): Promise<void> {
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+    client?.stop();
+    client?.dispose();
+
+    if (!config.get('enableWikiParser')) {
+        return;
+    }
+
+    const serverExtension: vscode.Extension<unknown> | undefined = vscode.extensions.getExtension('bhsd.vscode-extension-wikiparser');
+
+    if (serverExtension === undefined) {
+        await vscode.window.showWarningMessage('Extension `bhsd.vscode-extension-wikiparser` not found.');
+        return;
+    }
+
+    const clientOptions: LanguageClientOptions = {
+        documentSelector: [
+            { scheme: 'file', language: 'wikitext' },
+            { scheme: 'untitled', language: 'wikitext' },
+        ],
+    };
+
+    if (isBrowser) {
+        const serverUri: vscode.Uri | undefined = serverExtension.extensionUri;
+        const serverMain: vscode.Uri = vscode.Uri.joinPath(serverUri, 'server/dist/server.js');
+        const worker = new Worker(serverMain.toString(true));
+        client = new BrowserLanguageClient('lsp-vscode-extension-wikiparser', 'Wikitext Language Server', clientOptions, worker);
+    } else {
+        const serverPath: string | undefined = serverExtension.extensionPath;
+        const serverMain: string = path.join(serverPath, 'server', 'dist', 'server.js');
+        const serverOptions: ServerOptions = {
+            run: {
+                module: serverMain,
+            },
+            debug: {
+                module: serverMain,
+                args: ['--debug'],
+            },
+        };
+        client = new NodeLanguageClient('Wikitext Language Server', serverOptions, clientOptions);
+
+    }
+    client.start();
 }
