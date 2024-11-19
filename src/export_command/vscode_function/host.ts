@@ -45,7 +45,7 @@ export async function restartLsp(isBrowser: boolean): Promise<void> {
     await client?.stop();
     await client?.dispose();
 
-    if (!config.get('enableWikiParser')) {
+    if (!config.get('enableWikiparser')) {
         return;
     }
 

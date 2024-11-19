@@ -255,7 +255,7 @@
           "default": false,
           "markdownDescription": "If `PageTitle` is filled in `PAGE_INFO`, skip entering the title when posting."
         },
-        "wikitext.enableWikiParser": {
+        "wikitext.enableWikiparser": {
           "type": "boolean",
           "default": true,
           "description": "Enable WikiParser, a LSP for Wikitext to provide better writing assistance."

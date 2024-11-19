@@ -4,44 +4,44 @@
  *--------------------------------------------------------------------------------------------*/
 // Place your settings in this file to overwrite default and user settings.
 {
-    "files.exclude": {
-        "out": false,
-        "dist":false,
-        "**/.classpath": false,
-        "**/.project": false,
-        "**/.settings": false,
-        "**/.factorypath": false
-    },
-    "search.exclude": {
-        "**/node_modules": true,
-        "out": true, // set this to false to include "out" folder in search results
-        "dist": true,
-        ".vscode-test": true,
-        ".vscode-test-web": true
-    },
-    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off",
-    "typescript.tsdk": "./node_modules/typescript/lib",
-    "cmake.configureOnOpen": false,
-    "cSpell.words": [
-        "bibtex",
-        "caltaojihun",
-        "eqeqeq",
-        "luxon",
-        "mimetypes",
-        "mwbot",
-        "Scribunto",
-        "syntaxhighlight",
-        "uncast",
-        "vsix",
-        "wikitable",
-        "wikixml",
-        "Xvfb"
-    ],
-    "files.associations": {
-        "*.tmLanguage.json": "json-tmlanguage",
-        "*.tmLanguage.yaml": "yaml-tmlanguage"
-    },
-    "jshint.packageManager": "yarn",
-    "eslint.packageManager": "yarn",
+  "files.exclude": {
+    "out": false,
+    "dist": false,
+    "**/.classpath": false,
+    "**/.project": false,
+    "**/.settings": false,
+    "**/.factorypath": false
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "out": true, // set this to false to include "out" folder in search results
+    "dist": true,
+    ".vscode-test": true,
+    ".vscode-test-web": true
+  },
+  // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
+  "typescript.tsc.autoDetect": "off",
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "cmake.configureOnOpen": false,
+  "cSpell.words": [
+    "bibtex",
+    "caltaojihun",
+    "eqeqeq",
+    "luxon",
+    "mimetypes",
+    "mwbot",
+    "Scribunto",
+    "syntaxhighlight",
+    "uncast",
+    "vsix",
+    "wikitable",
+    "wikixml",
+    "Xvfb"
+  ],
+  "files.associations": {
+    "*.tmLanguage.json": "json-tmlanguage",
+    "*.tmLanguage.yaml": "yaml-tmlanguage"
+  },
+  "jshint.packageManager": "yarn",
+  "eslint.packageManager": "yarn",
 }
