@@ -9,26 +9,26 @@
 {
   "version": "0.2.0",
   "configurations": [
+      {
+        "name": "Launch Extension",
+        "type": "extensionHost",
+        "request": "launch",
+        "runtimeExecutable": "${execPath}",
+        "args": [
+          "--extensionDevelopmentPath=${workspaceFolder}"
+        ],
+        "outFiles": [
+          "${workspaceFolder}/dist/**/*.js"
+        ],
+        "preLaunchTask": "npm: pretest"
+      },
     {
-      "name": "Launch Extension",
+      "name": "Launch Extension without Other Extensions",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
         "--disable-extensions",
-        "--extensionDevelopmentPath=${workspaceFolder}"
-      ],
-      "outFiles": [
-        "${workspaceFolder}/dist/**/*.js"
-      ],
-      "preLaunchTask": "npm: pretest"
-    },
-    {
-      "name": "Launch Extension with Other Extensions",
-      "type": "extensionHost",
-      "request": "launch",
-      "runtimeExecutable": "${execPath}",
-      "args": [
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": [
@@ -71,7 +71,7 @@
       "request": "launch",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "--disable-extensions",
+        // "--disable-extensions",
         "--extensionDevelopmentKind=web"
       ],
       "outFiles": [

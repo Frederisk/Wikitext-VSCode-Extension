@@ -6,16 +6,16 @@
 import * as vscode from 'vscode';
 import { closeEditorFactory } from './export_command/wikimedia_function/page';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
-import { restartLsp } from './export_command/vscode_function/host';
+import { client, restartLsp } from './export_command/vscode_function/host';
 
-export function activate(context: vscode.ExtensionContext): void {
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
     function showUnsupportedMessageFactory() {
         return  () => {
             vscode.window.showErrorMessage('Web extension does not support this function.');
         };
     }
 
-    console.log("Extension is active.");
+    console.log("Wikitext Extension is active.");
 
     const commandRegister = new WikitextCommandRegistrar(context);
     // Bot
@@ -31,9 +31,10 @@ export function activate(context: vscode.ExtensionContext): void {
     // Cite
     commandRegister.register('citeWeb', showUnsupportedMessageFactory);
 
-    restartLsp(true);
+    await restartLsp(true);
 }
 
-export function deactivate(): void {
-    console.log("Extension is deactivate.");
+export async function deactivate(): Promise<void> {
+    await client?.stop();
+    console.log("Wikitext Extension is deactivate.");
 }

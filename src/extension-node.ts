@@ -10,10 +10,10 @@ import { closeEditorFactory, postPageFactory, pullPageFactory } from './export_c
 import { baseUriProcess } from './export_command/uri_function/uri';
 import { addWebCiteFactory } from './export_command/cite_function/web';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
-import { restartLsp } from './export_command/vscode_function/host';
+import { client, restartLsp } from './export_command/vscode_function/host';
 
-export function activate(context: vscode.ExtensionContext): void {
-    console.log("Extension is active.");
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
+    console.log("Wikitext Extension is active.");
     // extensionContext = context;
     // URI
     context.subscriptions.push(vscode.window.registerUriHandler({ handleUri: baseUriProcess }));
@@ -32,9 +32,10 @@ export function activate(context: vscode.ExtensionContext): void {
     // Cite
     commandRegistrar.register('citeWeb', addWebCiteFactory);
 
-    restartLsp(false);
+    await restartLsp(false);
 }
 
-export function deactivate(): void {
-    console.log("Extension is deactivate.");
+export async function deactivate(): Promise<void> {
+    await client?.stop();
+    console.log("Wikitext Extension is deactivate.");
 }
