@@ -301,6 +301,7 @@
     "browserify-fs": "^1.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
+    "circular-dependency-plugin": "^5.2.2",
     "crypto-browserify": "^3.12.0",
     "eslint": "^9.8.0",
     "glob": "^7.2.0",
