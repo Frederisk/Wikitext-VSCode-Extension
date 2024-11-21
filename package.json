@@ -182,7 +182,8 @@
       "properties": {
         "wikitext.host": {
           "type": "string",
-          "description": "The host that provides the API, such as 'en.wikipedia.org'."
+          "description": "The host that provides the API, such as 'en.wikipedia.org'.",
+          "default": "en.wikipedia.org"
         },
         "wikitext.userName": {
           "type": "string",
@@ -264,6 +265,11 @@
           "type": "boolean",
           "default": false,
           "description": "Enable WikiParser, a LSP for Wikitext to provide better writing assistance. Restart WikiParser by command to apply changes."
+        },
+        "wikitext.wikiparser.syncArticlePath": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Force update WikiParser's [Article Path](#wikiparser.articlePath) every time WikiParser Server is started."
         }
       }
     }

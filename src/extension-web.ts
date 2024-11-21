@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 import { closeEditorFactory } from './export_command/wikimedia_function/page';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
-import { restartLspFactory } from './export_command/vscode_function/host';
+import { client, restartLspFactory } from './export_command/vscode_function/wikiparser';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
     function showUnsupportedMessageFactory() {
@@ -36,6 +36,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 }
 
 export async function deactivate(): Promise<void> {
-    // await client?.stop();
+    await client?.stop();
     console.log("Wikitext Extension is deactivate.");
 }

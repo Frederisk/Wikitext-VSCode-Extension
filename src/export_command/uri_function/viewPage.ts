@@ -9,7 +9,6 @@ import { getDefaultBot } from '../wikimedia_function/bot';
 import { Action, alterNativeValues, Prop } from '../wikimedia_function/args';
 import { showViewer } from '../wikimedia_function/view';
 import { isRemoteBot, parseArgs } from './uri';
-import { getHost } from '../vscode_function/host';
 
 export async function viewPage(query: string): Promise<void> {
     function setArgs(par: string, defaultValue?: string): void {
@@ -28,10 +27,9 @@ export async function viewPage(query: string): Promise<void> {
         return undefined;
     }
 
-    // TODO: getHost()
     const baseHref: string = isRemoteBot(pars)
         ? pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
-        : config.get("transferProtocol") + (await getHost() || '') + config.get("articlePath");
+        : config.get("transferProtocol") as string + config.get('host') + config.get("articlePath");
 
     // args value
     const args: Record<string, string> = { 'action': Action.parse };

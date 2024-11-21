@@ -9,45 +9,23 @@ import { LanguageClient as BrowserLanguageClient } from 'vscode-languageclient/b
 import { LanguageClient as NodeLanguageClient, ServerOptions } from 'vscode-languageclient/node';
 import { BaseLanguageClient, LanguageClientOptions } from 'vscode-languageclient';
 
-export async function getHost(): Promise<string | undefined> {
-    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-    const host: string | undefined = config.get("host");
-    // if host is existed, return it.
-    if (host) { return host; }
-    // else ask to edit
-    const selection: string | undefined = await vscode.window.showWarningMessage(
-        `No host defined!
-You haven't defined the host for the previewer yet; please input a host value in the dialog box (or in settings) and try again.`
-        , "Edit", "Cancel");
-    // edit
-    if (selection === 'Edit') {
-        // show the input box
-        const input: string | undefined = await vscode.window.showInputBox({
-            prompt: "Please input the host of previewer.",
-            placeHolder: "en.wikipedia.org",
-            value: config.get("host") || "en.wikipedia.org",
-            ignoreFocusOut: false
-        });
-        // if input is not null or empty, update setting and return input
-        if (input) {
-            config.update("host", input, true);
-            return input;
-        }
-    }
-    // or else return undefined
-    return undefined;
-}
-
 export let client: BaseLanguageClient | undefined = undefined;
 
 export function restartLspFactory(_: unknown, isBrowser: boolean) {
     return async function restartLsp(): Promise<void> {
-        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
+        const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('wikitext');
         await client?.stop();
         await client?.dispose();
 
         if (!config.get('wikiparser.enable')) {
             return;
+        }
+
+        if (config.get('wikiparser.syncArticlePath')) {
+            const configWikiParserServer = vscode.workspace.getConfiguration('wikiparser');
+            // if (configWikiParserServer.has('articlePath')){
+            configWikiParserServer.update('articlePath', config.get("transferProtocol") as string + config.get('host') + config.get("articlePath"), true);
+            // }
         }
 
         const serverExtension: vscode.Extension<unknown> | undefined = vscode.extensions.getExtension('Bhsd.vscode-extension-wikiparser');
@@ -83,8 +61,6 @@ export function restartLspFactory(_: unknown, isBrowser: boolean) {
                 },
             };
             client = new NodeLanguageClient(name, serverOptions, clientOptions);
-            const a: any = 0;
-            console.log(a);
         }
         await client.start();
     };
