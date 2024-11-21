@@ -77,6 +77,11 @@
         "command": "wikitext.closeEditor",
         "title": "Close this editor without saving",
         "category": "Wikitext"
+      },
+      {
+        "command": "wikitext.restartLsp",
+        "title": "Restart WikiParser LSP",
+        "category": "Wikitext"
       }
     ],
     "menus": {
@@ -255,10 +260,10 @@
           "default": false,
           "markdownDescription": "If `PageTitle` is filled in `PAGE_INFO`, skip entering the title when posting."
         },
-        "wikitext.enableWikiparser": {
+        "wikitext.wikiparser.enable": {
           "type": "boolean",
-          "default": true,
-          "description": "Enable WikiParser, a LSP for Wikitext to provide better writing assistance."
+          "default": false,
+          "description": "Enable WikiParser, a LSP for Wikitext to provide better writing assistance. Restart WikiParser to apply changes."
         }
       }
     }

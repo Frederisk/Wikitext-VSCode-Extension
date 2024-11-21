@@ -6,7 +6,8 @@
 import * as vscode from 'vscode';
 import { closeEditorFactory } from './export_command/wikimedia_function/page';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
-import { client, restartLsp } from './export_command/vscode_function/host';
+import { restartLspFactory } from './export_command/vscode_function/host';
+// import { client, restartLsp } from './export_command/vscode_function/host';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
     function showUnsupportedMessageFactory() {
@@ -17,7 +18,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
     console.log("Wikitext Extension is active.");
 
-    const commandRegister = new WikitextCommandRegistrar(context);
+    const commandRegister = new WikitextCommandRegistrar(context, true);
     // Bot
     commandRegister.register('login', showUnsupportedMessageFactory);
     commandRegister.register('logout', showUnsupportedMessageFactory);
@@ -30,11 +31,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     commandRegister.register('viewPage', showUnsupportedMessageFactory);
     // Cite
     commandRegister.register('citeWeb', showUnsupportedMessageFactory);
-
-    await restartLsp(true);
+    // Lsp
+    commandRegister.register('restartLsp', restartLspFactory);
+    await vscode.commands.executeCommand('wikitext.restartLsp');
 }
 
 export async function deactivate(): Promise<void> {
-    await client?.stop();
+    // await client?.stop();
     console.log("Wikitext Extension is deactivate.");
 }
