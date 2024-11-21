@@ -40,8 +40,6 @@ You haven't defined the host for the previewer yet; please input a host value in
 
 export let client: BaseLanguageClient | undefined = undefined;
 
-
-
 export function restartLspFactory(_: unknown, isBrowser: boolean) {
     return async function restartLsp(): Promise<void> {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
@@ -69,7 +67,7 @@ export function restartLspFactory(_: unknown, isBrowser: boolean) {
 
         if (isBrowser) {
             const serverUri: vscode.Uri | undefined = serverExtension.extensionUri;
-            const serverMain: vscode.Uri = vscode.Uri.joinPath(serverUri, 'server/dist/server.js');
+            const serverMain: vscode.Uri = vscode.Uri.joinPath(serverUri, 'server', 'dist', 'server.js');
             const worker = new Worker(serverMain.toString(true));
             client = new BrowserLanguageClient('lsp-vscode-extension-wikiparser', name, clientOptions, worker);
         } else {
@@ -85,7 +83,8 @@ export function restartLspFactory(_: unknown, isBrowser: boolean) {
                 },
             };
             client = new NodeLanguageClient(name, serverOptions, clientOptions);
-
+            const a: any = 0;
+            console.log(a);
         }
         await client.start();
     };

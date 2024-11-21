@@ -48,7 +48,8 @@ const webConfig = {
             net: require.resolve('net'),
             async_hooks: require.resolve('async-hook-browser'),
             fs: require.resolve('browserify-fs'),
-            buffer: require.resolve('buffer')
+            buffer: require.resolve('buffer'),
+            vm: false,
         },
     },
     module: {

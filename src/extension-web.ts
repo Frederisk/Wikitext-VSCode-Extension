@@ -7,11 +7,10 @@ import * as vscode from 'vscode';
 import { closeEditorFactory } from './export_command/wikimedia_function/page';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
 import { restartLspFactory } from './export_command/vscode_function/host';
-// import { client, restartLsp } from './export_command/vscode_function/host';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
     function showUnsupportedMessageFactory() {
-        return  () => {
+        return () => {
             vscode.window.showErrorMessage('Web extension does not support this function.');
         };
     }
