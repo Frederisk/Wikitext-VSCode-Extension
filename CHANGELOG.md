@@ -5,6 +5,12 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(\*) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [4.0.0] - 2024-12-01
+
+### Added
+
+- Add the support of [WikiParser Language Server](https://github.com/bhsd-harry/vscode-extension-wikiparser).
+
 ## [3.8.3] - 2024-11-14
 
 ### Changed
