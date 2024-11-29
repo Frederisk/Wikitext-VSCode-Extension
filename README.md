@@ -19,7 +19,24 @@ Of course, the development of this extension is short, and there may be some err
 
 If you get help with this project, give this project a star or recommend it to others, thanks!😸
 
-## Enhancement Tool: [Wikitext-Extension-Gadget](https://github.com/Frederisk/Wikitext-Extension-Gadget)
+## Enhancement Tools
+
+### WikiParser Language Server
+
+- [WikiParser Language Server](https://github.com/bhsd-harry/vscode-extension-wikiparser) is a powerful tool that brings you better code folding, syntax error prompts, file outline and other features!
+
+#### WikiParser Usage
+
+- Install WikiParser Language Server through the extensions store (such as [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Bhsd.vscode-extension-wikiparser)) or [download the vsix file yourself](https://github.com/bhsd-harry/vscode-extension-wikiparser).
+- Find `wikitext.wikiparser.enable` in settings and enable it.
+- Press `F1` and execute the command `wikitext.restartLsp` or restart VSCode to apply changes.
+
+#### WikiParser Previews
+
+- <img alt="" src="https://github.com/user-attachments/assets/449065c2-fddc-4636-8ee1-d897afc5afe7" width="768">
+- <img alt="" src="https://github.com/user-attachments/assets/5705d3b8-b77b-4142-87c9-3ff7c35c7bbe" width="768">
+
+### Wikitext Extension Gadget
 
 - Now you can add [Wikitext Extension Gadget](https://github.com/Frederisk/Wikitext-Extension-Gadget) as a user gadget on your wiki site. And you will get a button to open VSCode directly in your browser to edit the page!
 
@@ -78,14 +95,14 @@ Generally, make sure that your VSCode is always the latest version.
 Firstly, clone this repository and change directory to the repository, then install VS Code Extension Manager and other packages:
 
 ```bash
-npm install -g yarn vsce # VS Code Extension Manager
-yarn install # Install devDependencies
+npm install -g yarn # install yarn classic
+yarn install # Install all dependencies
 ```
 
 Package this project and you will get a `.vsix` file:
 
 ```bash
-vsce package --yarn # Package Extension with yarn
+yarn run package
 ```
 
 This is it!

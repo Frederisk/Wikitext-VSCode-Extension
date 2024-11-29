@@ -7,7 +7,6 @@ import * as vscode from 'vscode';
 import type MWBot from 'mwbot';
 import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConvert } from '../../interface_definition/api_interface/getView';
-import { getHost } from '../vscode_function/host';
 import { getDefaultBot } from './bot';
 import { getContentInfo } from './page';
 import { showMWErrorMessage } from './err_msg';
@@ -20,9 +19,6 @@ let previewCurrentPanel: vscode.WebviewPanel | undefined;
 export function getPageViewFactory() {
     return async function getPageView(): Promise<void> {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-
-        const host: string | undefined = await getHost();
-        if (!host) { return undefined; }
 
         const pageTitle: string | undefined = await vscode.window.showInputBox({
             prompt: "Enter the page name here.",
@@ -49,7 +45,7 @@ export function getPageViewFactory() {
             return undefined;
         }
 
-        const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
+        const baseHref: string = config.get("transferProtocol") as string + config.get('host') + config.get("articlePath");
 
         showViewer("pageViewer", "WikiViewer", args, tBot, baseHref);
     };
@@ -58,9 +54,6 @@ export function getPageViewFactory() {
 export function getPreviewFactory(extension: vscode.ExtensionContext) {
     return async function getPreview(): Promise<void> {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-
-        const host: string | undefined = await getHost();
-        if (!host) { return undefined; }
 
         /** document text */
         const sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
@@ -103,7 +96,7 @@ export function getPreviewFactory(extension: vscode.ExtensionContext) {
             return undefined;
         }
 
-        const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
+        const baseHref: string = config.get("transferProtocol") as string + config.get('host') + config.get("articlePath");
 
         showViewer(previewCurrentPanel, viewerTitle, args, tBot, baseHref);
     };

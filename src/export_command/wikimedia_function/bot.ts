@@ -5,7 +5,6 @@
 
 import MWBot from 'mwbot';
 import * as vscode from 'vscode';
-import { getHost } from '../vscode_function/host';
 import { Action, Meta } from './args';
 import { showMWErrorMessage } from './err_msg';
 
@@ -41,9 +40,6 @@ export function logoutFactory() {
 async function login(): Promise<boolean> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
-    const host: string | undefined = await getHost();
-    if (!host) { return false; }
-
     const userInfo: { username?: string; password?: string } = {
         username: config.get('userName'),
         password: config.get('password')
@@ -57,7 +53,7 @@ async function login(): Promise<boolean> {
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Login...");
     try {
         bot = new MWBot({
-            apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
+            apiUrl: config.get("transferProtocol") as string + config.get('host') + config.get("apiPath")
         });
         // TODO:
         const response: any = await bot.login(userInfo);
@@ -88,11 +84,8 @@ export async function getDefaultBot(): Promise<MWBot | undefined> {
     if (bot) {
         tBot = bot;
     } else {
-        // get host
-        const host: string | undefined = await getHost();
-        if (!host) { return undefined; }
         tBot = new MWBot({
-            apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
+            apiUrl: config.get("transferProtocol") as string + config.get('host') + config.get("apiPath")
         });
     }
     return tBot;

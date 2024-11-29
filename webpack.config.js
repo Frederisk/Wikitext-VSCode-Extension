@@ -8,6 +8,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+// const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 /** @type {webpack.Configuration} */
 const webConfig = {
@@ -48,7 +49,8 @@ const webConfig = {
             net: require.resolve('net'),
             async_hooks: require.resolve('async-hook-browser'),
             fs: require.resolve('browserify-fs'),
-            buffer: require.resolve('buffer')
+            buffer: require.resolve('buffer'),
+            vm: false,
         },
     },
     module: {
@@ -73,6 +75,10 @@ const webConfig = {
         new webpack.ProvidePlugin({
             process: "process/browser", // provide a shim for the global `process` variable
         }),
+        // new CircularDependencyPlugin({
+        //     allowAsyncCycles: true,
+        //     cwd: process.cwd(),
+        // }),
     ],
     externals: {
         vscode: "commonjs vscode", // ignored because it doesn't exist

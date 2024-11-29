@@ -13,26 +13,27 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 });
 
-export default [{
-    files: ['**/*.ts'],
-    ignores: ["**/out", "**/dist", "**/*.d.ts", "**/webpack.config.js", '**/eslint.config.mjs'],
-}, ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended"), {
-    plugins: {
-        "@typescript-eslint": typescriptEslint,
-    },
+export default [
+    // ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended"),
+    {
+        files: ['**/*.ts'],
+        ignores: ["**/out", "**/dist", "**/*.d.ts", "**/webpack.config.js", '**/eslint.config.mjs'],
+        plugins: {
+            "@typescript-eslint": typescriptEslint,
+        },
+        languageOptions: {
+            parser: tsParser,
+            ecmaVersion: 5,
+            sourceType: "module"
+        },
+        rules: {
+            "@typescript-eslint/naming-convention": "warn",
+            semi: "warn",
+            curly: "warn",
+            eqeqeq: "warn",
+            "no-throw-literal": "warn",
+            "@typescript-eslint/no-explicit-any": "warn",
+        },
 
-    languageOptions: {
-        parser: tsParser,
-        ecmaVersion: 5,
-        sourceType: "module"
     },
-
-    rules: {
-        "@typescript-eslint/naming-convention": "warn",
-        semi: "warn",
-        curly: "warn",
-        eqeqeq: "warn",
-        "no-throw-literal": "warn",
-        "@typescript-eslint/no-explicit-any" : "warn",
-    },
-}];
+];
