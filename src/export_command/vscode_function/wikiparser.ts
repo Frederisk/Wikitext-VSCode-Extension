@@ -31,7 +31,12 @@ export function restartLspFactory(_: unknown, isBrowser: boolean) {
         const serverExtension: vscode.Extension<unknown> | undefined = vscode.extensions.getExtension('Bhsd.vscode-extension-wikiparser');
 
         if (serverExtension === undefined) {
-            await vscode.window.showWarningMessage('Extension `Bhsd.vscode-extension-wikiparser` not found.');
+            vscode.window.showWarningMessage('Extension `Bhsd.vscode-extension-wikiparser` not found. Please install it before use, then execute `Restart WikiParser LSP` command or restart VSCode.', 'Install WikiParser', 'Cancel')
+                .then((selection: string | undefined) => {
+                    if (selection === 'Install WikiParser') {
+                        vscode.commands.executeCommand('workbench.extensions.search', 'Bhsd.vscode-extension-wikiparser');
+                    }
+                });
             return;
         }
 
