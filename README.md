@@ -74,7 +74,8 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- The syntax of the table has been improved.
+- Add the support of [WikiParser Language Server](https://github.com/bhsd-harry/vscode-extension-wikiparser).
+- Remove redundant blocking when LSP is not found.
 
 ## Usage
 
