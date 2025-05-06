@@ -453,27 +453,23 @@ repository:
                 end: $
                 patterns:
                   - include: $self
-              - begin: ^\s*(\|)(([^\[]*?)((?<!\|)\|(?!\|)))?
-                # name: string.quoted.wikitext
+              - begin: ^\s*(\|)
                 end: $
                 beginCaptures:
                   1:
                     name: punctuation.definition.tag.wikitext
-                  3:
-                    patterns:
-                      - include: $self
-                      - include: text.html.basic#attribute
-                  4:
-                    name: punctuation.definition.tag.wikitext
-                  #   patterns:
-                  #     - include: text.html.basic#attribute
-                  # 3:
-                  #   name: punctuation.definition.tag.wikitext
                 patterns:
-                  - include: $self
+                  - match: \s*([^\|]+)\s*(?<!\|)(\|)(?!\|)
+                    captures:
+                      1:
+                        patterns:
+                          - include: $self
+                          - include: text.html.basic#attribute
+                      2:
+                        name: punctuation.definition.tag.wikitext
                   - match: \|\|
-                    name: keyword.operator.wikitext
-              # - include: text.html.basic#attribute
+                    name: punctuation.definition.tag.wikitext
+                  - include: $self
       wikixml:
         patterns:
           - include: '#wiki-self-closed-tags'
