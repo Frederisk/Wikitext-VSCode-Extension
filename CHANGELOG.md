@@ -5,6 +5,16 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(\*) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [4.0.2] - 2025-07-03
+
+### Added
+
+- Add better support for private wikis.
+
+### Fixed
+
+- Fix multiple pipes in one table row syntax error.
+
 ## [4.0.1] - 2025-01-02
 
 ### Fixed

@@ -74,8 +74,8 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Add the support of [WikiParser Language Server](https://github.com/bhsd-harry/vscode-extension-wikiparser).
-- Remove redundant blocking when LSP is not found.
+- Add better support for private wikis.
+- Fix multiple pipes in one table row syntax error.
 
 ## Usage
 
