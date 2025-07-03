@@ -14,8 +14,12 @@ export async function editPage(query: string): Promise<void> {
     // vscode-insiders://rowewilsonfrederiskholme.wikitext/PullPage?Title=1
     const pars: Record<string, string> = parseArgs(query);
 
+    const transferProtocolPar = pars["TransferProtocol"] ?? '';
+    const siteHostPar = pars["SiteHost"] ?? '';
+    const apiPathPar = pars["APIPath"] ?? '';
+
     const tBot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
-        apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
+        apiUrl: transferProtocolPar + siteHostPar + apiPathPar
     }) : await getDefaultBot();
 
     const title: string | undefined = pars['Title'];

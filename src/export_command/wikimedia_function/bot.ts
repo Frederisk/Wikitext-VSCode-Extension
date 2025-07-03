@@ -84,7 +84,7 @@ export async function getDefaultBot(): Promise<MWBot | undefined> {
     if (bot) {
         tBot = bot;
     } else {
-        tBot = new MWBot({
+        tBot = await getLoggedInBot() ?? new MWBot({
             apiUrl: config.get("transferProtocol") as string + config.get('host') + config.get("apiPath")
         });
     }
@@ -142,9 +142,9 @@ export async function compareVersion(tBot: MWBot, major: number, minor: number, 
         return undefined;
     }
 
-    const siteMajor: number = parseInt(generatorInfo[1]);
-    const siteMinor: number = parseInt(generatorInfo[2]);
-    const siteRevision: number = parseInt(generatorInfo[3]);
+    const siteMajor: number = parseInt(generatorInfo[1]!, 10);
+    const siteMinor: number = parseInt(generatorInfo[2]!, 10);
+    const siteRevision: number = parseInt(generatorInfo[3]!, 10);
 
     if (isNaN(siteMajor + siteMinor + siteRevision)) {
         return undefined;

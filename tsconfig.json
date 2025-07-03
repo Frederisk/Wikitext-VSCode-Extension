@@ -26,6 +26,7 @@
     "importHelpers": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
+    "noUncheckedIndexedAccess": true,
   },
   "exclude": [
     "./.vscode-test/*"

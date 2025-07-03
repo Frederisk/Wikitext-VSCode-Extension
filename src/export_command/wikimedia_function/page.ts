@@ -259,12 +259,12 @@ ${infoLine}
         const re: ReadPageResult = ReadPageConvert.toResult(result);
         if (re.query?.interwiki) {
             vscode.window.showWarningMessage(
-                `Interwiki page "${re.query.interwiki[0].title}" in space "${re.query.interwiki[0].iw}" are currently not supported. Please try to modify host.`
+                `Interwiki page "${re.query.interwiki[0]?.title}" in space "${re.query.interwiki[0]?.iw}" are currently not supported. Please try to modify host.`
             );
         }
 
         // get first page
-        const page: Page | undefined = re.query?.pages?.[Object.keys(re.query.pages)[0]];
+        const page: Page | undefined = re.query?.pages?.[Object.keys(re.query.pages)[0]!];
         // need a page elements
         if (!page) { return undefined; }
 
@@ -332,7 +332,7 @@ export function getContentInfo(content: string): ContentInfo {
     let pageInfo: Record<PageInfo, string | undefined> | undefined;
     if (info) {
         const getInfo = (infoName: PageInfo): string | undefined => {
-            const nameFirst: string = infoName[0];
+            const nameFirst: string = infoName[0]!;
             const nameRest: string = infoName.substring(1);
             const reg = new RegExp(`(?<=[${nameFirst.toLowerCase()}${nameFirst.toUpperCase()}]${nameRest}\\s*=\\s*#).*?(?=#)`);
             return info.match(reg)?.[0];

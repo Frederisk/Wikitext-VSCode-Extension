@@ -12,14 +12,21 @@ import { isRemoteBot, parseArgs } from './uri';
 
 export async function viewPage(query: string): Promise<void> {
     function setArgs(par: string, defaultValue?: string): void {
-        args[par.toLowerCase()] = pars[par] ?? defaultValue;
+        const value = pars[par] ?? defaultValue;
+        if (value !== undefined) {
+            args[par.toLowerCase()] = value;
+        }
     }
 
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const pars: Record<string, string> = parseArgs(query);
 
+    const transferProtocolPar = pars["TransferProtocol"] ?? '';
+    const siteHostPar = pars["SiteHost"] ?? '';
+    const apiPathPar = pars["APIPath"] ?? '';
+
     const tBot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
-        apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
+        apiUrl: transferProtocolPar + siteHostPar + apiPathPar
     }) : await getDefaultBot();
 
     if (!tBot) {
@@ -28,7 +35,7 @@ export async function viewPage(query: string): Promise<void> {
     }
 
     const baseHref: string = isRemoteBot(pars)
-        ? pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
+        ? transferProtocolPar + siteHostPar + apiPathPar
         : config.get("transferProtocol") as string + config.get('host') + config.get("articlePath");
 
     // args value
