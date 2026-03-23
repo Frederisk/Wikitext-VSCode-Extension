@@ -10,7 +10,8 @@ MWBot.prototype.request = function (this: unknown, params: object = {}, customRe
             method: 'GET',
             qs: {
                 ...(customRequestOptions.qs || {}),
-                ...params
+                ...params,
+                format: 'json'
             }
         };
 
