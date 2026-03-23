@@ -11,6 +11,7 @@ import { baseUriProcess } from './export_command/uri_function/uri';
 import { addWebCiteFactory } from './export_command/cite_function/web';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
 import { client, restartLspFactory } from './export_command/vscode_function/wikiparser';
+import './mwbot-patch';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
     console.log("Wikitext Extension is active.");

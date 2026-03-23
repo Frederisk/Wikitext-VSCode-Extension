@@ -7,6 +7,7 @@ import * as vscode from 'vscode';
 import { closeEditorFactory } from './export_command/wikimedia_function/page';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
 import { client, restartLspFactory } from './export_command/vscode_function/wikiparser';
+import './mwbot-patch';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
     function showUnsupportedMessageFactory() {
