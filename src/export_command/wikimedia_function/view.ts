@@ -116,7 +116,7 @@ export async function showViewer(currentPanel: vscode.WebviewPanel | string, vie
 
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting view...");
     try {
-        const result: unknown = await tBot.request(args);
+        const result: unknown = await tBot.request(args, { method: 'GET' });
         const re: GetViewResult = ViewConvert.toResult(result);
         if (!re.parse) { return undefined; }
 

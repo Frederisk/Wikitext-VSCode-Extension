@@ -31,7 +31,7 @@ export function postPageFactory() {
                     meta: 'tokens',
                     type: 'csrf'
                 };
-                const result: unknown = await bot.request(args);
+                const result: unknown = await bot.request(args, { method: 'GET' });
                 const reNew: TokensResult = TokensConvert.toResult(result);
                 const token: string | undefined = reNew.query?.tokens?.csrftoken;
                 if (token) {
@@ -47,7 +47,7 @@ export function postPageFactory() {
                         action: "tokens",
                         type: "edit"
                     };
-                    const result: unknown = await bot.request(args);
+                    const result: unknown = await bot.request(args, { method: 'GET' });
                     const reOld: OldTokensResult = OldTokensConvert.toResult(result);
                     const token: string | undefined = reOld.tokens?.edittoken;
                     if (token) {
@@ -120,7 +120,7 @@ export function postPageFactory() {
             // if (config.get("redirect")) {
             //     args['redirect'] = "true";
             // }
-            const result: any = await tBot.request(args);
+            const result: any = await tBot.request(args, { method: 'POST' });
             // TODO: Convert
             if (result.edit.nochange !== undefined) {
                 vscode.window.showWarningMessage(
@@ -253,7 +253,7 @@ ${infoLine}
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting code...");
     try {
         // get request result
-        const result: unknown = await tBot.request(args);
+        const result: unknown = await tBot.request(args, { method: 'GET' });
         // console.log(result);
         // Convert result as class
         const re: ReadPageResult = ReadPageConvert.toResult(result);
@@ -361,7 +361,7 @@ async function getValidTagList(tBot: MWBot): Promise<(number | string)[]> {
 
     const tagList: (number | string)[] = [];
     for (; ;) {
-        const result: unknown = await tBot.request(args);
+        const result: unknown = await tBot.request(args, { method: 'GET' });
         const re: TagsResult = TagsConvert.toResult(result);
 
         tagList.push(
