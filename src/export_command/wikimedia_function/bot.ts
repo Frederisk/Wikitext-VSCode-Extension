@@ -23,7 +23,7 @@ export function logoutFactory() {
             await bot?.request({
                 'action': Action.logout,
                 'token': bot.editToken
-            });
+            }, { method: 'POST' });
             // clear bot
             bot = undefined;
             vscode.window.showInformationMessage('result: Success');
@@ -99,7 +99,7 @@ export async function getLoggedInBot(): Promise<MWBot | undefined> {
             case 'Always':
                 return await login() ? bot : undefined;
             case 'Never':
-                vscode.window.showWarningMessage('You are not logged in. Please log in and try again.');
+                vscode.window.showWarningMessage('Notice: You are not logged in.');
                 return undefined;
             case 'Ask me':
             default:
@@ -131,7 +131,7 @@ export async function compareVersion(tBot: MWBot, major: number, minor: number, 
         meta: Meta.siteInfo,
     };
 
-    const result: unknown = await tBot.request(args);
+    const result: unknown = await tBot.request(args, { method: 'GET' });
     const re: any = result as any;
     // TODO: cast
 
