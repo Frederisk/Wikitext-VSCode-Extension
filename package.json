@@ -176,103 +176,143 @@
         "path": "./snippets/snippets.json"
       }
     ],
-    "configuration": {
-      "type": "object",
-      "title": "Wikitext",
-      "properties": {
-        "wikitext.host": {
-          "type": "string",
-          "description": "The host that provides the API, such as 'en.wikipedia.org'.",
-          "default": "en.wikipedia.org"
-        },
-        "wikitext.userName": {
-          "type": "string",
-          "description": "The user name of wikimedia site."
-        },
-        "wikitext.password": {
-          "type": "string",
-          "description": "The password of user. It will be fixed in the software settings, please do not fill in the device in public places."
-        },
-        "wikitext.redirects": {
-          "type": "boolean",
-          "description": "When the input page is a redirect page, jump automatically. Note that posting command will **not** be redirected.",
-          "default": true
-        },
-        "wikitext.apiPath": {
-          "type": "string",
-          "markdownDescription": "Set the basic path to obtain the API. If you are not sure, please check the `Special:Version` page of your site.",
-          "default": "/w/api.php"
-        },
-        "wikitext.getCss": {
-          "type": "boolean",
-          "description": "Get CSS when previewing the page. Please note that this feature will greatly increase the extended workload, and some rendering effects may conflict with VSCode. To get the correct display, you may need to enable Previewer's JS support.",
-          "default": false
-        },
-        "wikitext.enableJavascript": {
-          "type": "boolean",
-          "description": "Enable Previewer's JS support. This feature may affect the performance of VSCode and introduce potential security risks.",
-          "default": false
-        },
-        "wikitext.articlePath": {
-          "type": "string",
-          "markdownDescription": "Set the basic path to obtain the article. please check the `Special:Version` page of your site (No need for `$1`).",
-          "default": "/wiki/"
-        },
-        "wikitext.webCiteFormat": {
-          "type": "string",
-          "markdownDescription": "Setting the generation of web reference tags. The configuration of this option is similar to the code section of MakeRef in meta wikimedia. The available fields: `url`, `title`, `accessdate`, `website`, `archiveurl` ,and `archivedate`.\n\n**This function is only a preview function, it may change or become a separate new extension in the future. Please pay attention to the changelog of this function every time you update this extension.**",
-          "default": "{{cite web<!url> |url={$url}</!url><!title> |title={$title}</!title><!accessdate> |access-date={$accessdate}</!accessdate><!website> |website={$website}</!website><!publicationdate> |publication-date={$publicationdate}</!publicationdate><!archiveurl> |archive-url={$archiveurl}</!archiveurl><!archivedate> |archive-date={$archivedate}</!archivedate>}}"
-        },
-        "wikitext.transferProtocol": {
-          "type": "string",
-          "default": "https://",
-          "enum": [
-            "http://",
-            "https://"
-          ],
-          "enumDescriptions": [
-            "HyperText Transfer Protocol",
-            "HyperText Transfer Protocol Secure"
-          ],
-          "description": "Select the transfer protocol used when accessing the API."
-        },
-        "wikitext.previewCssStyle": {
-          "type": "string",
-          "markdownDescription": "CSS attached to Previewer. This content always works, regardless of whether [GetCss](#wikitext.getCss) is enabled or not. To enable CSS for a specific category of themes, you can use the class filter name `vscode-light`, `vscode-dark`, `vscode-high-contrast` etc. See [Extension guides](https://code.visualstudio.com/api/extension-guides/webview#theming-webview-content) to learn more.",
-          "default": ".vscode-dark img[class^=\"mwe-math-fallback-image\"]{filter: invert(85%);} .vscode-light {} .vscode-high-contrast img[class^=\"mwe-math-fallback-image\"]{background-color: white; filter: invert(100%);}"
-        },
-        "wikitext.autoLogin": {
-          "type": "string",
-          "default": "Ask me",
-          "enum": [
-            "Always",
-            "Never",
-            "Ask me"
-          ],
-          "enumDescriptions": [
-            "Always log in automatically when I am not logged in",
-            "Never log in automatically",
-            "Ask me if I want to log in when I am not logged in"
-          ],
-          "description": "Whether to automatically log in when performing an action that requires an account to be logged in."
-        },
-        "wikitext.skipEnteringPageTitle": {
-          "type": "boolean",
-          "default": false,
-          "markdownDescription": "If `PageTitle` is filled in `PAGE_INFO`, skip entering the title when posting."
-        },
-        "wikitext.wikiparser.enable": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable WikiParser, a LSP for Wikitext to provide better writing assistance. Restart WikiParser by command to apply changes."
-        },
-        "wikitext.wikiparser.syncArticlePath": {
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Force update WikiParser's [Article Path](#wikiparser.articlePath) every time WikiParser Server is started."
+    "configuration": [
+      {
+        "type": "object",
+        "title": "Server & API",
+        "properties": {
+          "wikitext.host": {
+            "order": 0,
+            "type": "string",
+            "description": "The host that provides the API, such as 'en.wikipedia.org'.",
+            "default": "en.wikipedia.org"
+          },
+          "wikitext.transferProtocol": {
+            "order": 1,
+            "type": "string",
+            "default": "https://",
+            "enum": [
+              "http://",
+              "https://"
+            ],
+            "enumDescriptions": [
+              "HyperText Transfer Protocol",
+              "HyperText Transfer Protocol Secure"
+            ],
+            "description": "Select the transfer protocol used when accessing the API."
+          },
+          "wikitext.apiPath": {
+            "order": 2,
+            "type": "string",
+            "markdownDescription": "Set the base path to access the API / articles. If unsure, please check the 'Special:Version' page of your site.",
+            "default": "/w/api.php"
+          },
+          "wikitext.articlePath": {
+            "type": "string",
+            "markdownDescription": "Set the basic path to obtain the article. please check the `Special:Version` page of your site (No need for `$1`).",
+            "default": "/wiki/"
+          }
+        }
+      },
+      {
+        "type": "object",
+        "title": "Account",
+        "properties": {
+          "wikitext.userName": {
+            "order": 0,
+            "type": "string",
+            "description": "The username of your Wikimedia account."
+          },
+          "wikitext.password": {
+            "order": 1,
+            "type": "string",
+            "description": "The password for your account. It will be stored in plain text in the settings. Please avoid saving this on public or shared devices."
+          },
+          "wikitext.autoLogin": {
+            "order": 2,
+            "type": "string",
+            "default": "Ask me",
+            "enum": [
+              "Always",
+              "Never",
+              "Ask me"
+            ],
+            "enumDescriptions": [
+              "Always log in automatically when I am not logged in",
+              "Never log in automatically",
+              "Ask me if I want to log in when I am not logged in"
+            ],
+            "description": "Whether to automatically log in when performing an action that requires authentication."
+          }
+        }
+      },
+      {
+        "type": "object",
+        "title": "Preview",
+        "properties": {
+          "wikitext.enableJavascript": {
+            "order": 0,
+            "type": "boolean",
+            "description": "Enable JavaScript support in the previewer. This may impact VSCode's performance and introduce potential security risks.",
+            "default": false
+          },
+          "wikitext.getCss": {
+            "order": 1,
+            "type": "boolean",
+            "description": "Fetch CSS when previewing the page. Note that this feature significantly increases network requests, and some rendering effects may conflict with VSCode. To get the correct display, you may need to enable Previewer's JS support.",
+            "default": false
+          },
+          "wikitext.previewCssStyle": {
+            "order": 2,
+            "type": "string",
+            "markdownDescription": "CSS attached to Previewer. This content always works, regardless of whether [GetCss](#wikitext.getCss) is enabled or not. To enable CSS for a specific category of themes, you can use the class filter name `vscode-light`, `vscode-dark`, `vscode-high-contrast` etc. See [Extension guides](https://code.visualstudio.com/api/extension-guides/webview#theming-webview-content) to learn more.",
+            "default": ".vscode-dark img[class^=\"mwe-math-fallback-image\"]{filter: invert(85%);} .vscode-light {} .vscode-high-contrast img[class^=\"mwe-math-fallback-image\"]{background-color: white; filter: invert(100%);}"
+          }
+        }
+      },
+      {
+        "type": "object",
+        "title": "Editing",
+        "properties": {
+          "wikitext.redirects": {
+            "order": 0,
+            "type": "boolean",
+            "markdownDescription": "Automatically resolve redirects for input pages. Note that posting commands will **not** be redirected.",
+            "default": true
+          },
+          "wikitext.skipEnteringPageTitle": {
+            "order": 1,
+            "type": "boolean",
+            "default": false,
+            "markdownDescription": "If `PageTitle` is filled in `PAGE_INFO`, skip entering the title when posting."
+          },
+          "wikitext.webCiteFormat": {
+            "order": 2,
+            "type": "string",
+            "markdownDescription": "Configure the generation format of web reference tags. The configuration of this option is similar to the code section of MakeRef in meta wikimedia. The available fields: `url`, `title`, `accessdate`, `website`, `archiveurl` ,and `archivedate`.\n\n**This function is only a preview function, it may change or become a separate new extension in the future. Please pay attention to the changelog of this function every time you update this extension.**",
+            "default": "{{cite web<!url> |url={$url}</!url><!title> |title={$title}</!title><!accessdate> |access-date={$accessdate}</!accessdate><!website> |website={$website}</!website><!publicationdate> |publication-date={$publicationdate}</!publicationdate><!archiveurl> |archive-url={$archiveurl}</!archiveurl><!archivedate> |archive-date={$archivedate}</!archivedate>}}"
+          }
+        }
+      },
+      {
+        "type": "object",
+        "title": "WikiParser",
+        "properties": {
+          "wikitext.wikiparser.enable": {
+            "order": 0,
+            "type": "boolean",
+            "default": false,
+            "description": "Enable WikiParser, a LSP for Wikitext to provide better writing assistance. Restart the WikiParser server via the command palette to apply changes."
+          },
+          "wikitext.wikiparser.syncArticlePath": {
+            "order": 1,
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Force update WikiParser's [Article Path](#wikiparser.articlePath) every time WikiParser Server is started."
+          }
         }
       }
-    }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
