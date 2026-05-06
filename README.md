@@ -76,6 +76,8 @@ If you get help with this project, give this project a star or recommend it to o
 
 - Used explicit request methods to access the API to avoid some potential issues.
 - Organized extension settings into grouped sections and updated the description of some settings.
+- Upgraded Node.js version requirement to 24.
+- Upgraded VSCode version requirement to 1.110.0.
 
 ## Usage
 

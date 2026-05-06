@@ -5,7 +5,14 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(\*) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
-## [4.0.3] - 2026-05-06
+## [4.0.4]\* - 2026-05-06
+
+### Changed
+
+- Upgraded Node.js version requirement to 24.
+- Upgraded VSCode version requirement to 1.110.0.
+
+## [4.0.3]\* - 2026-05-06
 
 ### Fixed
 
