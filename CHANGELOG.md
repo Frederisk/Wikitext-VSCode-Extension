@@ -5,21 +5,28 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(\*) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [4.0.3] - 2026-05-06
+
+### Fixed
+
+- Used explicit request methods to access the API to avoid some potential issues.
+- Organized extension settings into grouped sections and updated the description of some settings.
+
 ## [4.0.2] - 2025-07-03
 
 ### Added
 
-- Add better support for private wikis.
+- Added better support for private wikis.
 
 ### Fixed
 
-- Fix multiple pipes in one table row syntax error.
+- Fixed multiple pipes in one table row syntax error.
 
 ## [4.0.1] - 2025-01-02
 
 ### Fixed
 
-- Remove redundant blocking when LSP is not found.
+- Removed redundant blocking when LSP is not found.
 
 ## [4.0.0] - 2024-12-01
 

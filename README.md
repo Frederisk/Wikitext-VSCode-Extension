@@ -74,8 +74,8 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Add better support for private wikis.
-- Fix multiple pipes in one table row syntax error.
+- Used explicit request methods to access the API to avoid some potential issues.
+- Organized extension settings into grouped sections and updated the description of some settings.
 
 ## Usage
 
