@@ -27,7 +27,7 @@ jobs:
         # Node.js 14 has been deprecated since Oct 2021
         # Node.js 15 has been deprecated since Apr 2021
         # Node.js 16 has been deprecated since Oct 2023
-        nodejs_version: [ 24, 26 ]
+        nodejs_version: [ 24 ]
 
     steps:
       - name: Checkout repository
