@@ -378,6 +378,7 @@
     "node-fetch": "^2.6.5"
   },
   "resolutions": {
-    "eslint/**/strip-ansi": "6.0.1"
+    "eslint/**/strip-ansi": "^6.0.1",
+    "mwbot/**/form-data": "^2.5.4"
   }
 }
