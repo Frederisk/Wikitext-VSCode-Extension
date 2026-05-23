@@ -131,7 +131,7 @@ export async function compareVersion(tBot: MWBot, major: number, minor: number, 
         meta: Meta.siteInfo,
     };
 
-    const result: unknown = await tBot.request(args, { method: 'GET' });
+    const result: unknown = await tBot.request(args);
     const re: any = result as any;
     // TODO: cast
 
