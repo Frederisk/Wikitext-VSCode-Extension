@@ -74,10 +74,8 @@ If you get help with this project, give this project a star or recommend it to o
 
 ## Release Notes
 
-- Used explicit request methods to access the API to avoid some potential issues.
-- Organized extension settings into grouped sections and updated the description of some settings.
-- Upgraded Node.js version requirement to 24.
-- Upgraded VSCode version requirement to 1.110.0.
+- Downgraded Node.js version requirement to 22.
+- A temporary fix for the 414 error of the view function.
 
 ## Usage
 
