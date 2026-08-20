@@ -62,11 +62,21 @@ suite('WikimediaFunction Core TestSuite', () => {
         [END_PAGE_INFO] --%>
         {{Soft redirect|User:Роу Уилсон Фредериск Холм}}
         <!--{{produceEncouragement|count=1}}-->{{patrol}}`;
+        const jsonStr = `/*<%-- [PAGE_INFO]
+        Comment=#Please do not remove this struct.#
+        PageTitle=#MediaWiki:Test.json#
+        PageID=#123#
+        RevisionID=#456#
+        ContentModel=#json#
+        ContentFormat=#application/json#
+        [END_PAGE_INFO] --%>*/
+        {"foo": "bar"}`;
 
         // Act
         const hasInfo = getContentInfo(hasStr);
         const noInfo = getContentInfo(noStr);
         const mutiInfo = getContentInfo(mutiStr);
+        const jsonInfo = getContentInfo(jsonStr);
 
         // Assert
         // hasInfo
@@ -83,6 +93,10 @@ suite('WikimediaFunction Core TestSuite', () => {
         assert.deepStrictEqual(noInfo.info, undefined, "noInfo info failed");
         // mutiInfo
         assert.notStrictEqual(mutiInfo.info, undefined, "mutiInfo info failed");
+        // jsonInfo
+        assert.strictEqual(jsonInfo.content, `{"foo": "bar"}`, "jsonInfo content failed");
+        assert.strictEqual(jsonInfo.info?.contentModel, "json", "jsonInfo contentModel failed");
+        assert.strictEqual(jsonInfo.info?.contentFormat, "application/json", "jsonInfo contentFormat failed");
     });
 });
 

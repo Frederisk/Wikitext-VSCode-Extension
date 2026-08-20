@@ -212,6 +212,7 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
             case undefined:
                 return 'wikitext';
             case 'flow-board':
+            case 'json':
                 return 'jsonc';
             case 'sanitized-css':
                 return 'css';
