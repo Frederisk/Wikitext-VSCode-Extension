@@ -72,11 +72,6 @@ If you get help with this project, give this project a star or recommend it to o
 
 - Browse the page by entering the page name. Press `F1` then select `View the page`.
 
-## Release Notes
-
-- Downgraded Node.js version requirement to 22.
-- A temporary fix for the 414 error of the view function.
-
 ## Usage
 
 ### Usage Requirements

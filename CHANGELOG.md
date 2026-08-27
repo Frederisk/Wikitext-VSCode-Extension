@@ -5,13 +5,20 @@ All notable changes to the "Wikitext" extension will be documented in this file.
 
 (The version marked with an asterisk(\*) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
 
+## [4.0.6] - 2026-08-27
+
+### Added
+
+- Support refreshing the page view.
+- Support pulling JSON context model pages.
+
 ## [4.0.5] - 2026-05-29
 
-## Changed
+### Changed
 
 - Downgraded Node.js version requirement to 22.
 
-## Fixed
+### Fixed
 
 - A temporary fix for the 414 error of the view function.
 
