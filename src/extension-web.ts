@@ -29,6 +29,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     // View
     commandRegister.register('getPreview', showUnsupportedMessageFactory);
     commandRegister.register('viewPage', showUnsupportedMessageFactory);
+    commandRegister.register('refreshPageView', showUnsupportedMessageFactory);
     // Cite
     commandRegister.register('citeWeb', showUnsupportedMessageFactory);
     // Lsp

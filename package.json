@@ -69,6 +69,12 @@
         "category": "Wikitext"
       },
       {
+        "command": "wikitext.refreshPageView",
+        "title": "Refresh the page view",
+        "category": "Wikitext",
+        "icon": "$(refresh)"
+      },
+      {
         "command": "wikitext.citeWeb",
         "title": "Add a web citation",
         "category": "Wikitext"
@@ -89,6 +95,11 @@
         {
           "command": "wikitext.getPreview",
           "when": "editorLangId == wikitext",
+          "group": "navigation"
+        },
+        {
+          "command": "wikitext.refreshPageView",
+          "when": "wikitext.pageViewerActive",
           "group": "navigation"
         }
       ],
@@ -136,6 +147,12 @@
         "key": "shift+ctrl+v",
         "mac": "shift+cmd+v",
         "when": "editorLangId == wikitext"
+      },
+      {
+        "command": "wikitext.refreshPageView",
+        "key": "shift+ctrl+v",
+        "mac": "shift+cmd+v",
+        "when": "wikitext.pageViewerActive"
       }
     ],
     "languages": [

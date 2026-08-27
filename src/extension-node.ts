@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { getPageViewFactory, getPreviewFactory } from './export_command/wikimedia_function/view';
+import { getPageViewFactory, getPreviewFactory, refreshCurrentPageViewFactory } from './export_command/wikimedia_function/view';
 import { loginFactory, logoutFactory } from './export_command/wikimedia_function/bot';
 import { closeEditorFactory, postPageFactory, pullPageFactory } from './export_command/wikimedia_function/page';
 import { baseUriProcess } from './export_command/uri_function/uri';
@@ -30,9 +30,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     // View
     commandRegistrar.register('getPreview', getPreviewFactory);
     commandRegistrar.register('viewPage', getPageViewFactory);
+    commandRegistrar.register('refreshPageView', refreshCurrentPageViewFactory);
     // Cite
     commandRegistrar.register('citeWeb', addWebCiteFactory);
-
     // Lsp
     commandRegistrar.register('restartLsp', restartLspFactory);
     await vscode.commands.executeCommand('wikitext.restartLsp');

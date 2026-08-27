@@ -16,6 +16,9 @@ import { showMWErrorMessage } from './err_msg';
  */
 let previewCurrentPanel: vscode.WebviewPanel | undefined;
 
+const pageViewerRefreshMap = new Map<vscode.WebviewPanel, () => Promise<void>>();
+let currentActivePageViewerRefresh: (() => Promise<void>) | undefined = undefined;
+
 export function getPageViewFactory() {
     return async function getPageView(): Promise<void> {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
@@ -48,6 +51,14 @@ export function getPageViewFactory() {
         const baseHref: string = config.get("transferProtocol") as string + config.get('host') + config.get("articlePath");
 
         showViewer("pageViewer", "WikiViewer", args, tBot, baseHref);
+    };
+}
+
+export function refreshCurrentPageViewFactory() {
+    return async function refreshCurrentPageView(): Promise<void> {
+        if (currentActivePageViewerRefresh) {
+            await currentActivePageViewerRefresh();
+        }
     };
 }
 
@@ -131,11 +142,47 @@ export async function showViewer(currentPanel: vscode.WebviewPanel | string, vie
 
         const html: string = htmlHead + htmlText + htmlCategories + htmlEnd;
 
+        let panel: vscode.WebviewPanel | undefined = undefined;
         if (typeof (currentPanel) === "string") {
-            currentPanel = vscode.window.createWebviewPanel(currentPanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript") });
+            panel = vscode.window.createWebviewPanel(
+                currentPanel,
+                viewerTitle,
+                vscode.ViewColumn.Active,
+                { enableScripts: config.get("enableJavascript") });
+        } else {
+            panel = currentPanel;
         }
-        currentPanel.webview.html = html;
-        currentPanel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
+        panel.webview.html = html;
+        panel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
+
+        if (panel.viewType === 'pageViewer') {
+            const refreshAction = async () => {
+                const refreshedBot = await getDefaultBot();
+                if (!refreshedBot) { return undefined; }
+                await showViewer(panel, viewerTitle, args, refreshedBot, baseURI);
+            };
+
+            pageViewerRefreshMap.set(panel, refreshAction);
+            vscode.commands.executeCommand('setContext', 'wikitext.pageViewerActive', true);
+            panel.onDidChangeViewState(e => {
+                if (e.webviewPanel.active) {
+                    currentActivePageViewerRefresh = pageViewerRefreshMap.get(panel);
+                    vscode.commands.executeCommand('setContext', 'wikitext.pageViewerActive', true);
+                } else {
+                    if (currentActivePageViewerRefresh === pageViewerRefreshMap.get(panel)) {
+                        currentActivePageViewerRefresh = undefined;
+                        vscode.commands.executeCommand('setContext', 'wikitext.pageViewerActive', false);
+                    }
+                }
+            });
+            panel.onDidDispose(() => {
+                pageViewerRefreshMap.delete(panel);
+                if (currentActivePageViewerRefresh === pageViewerRefreshMap.get(panel)) {
+                    currentActivePageViewerRefresh = undefined;
+                    vscode.commands.executeCommand('setContext', 'wikitext.pageViewerActive', false);
+                }
+            });
+        }
     }
     catch (error) {
         showMWErrorMessage('getView', error);
