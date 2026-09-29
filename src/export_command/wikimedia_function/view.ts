@@ -7,7 +7,6 @@ import * as vscode from 'vscode';
 import type MWBot from 'mwbot';
 import { Action, ContextModel, alterNativeValues, Prop } from './args';
 import { GetViewResult, ViewConvert } from '../../interface_definition/api_interface/getView';
-import { getHost } from '../vscode_function/host';
 import { getDefaultBot } from './bot';
 import { getContentInfo } from './page';
 import { showMWErrorMessage } from './err_msg';
@@ -17,12 +16,12 @@ import { showMWErrorMessage } from './err_msg';
  */
 let previewCurrentPanel: vscode.WebviewPanel | undefined;
 
-export function getPageViewFactory(){
+const pageViewerRefreshMap = new Map<vscode.WebviewPanel, () => Promise<void>>();
+let currentActivePageViewerRefresh: (() => Promise<void>) | undefined = undefined;
+
+export function getPageViewFactory() {
     return async function getPageView(): Promise<void> {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
-
-        const host: string | undefined = await getHost();
-        if (!host) { return undefined; }
 
         const pageTitle: string | undefined = await vscode.window.showInputBox({
             prompt: "Enter the page name here.",
@@ -49,9 +48,17 @@ export function getPageViewFactory(){
             return undefined;
         }
 
-        const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
+        const baseHref: string = config.get("transferProtocol") as string + config.get('host') + config.get("articlePath");
 
         showViewer("pageViewer", "WikiViewer", args, tBot, baseHref);
+    };
+}
+
+export function refreshCurrentPageViewFactory() {
+    return async function refreshCurrentPageView(): Promise<void> {
+        if (currentActivePageViewerRefresh) {
+            await currentActivePageViewerRefresh();
+        }
     };
 }
 
@@ -59,25 +66,23 @@ export function getPreviewFactory(extension: vscode.ExtensionContext) {
     return async function getPreview(): Promise<void> {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
-        const host: string | undefined = await getHost();
-        if (!host) { return undefined; }
-
         /** document text */
         const sourceText: string | undefined = vscode.window.activeTextEditor?.document.getText();
         if (!sourceText) { return undefined; }
-        const { content } = getContentInfo(sourceText);
+        const contentInfo = getContentInfo(sourceText);
 
         /** arguments */
-        const args: Record<string, string> = {
+        const args: Record<string, string | undefined> = {
             'action': Action.parse,
-            'text': content,
+            'text': contentInfo.content,
+            'title': !(contentInfo.info?.pageTitle) ? undefined : contentInfo.info.pageTitle,
             'prop': alterNativeValues(
                 Prop.text,
                 Prop.displayTitle,
                 Prop.categoriesHTML,
                 (config.get("getCss") ? Prop.headHTML : undefined)
             ),
-            'contentmodel': ContextModel.wikitext,
+            'contentmodel': !(contentInfo.info?.contentModel) ? ContextModel.wikitext : contentInfo.info.contentModel,
             'pst': "why_not",
             'disableeditsection': "yes"
         };
@@ -102,7 +107,7 @@ export function getPreviewFactory(extension: vscode.ExtensionContext) {
             return undefined;
         }
 
-        const baseHref: string = config.get("transferProtocol") + host + config.get("articlePath");
+        const baseHref: string = config.get("transferProtocol") as string + config.get('host') + config.get("articlePath");
 
         showViewer(previewCurrentPanel, viewerTitle, args, tBot, baseHref);
     };
@@ -117,12 +122,12 @@ export function getPreviewFactory(extension: vscode.ExtensionContext) {
  * @param baseURI url base
  * @returns task
  */
-export async function showViewer(currentPanel: vscode.WebviewPanel | string, viewerTitle: string, args: Record<string, string>, tBot: MWBot, baseURI: string): Promise<void> {
+export async function showViewer(currentPanel: vscode.WebviewPanel | string, viewerTitle: string, args: Record<string, string | undefined>, tBot: MWBot, baseURI: string): Promise<void> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting view...");
     try {
-        const result: unknown = await tBot.request(args);
+        const result: unknown = await tBot.request(args, { method: 'POST' }); // FIXME: GET method causes 414 error
         const re: GetViewResult = ViewConvert.toResult(result);
         if (!re.parse) { return undefined; }
 
@@ -137,11 +142,47 @@ export async function showViewer(currentPanel: vscode.WebviewPanel | string, vie
 
         const html: string = htmlHead + htmlText + htmlCategories + htmlEnd;
 
+        let panel: vscode.WebviewPanel | undefined = undefined;
         if (typeof (currentPanel) === "string") {
-            currentPanel = vscode.window.createWebviewPanel(currentPanel, viewerTitle, vscode.ViewColumn.Active, { enableScripts: config.get("enableJavascript") });
+            panel = vscode.window.createWebviewPanel(
+                currentPanel,
+                viewerTitle,
+                vscode.ViewColumn.Active,
+                { enableScripts: config.get("enableJavascript") });
+        } else {
+            panel = currentPanel;
         }
-        currentPanel.webview.html = html;
-        currentPanel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
+        panel.webview.html = html;
+        panel.title = `${viewerTitle}: ${re.parse.displaytitle}`;
+
+        if (panel.viewType === 'pageViewer') {
+            const refreshAction = async () => {
+                const refreshedBot = await getDefaultBot();
+                if (!refreshedBot) { return undefined; }
+                await showViewer(panel, viewerTitle, args, refreshedBot, baseURI);
+            };
+
+            pageViewerRefreshMap.set(panel, refreshAction);
+            vscode.commands.executeCommand('setContext', 'wikitext.pageViewerActive', true);
+            panel.onDidChangeViewState(e => {
+                if (e.webviewPanel.active) {
+                    currentActivePageViewerRefresh = pageViewerRefreshMap.get(panel);
+                    vscode.commands.executeCommand('setContext', 'wikitext.pageViewerActive', true);
+                } else {
+                    if (currentActivePageViewerRefresh === pageViewerRefreshMap.get(panel)) {
+                        currentActivePageViewerRefresh = undefined;
+                        vscode.commands.executeCommand('setContext', 'wikitext.pageViewerActive', false);
+                    }
+                }
+            });
+            panel.onDidDispose(() => {
+                pageViewerRefreshMap.delete(panel);
+                if (currentActivePageViewerRefresh === pageViewerRefreshMap.get(panel)) {
+                    currentActivePageViewerRefresh = undefined;
+                    vscode.commands.executeCommand('setContext', 'wikitext.pageViewerActive', false);
+                }
+            });
+        }
     }
     catch (error) {
         showMWErrorMessage('getView', error);

@@ -9,18 +9,24 @@ import { getDefaultBot } from '../wikimedia_function/bot';
 import { Action, alterNativeValues, Prop } from '../wikimedia_function/args';
 import { showViewer } from '../wikimedia_function/view';
 import { isRemoteBot, parseArgs } from './uri';
-import { getHost } from '../vscode_function/host';
 
 export async function viewPage(query: string): Promise<void> {
     function setArgs(par: string, defaultValue?: string): void {
-        args[par.toLowerCase()] = pars[par] ?? defaultValue;
+        const value = pars[par] ?? defaultValue;
+        if (value !== undefined) {
+            args[par.toLowerCase()] = value;
+        }
     }
 
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
     const pars: Record<string, string> = parseArgs(query);
 
+    const transferProtocolPar = pars["TransferProtocol"] ?? '';
+    const siteHostPar = pars["SiteHost"] ?? '';
+    const apiPathPar = pars["APIPath"] ?? '';
+
     const tBot: MWBot | undefined = isRemoteBot(pars) ? new MWBot({
-        apiUrl: pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
+        apiUrl: transferProtocolPar + siteHostPar + apiPathPar
     }) : await getDefaultBot();
 
     if (!tBot) {
@@ -28,10 +34,9 @@ export async function viewPage(query: string): Promise<void> {
         return undefined;
     }
 
-    // TODO: getHost()
     const baseHref: string = isRemoteBot(pars)
-        ? pars["TransferProtocol"] + pars["SiteHost"] + pars["APIPath"]
-        : config.get("transferProtocol") + (await getHost() || '') + config.get("articlePath");
+        ? transferProtocolPar + siteHostPar + apiPathPar
+        : config.get("transferProtocol") as string + config.get('host') + config.get("articlePath");
 
     // args value
     const args: Record<string, string> = { 'action': Action.parse };

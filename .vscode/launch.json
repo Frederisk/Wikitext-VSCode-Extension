@@ -15,7 +15,6 @@
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": [
@@ -24,11 +23,12 @@
       "preLaunchTask": "npm: pretest"
     },
     {
-      "name": "Launch Extension with Other Extensions",
+      "name": "Launch Extension without Other Extensions",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
+        "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": [
@@ -71,7 +71,7 @@
       "request": "launch",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "--disable-extensions",
+        // "--disable-extensions",
         "--extensionDevelopmentKind=web"
       ],
       "outFiles": [

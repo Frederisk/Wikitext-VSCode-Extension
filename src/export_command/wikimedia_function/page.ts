@@ -31,7 +31,7 @@ export function postPageFactory() {
                     meta: 'tokens',
                     type: 'csrf'
                 };
-                const result: unknown = await bot.request(args);
+                const result: unknown = await bot.request(args, { method: 'GET' });
                 const reNew: TokensResult = TokensConvert.toResult(result);
                 const token: string | undefined = reNew.query?.tokens?.csrftoken;
                 if (token) {
@@ -47,7 +47,7 @@ export function postPageFactory() {
                         action: "tokens",
                         type: "edit"
                     };
-                    const result: unknown = await bot.request(args);
+                    const result: unknown = await bot.request(args, { method: 'GET' });
                     const reOld: OldTokensResult = OldTokensConvert.toResult(result);
                     const token: string | undefined = reOld.tokens?.edittoken;
                     if (token) {
@@ -120,7 +120,7 @@ export function postPageFactory() {
             // if (config.get("redirect")) {
             //     args['redirect'] = "true";
             // }
-            const result: any = await tBot.request(args);
+            const result: any = await tBot.request(args, { method: 'POST' });
             // TODO: Convert
             if (result.edit.nochange !== undefined) {
                 vscode.window.showWarningMessage(
@@ -212,6 +212,7 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
             case undefined:
                 return 'wikitext';
             case 'flow-board':
+            case 'json':
                 return 'jsonc';
             case 'sanitized-css':
                 return 'css';
@@ -240,7 +241,7 @@ export async function getPageCode(args: Record<string, string>, tBot: MWBot): Pr
         const infoLine: string = Object.keys(headInfo).
             map((key: string) => `    ${key} = #${headInfo[key] ?? ''}#`).
             join("\r");
-        console.log(info?.contentModel);
+        console.log('GetInfoHead' + info?.contentModel);
         const comment: [string, string] | undefined = commentList[modelNameToLanguage(info?.contentModel)];
         if (comment === undefined) {
             throw new Error(`Unsupported content model: ${info?.contentModel}. Please report this issue to the author of this extension.`);
@@ -253,18 +254,18 @@ ${infoLine}
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Getting code...");
     try {
         // get request result
-        const result: unknown = await tBot.request(args);
+        const result: unknown = await tBot.request(args, { method: 'GET' });
         // console.log(result);
         // Convert result as class
         const re: ReadPageResult = ReadPageConvert.toResult(result);
         if (re.query?.interwiki) {
             vscode.window.showWarningMessage(
-                `Interwiki page "${re.query.interwiki[0].title}" in space "${re.query.interwiki[0].iw}" are currently not supported. Please try to modify host.`
+                `Interwiki page "${re.query.interwiki[0]?.title}" in space "${re.query.interwiki[0]?.iw}" are currently not supported. Please try to modify host.`
             );
         }
 
         // get first page
-        const page: Page | undefined = re.query?.pages?.[Object.keys(re.query.pages)[0]];
+        const page: Page | undefined = re.query?.pages?.[Object.keys(re.query.pages)[0]!];
         // need a page elements
         if (!page) { return undefined; }
 
@@ -332,7 +333,7 @@ export function getContentInfo(content: string): ContentInfo {
     let pageInfo: Record<PageInfo, string | undefined> | undefined;
     if (info) {
         const getInfo = (infoName: PageInfo): string | undefined => {
-            const nameFirst: string = infoName[0];
+            const nameFirst: string = infoName[0]!;
             const nameRest: string = infoName.substring(1);
             const reg = new RegExp(`(?<=[${nameFirst.toLowerCase()}${nameFirst.toUpperCase()}]${nameRest}\\s*=\\s*#).*?(?=#)`);
             return info.match(reg)?.[0];
@@ -361,7 +362,7 @@ async function getValidTagList(tBot: MWBot): Promise<(number | string)[]> {
 
     const tagList: (number | string)[] = [];
     for (; ;) {
-        const result: unknown = await tBot.request(args);
+        const result: unknown = await tBot.request(args, { method: 'GET' });
         const re: TagsResult = TagsConvert.toResult(result);
 
         tagList.push(

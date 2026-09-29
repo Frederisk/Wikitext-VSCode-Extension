@@ -5,7 +5,6 @@
 
 import MWBot from 'mwbot';
 import * as vscode from 'vscode';
-import { getHost } from '../vscode_function/host';
 import { Action, Meta } from './args';
 import { showMWErrorMessage } from './err_msg';
 
@@ -24,7 +23,7 @@ export function logoutFactory() {
             await bot?.request({
                 'action': Action.logout,
                 'token': bot.editToken
-            });
+            }, { method: 'POST' });
             // clear bot
             bot = undefined;
             vscode.window.showInformationMessage('result: Success');
@@ -41,9 +40,6 @@ export function logoutFactory() {
 async function login(): Promise<boolean> {
     const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("wikitext");
 
-    const host: string | undefined = await getHost();
-    if (!host) { return false; }
-
     const userInfo: { username?: string; password?: string } = {
         username: config.get('userName'),
         password: config.get('password')
@@ -57,7 +53,7 @@ async function login(): Promise<boolean> {
     const barMessage: vscode.Disposable = vscode.window.setStatusBarMessage("Wikitext: Login...");
     try {
         bot = new MWBot({
-            apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
+            apiUrl: config.get("transferProtocol") as string + config.get('host') + config.get("apiPath")
         });
         // TODO:
         const response: any = await bot.login(userInfo);
@@ -88,11 +84,8 @@ export async function getDefaultBot(): Promise<MWBot | undefined> {
     if (bot) {
         tBot = bot;
     } else {
-        // get host
-        const host: string | undefined = await getHost();
-        if (!host) { return undefined; }
-        tBot = new MWBot({
-            apiUrl: config.get("transferProtocol") + host + config.get("apiPath")
+        tBot = await getLoggedInBot() ?? new MWBot({
+            apiUrl: config.get("transferProtocol") as string + config.get('host') + config.get("apiPath")
         });
     }
     return tBot;
@@ -106,7 +99,7 @@ export async function getLoggedInBot(): Promise<MWBot | undefined> {
             case 'Always':
                 return await login() ? bot : undefined;
             case 'Never':
-                vscode.window.showWarningMessage('You are not logged in. Please log in and try again.');
+                vscode.window.showWarningMessage('Notice: You are not logged in.');
                 return undefined;
             case 'Ask me':
             default:
@@ -138,7 +131,7 @@ export async function compareVersion(tBot: MWBot, major: number, minor: number, 
         meta: Meta.siteInfo,
     };
 
-    const result: unknown = await tBot.request(args);
+    const result: unknown = await tBot.request(args, { method: 'GET' });
     const re: any = result as any;
     // TODO: cast
 
@@ -149,9 +142,9 @@ export async function compareVersion(tBot: MWBot, major: number, minor: number, 
         return undefined;
     }
 
-    const siteMajor: number = parseInt(generatorInfo[1]);
-    const siteMinor: number = parseInt(generatorInfo[2]);
-    const siteRevision: number = parseInt(generatorInfo[3]);
+    const siteMajor: number = parseInt(generatorInfo[1]!, 10);
+    const siteMinor: number = parseInt(generatorInfo[2]!, 10);
+    const siteRevision: number = parseInt(generatorInfo[3]!, 10);
 
     if (isNaN(siteMajor + siteMinor + siteRevision)) {
         return undefined;

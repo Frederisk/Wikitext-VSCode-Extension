@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 interface IObjectConverter<TargetType> {
     toResult(json: unknown): TargetType;
     resultToJson(value: TargetType): unknown;

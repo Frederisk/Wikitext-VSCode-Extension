@@ -9,7 +9,8 @@
     "target": "ES6",
     "module": "CommonJS",
     "lib": [
-      "ES6"
+      "ES6",
+      "WebWorker"
     ],
     "sourceMap": true,
     "outDir": "./out/",
@@ -25,6 +26,7 @@
     "importHelpers": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
+    "noUncheckedIndexedAccess": true,
   },
   "exclude": [
     "./.vscode-test/*"

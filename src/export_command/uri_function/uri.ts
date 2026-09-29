@@ -30,7 +30,15 @@ export function baseUriProcess(uri: vscode.Uri): void {
 }
 
 export function isRemoteBot(pars: Record<string, string>): boolean {
-    return !!(pars['RemoteBot'] || pars['SiteHost']);
+    const remoteBotPar: string | undefined = pars['RemoteBot']?.toLowerCase();
+    switch (remoteBotPar) {
+        case undefined:
+        case '':
+        case 'false':
+            return false;
+        default:
+            return true;
+    };
 }
 
 export function parseArgs(query: string): Record<string, string> {

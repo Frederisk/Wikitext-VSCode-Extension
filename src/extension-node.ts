@@ -5,20 +5,22 @@
 
 import * as vscode from 'vscode';
 import path from 'path';
-import { getPageViewFactory, getPreviewFactory } from './export_command/wikimedia_function/view';
+import { getPageViewFactory, getPreviewFactory, refreshCurrentPageViewFactory } from './export_command/wikimedia_function/view';
 import { loginFactory, logoutFactory } from './export_command/wikimedia_function/bot';
 import { closeEditorFactory, postPageFactory, pullPageFactory } from './export_command/wikimedia_function/page';
 import { baseUriProcess } from './export_command/uri_function/uri';
 import { addWebCiteFactory } from './export_command/cite_function/web';
-import { WikitextCommandRegistrar } from './export_command/commadRegistrar';
+import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
+import { client, restartLspFactory } from './export_command/vscode_function/wikiparser';
+import './mwbot-patch';
 
-export function activate(context: vscode.ExtensionContext): void {
-    console.log("Extension is active.");
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
+    console.log("Wikitext Extension is active.");
     // extensionContext = context;
     // URI
     context.subscriptions.push(vscode.window.registerUriHandler({ handleUri: baseUriProcess }));
 
-    const commandRegistrar = new WikitextCommandRegistrar(context);
+    const commandRegistrar = new WikitextCommandRegistrar(context, false);
     // Bot
     commandRegistrar.register('login', loginFactory);
     commandRegistrar.register('logout', logoutFactory);
@@ -29,21 +31,19 @@ export function activate(context: vscode.ExtensionContext): void {
     // View
     commandRegistrar.register('getPreview', getPreviewFactory);
     commandRegistrar.register('viewPage', getPageViewFactory);
+    commandRegistrar.register('refreshPageView', refreshCurrentPageViewFactory);
     // Cite
     commandRegistrar.register('citeWeb', addWebCiteFactory);
 
+    // Lsp
+    commandRegistrar.register('restartLsp', restartLspFactory);
+    await vscode.commands.executeCommand('wikitext.restartLsp');
+
+    // Lua
     configureLuaLibrary(
         'Scribunto',
         vscode.workspace.getConfiguration('wikitext').get<string>('scopedLuaIntegration') !== 'disabled'
     );
-}
-
-export function deactivate(): void {
-    console.log("Extension is inactive.");
-
-    if (vscode.workspace.getConfiguration('wikitext').get<string>('scopedLuaIntegration') !== 'enabled') {
-        configureLuaLibrary('Scribunto', false);
-    }
 }
 
 export function configureLuaLibrary(folder: string, enable: boolean) {
@@ -76,5 +76,14 @@ export function configureLuaLibrary(folder: string, enable: boolean) {
             library.splice(index, 1);
         }
         config.update('workspace.library', library, false);
+    }
+}
+
+export async function deactivate(): Promise<void> {
+    await client?.stop();
+    console.log("Wikitext Extension is deactivate.");
+
+    if (vscode.workspace.getConfiguration('wikitext').get<string>('scopedLuaIntegration') !== 'enabled') {
+        configureLuaLibrary('Scribunto', false);
     }
 }

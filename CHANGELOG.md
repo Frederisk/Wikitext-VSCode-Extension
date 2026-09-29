@@ -3,7 +3,72 @@
 
 All notable changes to the "Wikitext" extension will be documented in this file.
 
-(The version marked with an asterisk(&ast;) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
+(The version marked with an asterisk(\*) means that the version has been adjusted internally and has not been released.)<!-- http://keepachangelog.com/ -->
+
+## [4.0.6] - 2026-08-27
+
+### Added
+
+- Support refreshing the page view.
+- Support pulling JSON context model pages.
+
+## [4.0.5] - 2026-05-29
+
+### Changed
+
+- Downgraded Node.js version requirement to 22.
+
+### Fixed
+
+- A temporary fix for the 414 error of the view function.
+
+## [4.0.4]\* - 2026-05-06
+
+### Changed
+
+- Upgraded Node.js version requirement to 24.
+- Upgraded VSCode version requirement to 1.110.0.
+
+## [4.0.3]\* - 2026-05-06
+
+### Fixed
+
+- Used explicit request methods to access the API to avoid some potential issues.
+- Organized extension settings into grouped sections and updated the description of some settings.
+
+## [4.0.2] - 2025-07-03
+
+### Added
+
+- Added better support for private wikis.
+
+### Fixed
+
+- Fixed multiple pipes in one table row syntax error.
+
+## [4.0.1] - 2025-01-02
+
+### Fixed
+
+- Removed redundant blocking when LSP is not found.
+
+## [4.0.0] - 2024-12-01
+
+### Added
+
+- Add the support of [WikiParser Language Server](https://github.com/bhsd-harry/vscode-extension-wikiparser).
+
+## [3.8.3] - 2024-11-14
+
+### Changed
+
+- The syntax of the table has been improved.
+
+## [3.8.2] - 2024-08-02
+
+### Added
+
+- When getting the page preview, the API request will refer to `PageTitle` and `ContentModel` in the `PAGE_INFO` part.
 
 ## [3.8.1] - 2024-01-24
 

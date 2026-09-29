@@ -5,18 +5,20 @@
 
 import * as vscode from 'vscode';
 import { closeEditorFactory } from './export_command/wikimedia_function/page';
-import { WikitextCommandRegistrar } from './export_command/commadRegistrar';
+import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
+import { client, restartLspFactory } from './export_command/vscode_function/wikiparser';
+import './mwbot-patch';
 
-export function activate(context: vscode.ExtensionContext): void {
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
     function showUnsupportedMessageFactory() {
-        return  () => {
+        return () => {
             vscode.window.showErrorMessage('Web extension does not support this function.');
         };
     }
 
-    console.log("Extension is active.");
+    console.log("Wikitext Extension is active.");
 
-    const commandRegister = new WikitextCommandRegistrar(context);
+    const commandRegister = new WikitextCommandRegistrar(context, true);
     // Bot
     commandRegister.register('login', showUnsupportedMessageFactory);
     commandRegister.register('logout', showUnsupportedMessageFactory);
@@ -27,10 +29,15 @@ export function activate(context: vscode.ExtensionContext): void {
     // View
     commandRegister.register('getPreview', showUnsupportedMessageFactory);
     commandRegister.register('viewPage', showUnsupportedMessageFactory);
+    commandRegister.register('refreshPageView', showUnsupportedMessageFactory);
     // Cite
     commandRegister.register('citeWeb', showUnsupportedMessageFactory);
+    // Lsp
+    commandRegister.register('restartLsp', restartLspFactory);
+    await vscode.commands.executeCommand('wikitext.restartLsp');
 }
 
-export function deactivate(): void {
-    console.log("Extension is deactivate.");
+export async function deactivate(): Promise<void> {
+    await client?.stop();
+    console.log("Wikitext Extension is deactivate.");
 }

@@ -389,17 +389,28 @@ repository:
             patterns:
               - include: $self
               - name: meta.tag.block.table-row.wikitext
-                begin: '^\s*(\|-)\s*'
-                #           1 |- 1
-                end: $
-                beginCaptures:
+                match: '^\s*(\|-)\s*(.*)$'
+                captures:
                   1:
                     name: punctuation.definition.tag.begin.wikitext
-                patterns:
-                  - include: $self
-                  - include: text.html.basic#attribute
-                  - name: invalid.illegal.bad-table-context.wikitext
-                    match: '\|.*'
+                  2:
+                    patterns:
+                      - include: $self
+                      - name: invalid.illegal.bad-table-context.wikitext
+                        match: '\|.*'
+                      - include: text.html.basic#attribute
+              # - name: meta.tag.block.table-row.wikitext
+              #   begin: '^\s*(\|-)\s*'
+              #   #           1 |- 1
+              #   end: $
+              #   beginCaptures:
+              #     1:
+              #       name: punctuation.definition.tag.begin.wikitext
+              #   patterns:
+              #     - include: $self
+              #     - include: text.html.basic#attribute
+              #     - name: invalid.illegal.bad-table-context.wikitext
+              #       match: '\|.*'
               - name: meta.tag.block.th.heading
                 begin: ^\s*(!)(([^\[]*?)(\|))?(.*?)(?=(!!)|$)
                 #          1!123 any   34 |42 5bdy5    !!
@@ -425,8 +436,8 @@ repository:
                         name: punctuation.definition.tag.begin.wikitext
                       3:
                         patterns:
-                          - include: text.html.basic#attribute
                           - include: $self
+                          - include: text.html.basic#attribute
                       4:
                         name: punctuation.definition.tag.wikitext
                       5:
@@ -443,21 +454,22 @@ repository:
                 patterns:
                   - include: $self
               - begin: ^\s*(\|)
-                # name: string.quoted.wikitext
                 end: $
                 beginCaptures:
                   1:
                     name: punctuation.definition.tag.wikitext
-                  # 2:
-                  #   patterns:
-                  #     - include: text.html.basic#attribute
-                  # 3:
-                  #   name: punctuation.definition.tag.wikitext
                 patterns:
-                  - include: $self
+                  - match: \s*([^\|]+)\s*(?<!\|)(\|)(?!\|)
+                    captures:
+                      1:
+                        patterns:
+                          - include: $self
+                          - include: text.html.basic#attribute
+                      2:
+                        name: punctuation.definition.tag.wikitext
                   - match: \|\|
-                    name: keyword.operator.wikitext
-              # - include: text.html.basic#attribute
+                    name: punctuation.definition.tag.wikitext
+                  - include: $self
       wikixml:
         patterns:
           - include: '#wiki-self-closed-tags'
