@@ -88,6 +88,16 @@
         "command": "wikitext.restartLsp",
         "title": "Restart WikiParser LSP",
         "category": "Wikitext"
+      },
+      {
+        "command": "wikitext.enableLua",
+        "title": "Enable Lua integration (workspace)",
+        "category": "Wikitext"
+      },
+      {
+        "command": "wikitext.disableLua",
+        "title": "Disable Lua integration (workspace)",
+        "category": "Wikitext"
       }
     ],
     "menus": {
@@ -333,15 +343,10 @@
         "type": "object",
         "title": "EmmyLua",
         "properties": {
-          "wikitext.scopedLuaIntegration": {
-            "type": "string",
-            "default": "auto",
-            "description": "Enable EmmyLua, a LSP for Lua to provide better experiences when scripting modules.",
-            "enum": [
-              "enabled",
-              "auto",
-              "disabled"
-            ]
+          "wikitext.enableEmmyLuaIntegration": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enable integration with EmmyLua, a LSP for Lua to provide better experiences when scripting modules. It will import the symbol definitions for Scribunto and other common loadable modules."
           }
         }
       }

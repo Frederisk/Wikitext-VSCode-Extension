@@ -4,13 +4,13 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import path from 'path';
 import { getPageViewFactory, getPreviewFactory, refreshCurrentPageViewFactory } from './export_command/wikimedia_function/view';
 import { loginFactory, logoutFactory } from './export_command/wikimedia_function/bot';
 import { closeEditorFactory, postPageFactory, pullPageFactory } from './export_command/wikimedia_function/page';
 import { baseUriProcess } from './export_command/uri_function/uri';
 import { addWebCiteFactory } from './export_command/cite_function/web';
 import { WikitextCommandRegistrar } from './export_command/commandRegistrar';
+import { lua } from './export_command/vscode_function/emmylua';
 import { client, restartLspFactory } from './export_command/vscode_function/wikiparser';
 import './mwbot-patch';
 
@@ -40,50 +40,13 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     await vscode.commands.executeCommand('wikitext.restartLsp');
 
     // Lua
-    configureLuaLibrary(
-        'Scribunto',
-        vscode.workspace.getConfiguration('wikitext').get<string>('scopedLuaIntegration') !== 'disabled'
-    );
-}
-
-export function configureLuaLibrary(folder: string, enable: boolean) {
-    const extensionId = 'rowewilsonfrederiskholme.wikitext';
-    const extensionPath = vscode.extensions.getExtension(extensionId)?.extensionPath;
-    if (extensionPath === undefined) {
-        return;
-    }
-
-    const folderPath = path.join(extensionPath, 'EmmyLua', folder);
-    const config = vscode.workspace.getConfiguration('Lua');
-    let library: string[] | undefined = config.get('workspace.library');
-    if (library === undefined) {
-        return;
-    }
-
-    if (library && extensionPath) {
-        // remove any older versions of our path
-        library = library.filter(path =>
-            !path.includes(extensionId) ||
-            path.includes(extensionPath));
-
-        const index = library.indexOf(folderPath);
-        if (enable) {
-            if (index < 0) {
-                library.push(folderPath);
-            }
-        }
-        else if (index >= 0) {
-            library.splice(index, 1);
-        }
-        config.update('workspace.library', library, false);
-    }
+    commandRegistrar.register('enableLua', lua.enableFactory);
+    commandRegistrar.register('disableLua', lua.disableFactory);
+    await lua.onActivate(context);
 }
 
 export async function deactivate(): Promise<void> {
     await client?.stop();
+    await lua.onDeactivate();
     console.log("Wikitext Extension is deactivate.");
-
-    if (vscode.workspace.getConfiguration('wikitext').get<string>('scopedLuaIntegration') !== 'enabled') {
-        configureLuaLibrary('Scribunto', false);
-    }
 }
