@@ -320,7 +320,7 @@ repository:
           - include: $self
       heading:
         name: markup.heading.wikitext
-        match: '^(={1,6})\s*(.+?)\s*(\1)$'
+        match: '^(={1,6})\s*(.+?)\s*(\1)(?: |<!--[\S\s]*?-->)*$'
         #        1======1   2cha2   3======3
         captures:
           2:
