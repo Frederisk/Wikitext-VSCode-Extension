@@ -356,7 +356,7 @@
     "@typescript-eslint/eslint-plugin": "^8.59.2",
     "@typescript-eslint/parser": "^8.59.2",
     "@vscode/test-electron": "^2.5.2",
-    "@vscode/test-web": "^0.0.80",
+    "@vscode/test-web": "^0.0.81",
     "assert": "^2.0.0",
     "async-hook-browser": "^0.0.6",
     "browser-request": "^0.3.3",
