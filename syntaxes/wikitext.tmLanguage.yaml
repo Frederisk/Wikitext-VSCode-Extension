@@ -319,14 +319,24 @@ repository:
                 name: keyword.operator.wikitext
           - include: $self
       heading:
-        name: markup.heading.wikitext
-        match: '^(={1,6})\s*(.+?)\s*(\1)$'
-        #        1======1   2cha2   3======3
+        # name: markup.heading.wikitext
+        match: '^((={1,6})\s*(.+?)\s*(\2))((?:\s|<!--[\S\s]*?-->)*)$'
+        #        12======2   3cha3   4==415      <!--any-->  5
         captures:
+          1:
+            name: markup.heading.wikitext
           2:
+            name: punctuation.definition.heading.wikitext
+          3:
             name: string.quoted.other.heading.wikitext
             patterns:
               - include: $self
+          4:
+            name: punctuation.definition.heading.wikitext
+          5:
+          #   name: comment.block.documentation.wikitext
+            patterns:
+              - include: text.html.basic#comment
       font-style:
         patterns:
           - include: '#bold'
