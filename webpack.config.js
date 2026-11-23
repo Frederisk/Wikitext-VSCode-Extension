@@ -39,8 +39,11 @@ const webConfig = {
             https: require.resolve('https-browserify'),
             url: require.resolve('url/'),
             crypto: require.resolve('crypto-browserify'),
+            events: require.resolve('events/'),
             zlib: require.resolve('browserify-zlib'),
             stream: require.resolve('stream-browserify'),
+            string_decoder: require.resolve('string_decoder/'),
+            util: require.resolve('util/'),
             querystring: require.resolve('querystring-es3'),
             path: require.resolve('path-browserify'),
             os: require.resolve('os-browserify/browser'),
@@ -60,7 +63,7 @@ const webConfig = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: "ts-loader",
+                        loader: require.resolve("ts-loader"),
                     },
                 ],
             },
@@ -98,7 +101,6 @@ const nodeConfig = {
     entry: {
         'extension-node': "./src/extension-node.ts", // source of the node extension main file
         'test/suite/index-node': "./src/test/suite/index-node.ts", // source of the node extension test runner
-        "test/suite/extension.test": "./src/test/suite/extension.test.ts", // create a separate file for the tests, to be found by glob
         "test/runTest": "./src/test/runTest", // used to start the VS Code test runner (@vscode/test-electron)
     },
     output: { // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
@@ -117,13 +119,12 @@ const nodeConfig = {
             test: /\.ts$/,
             exclude: /node_modules/,
             use: [{
-                loader: 'ts-loader',
+                loader: require.resolve('ts-loader'),
             }]
         }]
     },
     externals: {
         vscode: "commonjs vscode", // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
-        mocha: "commonjs mocha", // don't bundle
         '@vscode/test-electron': "commonjs @vscode/test-electron" // don't bundle
     },
     performance: {

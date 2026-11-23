@@ -22,7 +22,7 @@ async function main(): Promise<void> {
         await runTests({
             extensionDevelopmentPath,
             extensionTestsPath,
-            launchArgs: ["--disable-extensions"]
+            launchArgs: ["--disable-extensions", "--disable-dev-shm-usage"]
         });
     } catch (err) {
         console.log(err);

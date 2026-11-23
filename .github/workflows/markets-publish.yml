@@ -34,23 +34,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: yarn
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Build
+        run: |
+          npm install -g semver ovsx
+          yarn install --immutable
 
       - name: Extract Release Notes
         run: |
           awk '/^## Release Notes/{flag=1; next} /^## /{flag=0} flag' README.md > release-notes.md
-
-      - name: Build
-        run: |
-          npm install -g yarn semver @vscode/vsce ovsx
-          yarn install
 
       - name: Test
         run: xvfb-run -a yarn test
 
       - name: Package VSIX
         run: |
-          vsce package --yarn
+          yarn package
           echo "VSIX_FILE=$(ls *.vsix | head -n 1)" >> $GITHUB_ENV
 
       - name: Publish to VSCE

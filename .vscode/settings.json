@@ -17,11 +17,13 @@
     "out": true, // set this to false to include "out" folder in search results
     "dist": true,
     ".vscode-test": true,
-    ".vscode-test-web": true
+    ".vscode-test-web": true,
+    "**/.yarn": true,
+    "**/.pnp.*": true
   },
   // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
   "typescript.tsc.autoDetect": "off",
-  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "cmake.configureOnOpen": false,
   "cSpell.words": [
     "bibtex",
@@ -46,4 +48,6 @@
   },
   "jshint.packageManager": "yarn",
   "eslint.packageManager": "yarn",
+  "eslint.nodePath": ".yarn/sdks",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

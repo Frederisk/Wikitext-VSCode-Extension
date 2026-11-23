@@ -8,8 +8,11 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "npm",
-      "script": "watch",
+      "type": "shell",
+      "command": "yarn",
+      "args": [
+        "watch"
+      ],
       "label": "webpack: watch",
       "detail": "convert & webpack --watch",
       "isBackground": true,
@@ -27,10 +30,13 @@
       }
     },
     {
-      "type": "npm",
-      "script": "package",
+      "type": "shell",
+      "command": "yarn",
+      "args": [
+        "package"
+      ],
       "label": "vsce: package",
-      "detail": "vsce package --yarn",
+      "detail": "vsce package --no-dependencies",
       "presentation": {
         "echo": true,
         "reveal": "always",
@@ -42,8 +48,11 @@
       "group": "build"
     },
     {
-      "type": "npm",
-      "script": "test",
+      "type": "shell",
+      "command": "yarn",
+      "args": [
+        "test"
+      ],
       "label": "vscode extension: test",
       "detail": "tsc & lint & run test",
       "presentation": {
@@ -60,11 +69,36 @@
       }
     },
     {
-      "type": "npm",
-      "script": "lint",
-      "label": "npm: eslint",
+      "type": "shell",
+      "command": "yarn",
+      "args": [
+        "lint"
+      ],
+      "label": "yarn: eslint",
       "problemMatcher": "$eslint-stylish",
       "detail": "eslint"
+    },
+    {
+      "type": "shell",
+      "command": "yarn",
+      "args": [
+        "pretest"
+      ],
+      "label": "yarn: pretest",
+      "detail": "compile-debug & lint",
+      "problemMatcher": [
+        "$tsc",
+        "$eslint-stylish"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "group": "build"
     }
   ]
 }

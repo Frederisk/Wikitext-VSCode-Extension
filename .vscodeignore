@@ -27,7 +27,11 @@ language-configuration.yaml
 **/tslint.json
 **/.eslintrc.*
 webpack.config.js
-.yarnrc
+eslint.config.mjs
+.pnp.*
+.yarn/
+.yarnrc.yml
+yarn.lock
 
 # Uncompiled files
 **/*.map
