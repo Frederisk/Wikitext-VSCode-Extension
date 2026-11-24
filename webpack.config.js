@@ -29,6 +29,7 @@ const webConfig = {
         extensions: [".ts", ".js"], // support ts-files and js-files
         alias: {
             // provides alternate implementation for node module and source files
+            "node-forge$": require.resolve("node-forge/lib/index.js"),
         },
         fallback: {
             // Webpack 5 no longer polyfills Node.js core modules automatically.
