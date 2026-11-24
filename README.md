@@ -84,21 +84,24 @@ Generally, make sure that your VSCode is always the latest version.
 
 ### Development Requirements
 
-- [Node.js](https://nodejs.org) (with npm) at least v16.
+- [Node.js](https://nodejs.org) 22 with Corepack enabled.
+- The [ZipFS](https://marketplace.visualstudio.com/items?itemName=arcanis.vscode-zipfs) VS Code extension when using Yarn Plug'n'Play.
 
 ### How to build this extension yourself
 
-Firstly, clone this repository and change directory to the repository, then install VS Code Extension Manager and other packages:
+Firstly, clone this repository and change directory to the repository. Enable Corepack, then install the dependencies:
 
 ```bash
-npm install -g yarn # install yarn classic
-yarn install # Install all dependencies
+corepack enable
+yarn install --immutable
 ```
+
+This project uses Yarn Plug'n'Play, so dependencies are stored in Yarn's cache and there is no `node_modules` directory. In VS Code, select **Use Workspace Version** for TypeScript to use the generated `.yarn/sdks` integration.
 
 Package this project and you will get a `.vsix` file:
 
 ```bash
-yarn run package
+yarn package
 ```
 
 This is it!

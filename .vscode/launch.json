@@ -20,7 +20,7 @@
       "outFiles": [
         "${workspaceFolder}/dist/**/*.js"
       ],
-      "preLaunchTask": "npm: pretest"
+      "preLaunchTask": "yarn: pretest"
     },
     {
       "name": "Launch Extension without Other Extensions",
@@ -34,7 +34,7 @@
       "outFiles": [
         "${workspaceFolder}/dist/**/*.js"
       ],
-      "preLaunchTask": "npm: pretest"
+      "preLaunchTask": "yarn: pretest"
     },
     {
       "name": "Launch Extension of The Last Building",
@@ -62,7 +62,7 @@
       "outFiles": [
         "${workspaceFolder}/dist/test/**/*.js"
       ],
-      "preLaunchTask": "npm: pretest"
+      "preLaunchTask": "yarn: pretest"
     },
     {
       "name": "Launch Web Extension",
@@ -77,7 +77,7 @@
       "outFiles": [
         "${workspaceFolder}/dist/test/**/*.js"
       ],
-      "preLaunchTask": "npm: pretest"
+      "preLaunchTask": "yarn: pretest"
     },
     {
       "name": "Launch Web Extension of The Last Building",
