@@ -27,7 +27,7 @@ language-configuration.yaml
 **/tslint.json
 **/.eslintrc.*
 webpack.config.js
-eslint.config.mjs
+eslint.config.js
 .pnp.*
 .yarn/
 .yarnrc.yml
