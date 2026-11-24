@@ -338,7 +338,7 @@
     "lint": "eslint -c ./eslint.config.mjs ./src",
     "watch": "yarn run convert && webpack --config webpack.config.js --mode development --watch",
     "pretest": "yarn run compile-debug && yarn run lint",
-    "test": "yarn run test-node && yarn run test-web",
+    "test": "yarn run pretest && yarn run test-node && yarn run test-web",
     "test-node": "node ./dist/test/runTest.js",
     "test-web": "vscode-test-web --browser=chromium --headless --extensionDevelopmentPath=. --extensionTestsPath=./dist/test/suite/index-web.js",
     "convert": "js-yaml snippets/snippets.yaml > snippets/snippets.json && js-yaml syntaxes/wikitext.tmLanguage.yaml > syntaxes/wikitext.tmLanguage.json && js-yaml language-configuration.yaml > language-configuration.json",
